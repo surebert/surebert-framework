@@ -1286,7 +1286,7 @@
 		@Name: sb.ajax.defaultMethod
 		@Description: The default transport method used for communicating with server side scripts.  If this is changed, all insatnces with non specified transport methods will use this one.  It is 'get' by default.  Another option is 'post'.
 		*/
-		defaultMethod : 'get',
+		defaultMethod : 'post',
 		
 		/**
 		@Name: sb.ajax.defaultFormat
@@ -1432,6 +1432,8 @@
 						this.format = 'javascript';
 					} else if (this.contentType.match('xml')){
 						this.format = 'xml';
+					} else if(this.contentType.match('boolean')){
+						this.format = 'boolean';
 					}
 				} else {
 					this.format = sb.ajax.defaultFormat;
@@ -1475,6 +1477,10 @@
 					
 				case 'json':
 					js = 'this.response='+this.o.responseText;
+					break;
+					
+				case 'boolean':
+					this.response = (this.o.responseText === 0) ? 0 : 1;
 					break;
 				
 				default:
