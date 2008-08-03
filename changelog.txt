@@ -1,3 +1,9 @@
+Aug 2, 2008 10:30:39 PM	visco	
+changed sb.ajax.defaultMethod to post from get.  If you want to still have it backwards compatible set sb.ajax.defaultMethod = 'get';  
+
+added new boolean response type to sb.ajax that accepts 0 or 1 with content type boolean/value from the server and then returns true or false boolean to the response handler.
+
+
 --4.12 07/07/08
 3524-3198
 326 lines less
