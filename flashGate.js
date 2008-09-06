@@ -1,560 +1,480 @@
 /**
-@Author: Paul Visco of http://elmwoodstrip.org?u=paul
-@Version: 4.10
-@Release: 02/12/08 05/27/08
-@Package: surebert.flashGate
-@Desciption: Allows communications between surebert.swf flashGlate and the surebert toolkit, extending javascript by allowing it to borrow functionality from flash.  Currently it can play sounds, save data to the flash storage space, and allow multi file uploads.
+@Name: sb.flashGate
+@Description: Used to include swf for surebert communicate with flash player for sound, multi-file/progress upload and storage
+@Author: Paul Visco
+@Version: 4.2 02/12/06 09/03/08
 */
-
 if(typeof sb.swf =='undefined'){
 	sb.include('swf');
 }
 
-/**
-@Name: sb.flashGateDebug
-@Description: Boolean Determines if the surebert.swf debugs actions to the sb.consol.  Requires sb.developer.
-*/
-sb.flashGateDebug = 0;
-
-/**
-@Name: sb.onFlashGateLoad
-@Description: An array of functions that should fire when the sb.flashGate loads.  You can push functions in here to have them fire when the flashGate loads.
-*/
-sb.onFlashGateLoad = [];
-
-/**
-@Name: sb.sound
-@Description: A constructor for creating new sound object instances.  Allows javascript to load, play and stop mp3 sounds.  Also has hooks for changing pan(left and right speaker), volume, and position of track, and reading id3 tag data from the song.
-@Param String url The address of the sound file e.g. http://myexample.com/mySound.mp3
-@Param Number vol The volume to play the song at
-@Example:
-var mySound = new sb.sound('http://myexample.com/mySound.mp3);
-mySound.play();
-*/
-
-sb.sound = function(url, vol){
-	
-	if(typeof url == 'undefined'){return;}
-	this.url = url;
-	this.vol = vol || sb.sound.globalVolume;
-	sb.sound.sounds.push(this);
-}; 
-
-//add infuse in case globals are turned off
-sb.sound.infuse = sb.objects.infuse;
-	
-sb.sound.infuse({
-	
-	/**
-	@Name: sb.sound.stopAll
-	@Description: Stops all sounds currently on the page
-	@Example:
-	sb.sounds.stopAll();
-	*/
-	stopAll : function(){
-		sb.sound.sounds.forEach(function(v){
-			v.stop();
-		});
-	},
-	
-	/**
-	@Name: sb.sound.muteAll
-	@Description: Mutes all sounds currently on the page, does not stop them from playing.
-	@Example:
-	sb.sounds.muteAll();
-	*/
-	muteAll : function(){
-		sb.sound.sounds.forEach(function(v){
-			v.setVolume(0);
-		});
-	},
-	
-	/**
-	@Name: sb.sound.globalVolume
-	@Description: The globalVolume on the page
-	*/
-	globalVolume : 50,
-
-	/**
-	@Name: sb.sound.sounds
-	@Description: An array of all the sound object instances on the page.
-	*/
-	
-	sounds : [],
-	
-	/**
-	@Name: sb.sound.muted
-	@Description: When set to 0 all sounds on the page are not muted when set to 1 all sounds are muted
-	*/
-	muted : 0,
-	
-	/**
-	@Name: sb.sound.handlers
-	@Description: Used internally. Passes events to individual sound instances when the events fire from the flash flashGate.
-	*/
-	handlers : {
-		/**
-		@Name: sb.sound.handlers.oncomplete
-		@Description: Used internally. Fires when a sound is completed and triggers the firing of the sound instances oncomplete handler if it exists
-		*/
-		oncomplete : function(info){
-			if(typeof sb.sound.sounds[info.id].oncomplete=='function'){
-				sb.sound.sounds[info.id].oncomplete(info);
-			}
-		},
-		/**
-		@Name: sb.sound.handlers.onid3
-		@Description: Used internally. Fires when a sound's id3 data is loaded and triggers the firing of the sound instance's onid3 handler if it exists
-		*/
-		onid3 : function(info){
-			if(typeof sb.sound.sounds[info.id].onid3=='function'){
-				sb.sound.sounds[info.id].onid3(info);
-			}
-		},
-		/**
-		@Name: sb.sound.handlers.onload
-		@Description: Used internally. Fires when a sound is onload and triggers the firing of the sound instances onload handler if it exists
-		*/
-		onload : function(info){
-			if(typeof sb.sound.sounds[info.id].onload=='function'){
-				sb.sound.sounds[info.id].onload(info);
-			}
-		}
+sb.swfBox = new sb.swf({
+	src : sb.base+"/Surebert.swf?cb="+(Math.floor(Math.random()*10000)),
+	width : 10,
+	height : 10,
+	bgColor :'#FF0000',
+	id : 'Flashgate',
+	wmode: 'transparent',
+	flashvars : {
+		debug : true
 	}
 });
 
+document.write(sb.swfBox.toHTML());
+sb.flashGate = s$('#Flashgate');
+
+/**
+@Name: sb.sound
+@Author: Paul Visco
+@Description: A constructor for creating new sound object instances.  Allows javascript to load, play and stop mp3 sounds.
+@Param String url The url of the file to play
+@Example:
+var yellow = new sb.sound(
+	url : 'yellow.mp3',
+	debug : true,
+	onID3 : function(){},
+	onProgress : function(){}
+);
+yellow.play();
+*/
+sb.sound = function(params){
+	if(!params.url){
+		throw('You must pass a url to the sb.sound');
+	}
+	
+	for(var prop in params){
+		this[prop] = params[prop];
+	}
+	
+	this.id = sb.flashGate.sound_create(this.url, this.debug);
+	sb.sound.sounds[this.id] = this;
+};
+
+/**
+@Name: sb.sound.sounds
+@Description: Used Internally
+*/
+sb.sound.sounds = [];
+
+/**
+@Name: sb.sound.stopAll
+@Description: Stops all sounds playing on the page
+@Param String url Optional The url of the file to stop
+@Example:
+sb.sound.stopAll();
+//or
+sb.sound.stopAll('yellow.mp3');
+*/
+sb.sound.stopAll = function(url){
+	url = url || '';
+	sb.flashGate.sounds_stop_all(url);
+};
+
+/**
+@Name: sb.sound.stopAll
+@Description: Sets the global volume of all sounds
+@Param Float A float between 0 and 1
+@Example:
+sb.sound.setGlobalVolume(0.5);
+*/
+
+sb.sound.setGlobalVolume = function(volume){
+	sb.flashGate.sounds_set_global_volume(volume);
+};
+
+/**
+@Name: sb.sound.muteAll
+@Description: Mutes all sounds playing on the page
+@Param String url Optional The url of the file to mute
+@Example:
+sb.sound.muteAll();
+//or
+sb.sound.muteAll('yellow.mp3');
+*/
+sb.sound.muteAll = function(){
+	sb.flashGate.sounds_mute_all();
+};
 
 /**
 @Name: sb.sound.prototype
-@Description: The properties and methods of all sound object instances.  All examples refer to a sound object instance called mySound which was created like this
-@Example:
-var mySound = new sb.sound('http://myexample.com/mySound.mp3);
+@Description: The methods of sb.sound instances
 */
 sb.sound.prototype = {
+	/**
+	@Name: sb.sound.prototype.url
+	@Description: String The url of the mp3 file
+	*/
+	url : '',
 	
 	/**
-	@Name: sb.sound.prototype.playing
-	@Description: Boolean The playing status of a sound object. 0 = not playing, 1 is playing
+	@Name: sb.sound.prototype.id
+	@Description: Used Internally
 	*/
-	playing :0,
+	id : 0,
 	
 	/**
 	@Name: sb.sound.prototype.play
-	@Description: Function Plays the sound file specified in the url property of the sound object.
-	@Param: Number vol The volume to play the sound at measured between 0 and 100
+	@Param Number position The position to start the file at in milliseconds 
+	@Param Number loops The number of times to repeat the sound
+	@Description: Plays the sound file
 	@Example:
 	mySound.play();
 	*/
-	play : function(vol){
-		if(typeof sb.flashGateInit=='undefined'){
-			
-			if(typeof this.interval !='undefined'){return;}
-			
-			var t=this;
-			this.tries = 0;
-			this.interval = window.setInterval(function(){
-				if(typeof sb.flashGateInit !='undefined'){
-					t.play();
-					window.clearInterval(t.interval);
-				}
-				this.tries++;
-				
-				if(this.tries > 10){
-					window.clearInterval(t.interval);
-					sb.consol.error(sb.messages[16]+t.url);
-				}
-			}, 100);
-			
-			return;
-		}
-		
-		if(sb.sound.muted===1){return;}
-		vol = vol || this.vol;
-		
-		if (sb.flashGate.soundCreate) {
-			if (typeof this.id == 'undefined') {
-			
-				this.id = sb.flashGate.soundCreate(this.url, vol);
-			}
-			else {
-				this.setVolume(vol);
-				this.start();
-			}
-		}
-		return this.id;
-	},
-	
-	/**
-	@Name: sb.sound.prototype.start
-	@Description: Function Starts a sound if it was stopped
-	@Example:
-	mySound.start();
-	*/
-	start : function(){
-		this.playing =1;
-		sb.flashGate.soundStart(this.id);
+	play : function(position, loops){
+		position = position || 0;
+		loops = loops || 0;
+		return sb.flashGate.sound_play(this.id, position, loops);
 	},
 	
 	/**
 	@Name: sb.sound.prototype.stop
-	@Description: Function Stops a sound taht was started
+	@Description: Stops the sound file
 	@Example:
-	mySound.stop();
+	mySound.play();
 	*/
 	stop : function(){
-		this.playing =0;
-		sb.flashGate.soundStop(this.id);
+		return sb.flashGate.sound_stop(this.id);
 	},
 	
 	/**
-	@Name: sb.sound.prototype.setVolume
-	@Description: Function Sets the volume of a sound object instance
-	@Param Number vol The volume measured between 0 and 100
+	@Name: sb.sound.prototype.getPosition
+	@Description: Gets the current position in milliseconds
+	@Return: Number return the current position in milliseconds
 	@Example:
-	mySound.setVolume(20);
+	mySound.getPosition();
 	*/
-	setVolume : function(vol){
-		sb.flashGate.soundSetVolume(this.id, vol);
+	getPosition : function(){
+		return sb.flashGate.sound_get_position(this.id);
+	},
+	
+	/**
+	@Name: sb.sound.prototype.setPosition
+	@Description: Moves the playhead to a certain position in milliseconds
+	@Example:
+	mySound.setPosition(4135);
+	*/
+	setPosition : function(position){
+		return sb.flashGate.sound_set_position(this.id, position);
+	},
+	
+	/**
+	@Name: sb.sound.prototype.getVolume
+	@Description: Gets the current volume 
+	@Return: float between 0 and 1
+	@Example:
+	mySound.getVolume();
+	*/
+	getVolume : function(volume){
+		return sb.flashGate.sound_get_volume(this.id);
+	},
+	
+	/**
+	@Name: sb.sound.prototype.getVolume
+	@Description: Gets the current volume 
+	@Param: Float volume between 0 and 1
+	@Example:
+	mySound.setVolume(0.5);
+	*/
+	setVolume : function(volume){
+		sb.flashGate.sound_set_volume(this.id, volume);
+	},
+	
+	/**
+	@Name: sb.sound.prototype.getPan
+	@Description: Gets the current pan position
+	@Return: float between -1 (left) and 1 (right)
+	@Example:
+	mySound.getPan();
+	*/
+	getPan : function(){
+		return sb.flashGate.sound_get_pan(this.id);
+	},
+	
+	/**
+	@Name: sb.sound.prototype.setPan
+	@Description: sets the current pan position
+	@Param: float pan between -1 (left) and 1 (right)
+	@Example:
+	mySound.setPan(0.5);
+	*/
+	setPan : function(pan){
+		sb.flashGate.sound_set_pan(this.id, pan);
 	},
 	
 	/**
 	@Name: sb.sound.prototype.mute
-	@Description: Function Mutes the volume of a sound object instance
+	@Description: sets the volume to zero for this sound but keeps playing
 	@Example:
 	mySound.mute();
 	*/
 	mute : function(){
 		this.setVolume(0);
 	},
-	
-	/**
-	@Name: sb.sound.prototype.setPan
-	@Description: Function Sets the pan of a soudn object instance
-	@Param: Number pan Pan bewteen -100 (far left) and 100 (far right)
-	@Param: String pan You can also pass it the shortcuts 'left', right', 'middle'
-	@Example:
-	mySound.setPan('left');
-	mySound.setPan(-100);
-	*/
-	setPan : function(pan){
-		switch(pan){
-			case 'left':
-				pan = -100;
-				break;
-			case 'right':
-				pan = 100;
-				break;
-			case 'middle':
-				pan = 0;
-				break;
-		}
-		
-		sb.flashGate.soundSetPan(this.id, pan);
-	},
-	
-	/**
-	@Name: sb.sound.prototype.getPan
-	@Description: Function Gets the pan of a sound object instance
-	@Return: Number Pan between -100(far left) and 100(far right)
-	@Example:
-	var pan = mySound.getPan();
-	//pan = -100 //<-possible result
-	*/
-	getPan : function(){
-		return sb.flashGate.soundGetPan(this.id);
-	},
-	
-	/**
-	@Name: sb.sound.prototype.setPosition
-	@Description: Function Sets the position of a sound object instance
-	@Param: Number position A position between 0% and 100%
-	@Example:
-	//sets the sound position to 50%
-	mySound.setPosition(50);
-	*/
-	setPosition : function(position){
-		sb.flashGate.soundSetPosition(this.id, position);
-	},
-	
-	/**
-	@Name: sb.sound.prototype.getPosition
-	@Description: Function Gets the position of a sound object instance
-	@Example:
-	var post = mySound.getPosition(50);
-	//pan = 50 //<-possible result
-	*/
-	getPosition : function(){
-		return sb.flashGate.soundGetPosition(this.id);
-	}
-	
+	//tags.album, tags.year, tags.artist, tags.songName, tags.comment, tags.track, tags.genre
+	onID3 : function(){},
+	//song.sizeK, song.bytesLoaded, song.bytesTotal
+	onLoad : function(){},
+	//message
+	onError : function(){}
 };
 
 /**
 @Name: sb.sharedObject
-@Description: Object Allows the sotring and retreiving of data in the flash shared object space on the client's computer.  This space is virtually unlimited and is not emptied when a user empties their cookies.  The calls work exactly the same as with sb.cookies.
+@Author: Paul Visco
+@Description: gives javascript access to the flash storage
 */
 sb.sharedObject = {
 
 	/**
-	@Name: sb.sharedObject.remember
-	@Description: Used to make the clients computer remember a value as a in the flash shared object space
-	@Param: String name The name (key) of the cookie which will hold the valuee
-	@Param: String value The value the cookie holds
+	@Name: sb.sharedObject.load
+	@Description: loads data from the sharedObject
+	@Param: string key The name of the stored data
 	@Example:
-	sb.sharedObject.remember('name', 'paul');
+	sb.sharedObject.load('friend');
 	*/
-	remember :function(key, v){
-	
-		try{
-			sb.flashGate.remember(key,escape(v));
-		} catch(e){
-			window.setTimeout(function(){sb.sharedObject.remember(key,v);}, 1000);
-		}
+	load : function(key){
+		return sb.flashGate.storage_engine_get(key);
 	},
 	
 	/**
-	@Name: sb.sharedObject.recall
-	@Description: Used to recall flash shared object stored values
-	@Param: String name The name of the shared object who's value you are trying to recall
-	@Return: String Returns the value stored for the shared object or false if the shared object is not found
+	@Name: sb.sharedObject.save
+	@Description: saves data in the sharedObject
+	@Param: string key The name of the stored data
+	@Param: string val The value to store
 	@Example:
-	var answer = sb.sharedObject.recall('myData');
-	//answer = the value the shared object was set to with sb.sharedObject.remember
+	sb.sharedObject.save('friend', 'paul');
 	*/
-	recall : function(key){
-		try{
-			var val = unescape(sb.flashGate.recall(key));
-			if(val == 'null'){return false;} else {return val;}
-		} catch(e){return false;}
+	save : function(key, val){
+		sb.flashGate.storage_engine_set(key, val);
 	},
 	
 	/**
-	@Name: sb.sharedObject.forget
-	@Description: Used to make the clients computer forget a flash shared object stored value
-	@Param: String name The name (key) of the shared object which will be forgotten
+	@Name: sb.sharedObject.clear
+	@Description: clears data for a specific key in the sharedObject
+	@Param: string key The name of the stored data
 	@Example:
-	sb.sharedObject.forget('myData');
+	sb.sharedObject.clear('friend');
 	*/
-	forget : function(key){
-		try{
-			sb.flashGate.forget(key);
-		} catch(e){return false;}
-		return true;
+	clear : function(key){
+		this.save(key, '');
+	},
+	
+	/**
+	@Name: sb.sharedObject.clearAll
+	@Description: clears all data stored in the sharedObject
+	@Example:
+	sb.sharedObject.clearAll();
+	*/
+	clearAll : function(){
+		sb.flashGate.storage_engine_clear_all();
 	}
 };
 
 /**
 @Name: sb.upload
-@Version: 2.0 05/27/08
-@Description: Used to upload files.  Flash puts all callback functions in a try catch during execution so if you have errors in your event listeners, nothing happends making it a bit tricky to debug.  Make sure to have something echoed out in your upload script or it will not return progress data, etc.  Even a space suffices.  Also, don't forgot to up you max upload size on the server side to handle larger files.
-@Param Object param An object which set the file type accepted, serveside script, passes data, sets max file size in K and max number of files.
-@Example: 
-
-//fires when the files are selected
-function onSelect(){}
-
-//fires when the files are opened
-//the file object argument has the following properties {name, size, type}
-function onOpen(file){}
-
-//fires when the user hits cancel button on the file browser
-function onCancel(){}
-
-//fires once for each file when you run sb.uploads.cancel or sb.uploads.cancelAll
-//the file object argument has the following properties {name}
-function onFileCancel(file){}
-
-//fires for each progress increment of the file uploads, includes percent, bytesTotal and bytesLoaded
-//the file object argument has the following properties {name, size, type, bytesTotal, bytesLoaded, percent}
-//the files objects argument has the following properties {total, remaining}
-function onProgress(file, files){}
-
-//fires once after each file completes to give total progress of all files
-files object argument has the following properties files {total, remaining, percent}
-function onAllProgress(files){}
-
-//fires once for each file as it completes upload
-//the file object argument has the following properties {name, size, type}
-function onComplete(file){}
-
-//fires when all files are done uploading, can be used to cleanup gui
-function onAllComplete(){}
-
-//fires when the server page echoes any return data
-//the info object argument has the following properties {name, size, type, data}
-function onReturnData(info){}
-
-//fires when there is a file security or http error
-error object argument has the following properties {name, size, type, error, errorType}
-function onError(error){}
-
-//fires when the user selects too many files
-error object argument has the following properties {chosen, limit}
-function onExceedsMaxFiles(error){}
-
-//fires when there is a file security or http error
-error object argument has the following properties {name, sizeK, exceededby, limit}
-function onExceedsMaxFileSizeK(error){}
-
- var uploader = sb.upload({
-	acceptedFileTypes: '*',
-	serverSideScript : '../data/upload.php?s='+sb.cookies.get('PHPSESSID'),
-	maxFiles : 10,
-	maxFileSizeK : 1000000,
-	eventListeners : {
-		//each property must be a string reference to a function name, unfortunately you cannot use inline anonymous functions here - could also be properties of another object as string e.g. 'app.upload.onSelect'
-	    onSelect : 'onSelect', 
-		onOpen : 'onOpen', 
-		onCancel : 'onCancel', 
-		onFileCancel : 'onFileCancel', 
-		onProgress : 'onProgress', 
-		onAllProgress : 'onAllProgress', 
-		onComplete : 'onComplete',
-		onAllComplete : 'onAllComplete',
-		onReturnData : 'onReturnData',
-		onError : 'onError',
-		onExceedsMaxFiles : 'onExceedsMaxFiles',
-		onExceedsMaxFileSizeK : 'onExceedsMaxFileSizeK'
+@Description: Instantiates a new upload
+@Example:
+var uploader = new sb.upload({
+	debug : true,
+	maxFiles : 5,
+	maxFileSizeK : 5000000,
+	url : 'http://framework.sv/post',
+	data : {
+		friend : 'tim',
+		nano : "Hello there timmy's dog"
+	},
+	onReturnData : function(file){},
+	onExceedsMaxFiles : function(){},
+	onExceedsMaxFileSizeK : function(file){},
+	onError : function(data){
+		alert(data.message);
 	}
 });
 
-
-//to cancel the uploads during progress use sb.upload.cancel(uploader); as the contructor returns the id of the current upload batch
+uploader.browse();
 */
-sb.upload = function(param){
-	sb.consol.error(sb.messages[15]);
+sb.upload = function(parameters){
+	this.id = sb.upload.uploads.length;
+	
+	for(var prop in parameters){
+		this[prop] = parameters[prop];
+	}
+	
+	sb.upload.uploads.push(this);
 };
 
 /**
-@Name: sb.getBandwidth();
-@Description: Used to get the bandwidth of the client in kpbs
-@Param Object param An object which set the file type accepted, serveside script, passes data, sets max file size in K and max number of files.
-@Example: 
-sb.getBandwidth();
+@Name: sb.upload.uploads
+@Description: Used Internally
 */
-sb.getBandwidth = function(){
-	sb.consol.error(sb.messages[15]);
-};
+sb.upload.uploads = [];
 
 /**
-@Name: sb.bandwidthTest
-@Description: Handlers that fire when sb.flashGate.getBandwidth(); if fired
+@Name: sb.upload.cancel
+@Description: Cancels any upload currently in process in any sb.upload instance
 */
-sb.bandwidthTest = {
+sb.upload.cancel = function(name){
+	name = name || '';
+	sb.flashGate.upload_cancel_all(name);
+};
+
+sb.upload.prototype = {
+	/**
+	@Name: sb.upload.prototype.id
+	@Description: Used Internally
+	*/
+	id: 0,
 	
 	/**
-	@Name: sb.bandwidthTest.onComplete
-	@Description: fires when an sb.stciker.getBandwidth test is complete and passes it one object with the following properties.
-	o.kbps Integer The number of kilobytes per second
+	@Name: sb.upload.prototype.maxFiles
+	@Description: The maximum number of files the user can select in the browser before it throws an error and fires onMaxFilesExceeded
 	*/
-	onComplete : function(o){},
+	maxFiles : 5,
 	
-	/*
-	o.kb Float The current number of kilobytes loads
-	o.time Integer The current amount of time passed in milliseconds
+	/**
+	@Name: sb.upload.prototype.maxFileSizeK
+	@Description: The maximum file size per file that the user can upload before it throws an error and fires onMaxFileSizeExceeded
 	*/
-	onProgress: function(o){
-	}
-};
-
-/**
-@Name: sb.flashGateLoaded
-@Description: Fires when flashGate loads.  To make events fire after stciker loads push them into the sb.onFlashGateLoad array
-*/
-sb.flashGateLoaded = function(){
+	maxFileSizeK : 1024,
 	
-	window.setTimeout(
-		function(){
+	/**
+	@Name: sb.upload.prototype.url
+	@Description: The URL to upload the data to	
+	*/
+	url : '',
+	
+	/**
+	@Name: sb.upload.prototype.data
+	@Description: Additional data objectw hich is url encoded into post data and sent with the files
+	*/
+	data : {},
+	
+	/**
+	@Name: sb.upload.prototype.debug
+	@Description: Determines if file upload debug info is traced to the flash debug player
+	*/
+	debug : true,
+	
+	/**
+	@Name: sb.upload.prototype.browse
+	@Description: Starts the file upload by prompting the user with a file browse box
+	*/
+	browse : function(){
+	
+		var parameters = {};
 		
-			if(sb.flashGateInit === undefined){
+		for(var prop in this){
+		
+			if(typeof this[prop] == 'function' && prop.match(/^on/)){
 				
-				sb.getBandwidth = function(){
-					sb.flashGate.getBandwidth();
-				};
+				parameters[prop] = 'sb.upload.uploads['+this.id+'].'+prop;
 				
-				sb.upload = function(params){
-					return sb.flashGate.upload(params);
-				};
-				
-				sb.upload.cancel = function(fileIndex){
-					return sb.flashGate.cancelUpload(fileIndex);
-				};
-				
-				sb.upload.cancelAll = function(){
-					return sb.flashGate.cancelAllUploads();
-				};
-				
-				sb.setFlashGateDebug = function(state){
-					
-					sb.flashGateDebug = state;
-					sb.flashGate.setDebug(state);
-				};
-				
-				sb.onFlashGateLoad.forEach(function(v){
-					if(typeof v =='function'){v();}
-				});
-				
-				sb.flashGateInit=1;
-				
-				if(sb.flashGateDebug ==1){
-					
-					sb.setFlashGateDebug(1);
-				}
+			} else if(['maxFiles', 'maxFileSizeK', 'url', 'data', 'debug'].inArray(prop)){
+				parameters[prop] = this[prop];
 			}
-	}, 5);
-	
-	
-};
-
-sb.flashGateInclude = function(){
-	
-	var surebertSwf = new sb.element({
-		id : 'surebertSwf',
-		tag : 'div',
-		styles : {
-			width : '1px',height : '1px'
 		}
 		
-	});
-	surebertSwf.appendToTop(document.body);
-	
-	if(sb.browser.agent =='ff'){
-		
-		if(window.screenX < 0){
-			var screenX =(window.screenX*-1)+20;
-			surebertSwf.mv((window.screenX*-1)+20,0,999);
-		}
-	}
-	
-	sb.swfBox = new sb.swf({
-		src : sb.base+'/surebert.swf',
-		width : 1,
-		height : 1,
-		bgColor :'#000000',
-		wmode: 'transparent'
-	});
-	
-	sb.swfBox.id = 'sb_flashGate';
-	sb.flashGate = sb.swfBox.embed(surebertSwf);
-	
-	
-};
-
-/**
-@Description: Check the surebert flashGate sound system by loading an mp3 from surebert.com
-@Param string mp3 An optional paramter that allows you to specify the mp3 to play by url
-*/
-sb.soundCheck = function(mp3){
-	var snd = new sb.sound(mp3 || 'http://surebert.com/song.mp3');
-	snd.play();
-	return snd;
-};
-
-sb.dom.onReady({
-	id : 'body',
-	onReady : function(){
-		sb.flashGateInclude();
+		sb.flashGate.upload_browse(parameters);
 	},
-	interval : 10,
-	tries : 600
-});
+	
+	/**
+	@Name: sb.upload.prototype.cancels
+	@Description: Cancels all file uploads for this instance
+	@Name: string name optionally cancels only for files that match the file name given
+	*/
+	cancel : function(name){
+		name = name || '';
+		sb.flashGate.upload_cancel(this.id, name);
+	},
+	
+	/**
+	@Name: sb.upload.prototype.onSelect
+	@Description: Fires when the user selects files from the browse box that pops up when you begin an upload
+	@Param: object files.total
+	*/
+	onSelect : function(files){},
+	
+	/**
+	@Name: sb.upload.prototype.onExceedsMaxFileSizeK
+	@Description: Fires when a file exceeds the maximum file size specified and is therefore not uplaoded
+	@Param: object file file.name, file.size, file.sizeK, file.exceededBy, file.limit, file.message
+	*/
+	onExceedsMaxFileSizeK : function(file){},
+	
+	/**
+	@Name: sb.upload.prototype.onExceedsMaxFiles
+	@Description: Fires when a user selects too many files
+	@Param: object files.chosen, files.limit, files.message
+	*/
+	onExceedsMaxFiles : function(files){},
+	
+	/**
+	@Name: sb.upload.prototype.onError
+	@Description: Fires if the upload is canceled due to an error
+	@Param: object file.name, file.size, file.sizeK, file.type, file.error
+	*/
+	onError : function(file){},
+	
+	/**
+	@Name: sb.upload.prototype.onOpen
+	@Description: Fires when the file is opened for upload on the client's computer
+	@Param: object file.name, file.size, file.sizeK, file.type
+	*/
+	onOpen : function(file){},
+	
+	/**
+	@Name: sb.upload.prototype.onReturnData
+	@Description: Fires when the data is returned from the server, , must beturn something from the serer for this to fire, can be a simple space
+	@Param: object file.name, file.size, file.sizeK, file.type, file.data
+	*/
+	onReturnData : function(file){},
+	
+	/**
+	@Name: sb.upload.prototype.onAllComplete
+	@Description: Fires when all uploads for this upload instance are complete
+	@Param: object files.total
+	*/
+	onAllComplete : function(files){},
+	
+	/**
+	@Name: sb.upload.prototype.onComplete
+	@Description: Fires when a file is done uploading, must beturn something from the serer for this to fire, can be a simple space
+	@Param: object file.name, file.size, file.sizeK, file.type
+	*/
+	onComplete : function(files){},
+	
+	/**
+	@Name: sb.upload.prototype.onAllProgress
+	@Description: Fires each time one more file is uploaded until the que is empty
+	@Param: object files.total, files.remaining
+	*/
+	onAllProgress : function(files){},
+	
+	/**
+	@Name: sb.upload.prototype.onProgress
+	@Description: Fires periodically as a file uploads alerting you of the progress in percent, deosn't seem to fire for really quick uploads on local server, must return something from the serer for this to fire, can be a simple space
+	@Param: object file.name, file.size, file.sizeK, file.type, file.bytesLoaded, file.bytesTotal, file.percent
+	*/
+	onProgress : function(files){},
+	//files.remaining
+	
+	/**
+	@Name: sb.upload.prototype.onCancelBrowse
+	@Description: Fires when the user hits cancel in the file browser
+	*/
+	onCancelBrowse : function(){},
+	
+	/**
+	@Name: sb.upload.prototype.onCancelAll
+	@Description: Fires once when the upload que is canceled using upload.cancel();
+	*/
+	onCancelAll : function(){},
+	
+	/**
+	@Name: sb.upload.prototype.onCancelFile
+	@Description: Fires when one file in the que is canceled by filename with upload.cancel(file.name); or once per file when upload.cancel()l is fired without a name specified
+	@Param: object file.name
+	*/
+	onCancelFile : function(){}
+		
+};

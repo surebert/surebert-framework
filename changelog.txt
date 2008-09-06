@@ -1,3 +1,7 @@
+Sept 3, 2008
+Completely re-wrote flashGate.js and Surebert.swf using Flex Builder and AS3.  Source avaiable at http://surebert.com/svn/flashgate.  Usage differs slight from old flashGate, please check flashgate.js for notes.
+
+
 Aug 2, 2008 10:30:39 PM	visco	
 changed sb.ajax.defaultMethod to post from get.  If you want to still have it backwards compatible set sb.ajax.defaultMethod = 'get';  
 
