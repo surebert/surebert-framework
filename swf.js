@@ -238,6 +238,14 @@ sb.swf.infuse({
 sb.swf.detect();
 
 if(sb.browser.ie6){
+	
+	//fix for bad adobe code in IE
+	var __flash__removeCallback = function(instance, name){
+		if(typeof instance != 'null'){
+			instance[name] = null;
+		}
+	};
+
 	//cleanup flash players for IE
 	window.attachEvent( "onbeforeunload", sb.swf.unload);
 }

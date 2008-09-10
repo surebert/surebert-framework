@@ -1,27 +1,58 @@
 /**
 @Name: sb.flashGate
-@Description: Used to include swf for surebert communicate with flash player for sound, multi-file/progress upload and storage
+@Description: Used to include swf for surebert communicate with flash player for sound, multi-file/progress upload and storage.  If you want to use one of these functions on page load, (e.g. play music) make sure to wrap it in the function sb_onFlashGateLoaded so that it fires once sb.flashGate has loaded.
 @Author: Paul Visco
 @Version: 4.2 02/12/06 09/03/08
+
 */
+
 if(typeof sb.swf =='undefined'){
 	sb.include('swf');
 }
 
 sb.swfBox = new sb.swf({
-	src : sb.base+"/Surebert.swf?cb="+(Math.floor(Math.random()*10000)),
-	width : 10,
-	height : 10,
+	src : sb.base+"/Surebert.swf",
+	width : 1,
+	height : 1,
 	bgColor :'#FF0000',
 	id : 'Flashgate',
-	wmode: 'transparent',
+	wmode: '',
 	flashvars : {
 		debug : true
 	}
 });
 
-document.write(sb.swfBox.toHTML());
-sb.flashGate = s$('#Flashgate');
+if(sb.browser.ie6){
+	document.write(sb.swfBox.toHTML());
+} else {
+	sb.flashGateContainer = new sb.element({
+		tag : 'x',
+		innerHTML : sb.swfBox.toHTML(),
+		style : {
+			display : 'block',
+			position : 'absolute',
+			left : '-200px',
+			top : '-200px'
+		}
+	}).appendTo('body');
+}
+
+/**
+ * @Name sb.flashGate
+ * @Description: Used Internally - The connection to the swf
+ */
+sb.flashGate = $('#Flashgate');
+
+/**
+ * @Name sb_onFlashGateLoad
+ * @Description: Used Internally
+ */
+sb_onFlashGateLoad = function(){
+	
+	if(typeof sb_onFlashGateLoaded == 'function'){
+		sb_onFlashGateLoaded();
+	}
+};
 
 /**
 @Name: sb.sound
