@@ -9,5 +9,5 @@ myElement.isDescendantOf('#parent');
 
 sb.element.prototype.isDescendantOf = function(el){
 
-	return sb.s$(el, '*').inArray(this);
+	return sb.s$(el, '*').nodes.inArray(this);
 };
