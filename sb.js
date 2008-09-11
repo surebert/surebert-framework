@@ -2868,8 +2868,9 @@
 		styles : function(params){
 			
 			for(var prop in params){
-				
-				this.setStyle(prop, params[prop]);
+				if(params.hasOwnProperty(prop)){
+					this.setStyle(prop, params[prop]);
+				}
 			}
 			
 			return this;
