@@ -3029,7 +3029,7 @@
 	
 	/**
 	@Name: sb.nodeList
-	@Description: Used to create nodeLists which are groups of sb.elements that have many of the same methods as sb.element but which act on all sb.elements in the nodeList.  These are returned by sb.s$
+	@Description: Used to create nodeLists which are groups of sb.elements that have many of the same methods as sb.element but which act on all sb.elements in the nodeList. It also has all the properties of an sb.array. These are returned by sb.s$
 	*/
 	sb.nodeList = function(nodes){
 			
@@ -3039,9 +3039,14 @@
 			if (sb.typeOf(sb.element.prototype[prop]) == 'function') {
 				this[prop] = this.addElementPrototypes(prop);
 			}
-			
 		}
 		
+		var nl= this;
+		['forEach', 'map', 'filter', 'every', 'some', 'indexOf', 'lastIndexOf', 'inArray'].forEach(function(v,k,a){
+			nl[v] = function(func){
+				return nl.nodes[v](func);
+			};
+		});
 	};
 	
 	sb.nodeList.prototype  = {
@@ -3131,6 +3136,7 @@
 			
 			return 'sb.nodeList';
 		}
+		
 	};
 	
 	/**
