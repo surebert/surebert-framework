@@ -1607,6 +1607,10 @@
 				}, 1);
 			}
 			
+			if(!url){
+				throw('A sb.ajax instance has no url set? But is trying to send the following data: '+t.data);
+			}
+			
 			t.o.open(t.method, url, t.async);
 		
 			if(t.method=='post'){
