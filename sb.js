@@ -1565,7 +1565,7 @@
 			var t=this;
 			url = url || t.url || sb.ajax.defaultURL;
 			t.url =url;
-		
+			
 			if(!t.o){
 				return false;
 			}
@@ -1606,13 +1606,16 @@
 					}
 				}, 1);
 			}
-			
+			if(!url){
+				throw('A sb.ajax instance has no url set? But is trying to send the following data: '+t.data);
+			}
+		
 			if(!url){
 				throw('A sb.ajax instance has no url set? But is trying to send the following data: '+t.data);
 			}
 			
 			t.o.open(t.method, url, t.async);
-		
+			
 			if(t.method=='post'){
 				try{
 					t.o.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
