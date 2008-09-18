@@ -30,8 +30,10 @@ myList.onItemSelect = function(){
 */
 //returns an element to its default position
 sb.element.prototype.getParent = function(){
+	
 	if(this.parentNode){
 		return sb.s$(this.parentNode);
+		
 	}
 };
 
@@ -172,7 +174,11 @@ sb.widget.sortList.prototype = {
 							
 							if(target.nodeName =='BUTTON' && target.parentNode && target.parentNode.nodeName =='LI' && target.parentNode !=this){
 								if(dir==1){
-									sb.widget.sortList.draggedItem.appendAfter(target.parentNode);
+									//PROBLEM HERE
+									try{
+										sb.widget.sortList.draggedItem.appendAfter(target.parentNode);
+									}catch(e){
+									}
 								} else {
 									sb.widget.sortList.draggedItem.appendBefore(target.parentNode);
 								}
