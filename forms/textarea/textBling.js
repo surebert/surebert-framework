@@ -122,7 +122,7 @@ sb.forms.textarea.textBling.prototype = {
 			tag : 'button',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
 			bling : bling,
-			title : title || '['+bling+'][/'+bling+']',
+			title : title || '['+bling+']text[/'+bling+']',
 			kind : 'basic'
 		});
 		//btn.setAttribute('kind', 'basic');
