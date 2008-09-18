@@ -27,7 +27,7 @@ sb.messages = {
 	11 :"You have disabled flash functionality. i.e. sound and flash shared object storage space access by setting the sbNoFlash=1 before calling surebert.",
 	12 :"Surebert has tried to play this track 5 times with no sucess, perhaps you have flash functionality disabled or the sound does not exist.",
 	13: " is not a well formatted javascript file and cannot be loaded by sb.javascript",
-	14: ' cannot be used by s$, perhaps it does not exist or is not in the DOM yet?',
+
 	15 : 'The surebert.swf has not loaded yet and cannot receive calls to its internal functions, e.g. upload, sound, setDebug.',
 	16 : "sb.sound has tried to play the following file 10 times but surebert.flashGate has not loaded.  Try pushing the play function into the sb.onFlashGateLoad array \nSOUND: ",
 	17 : "The following image is not reporting height or width properly, perhaps because it has never been in view and so will not work with sb.ie6.pngFix, try running pngFix after it is in view\n",
