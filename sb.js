@@ -224,7 +224,7 @@
 		*/
 		load : function(url){
 			var evaled = 0;
-	
+		
 			(function(){
 				var load = new sb.ajax({
 					url : url,
@@ -320,7 +320,7 @@
 				sb.objects.infuse(sb.element.prototype, node);
 				
 			} else if (sb.typeOf(node) != 'sb.element'){
-				sb.consol.error('"'+el+'" of object type ' +sb.typeOf(node)+sb.messages[14]);
+				throw('('+el+') of object type ' +sb.typeOf(node)+' cannot be used by s$');
 			}
 			
 			return node;
