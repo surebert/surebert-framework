@@ -384,23 +384,7 @@ sb.consol = {
 		this.resizer.appendTo(this.box);
         return;
 		
-	},
-	
-	/**
-	@Name: sb.consol.swfDebug
-	@Description:  Used Internally to accept messages from surebert.swf for debugging
-	@Param: String message The message to write to the consol in swfDebug style
-	@Example:
-	sb.consol.swfDebug('file paul.jpg uploaded');
-	*/
-	flashGateDebug : function(message){
-	
-		if(sb.flashGateDebug ==1){
-			sb.consol.write(message, 'orange', '#660066', 1);
-		}
-		
 	}
-	
 };
 
 /**
