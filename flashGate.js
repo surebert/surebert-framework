@@ -400,7 +400,7 @@ sb.upload.prototype = {
 				
 				parameters[prop] = 'sb.upload.uploads['+this.id+'].'+prop;
 				
-			} else if(['maxFiles', 'maxFileSizeK', 'url', 'data', 'debug'].inArray(prop)){
+			} else if(['maxFiles', 'maxFileSizeK', 'url', 'data', 'debug', 'acceptedFileTypes'].inArray(prop)){
 				parameters[prop] = this[prop];
 			}
 		}
