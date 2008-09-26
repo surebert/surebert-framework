@@ -1,6 +1,6 @@
 09/11/2008
 Added array prototypes forEach, filter, map, some, every, indexOf, lastIndexOf, inArray back to s$ node Lists
-
+x
 Sept 3, 2008
 Completely re-wrote flashGate.js and Surebert.swf using Flex Builder and AS3.  Source avaiable at http://surebert.com/svn/flashgate.  Usage differs slight from old flashGate, please check flashgate.js for notes.
 
