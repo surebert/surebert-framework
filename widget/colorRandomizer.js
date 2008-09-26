@@ -38,7 +38,7 @@ sb.widget.colorRandomizer.prototype = {
 	@Example:
 	window.clearInterval(yourInstance.cycler);
 	 */
-	cycler : {},
+	cycler : 0,
 	
 	swatches : [],
 	/**
@@ -80,10 +80,14 @@ sb.widget.colorRandomizer.prototype = {
 	},
 	
 	/**
-	@Name: sb.widget.colorRandomizer.prototype.cycle
-	@Description: Used Internally - cycles throught the colors
+	@Name: sb.widget.colorRandomizer.prototype.start
+	@Description: Starts the cycling through the colors
 	 */
-	cycle : function(){
+	start : function(){
+		if (this.cycler) {
+			return true;
+		}
+		
 		var swatches = this.swatches;
 		this.cycler = window.setInterval(function(){
 		
@@ -97,12 +101,16 @@ sb.widget.colorRandomizer.prototype = {
 		
 	},
 	
+	stop : function(){
+		window.clearInterval(this.cycler);
+		this.cycler = 0;
+	},
+	
 	/**
 	@Name: sb.widget.colorRandomizer.prototype.addEvents
 	@Description: Used Internally - initializes the widget
 	 */
 	init : function(){
 		this.createDom();
-		this.cycle();
 	}
 };
