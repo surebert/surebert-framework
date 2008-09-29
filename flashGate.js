@@ -369,6 +369,12 @@ sb.upload.prototype = {
 	maxFileSizeK : 1024,
 	
 	/**
+	@Name: sb.upload.prototype.acceptedFileTypes
+	@Description: The accepted file types/names as a string e.g. '*.jpg;*.png;'
+	*/
+	acceptedFileTypes : '*',
+	
+	/**
 	@Name: sb.upload.prototype.url
 	@Description: The URL to upload the data to	
 	*/
