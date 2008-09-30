@@ -47,7 +47,6 @@ sb.forms.textarea.textBling.clearStorage = function(){
 	sb.sharedObject.clear(this.id);
 };
 
-
 sb.forms.textarea.textBling.prototype = {
 	
 	renderStyles :1,
