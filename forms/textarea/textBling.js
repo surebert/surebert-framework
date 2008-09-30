@@ -56,8 +56,12 @@ sb.forms.textarea.textBling.prototype = {
 	buttonColor :1,
 	fetchBackup :1,
 	
+	checkStorage : function(){
+		return sb.sharedObject.recall(this.editBox.id);
+	},
+	
 	clearStorage : function(){
-		sb.sharedObject.clear(this.editBox.id);
+		sb.sharedObject.forget(this.editBox.id);
 	},
 	
 	addEvents : function(){
@@ -118,7 +122,7 @@ sb.forms.textarea.textBling.prototype = {
 			tag : 'button',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
 			bling : bling,
-			title : title || '['+bling+']text[/'+bling+']',
+			title : title,
 			kind : 'basic'
 		});
 		//btn.setAttribute('kind', 'basic');
@@ -141,33 +145,21 @@ sb.forms.textarea.textBling.prototype = {
 		btn.appendTo(this.editBar);
 	},
 	
-	//tries 5 times to add restore button if is able to read form flash storage
 	addRestoreButton : function(){
-		var t=this;
-		var x=0;
-		try{
-			return sb.sharedObject.load(this.editBox.id);
-		} catch(e){
-			if(x < 5){
-				x++;
-				window.setTimeout(function(){
-					
-					var btn = new sb.element({
-						tag : 'button',
-						innerHTML:'restore backup',
-						styles : {
-							backgroundColor:'red',
-							color:'white'
-						},
-						kind:'restore'
-					});
-					
-					btn.appendTo(t.editBar);
-					
-				}, 100);
-			}
+		var str = this.checkStorage();
+		if(str){
+			var btn = new sb.element({
+				tag : 'button',
+				innerHTML:'restore backup',
+				styles : {
+					backgroundColor:'red',
+					color:'white'
+				},
+				kind:'restore'
+			});
+			
+			btn.appendTo(this.editBar);
 		}
-	
 	},
 	
 	basic : function(){
