@@ -34,18 +34,19 @@ sb.forms.textarea.textBling = function(editBar, editBox){
 };
 
 sb.forms.textarea.textBling.save = function(){
-	sb.sharedObject.remember(this.id, this.value);
+	sb.sharedObject.save(this.id, this.value);
 };
 
 sb.forms.textarea.textBling.restore = function(){
-	var str = sb.sharedObject.recall(this.id);
+	var str = sb.sharedObject.load(this.id);
 	if(str){this.value = str;}
 	return this.value;
 };
 
 sb.forms.textarea.textBling.clearStorage = function(){
-	sb.sharedObject.forget(this.id);
+	sb.sharedObject.clear(this.id);
 };
+
 
 sb.forms.textarea.textBling.prototype = {
 	
@@ -56,12 +57,8 @@ sb.forms.textarea.textBling.prototype = {
 	buttonColor :1,
 	fetchBackup :1,
 	
-	checkStorage : function(){
-		return sb.sharedObject.recall(this.editBox.id);
-	},
-	
 	clearStorage : function(){
-		sb.sharedObject.forget(this.editBox.id);
+		sb.sharedObject.clear(this.editBox.id);
 	},
 	
 	addEvents : function(){
@@ -122,7 +119,7 @@ sb.forms.textarea.textBling.prototype = {
 			tag : 'button',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
 			bling : bling,
-			title : title,
+			title : title || '['+bling+']text[/'+bling+']',
 			kind : 'basic'
 		});
 		//btn.setAttribute('kind', 'basic');
@@ -145,21 +142,33 @@ sb.forms.textarea.textBling.prototype = {
 		btn.appendTo(this.editBar);
 	},
 	
+	//tries 5 times to add restore button if is able to read form flash storage
 	addRestoreButton : function(){
-		var str = this.checkStorage();
-		if(str){
-			var btn = new sb.element({
-				tag : 'button',
-				innerHTML:'restore backup',
-				styles : {
-					backgroundColor:'red',
-					color:'white'
-				},
-				kind:'restore'
-			});
-			
-			btn.appendTo(this.editBar);
+		var t=this;
+		var x=0;
+		try{
+			return sb.sharedObject.load(this.editBox.id);
+		} catch(e){
+			if(x < 5){
+				x++;
+				window.setTimeout(function(){
+					
+					var btn = new sb.element({
+						tag : 'button',
+						innerHTML:'restore backup',
+						styles : {
+							backgroundColor:'red',
+							color:'white'
+						},
+						kind:'restore'
+					});
+					
+					btn.appendTo(t.editBar);
+					
+				}, 100);
+			}
 		}
+	
 	},
 	
 	basic : function(){
