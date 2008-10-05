@@ -57,7 +57,7 @@ sb.forms.textarea.textBling.prototype = {
 	fetchBackup :1,
 	
 	checkStorage : function(){
-		return sb.sharedObject.recall(this.editBox.id);
+		return sb.sharedObject.load(this.editBox.id);
 	},
 	
 	clearStorage : function(){
