@@ -3052,9 +3052,17 @@
 				return nl.nodes[v](func);
 			};
 		});
+		
+		this.length = this.nodes.length;
 	};
 	
 	sb.nodeList.prototype  = {
+		/**
+		@Name: sb.nodeList.prototype.length
+		@Description: the number of nodes in the this.nodes array - it is updated by add and drop
+		@Example: 
+		*/
+		length : 0,
 		
 		/**
 		@Name: sb.nodeList.prototype.add
@@ -3076,6 +3084,7 @@
 				this.nodes.push(el);
 			}	
 			
+			this.length = this.nodes.length;
 			return this;
 		},
 		
@@ -3103,6 +3112,8 @@
 				}
 				
 			});
+			this.length = this.nodes.length;
+			
 			return this;
 		},
 		
