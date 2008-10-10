@@ -79,7 +79,7 @@ sb.upload_button = function(parameters){
 	
 	this.load_params = function(){
 		
-		self.flash().create_upload(self.id);
+		this.swf.getInterface().create_upload(self.id);
 		
 		/*
 		if(self.disabled){
@@ -105,20 +105,6 @@ sb.upload_button.prototype = {
 	
 	/**
 	@Name: sb.upload_button.prototype.setStyles
-	@Description: Used Internally - gets the reference to the flash movie
-	*/
-	flash : function(){
-		var movieName = 'upload'+this.id;
-		if (navigator.appName.indexOf("Microsoft") != -1) {
-            return window[movieName];
-        } else {
-        	return document.getElementById(movieName);
-        }
-	
-	},
-	
-	/**
-	@Name: sb.upload_button.prototype.setStyles
 	@Description: Sets the MXML CSS styles for the button
 	@Param: styles Object Hash of css properties
 	@Example: 
@@ -127,7 +113,7 @@ sb.upload_button.prototype = {
 		);
 	*/
 	setStyles : function(styles){
-		this.flash().set_button_styles(styles);
+		this.swf.getInterface().set_button_styles(styles);
 	},
 
 	/**
@@ -137,7 +123,7 @@ sb.upload_button.prototype = {
 	*/
 	cancel : function(name){
 		name = name || '';
-		this.flash().upload_cancel(name);
+		this.swf.getInterface().upload_cancel(name);
 	},
 	
 	/**
