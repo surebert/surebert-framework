@@ -1,7 +1,5 @@
-if(typeof sb.swf =='undefined'){
-	sb.include('swf');
-}
-/*
+
+/**
 @Name: sb.upload
 @Description: Instantiates a new upload
 @Example:
@@ -19,135 +17,37 @@ var uploader = new sb.upload({
 	onExceedsMaxFileSizeK : function(file){},
 	onError : function(data){
 		alert(data.message);
-	},
-	styles : {
-		backgroundAlpha : '0.5',
-		backgroundColor : '#000000',
-		borderColor: '#000000',
-		color: '#FF000',
-		fillAlphas: ['1.0', '1.0'],
-		fillColors: ['#FF0000', '#FFBBBB', '#FF7777', '#FF8899'],
-		themeColor: '#FF9C00',
-		textRollOverColor: '#A47505',
-		textSelectedColor: '#BC9C07',
-		disabledColor: '#B1B3B3',
-		cornerRadius : '120',
-		letterSpacing : '5',
-		width : 300,
-		height : 400,
-		fontSize : 20,
-		src : '/media/bg.png'
-	},
-	embedIn : '#chicken',
+	}
 });
 
+uploader.browse();
 */
-
 sb.upload = function(parameters){
-	
 	this.id = sb.upload.uploads.length;
 	
 	for(var prop in parameters){
 		this[prop] = parameters[prop];
 	}
-
+	
 	sb.upload.uploads.push(this);
-
-	//create swf and associate call to thei sb.upload for event handling
-	
-	this.swf = new sb.swf({
-		src : "surebert_uploader.swf?debug=1&id="+this.id+"&i="+Math.random(),
-		width : this.styles.width || 64,
-		height : this.styles.height || 22,
-		id : 'upload'+this.id,
-		bgcolor : '#000000',
-		wmode: 'transparent',
-		flashvars : {
-			debug : this.debug || true,
-			innerHTML : this.innerHTML || 'upload'
-		}
-	});
-	this.swf.embed(parameters.embedIn || new sb.element({tag : 'span'}).appendTo('body'));
-	
-	var self = this;
-	
-	this.load_params = function(){
-		
-		self.flash().create_upload(self.id);
-		if(self.disabled){
-			self.disableButton();
-		}
-		
-		if(self.styles){
-			
-			self.setStyles(self.styles);
-		}
-	};
 };
 
-	
 /**
 @Name: sb.upload.uploads
 @Description: Used Internally
 */
 sb.upload.uploads = [];
 
+/**
+@Name: sb.upload.cancel
+@Description: Cancels any upload currently in process in any sb.upload instance
+*/
+sb.upload.cancel = function(name){
+	name = name || '';
+	sb.flashGate.upload_cancel_all(name);
+};
+
 sb.upload.prototype = {
-	styles : {},
-	
-	/**
-	@Name: sb.upload.prototype.setStyles
-	@Description: Used Internally - gets the reference to the flash movie
-	*/
-	flash : function(){
-		var movieName = 'upload'+this.id;
-		if (navigator.appName.indexOf("Microsoft") != -1) {
-            return window[movieName];
-        } else {
-        	return document.getElementById(movieName);
-        }
-	
-	},
-	
-	/**
-	@Name: sb.upload.prototype.setStyles
-	@Description: Sets the MXML CSS styles for the button
-	@Param: styles Object Hash of css properties
-	@Example: 
-		this.setStyles(
-			letterSpacing : '20'
-		);
-	*/
-	setStyles : function(styles){
-		this.flash().set_button_styles(styles);
-	},
-
-	/**
-	@Name: sb.upload.prototype.enableButton
-	@Description: Sets the button state to enabled
-	*/
-	enableButton : function(){
-		this.flash().enable_button();
-	},
-
-	/**
-	@Name: sb.upload.prototype.disableButton
-	@Description: Sets the button state to disabled
-	*/
-	disableButton : function(){
-		this.flash().disable_button();
-	},
-
-	/**
-	@Name: sb.upload.prototype.cancels
-	@Description: Cancels all file uploads for this instance
-	@Name: string name optionally cancels only for files that match the file name given
-	*/
-	cancel : function(name){
-		name = name || '';
-		this.flash().upload_cancel(name);
-	},
-	
 	/**
 	@Name: sb.upload.prototype.id
 	@Description: Used Internally
@@ -165,18 +65,12 @@ sb.upload.prototype = {
 	@Description: The maximum file size per file that the user can upload before it throws an error and fires onMaxFileSizeExceeded
 	*/
 	maxFileSizeK : 1024,
-
+	
 	/**
 	@Name: sb.upload.prototype.acceptedFileTypes
-	@Description: The file types to accept for upload
+	@Description: The accepted file types/names as a string e.g. '*.jpg;*.png;'
 	*/
-	acceptedFileTypes : '*.*',
-
-	/**
-	@Name: sb.upload.prototype.method
-	@Description: The default method to send data
-	*/
-	method : 'post',
+	acceptedFileTypes : '*',
 	
 	/**
 	@Name: sb.upload.prototype.url
@@ -195,6 +89,38 @@ sb.upload.prototype = {
 	@Description: Determines if file upload debug info is traced to the flash debug player
 	*/
 	debug : true,
+	
+	/**
+	@Name: sb.upload.prototype.browse
+	@Description: Starts the file upload by prompting the user with a file browse box
+	*/
+	browse : function(){
+	
+		var parameters = {};
+		
+		for(var prop in this){
+		
+			if(typeof this[prop] == 'function' && prop.match(/^on/)){
+				
+				parameters[prop] = 'sb.upload.uploads['+this.id+'].'+prop;
+				
+			} else if(['maxFiles', 'maxFileSizeK', 'url', 'data', 'debug', 'acceptedFileTypes'].inArray(prop)){
+				parameters[prop] = this[prop];
+			}
+		}
+		
+		sb.flashGate.upload_browse(parameters);
+	},
+	
+	/**
+	@Name: sb.upload.prototype.cancels
+	@Description: Cancels all file uploads for this instance
+	@Name: string name optionally cancels only for files that match the file name given
+	*/
+	cancel : function(name){
+		name = name || '';
+		sb.flashGate.upload_cancel(this.id, name);
+	},
 	
 	/**
 	@Name: sb.upload.prototype.onSelect
