@@ -35,11 +35,12 @@ var uploader = new sb.upload({
 		letterSpacing : '5',
 		width : 300,
 		height : 400,
-		fontSize : 20
-	}
+		fontSize : 20,
+		src : '/media/bg.png'
+	},
+	embedIn : '#chicken',
 });
 
-uploader.browse();
 */
 
 sb.upload = function(parameters){
@@ -55,7 +56,7 @@ sb.upload = function(parameters){
 	//create swf and associate call to thei sb.upload for event handling
 	
 	this.swf = new sb.swf({
-		src : "${swf}.swf?debug=1&id="+this.id+"&i="+Math.random(),
+		src : "surebert_uploader.swf?debug=1&id="+this.id+"&i="+Math.random(),
 		width : this.styles.width || 64,
 		height : this.styles.height || 22,
 		id : 'upload'+this.id,
@@ -78,6 +79,7 @@ sb.upload = function(parameters){
 		}
 		
 		if(self.styles){
+			
 			self.setStyles(self.styles);
 		}
 	};
@@ -90,17 +92,9 @@ sb.upload = function(parameters){
 */
 sb.upload.uploads = [];
 
-/**
-@Name: sb.upload.cancel
-@Description: Cancels any upload currently in process in any sb.upload instance
-*/
-sb.upload.cancel = function(name){
-	name = name || '';
-	sb.flashGate.upload_cancel_all(name);
-};
-
 sb.upload.prototype = {
-
+	styles : {},
+	
 	/**
 	@Name: sb.upload.prototype.setStyles
 	@Description: Used Internally - gets the reference to the flash movie
