@@ -83,7 +83,7 @@ sb.swf.prototype = {
 		
 		if(sb.swf.format=='embed'){
 			
-			html = '<embed type="application/x-shockwave-flash" src="'+this.src+'"  id="'+this.id+'" wmode="'+this.wmode+'" allowScriptAccess="always" allowFullScreen="'+this.allowFullScreen+'" bgcolor="'+this.bgColor+'" ';
+			html = '<embed type="application/x-shockwave-flash" src="'+this.src+'"  id="'+this.id+'" name="'+this.id+'" wmode="'+this.wmode+'" allowScriptAccess="always" allowFullScreen="'+this.allowFullScreen+'" bgcolor="'+this.bgColor+'" ';
 				
 			if(typeof this.flashvars =='object'){
 				
@@ -94,11 +94,13 @@ sb.swf.prototype = {
 			html +=' width="'+this.width+'" height="'+this.height+'"  />';
 		
 		} else if(sb.swf.format=='object'){
-				html = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="'+this.width+'" height="'+this.height+'" id="'+this.id+'"><param name="movie" value="'+this.src+'" /><param name="bgcolor" value="'+this.bgColor+'" /><param name="wmode" value="'+this.wmode+'" /><param name="allowFullScreen" value="'+this.allowFullScreen+'" /><param name="allowScriptAccess" value="always" />';
+				
+				html = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="'+this.width+'" height="'+this.height+'" id="'+this.id+'" ><param name="movie" value="'+this.src+'" /><param name="bgcolor" value="'+this.bgColor+'" /><param name="wmode" value="'+this.wmode+'" /><param name="allowFullScreen" value="'+this.allowFullScreen+'" /><param name="allowScriptAccess" value="always" />';
 				if(typeof this.flashvars =='object'){
 					html +='<param name="FlashVars" value="'+sb.objects.serialize(this.flashvars)+'">';
 				}
 				html +='</object>';
+				
 		}
 		return html;
 		
@@ -113,9 +115,15 @@ sb.swf.prototype = {
 	mySwf.embed('#someElement');
 	*/
 	embed : function(el){
-		sb.$(el).innerHTML =this.toHTML();
-		return sb.$('#'+this.id);
+		el = sb.s$(el);
+		if(sb.browser.agent == 'ie'){
+			//el.outerHTML = this.toHTML();
+			el.innerHTML = this.toHTML();
+		} else {
+			el.innerHTML = this.toHTML();
+		}
 		
+		return el;
 	}
 };
 
