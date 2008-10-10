@@ -62,6 +62,16 @@ var mySwf = new sb.swf({
 */
 sb.swf.prototype = {
 	
+		
+	getInterface : function(){
+		var movieName = this.id;
+		if (navigator.appName.indexOf("Microsoft") != -1) {
+            return window[movieName];
+        } else {
+        	return document.getElementById(movieName);
+        }
+	},
+	
 	/**
 	@Name: sb.swf.prototype.toHTML
 	@Description: Converts the sb.swf into the appropriate swf code for the browser being used by the client
