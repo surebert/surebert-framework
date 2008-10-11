@@ -36,8 +36,12 @@ sb.flashGate.embed(sb.flashGateContainer);
  */
 sb_onFlashGateLoad = function(){
 
-	if(typeof sb_onFlashGateLoaded == 'function'){
-		sb_onFlashGateLoaded();
+	if(sb_onFlashGateLoaded && sb_onFlashGateLoaded.forEach ){
+		sb_onFlashGateLoaded.forEach(function(v){
+			if(typeof v == 'function'){
+				v();
+			}
+		});
 	}
 	
 };
