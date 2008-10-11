@@ -214,5 +214,7 @@ sb.sound.prototype = {
 	//song.sizeK, song.bytesLoaded, song.bytesTotal
 	onLoad : function(){},
 	//message
-	onError : function(){}
+	onError : function(){},
+	//song.position, song.length, song.percent
+	onProgress : function(data){}
 };
