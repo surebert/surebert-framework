@@ -76,6 +76,8 @@ sb.sound.muteAll = function(){
 @Description: The methods of sb.sound instances
 */
 sb.sound.prototype = {
+
+	duration : -1,
 	/**
 	@Name: sb.sound.prototype.url
 	@Description: String The url of the mp3 file
@@ -121,6 +123,27 @@ sb.sound.prototype = {
 	*/
 	getPosition : function(){
 		return sb.flashGate.getInterface().sound_get_position(this.id);
+	},
+	
+	/**
+	@Name: sb.sound.prototype.setPositionPercent
+	@Description: Moves the playhead to a certain position in percent of total
+	@Example:
+	mySound.setPositionPercent(40);
+	*/
+	setPositionPercent : function(percent){
+		return sb.flashGate.getInterface().sound_set_position_percent(this.id, percent);
+	},
+
+	/**
+	@Name: sb.sound.prototype.getPositionPercent
+	@Description: Gets the current position in percent of total
+	@Return: Number return the current position in percent of total
+	@Example:
+	mySound.getPositionPercent();
+	*/
+	getPositionPercent : function(){
+		return sb.flashGate.getInterface().sound_get_position_percent(this.id);
 	},
 	
 	/**
