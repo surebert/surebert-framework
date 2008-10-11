@@ -22,7 +22,6 @@ var uploader = new sb.upload_button({
 	onError : function(data){
 		alert(data.message);
 	},
-	embedIn : '#chicken',
 	styles : {
 		backgroundColor : '0x00FF00',
 		backgroundColorRoll : '0xFFFF00',
@@ -37,7 +36,7 @@ var uploader = new sb.upload_button({
 		font : 'Tahoma'
 	}
 });
-
+uploader.embed('#chicken');
 */
 
 sb.upload_button = function(parameters){
@@ -65,7 +64,6 @@ sb.upload_button = function(parameters){
 		}
 	});
 
-	
 	//this.swf.embed(parameters.embedIn || new sb.element({tag : 'span'}).appendTo('body'));
 	
 	var self = this;
