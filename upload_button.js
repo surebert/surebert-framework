@@ -61,7 +61,9 @@ sb.upload_button = function(parameters){
 		flashvars : {
 			debug : (this.debug != null) ? this.debug : true,
 			innerHTML : this.innerHTML || 'upload'
-		}
+		},
+		version : 9,
+		alt : '<h1>You need at least flashplayer 9+ to upload</h1>'
 	});
 
 	this.load_params = function(){
