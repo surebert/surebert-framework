@@ -64,12 +64,9 @@ sb.upload_button = function(parameters){
 		}
 	});
 
-	var self = this;
-
-	
 	this.load_params = function(){
-		
-		this.swf.getInterface().create_upload(self.id);
+	
+		this.swf.getInterface().create_upload(this.id);
 		
 	};
 };
