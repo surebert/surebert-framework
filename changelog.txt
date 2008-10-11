@@ -1,3 +1,161 @@
+r65 | visco | 2008-10-11 02:51:20 EDT
+Changed paths:
+	M /trunk/flashGate.js
+
+updated sb_OnFlashGateLoaded to be an array of functions instead of just a function
+----------------------------------------------------------------------------
+r64 | visco | 2008-10-11 02:50:05 EDT
+Changed paths:
+	M /trunk/upload_button.js
+
+set flash player 9 requirement
+----------------------------------------------------------------------------
+r63 | visco | 2008-10-11 02:01:18 EDT
+Changed paths:
+	M /trunk/UploadButton.swf
+
+updated upload button to return from cancel state after upload
+----------------------------------------------------------------------------
+r62 | visco | 2008-10-11 01:21:41 EDT
+Changed paths:
+	M /trunk/sound.js
+
+added onProgress method comments to sound.js
+----------------------------------------------------------------------------
+r61 | visco | 2008-10-11 01:10:51 EDT
+Changed paths:
+	M /trunk/FlashGate.swf
+
+updated flashGate to use new SoundEngine
+----------------------------------------------------------------------------
+r60 | visco | 2008-10-11 01:09:59 EDT
+Changed paths:
+	M /trunk/sound.js
+
+added setPositionPercent and getPositionPercent as well as duration property that is filled onLoad
+----------------------------------------------------------------------------
+r59 | visco | 2008-10-10 20:34:41 EDT
+Changed paths:
+	M /trunk/upload_button.js
+
+updated constructor for sb.upload_button to remove unneccesary self reference
+----------------------------------------------------------------------------
+r58 | visco | 2008-10-10 20:31:33 EDT
+Changed paths:
+	M /trunk/upload_button.js
+
+removed references to embedIn in favor of .embed()
+----------------------------------------------------------------------------
+r57 | visco | 2008-10-10 20:25:31 EDT
+Changed paths:
+	M /trunk/upload_button.js
+
+removed embedIn from example
+----------------------------------------------------------------------------
+r56 | visco | 2008-10-10 19:46:56 EDT
+Changed paths:
+	M /trunk/upload_button.js
+
+switched sb.upload_button to use sb.swf.getInterface
+----------------------------------------------------------------------------
+r55 | visco | 2008-10-10 19:44:50 EDT
+Changed paths:
+	A /trunk/sound.js
+	A /trunk/sharedObject.js
+	M /trunk/flashGate.js
+	M /trunk/swf.js
+	A /trunk/FlashGate.swf
+
+Moved sb.sound and sb.sharedObject code into FlashGate.sw, removed sounds and sharedObject code from flashGate.js and moved the code into separate sound.js and sharedObject.js that rely on flashGate.js.  Also updated flashgate.js to use new sb.swf getInterface() method to get reference for calling ExternalInterfaces
+----------------------------------------------------------------------------
+r54 | visco | 2008-10-10 18:32:34 EDT
+Changed paths:
+	M /trunk/upload.js
+	M /trunk/flashGate.js
+
+Moved old sb.upload out of flashGate.js and into sb.upload until I completely phase it out in favor of sb.upload_button and cut the code out of flashGate
+----------------------------------------------------------------------------
+r53 | visco | 2008-10-10 18:23:52 EDT
+Changed paths:
+	M /trunk/swf.js
+
+updated upload_button.js and UploadButton.swf
+----------------------------------------------------------------------------
+r52 | visco | 2008-10-10 18:20:41 EDT
+Changed paths:
+	M /trunk/upload_button.js
+
+updated path to UploadButton.swf
+----------------------------------------------------------------------------
+r51 | visco | 2008-10-10 18:14:52 EDT
+Changed paths:
+	A /trunk/UploadButton.swf
+	A /trunk/upload_button.js
+
+added upload_button.swf, UploadButton.swf for flash player 10 multifile upload support
+----------------------------------------------------------------------------
+r50 | visco | 2008-10-10 03:45:27 EDT
+Changed paths:
+	M /trunk/upload.js
+
+updating latest upload.js to make upload.swf
+----------------------------------------------------------------------------
+r49 | visco | 2008-10-10 00:35:51 EDT
+Changed paths:
+	A /trunk/upload.js
+
+adding prelimary sb.upload just to have it somewhere
+----------------------------------------------------------------------------
+r48 | visco | 2008-10-07 14:58:07 EDT
+Changed paths:
+	M /trunk/_mini.js
+
+updated _mini to reflect the latest sb.js
+----------------------------------------------------------------------------
+r47 | visco | 2008-10-07 14:57:23 EDT
+Changed paths:
+	M /trunk/sb.js
+
+added length property to sb.nodeList.  It is filled on creating and then using the drop or add methods it is updated.  It is essentially referinng to the sb.nodeList's this.nodes.length - I may decide to add a getter instead or you can just refer to the .nodes.length property
+----------------------------------------------------------------------------
+r46 | visco | 2008-10-05 15:49:24 EDT
+Changed paths:
+	M /trunk/forms/textarea/textBling.js
+
+removed last reference to SharedObject.recall()
+----------------------------------------------------------------------------
+r45 | visco | 2008-09-30 12:35:38 EDT
+Changed paths:
+	M /trunk/forms/textarea/textBling.js
+
+added hover title attribute to simple bling tags
+----------------------------------------------------------------------------
+r44 | visco | 2008-09-30 12:19:07 EDT
+Changed paths:
+	M /trunk/forms/textarea/textBling.js
+
+updated sharedObject calls to use new load, save, clear instead of recall, remember, and forget
+----------------------------------------------------------------------------
+r43 | visco | 2008-09-30 12:05:44 EDT
+Changed paths:
+	M /trunk/forms/textarea/textBling.js
+
+removed some excess white space
+
+----------------------------------------------------------------------------
+r42 | visco | 2008-09-30 12:03:25 EDT
+Changed paths:
+	M /trunk/strings/substrCount.js
+
+updated sb.strings.substrCount which no longer uses regex.  You can still grab the old version from one of the old tags but really could just use regex if wanted
+----------------------------------------------------------------------------
+r41 | visco | 2008-09-29 20:06:46 EDT
+Changed paths:
+	M /trunk/forms/textarea/textBling.js
+
+Updated textBling to try and read data from flash storage 5 times on a timeout
+----------------------------------------------------------------------------
+
 09/11/2008
 Added array prototypes forEach, filter, map, some, every, indexOf, lastIndexOf, inArray back to s$ node Lists
 x
