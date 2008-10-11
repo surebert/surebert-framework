@@ -64,30 +64,13 @@ sb.upload_button = function(parameters){
 		}
 	});
 
-	//this.swf.embed(parameters.embedIn || new sb.element({tag : 'span'}).appendTo('body'));
-	
 	var self = this;
 
-	this.toHTML = function(){
-		return self.swf.toHTML();
-	};
-	this.embed = function(id){
-		self.swf.embed(id);
-	};
 	
 	this.load_params = function(){
 		
 		this.swf.getInterface().create_upload(self.id);
 		
-		/*
-		if(self.disabled){
-			self.disableButton();
-		}
-		
-		if(self.styles){
-			
-			self.setStyles(self.styles);
-		}*/
 	};
 };
 
@@ -100,6 +83,20 @@ sb.upload_button.uploads = [];
 
 sb.upload_button.prototype = {
 	styles : {},
+	
+	/**
+	 * Returns the HTML of the swf for testing
+	 */
+	toHTML : function(){
+		return this.swf.toHTML();
+	},
+	
+	/**
+	 * Embeds the button into another element
+	 */
+	embed : function(el){
+		this.swf.embed(el);
+	},
 	
 	/**
 	@Name: sb.upload_button.prototype.setStyles
