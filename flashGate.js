@@ -21,14 +21,18 @@ sb.flashGate = new sb.swf({
 
 sb.flashGateContainer = new sb.element({
 	tag : 'x',
-	style : {
+	styles : {
 		display : 'block',
 		position : 'absolute',
 		left : '-200px',
 		top : '-200px'
 	}
-}).appendToTop('body');
-sb.flashGate.embed(sb.flashGateContainer);
+});
+
+sb.onbodyload.push(function(){
+	sb.flashGateContainer.appendToTop('body');
+	sb.flashGate.embed(sb.flashGateContainer);
+});
 
 /**
  * @Name sb_onFlashGateLoad
