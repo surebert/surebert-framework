@@ -2,10 +2,10 @@ if(typeof sb.swf =='undefined'){
 	sb.include('swf');
 }
 /*
-@Name: sb.upload_button
+@Name: sb.uploadButton
 @Description: Instantiates a new upload
 @Example:
-var uploader = new sb.upload_button({
+var uploader = new sb.uploadButton({
 	debug : true,
 	maxFiles : 5,
 	maxFileSizeK : 5000000,
@@ -16,6 +16,9 @@ var uploader = new sb.upload_button({
 	},
 	onReturnData : function(file){
 		sb.objects.alert(file);
+	},
+	onSelect : function(names){
+		
 	},
 	onExceedsMaxFiles : function(){},
 	onExceedsMaxFileSizeK : function(file){},
@@ -39,17 +42,17 @@ var uploader = new sb.upload_button({
 uploader.embed('#chicken');
 */
 
-sb.upload_button = function(parameters){
+sb.uploadButton = function(parameters){
 	
-	this.id = sb.upload_button.uploads.length;
+	this.id = sb.uploadButton.uploads.length;
 	
 	for(var prop in parameters){
 		this[prop] = parameters[prop];
 	}
 	
-	sb.upload_button.uploads.push(this);
+	sb.uploadButton.uploads.push(this);
 
-	//create swf and associate call to thei sb.upload_button for event handling
+	//create swf and associate call to thei sb.uploadButton for event handling
 	
 	this.swf = new sb.swf({
 		src : sb.base+"/UploadButton.swf?id="+this.id,
@@ -75,12 +78,12 @@ sb.upload_button = function(parameters){
 
 	
 /**
-@Name: sb.upload_button.uploads
+@Name: sb.uploadButton.uploads
 @Description: Used Internally
 */
-sb.upload_button.uploads = [];
+sb.uploadButton.uploads = [];
 
-sb.upload_button.prototype = {
+sb.uploadButton.prototype = {
 	styles : {},
 	
 	/**
@@ -98,7 +101,7 @@ sb.upload_button.prototype = {
 	},
 	
 	/**
-	@Name: sb.upload_button.prototype.setStyles
+	@Name: sb.uploadButton.prototype.setStyles
 	@Description: Sets the MXML CSS styles for the button
 	@Param: styles Object Hash of css properties
 	@Example: 
@@ -111,7 +114,7 @@ sb.upload_button.prototype = {
 	},
 
 	/**
-	@Name: sb.upload_button.prototype.cancels
+	@Name: sb.uploadButton.prototype.cancels
 	@Description: Cancels all file uploads for this instance
 	@Name: string name optionally cancels only for files that match the file name given
 	*/
@@ -121,119 +124,119 @@ sb.upload_button.prototype = {
 	},
 	
 	/**
-	@Name: sb.upload_button.prototype.id
+	@Name: sb.uploadButton.prototype.id
 	@Description: Used Internally
 	*/
 	id: 0,
 	
 	/**
-	@Name: sb.upload_button.prototype.maxFiles
+	@Name: sb.uploadButton.prototype.maxFiles
 	@Description: The maximum number of files the user can select in the browser before it throws an error and fires onMaxFilesExceeded
 	*/
 	maxFiles : 5,
 	
 	/**
-	@Name: sb.upload_button.prototype.maxFileSizeK
+	@Name: sb.uploadButton.prototype.maxFileSizeK
 	@Description: The maximum file size per file that the user can upload before it throws an error and fires onMaxFileSizeExceeded
 	*/
 	maxFileSizeK : 1024,
 
 	/**
-	@Name: sb.upload_button.prototype.acceptedFileTypes
+	@Name: sb.uploadButton.prototype.acceptedFileTypes
 	@Description: The file types to accept for upload
 	*/
 	acceptedFileTypes : '*.*',
 
 	/**
-	@Name: sb.upload_button.prototype.method
+	@Name: sb.uploadButton.prototype.method
 	@Description: The default method to send data
 	*/
 	method : 'post',
 	
 	/**
-	@Name: sb.upload_button.prototype.url
+	@Name: sb.uploadButton.prototype.url
 	@Description: The URL to upload the data to	
 	*/
 	url : '',
 	
 	/**
-	@Name: sb.upload_button.prototype.data
+	@Name: sb.uploadButton.prototype.data
 	@Description: Additional data objectw hich is url encoded into post data and sent with the files
 	*/
 	data : {},
 	
 	/**
-	@Name: sb.upload_button.prototype.debug
+	@Name: sb.uploadButton.prototype.debug
 	@Description: Determines if file upload debug info is traced to the flash debug player
 	*/
 	debug : true,
 	
 	/**
-	@Name: sb.upload_button.prototype.onSelect
+	@Name: sb.uploadButton.prototype.onSelect
 	@Description: Fires when the user selects files from the browse box that pops up from pressing the button
-	@Param: object data.files, an array of the file names selected
+	@Param: array names the file names selected
 	@Return: boolean true uploads, false cancels upload before it starts.  It does not fire oncancel, you can call it directly before issuing false return if you would like
 	*/
 	onSelect : function(data){return true;},
 	
 	/**
-	@Name: sb.upload_button.prototype.onExceedsMaxFileSizeK
+	@Name: sb.uploadButton.prototype.onExceedsMaxFileSizeK
 	@Description: Fires when a file exceeds the maximum file size specified and is therefore not uplaoded
 	@Param: object file file.name, file.size, file.sizeK, file.exceededBy, file.limit, file.message
 	*/
 	onExceedsMaxFileSizeK : function(file){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onExceedsMaxFiles
+	@Name: sb.uploadButton.prototype.onExceedsMaxFiles
 	@Description: Fires when a user selects too many files
 	@Param: object files.chosen, files.limit, files.message
 	*/
 	onExceedsMaxFiles : function(files){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onError
+	@Name: sb.uploadButton.prototype.onError
 	@Description: Fires if the upload is canceled due to an error
 	@Param: object file.name, file.size, file.sizeK, file.type, file.error
 	*/
 	onError : function(file){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onOpen
+	@Name: sb.uploadButton.prototype.onOpen
 	@Description: Fires when the file is opened for upload on the client's computer
 	@Param: object file.name, file.size, file.sizeK, file.type
 	*/
 	onOpen : function(file){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onReturnData
+	@Name: sb.uploadButton.prototype.onReturnData
 	@Description: Fires when the data is returned from the server, , must beturn something from the serer for this to fire, can be a simple space
 	@Param: object file.name, file.size, file.sizeK, file.type, file.data
 	*/
 	onReturnData : function(file){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onAllComplete
+	@Name: sb.uploadButton.prototype.onAllComplete
 	@Description: Fires when all uploads for this upload instance are complete
 	@Param: object files.total
 	*/
 	onAllComplete : function(files){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onComplete
+	@Name: sb.uploadButton.prototype.onComplete
 	@Description: Fires when a file is done uploading, must beturn something from the serer for this to fire, can be a simple space
 	@Param: object file.name, file.size, file.sizeK, file.type
 	*/
 	onComplete : function(files){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onAllProgress
+	@Name: sb.uploadButton.prototype.onAllProgress
 	@Description: Fires each time one more file is uploaded until the que is empty
 	@Param: object files.total, files.remaining
 	*/
 	onAllProgress : function(files){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onProgress
+	@Name: sb.uploadButton.prototype.onProgress
 	@Description: Fires periodically as a file uploads alerting you of the progress in percent, deosn't seem to fire for really quick uploads on local server, must return something from the serer for this to fire, can be a simple space
 	@Param: object file.name, file.size, file.sizeK, file.type, file.bytesLoaded, file.bytesTotal, file.percent
 	*/
@@ -241,19 +244,19 @@ sb.upload_button.prototype = {
 	//files.remaining
 	
 	/**
-	@Name: sb.upload_button.prototype.onCancelBrowse
+	@Name: sb.uploadButton.prototype.onCancelBrowse
 	@Description: Fires when the user hits cancel in the file browser
 	*/
 	onCancelBrowse : function(){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onCancelAll
+	@Name: sb.uploadButton.prototype.onCancelAll
 	@Description: Fires once when the upload que is canceled using upload.cancel();
 	*/
 	onCancelAll : function(){},
 	
 	/**
-	@Name: sb.upload_button.prototype.onCancelFile
+	@Name: sb.uploadButton.prototype.onCancelFile
 	@Description: Fires when one file in the que is canceled by filename with upload.cancel(file.name); or once per file when upload.cancel()l is fired without a name specified
 	@Param: object file.name
 	*/
