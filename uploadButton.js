@@ -172,10 +172,17 @@ sb.uploadButton.prototype = {
 	debug : true,
 	
 	/**
+	@Name: sb.uploadButton.prototype.onBeforeBrowse
+	@Description: Fires when the user presses the browse button, but before the file browser opens
+	@Return: boolean true opens file browser, false cancels file browser opening.  It does not fire onCancel automatically, you can call it directly before issuing false return if you would like
+	*/
+	onBeforeBrowse : function(data){return true;},
+	
+	/**
 	@Name: sb.uploadButton.prototype.onSelect
 	@Description: Fires when the user selects files from the browse box that pops up from pressing the button
 	@Param: array names the file names selected
-	@Return: boolean true uploads, false cancels upload before it starts.  It does not fire oncancel, you can call it directly before issuing false return if you would like
+	@Return: boolean true uploads, false cancels upload before it starts.  It does not fire onCancel, you can call it directly before issuing false return if you would like
 	*/
 	onSelect : function(data){return true;},
 	
