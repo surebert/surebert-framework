@@ -17,8 +17,11 @@ var uploader = new sb.uploadButton({
 	onReturnData : function(file){
 		sb.objects.alert(file);
 	},
-	onSelect : function(names){
-		
+	onBeforeBrowse : function(){
+		return true;
+	},
+	onSelect : function(filenames){
+		return true;
 	},
 	onExceedsMaxFiles : function(){},
 	onExceedsMaxFileSizeK : function(file){},
