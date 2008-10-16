@@ -58,9 +58,7 @@ sb.uploadButton = function(parameters){
 	//create swf and associate call to thei sb.uploadButton for event handling
 	
 	this.swf = new sb.swf({
-		//src : sb.base+"/UploadButton.swf?id="+this.id,
-		src : "UploadButton.swf?debug=1&id="+this.id+"&i="+Math.random(),
-		
+		src : sb.base+"/UploadButton.swf?id="+this.id,
 		width : this.styles.width || 62,
 		height : this.styles.height || 24,
 		id : 'upload'+this.id,
