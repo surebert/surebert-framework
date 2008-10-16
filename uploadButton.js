@@ -66,7 +66,7 @@ sb.uploadButton = function(parameters){
 			innerHTML : this.innerHTML || 'upload'
 		},
 		version : 9,
-		alt : parameters.alt || '<h1>You need at least flashplayer 9+ to upload</h1>'
+		alt : parameters.alt || '<h1>You need <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">flash player 9+</a> to upload</h1>'
 	});
 
 	this.load_params = function(){
