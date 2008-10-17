@@ -72,6 +72,14 @@ sb.sound.muteAll = function(){
 };
 
 /**
+@Name: sb.sound.muted
+@Description: When set to 1, sounds will not play
+@Example:
+sb.sound.mute = 1;
+ */
+sb.sound.muted = 0;
+
+/**
 @Name: sb.sound.prototype
 @Description: The methods of sb.sound instances
 */
@@ -99,9 +107,11 @@ sb.sound.prototype = {
 	mySound.play();
 	*/
 	play : function(position, loops){
-		position = position || 0;
-		loops = loops || 0;
-		return sb.flashGate.getInterface().sound_play(this.id, position, loops);
+		if(!sb.sound.muted){
+			position = position || 0;
+			loops = loops || 0;
+			return sb.flashGate.getInterface().sound_play(this.id, position, loops);
+		}
 	},
 	
 	/**
