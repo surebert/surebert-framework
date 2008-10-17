@@ -1,9 +1,9 @@
 sb.include('effect');
-
+sb.include('element.prototype.setOpacity');
 /**
 @Name:  sb.element.prototype.fade
 @Author: Paul Visco
-@Version: 1.0
+@Version: 1.1
 @Description: This effect is used to fade a dom element's opacity
 @Param: integer percent The opacity to end at between 0 and 100%
 @Param: integer duration The time milliseconds to fade over
@@ -19,6 +19,7 @@ window.setTimeout(function(){
 }, 2000);
 */
 sb.element.prototype.fade = function(o){
+	o = o || {};
 	//percent, duration, onEnd
 	var effect = new sb.effect({
 		el : this,
