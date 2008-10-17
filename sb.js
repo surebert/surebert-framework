@@ -2883,14 +2883,10 @@
 		/**
 		@Name: sb.element.prototype.getStyle
 		@Description: 
-		@Param: calculates the style of an sb.element
+		@Param: calculates the style of an sb.element based on the current style read from css
 		@Return: returns property value
 		@Example:
-		myElement.styles({
-			backgroundColor : '#000000',
-			fontSize : '18px',
-			border : '1px solid #FF0000'
-		});
+		myElement.getStyle('background-color', 'blue').
 		*/
 		getStyle : function(prop){
 			var val;
