@@ -34,6 +34,8 @@ sb.onbodyload.push(function(){
 	sb.flashGate.embed(sb.flashGateContainer);
 });
 
+var sb_onFlashGateLoaded = [];
+
 /**
  * @Name sb_onFlashGateLoad
  * @Description: Used Internally
