@@ -66,7 +66,8 @@ sb.uploadButton = function(parameters){
 		wmode: 'transparent',
 		flashvars : {
 			debug : (this.debug != null) ? this.debug : true,
-			innerHTML : this.innerHTML || 'upload'
+			innerHTML : this.innerHTML || 'upload',
+			debugLevel : this.debugLevel || 1
 		},
 		version : 9,
 		alt : parameters.alt || '<h1>You need <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">flash player 9+</a> to upload</h1>'
@@ -173,6 +174,11 @@ sb.uploadButton.prototype = {
 	@Description: Determines if file upload debug info is traced to the flash debug player
 	*/
 	debug : true,
+	
+	/**
+	 * The verbosity level of the debug data sent to flash debug log - 1 - reports actions, 2 - reports data loaded and sent to js
+	 */
+	debugLevel : 1,
 	
 	/**
 	@Name: sb.uploadButton.prototype.onBeforeBrowse
