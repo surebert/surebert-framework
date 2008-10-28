@@ -11,3 +11,5 @@ sb.element.prototype.isDescendantOf = function(el){
 
 	return sb.s$(el, '*').nodes.inArray(this);
 };
+
+Element.prototype.isDescendantOf = sb.element.prototype.isDescendantOf;

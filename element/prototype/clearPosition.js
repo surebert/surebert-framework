@@ -17,3 +17,5 @@ sb.element.prototype.clearPosition = function(){
 		top: ''
 	});	
 };
+
+Element.prototype.clearPosition = sb.element.prototype.clearPosition;

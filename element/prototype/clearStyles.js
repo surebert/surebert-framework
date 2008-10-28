@@ -17,3 +17,5 @@ sb.element.prototype.clearStyles = function(){
 	}
 	return this;
 };
+
+Element.prototype.clearStyles = sb.element.prototype.clearStyles;

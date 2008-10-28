@@ -31,3 +31,5 @@ sb.element.prototype.getAncestors = function(within){
 	
 	return ancestors;
 };
+
+Element.prototype.getAncestors = sb.element.prototype.getAncestors;

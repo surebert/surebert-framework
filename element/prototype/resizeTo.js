@@ -53,3 +53,5 @@ sb.element.prototype.resizeTo = function(o){
 	return this.resizing;
 	
 };
+
+Element.prototype.resizeTo = sb.element.prototype.resizeTo;

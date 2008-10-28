@@ -91,3 +91,5 @@ sb.element.prototype.highlight = function(o){
 	this.highlighting.start();
 	return this.highlighting;
 };
+
+Element.prototype.highlight = sb.element.prototype.highlight;

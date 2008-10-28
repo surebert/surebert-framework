@@ -11,7 +11,7 @@ draggableThing.makeDraggable();
 */
 sb.element.prototype.makeDraggable = function(){
 
-	sb.$(this, '*').forEach(function(v){
+	sb.$(this.id+' *').forEach(function(v){
 		if(v.className.match(/dragHandle/i)){
 			v.style.cursor = 'move';
 		}
@@ -33,7 +33,7 @@ draggableThing.makeUnDraggable();
 */
 sb.element.prototype.makeUnDraggable = function(){
 	
-	sb.$(this, '*').forEach(function(v){
+	sb.$(this.id+' *').forEach(function(v){
 		if(v.className.match(/dragHandle/i)){
 			v.style.cursor = '';
 		}
@@ -43,3 +43,6 @@ sb.element.prototype.makeUnDraggable = function(){
 	}
 	this.eventRemove(this.sbDraggable);
 };
+
+Element.prototype.makeDraggable = sb.element.prototype.makeDraggable;
+Element.prototype.makeUnDraggable = sb.element.prototype.makeUnDraggable;

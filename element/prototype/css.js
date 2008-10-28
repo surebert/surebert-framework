@@ -20,3 +20,5 @@ sb.element.prototype.css = function(prop, val){
 	}
 	
 };
+
+Element.prototype.css = sb.element.prototype.css;

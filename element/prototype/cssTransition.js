@@ -154,3 +154,5 @@ sb.element.prototype.cssTransition = function(changes, duration){
 	
 	return transitions;
 };
+
+Element.prototype.cssTransition = sb.element.prototype.cssTransition;

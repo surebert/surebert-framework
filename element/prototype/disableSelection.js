@@ -14,3 +14,5 @@ sb.element.prototype.disableSelection = function(){
 	
 	return this;
 };
+
+Element.prototype.disableSelection = sb.element.prototype.disableSelection;

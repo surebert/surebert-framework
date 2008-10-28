@@ -49,3 +49,5 @@ sb.element.prototype.fade = function(o){
 	return fadeTo;
 	
 };
+
+Element.prototype.fade = sb.element.prototype.fade;

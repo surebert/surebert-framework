@@ -11,3 +11,5 @@ sb.element.prototype.setOpacity = function(o){
 	this.setStyle('opacity', o);
 	return this;
 };
+
+Element.prototype.setOpacity = sb.element.prototype.setOpacity;

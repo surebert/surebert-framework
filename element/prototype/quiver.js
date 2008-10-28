@@ -1,3 +1,4 @@
+
 /**
 @Name: sb.element.prototype.quiver
 @Author: Paul Visco 
@@ -51,3 +52,5 @@ sb.element.prototype.quiver = function(params){
 		}
 	};
 };
+
+Element.prototype.quiver = sb.element.prototype.quiver;

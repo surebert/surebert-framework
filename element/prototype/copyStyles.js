@@ -13,3 +13,5 @@ sb.element.prototype.copyStyles = function(from){
 	}
 	return this;
 };
+
+Element.prototype.copyStyles = sb.element.prototype.copyStyles;

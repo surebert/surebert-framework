@@ -104,3 +104,5 @@ sb.element.prototype.addToolTip = function(o){
 	return this.sb_tooltip;
 	
 };
+
+Element.prototype.addTooltip = sb.element.prototype.addToolTip;
