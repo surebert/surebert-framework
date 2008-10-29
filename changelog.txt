@@ -1,3 +1,56 @@
+Switch to surebert v4.5
+Major refactoring of $, s$, and sb.nodeList in order to speed them up and make them more extensible
+
+$ Uses document.querySelectorAll() when available Safari 3, Firefox 3.1, IE 8+
+Both $ and s$ both return 
+
+sb.element.prototype's use Element.prototype where it exists and fall back to 
+
+
+removed sb.element.infuse (e.g. sb.infuse = sb.objects.infuse;)
+removed sb.infuse - just use sb.objects.infuse or set per script
+
+
+complete rewrite of $, s$, and sb.nodeList
+$ returns sb.nodeList now
+
+Fix for sb.element.setOpacity() and sb.element.setStyle('opacity', 0.2); in IE that makes it work with elements that don't have position
+
+moved sb.colors.dec2hex and sb.colors.hex2dec into their own files
+
+Moved the following to their own files:
+sb.strings.trim
+sb.strings.toElement
+sb.strings.isNumeric
+sb.strings.escapeHTML
+
+sb.element.prototype.wh
+sb.element.prototype.infuse
+sb.element.prototype.hide
+sb.element.prototype.unsetAttributes
+sb.element.prototype.toggle
+sb.element.prototype.show
+sb.element.prototype.getDimensions
+sb.element.prototype.getWidth
+sb.element.prototype.getHeight
+sb.element.prototype.getPreviousSibling
+sb.element.prototype.getNextSibling
+
+sb.element.prototype.removeClassName
+sb.element.prototype.hasClassName
+sb.element.prototype.getNextSibling
+sb.element.prototype.getPreviousSibling
+
+sb.browser.getScrollPosition
+sb.math.flip
+
+depreciated
+sb.element.setOpacity(); just use sb.element.setStyle('opacity', 0.2);
+
+added
+sb.utils.debugWin
+
+
 r65 | visco | 2008-10-11 02:51:20 EDT
 Changed paths:
 	M /trunk/flashGate.js
