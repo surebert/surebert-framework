@@ -80,11 +80,8 @@ $ = function(selector, root, superfy) {
 	if(nodeList.length() === 0 && nodeList.selector.match(/^\#\w+$/) ){
 		return null;
 	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#\w+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
-		var node = nodeList.nodes[0];
-		node.s$ = function(selector){
-			return s$(selector, this);
-		}
-		return node;
+		
+		return nodeList.nodes[0];
 	} else {
 		return nodeList;
 	}
@@ -92,7 +89,29 @@ $ = function(selector, root, superfy) {
 };
 
 s$ = function(selector, root){
-	return $(selector, root, true);
+
+	if(typeof selector == 'string'){
+		return $(selector, root, true);	
+	} else if(typeof selector == 'object' && Element.emulated && !selector.styles){
+		
+		selector = (selector instanceof Array) ? selector : [selector];
+		
+		var x,prop,sbe = sb.element.prototype,len = selector.length;
+	
+		for(x=0;x<len;x++){
+			for(prop in sbe){
+				selector[x][prop] = sbe[prop];
+			}
+		}
+		if(selector.length == 1){
+			return selector[0];
+		} else {
+			return selector;
+		}
+			
+	} else {
+		return selector;
+	}
 };
 
 /**
@@ -1150,7 +1169,7 @@ sb.nodeList.prototype = {
 	*/
 	nodes_to_super : function(){
 		
-		if(!Element.emulated){
+		if(Element.emulated){
 			var x,prop,sbe = sb.element.prototype,len = this.nodes.length;
 		
 			for(x=0;x<len;x++){
@@ -2231,7 +2250,7 @@ sb.element = function(o){
 	}
 	
 	//copy properties from the sb.element prototype
-	if(!Element.emulated){
+	if(Element.emulated){
 		sb.objects.infuse(sb.element.prototype, el);
 		o = sb.objects.copy(o);
 	}
@@ -2279,6 +2298,10 @@ sb.element = function(o){
 */
 sb.element.prototype = {
 
+	s$ : function(selector){
+		return s$(selector, this);
+	},
+	
 	/**
 	@Name: sb.element.prototype.addClassName
 	@Description: Adds a className to the sb.element, using this methods sb.element instances can have multiple classNames
@@ -2352,15 +2375,17 @@ sb.element.prototype = {
 	
 	*/
 	appendAfter : function(after){
+		var after = s$(after);
 		
-		var el = sb.s$(after);
-		
-		var nxtSib = el.getNextSibling();
-		
+		if(after.nextSibling){
+			while((after = after.nextSibling) && after.nodeType != 1){}
+			var nxtSib = after;
+		}
+	
 		if(nxtSib){
 			return nxtSib.parentNode.insertBefore(this, nxtSib);
 		} else {
-			return this.appendTo(el.parentNode);
+			return this.appendTo(after.parentNode);
 		}
 		
 	},
