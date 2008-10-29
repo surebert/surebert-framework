@@ -1,5 +1,5 @@
 sb.include('element.prototype.setOpacity');
-
+sb.include('element.prototype.getPosition');
 /**
 @Name: sb.$
 @Description: A widget for creating simple sliders
