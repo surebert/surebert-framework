@@ -1,6 +1,9 @@
 sb.include('effect');
 sb.include('arrays.iteration');
 sb.include('element.prototype.cssTransition');
+sb.include('element.prototype.getNextSibling');
+sb.include('element.prototype.getDimensions');
+sb.include('element.prototype.getHeight');
 
 sb.widget.accordian = function(o){
 	this.className = o.className || 'sb_accord';
@@ -39,7 +42,7 @@ sb.widget.accordian.prototype = {
 	
 	getAndCloseSections : function(accordian){
 		accordian.style.overflow='hidden';
-		accordian.sections = s$(accordian, 'dt').nodes;
+		accordian.sections = accordian.s$('dt').nodes;
 		accordian.titlesHeight = 0;
 		accordian.sections.forEach(function(section){
 			

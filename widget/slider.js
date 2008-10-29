@@ -20,8 +20,7 @@ var bri = new sb.slider({
 	defaultValue : 100,
 	allowFloats : 0,
 	onchangevalue : function(){
-		document.body.style.backgroundColor = 
-'rgb('+this.value+','+this.value+','+this.value+')';
+		document.body.style.backgroundColor = 'rgb('+this.value+','+this.value+','+this.value+')';
 		
 	}
 });
@@ -35,8 +34,7 @@ sb.widget.slider = function(params){
 	sb.objects.infuse(params, this);
 	this.min = params.min || 0;
 	this.max = params.max || 100;
-	this.defaultValue = (typeof params.defaultValue != 'undefined') 
-? params.defaultValue :  (this.max-this.min)/2;
+	this.defaultValue = (typeof params.defaultValue != 'undefined') ? params.defaultValue :  (this.max-this.min)/2;
 	this.allowFloats = params.allowFloats || 0;
 	this.displayName = params.displayName || 1;
 	this.displayValue = params.displayValue || 1;
@@ -69,12 +67,9 @@ sb.widget.slider.prototype = {
 			this.nob.style.left=x+'px';
 			if(this.display){
 				
-				if(this.displayName===1){str = 
-this.name;}
-				if(this.displayValue===1){str += ' 
-'+this.value;}
-				if(this.measurement !== undefined){str 
-+= this.measurement;}
+				if(this.displayName===1){str = this.name;}
+				if(this.displayValue===1){str += ' '+this.value;}
+				if(this.measurement !== undefined){str += this.measurement;}
 				this.display.firstChild.data=str;
 			}
 			
@@ -91,16 +86,14 @@ this.name;}
 	
 	getPercentage : function(){
 		
-		this.percentage = (this.value ===0)? 0 
-:Math.round((this.value*100)/this.max);
+		this.percentage = (this.value ===0)? 0 :Math.round((this.value*100)/this.max);
 		return this.percentage;
 	},
 	
 	posToValue : function(val){
 		val= this.min+(val*(this.max-this.min))/this.width;
 		
-		val= (this.allowFloats) ? sb.math.round(val, 3) : 
-Math.round(val);
+		val= (this.allowFloats) ? sb.math.round(val, 3) : Math.round(val);
 		if(isNaN(val)){val =this.min+1;}
 		return val;
 	},
@@ -110,8 +103,7 @@ Math.round(val);
 		if(val===0 && this.min ===0){
 			 x=0;
 		} else {
-			x= 
-(this.width*(val-this.min))/(this.max-this.min);
+			x= (this.width*(val-this.min))/(this.max-this.min);
 			x=Math.round(x);
 		}
 	
@@ -122,8 +114,7 @@ Math.round(val);
 	drag : function(e){
 		var t=this,x;
 		if(this.draggable === 1){
-			
-x=this.valueToPos(this.defaultValue)+e.clientX-this.origX-this.nob.offsetWidth/2;
+			x=this.valueToPos(this.defaultValue)+e.clientX-this.origX-this.nob.offsetWidth/2;
 			
 			this.setX(x);
 		}
@@ -145,14 +136,10 @@ x=this.valueToPos(this.defaultValue)+e.clientX-this.origX-this.nob.offsetWidth/2
 			function(e){
 				
 				t.draggable=1;
-				t.events.mousemove = 
-sb.events.add(document, 'mousemove', function(e){t.drag(e);return 
-false;});
+				t.events.mousemove = sb.events.add(document, 'mousemove', function(e){t.drag(e);return false;});
 				
-				t.events.onmouseup = 
-sb.events.add(document, 'mouseup', function(e){
-					if(typeof t.onmouseup 
-=='function'){t.onmouseup();}
+				t.events.onmouseup = sb.events.add(document, 'mouseup', function(e){
+					if(typeof t.onmouseup =='function'){t.onmouseup();}
 					t.dragStop();
 					return false;
 				});
@@ -189,23 +176,19 @@ sb.events.add(document, 'mouseup', function(e){
 				zIndex : 1
 		});
 
-		
-if(this.track.getStyle('backgroundColor')=='transparent'){
-			this.track.setStyle('backgroundColor', 
-'orange');
+		if(this.track.getStyle('backgroundColor')=='transparent'){
+			this.track.setStyle('backgroundColor', 'orange');
 		}
 		
 		if(this.nob.getStyle('backgroundColor')=='transparent'){
 			this.nob.setStyle('backgroundColor', 'green');
 		}
 		
-		if(this.nob.getStyle('width')=='0px' || 
-this.nob.getStyle('width')=='auto'){
+		if(this.nob.getStyle('width')=='0px' || this.nob.getStyle('width')=='auto'){
 			this.nob.setStyle('width', '1.0em');
 		}
 		
-		if(this.nob.getStyle('height')=='0px' || 
-this.nob.getStyle('height')=='auto' ){
+		if(this.nob.getStyle('height')=='0px' || this.nob.getStyle('height')=='auto' ){
 			this.nob.setStyle('height', '100%');
 		}
 		
@@ -213,13 +196,11 @@ this.nob.getStyle('height')=='auto' ){
 			this.nob.setStyle('fontSize', '1.5em');
 		}
 		
-		
-this.track.style.width=this.track.offsetWidth-this.nob.offsetWidth+'px';
+		this.track.style.width=this.track.offsetWidth-this.nob.offsetWidth+'px';
 		
 		this.width = parseInt(this.track.getStyle('width'), 10);
 		
-		
-this.track.style.width=this.width+this.nob.offsetWidth+'px';
+		this.track.style.width=this.width+this.nob.offsetWidth+'px';
 		
 	},
 	
@@ -248,8 +229,7 @@ this.track.style.width=this.width+this.nob.offsetWidth+'px';
 			this.display = new sb.element({
 				tag : 'display'
 			});
-			this.display.append(document.createTextNode(' 
-'));
+			this.display.append(document.createTextNode(' '));
 			this.display.appendTo(this.track);
 		}
 		
@@ -257,18 +237,15 @@ this.track.style.width=this.width+this.nob.offsetWidth+'px';
 		
 		this.track.event('mousedown', 
 			function(e){
-				if(typeof t.onmousedown 
-=='function'){t.onmousedown();}
-				
-t.setX(t.valueToPos(t.defaultValue)+e.clientX-t.origX-t.nob.offsetWidth/2);
+				if(typeof t.onmousedown =='function'){t.onmousedown();}
+				t.setX(t.valueToPos(t.defaultValue)+e.clientX-t.origX-t.nob.offsetWidth/2);
 			}
 		);
 		
 		//move to the defaultValue
 		this.valueToPos(this.defaultValue, 1);
 	
-		sb.events.add(window, 'resize', 
-function(){t.calibrate();});
+		sb.events.add(window, 'resize', function(){t.calibrate();});
 	
 		this.calibrate();
 	},
