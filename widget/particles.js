@@ -5,7 +5,7 @@ Math for floating pattern from code by Altan d.o.o. (snow@altan.hr, http://www.a
 
 XHTML compliant will work in when using DOCTYPE XHTML
 
-@Author: Paul Visco 11-05-04, 11-15-07
+@Author: Paul Visco 11-05-04, 10-29-08
 @Example: 
 sb.include('widget.particles');
 sb.widget.particles.init(5, 'hello');
@@ -27,7 +27,7 @@ sb.widget.particles = {
 	sty : [],
 	playSound : function(){
 		if(sb.widget.particles.sound !==''){
-			var snd = new sb.sound(sb.widget.particles.sound).play();
+			var snd = new sb.sound({url : sb.widget.particles.sound}).play();
 		}
 	},
 	
@@ -62,8 +62,8 @@ sb.widget.particles = {
 	
 	animate : function(){
 		if(this.stopAnimation ==1){return;}
-		
-		for (var i = 0; i < this.particles.length; ++ i) { 
+		var len = this.particles.length;
+		for (var i = 0; i < len; ++ i) { 
 				
 			this.yp[i] += this.sty[i];
 			if (this.yp[i] > sb.browser.h-50) {
@@ -81,8 +81,9 @@ sb.widget.particles = {
 			var x= this.xp[i] + this.am[i]*Math.sin(this.dx[i]);
 			var y = this.yp[i];
 			this.particles[i].style.fontSize=this.sty[i]*20+'px';
-			this.particles[i].mv(x,y);
-				
+			
+			this.particles[i].style.left = x+'px';
+			this.particles[i].style.top = y+'px';
 		}
 		var self = this;
 		this.animating = window.setTimeout(function(){self.animate();}, 30);
@@ -90,8 +91,8 @@ sb.widget.particles = {
 	},
 	
 	create : function(){
-		
-		for (var i = 0; i < this.total; ++ i) {  
+		var tl = this.total;
+		for (var i = 0; i < tl; ++ i) {  
 			this.dx[i] = 0;                       		 // set coordinate variables
 			this.xp[i] = Math.random()*(sb.browser.w-50);  // set position variables
 			this.yp[i] = Math.random()*sb.browser.h;
@@ -105,11 +106,14 @@ sb.widget.particles = {
 				title : 'click to remove',
 				styles: {
 					cursor : 'pointer',
-					display:'block'
+					display:'block',
+					position : 'absolute',
+					top : '15px',
+					left : '15px',
+					zIndex : i+1
 				}
 			});
 			
-			particle.mv(15, 15, i+1);
 			this.particles.push(particle);
 			particle.appendTo(this.container);
 			
