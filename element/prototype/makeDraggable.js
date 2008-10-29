@@ -1,4 +1,5 @@
 sb.include('drag');
+sb.include('browser.getScrollPosition');
 
 /**
 @Name: sb.element.prototype.makeDraggable

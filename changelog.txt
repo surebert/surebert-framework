@@ -50,6 +50,9 @@ sb.element.setOpacity(); just use sb.element.setStyle('opacity', 0.2);
 added
 sb.utils.debugWin
 
+BUG FIX:
+fixed bug in IE6 where sb.element input node instances did not get the checked attribute passsed to the params object of the sb.element constructor
+
 
 r65 | visco | 2008-10-11 02:51:20 EDT
 Changed paths:
