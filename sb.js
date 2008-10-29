@@ -2246,7 +2246,7 @@ sb.element = function(o){
 	}
 	
 	if(typeof o.children !='undefined'){
-		var len = children.length;
+		var len = o.children.length;
 		for(c=0;c<len;c++){
 			el.appendChild(new sb.element(o.children[c]));
 		}
