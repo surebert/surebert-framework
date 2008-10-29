@@ -2242,8 +2242,11 @@ sb.element = function(o){
 	}
 	
 	if(typeof o == 'object' ){
+		
 		if(o.tag == 'input' && sb.dom.createNamedElement){
-			el = new sb.dom.createNamedElement(o.type, o.name);
+			
+			el = new sb.dom.createNamedElement(o.type, o.name, o.checked);
+			
 		} else {
 			el = document.createElement(o.tag);
 		}

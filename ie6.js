@@ -174,12 +174,14 @@ if(!Array.prototype.forEach){
 
 }
 
-sb.dom.createNamedElement = function(t, n) {
+sb.dom.createNamedElement = function(t, n, c) {
 	var el;
 	
 	try {
-		el = document.createElement('<input type="'+t+'" name="'+n+'">');
-	} catch (el) { }
+		el = document.createElement('<input type="'+t+'" name="'+n+'" checked="'+((c) ? 'checked' : '')+'">');
+		
+	} catch (e) { }
+	
 		if (!el || !el.name) { 
 		el = document.createElement('input');
 		el.type=t;
