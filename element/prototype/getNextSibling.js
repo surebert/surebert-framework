@@ -11,3 +11,5 @@ sb.element.prototype.getNextSibling = function(){
 	while((node = node.nextSibling) && node.nodeType != 1){}
 	return sb.s$(node);
 };
+
+Element.prototype.getNextSibling = sb.element.prototype.getNextSibling;
