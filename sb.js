@@ -70,7 +70,9 @@ $ = function(selector, root, superfy) {
 	nodeList.setSelector(selector);
 	
 	if(document.querySelectorAll){
+		
 		nodeList.add(root.querySelectorAll(selector));
+		
 	} else {
 		$.parseSelectors(nodeList, root);
 	}
@@ -80,7 +82,6 @@ $ = function(selector, root, superfy) {
 	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#\w+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
 		var node = nodeList.nodes[0];
 		node.s$ = function(selector){
-			
 			return s$(selector, this);
 		}
 		return node;
@@ -1191,7 +1192,7 @@ sb.nodeList.prototype = {
 	
 	*/
 	add : function(nodes){
-		nodes = (nodes instanceof Array) ? nodes : [nodes];
+		nodes = (nodes instanceof Array || nodes instanceof NodeList) ? nodes : [nodes];
 		var len = nodes.length;
 		
 		var prop,x=0,node;
@@ -2583,7 +2584,9 @@ sb.element.prototype = {
 		
 		for(var prop in params){
 			if(params.hasOwnProperty(prop)){
+				try{
 				this.setStyle(prop, params[prop]);
+				}catch(e){}
 			}
 		}
 		
