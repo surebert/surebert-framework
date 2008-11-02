@@ -2476,7 +2476,8 @@ sb.element.prototype = {
 	myElement.removeClassName('redStripe');
 	*/
 	removeClassName : function(className){
-		this.className.replace("^\\b+"+className+"\\b+$", "");
+		
+		this.className.replace(new RegExp("\b*"+className+"\b*"), "");
 		return this;
 	},
 	
