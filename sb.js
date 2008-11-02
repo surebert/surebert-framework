@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.5 04/24/04 10/28/08
+@Version: 4.51 04/24/04 10/31/08
 @Package: surebert
 */
 
@@ -2476,8 +2476,7 @@ sb.element.prototype = {
 	myElement.removeClassName('redStripe');
 	*/
 	removeClassName : function(className){
-		
-		this.className.replace(new RegExp("\b*"+className+"\b*"), "");
+		this.className = this.className.replace(new RegExp("\b*"+className+"\b*"), "");
 		return this;
 	},
 	
