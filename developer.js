@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://elmwoodstrip.org?u=paul
-@Version: 4.06 12/26/07
+@Version: 4.07 11/03/08
 @Description:These functions are used when developing.  This file does not need to be included in production version of your site.  It basically allows for debugging during development. Used Internally. 
 */
 
@@ -10,7 +10,10 @@ sb.include('css.rules');
 sb.include('math.rand');
 sb.include('colors.rand');
 sb.include('strings.nl2br');
+sb.include('strings.escapeHTML');
 sb.include('element.prototype.disableSelection');
+sb.include('element.prototype.mv');
+sb.include('element.prototype.getPosition');
 
 sb.debug =1;
 sb.developer = {};
