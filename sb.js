@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.51 04/24/04 10/31/08
+@Version: 4.51 04/24/04 11/03/08
 @Package: surebert
 */
 
@@ -2724,6 +2724,10 @@ sb.element.prototype = {
 		return 'sb.element';
 	}
 };
+
+if(!Array.prototype.forEach){
+	sb.include('arrays.js1_5')
+}
 
 if(sb.browser.ie6){
 	sb.include('ie6');
