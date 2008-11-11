@@ -1,5 +1,5 @@
 sb.include('element.prototype.getDimensions');
-sb.include('sb.browser.getScrollPosition');
+sb.include('browser.getScrollPosition');
 
 /**
 @Name: sb.element.prototype.getPosition
