@@ -1,3 +1,53 @@
+r119 | visco | 2008-11-11 00:59:29 EST
+Changed paths:
+	M /trunk/element/prototype/getPosition.js
+
+fixed bug with sb.element.prototype.getPosition() that was accidentally reloading sb.js via xhr
+----------------------------------------------------------------------------
+r118 | visco | 2008-11-10 20:37:51 EST
+Changed paths:
+	A /trunk/utils/performance.js
+
+moved sb.performance out of developer.js and into the util directory
+----------------------------------------------------------------------------
+r117 | visco | 2008-11-04 17:52:22 EST
+Changed paths:
+	M /trunk/ie6.js
+	M /trunk/sb.js
+
+updated sb.js to load in js 1.5 array prototypes if they do not exist, beofre it was checking only for ie6 but ie7 has the same problem, oops
+----------------------------------------------------------------------------
+r116 | visco | 2008-11-03 19:51:58 EST
+Changed paths:
+	M /trunk/ie6.js
+
+put sb.ie6.pngFix back into sb.ie6.js it was missing after last 4.5 upgrade
+----------------------------------------------------------------------------
+r115 | visco | 2008-11-03 19:08:27 EST
+Changed paths:
+	M /trunk/developer.js
+
+added required include for addition element and string prototypes that were not in the core lib since last upgrade
+----------------------------------------------------------------------------
+r114 | visco | 2008-11-02 19:00:59 EST
+Changed paths:
+	M /trunk/element/prototype/addToolTip.js
+
+fixed case problem with Element.prototype definition that was causing it not to work
+----------------------------------------------------------------------------
+r113 | visco | 2008-11-02 17:42:03 EST
+Changed paths:
+	M /trunk/sb.js
+
+Fixed bug in sb.element.removeClassName()
+----------------------------------------------------------------------------
+r112 | visco | 2008-11-02 17:25:17 EST
+Changed paths:
+	M /trunk/sb.js
+
+fixed bug in sb.element.prototype.removeClassName
+----------------------------------------------------------------------------
+
 Switch to surebert v4.5
 Major refactoring of $, s$, and sb.nodeList in order to speed them up and make them more extensible
 
