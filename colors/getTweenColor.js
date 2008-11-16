@@ -1,12 +1,25 @@
 /**
 @Name: sb.colors.getTweenColor
 @Author: Paul Visco
-@version: 1.0 11/19/07
+@version: 1.1 11/19/07 11/16/08
 @Description: Used to get color values between two colors at a certain percentage
 @Example:
 var colorInBetween = sb.colors.getTweenColor('#ACACAC', '#FF0000', 30%);
 */
+sb.include('colors.hex2dec');
+sb.include('colors.dec2hex');
+sb.include('strings.rgb2hex');
+
 sb.colors.getTweenColor = function(start, end, percent){
+	
+	if(start.match(/rgb/)){
+		start = start.rgb2hex();
+	}
+	
+	if(end.match(/rgb/)){
+		end = end.rgb2hex();
+	}
+	
 	start = start.replace(/\#/, '');
 	end = end.replace(/\#/, '');
 	
