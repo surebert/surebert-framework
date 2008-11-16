@@ -8,6 +8,9 @@
 		keydown :  sb.forms.textarea.allowTabs
 	});
 */
+
+sb.include('forms.textarea');
+
 sb.forms.textarea.allowTabs = function(e){
 	var sel = sb.forms.textarea.getSelection(this), textarea = this, scrollTo;
 
