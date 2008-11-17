@@ -1,7 +1,7 @@
 /*
-Name: sb.element.loading
-Author: Paul Visco
-Description: creates a blinking node "loading.." that can be appended anywhere and blink during load or other action
+@Name: sb.element.loading
+@Author: Paul Visco
+@Description: creates a blinking node "loading.." that can be appended anywhere and blink during load or other action
 myLoading = new sb.loading();
 myLoading.appendTo('body');
 myLoading.start();
