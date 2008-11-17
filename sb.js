@@ -2612,11 +2612,13 @@ sb.element.prototype = {
 	
 	/**
 	@Name: sb.element.prototype.getStyle
-	@Description: 
-	@Param: calculates the style of an sb.element based on the current style read from css
+	@Description: calculates the style of an sb.element based on the current style read from css
+	@Param: String prop The property to look up
 	@Return: returns property value
 	@Example:
-	myElement.getStyle('background-color', 'blue').
+	myElement.getStyle('background-color');
+	//or
+	myElement.getStyle('backgroundColor').
 	*/
 	getStyle : function(prop){
 		var val;
@@ -2684,6 +2686,17 @@ sb.element.prototype = {
 		}
 	},
 	
+	/**
+	@Name: sb.element.prototype.getStyle
+	@Description: Sets the style of an sb.element
+	@Param: String prop The property to assign a value to
+	@Param: String val The value to assign to the property specified
+	@Return: returns property value
+	@Example:
+	myElement.setStyle('backgroundColor', blue);
+	//or
+	myElement.setStyle('opacity', 0.5);
+	*/
 	setStyle : function(prop, val){
 		
 			if(sb.arrays.inArray.call(sb.styles.pxProps, prop) && val !=='' && !val.match(/em|cm|pt|px|%/)){
