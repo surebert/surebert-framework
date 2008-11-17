@@ -41,6 +41,7 @@ sb.cookies ={
 	@Param: Days number The number of days to rememeber the value for. If not set they become session cookies and expire when the user closes the browser
 	@Example:
 	sb.cookies.set('name', 'paul');
+	sb.cookies.set('name', 'paul', 30);
 	
 	*/
 	
