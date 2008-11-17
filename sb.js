@@ -11,13 +11,11 @@
 @Example:
 e.g.'#myForm' An element id.  When passed an element ID it returns a reference to the element with that id'
 
-e.g.'body' An tag name.  When passed a tag name it returns an array of all the tags that match that tag name.  If ther tag is found in sb.singleTags e.g. body, head, title then only one element is returned instead of an array
+e.g.'body' An tag name.  When passed a tag name it returns an array of all the tags that match that tag name.  If the tag is found in sb.singleTags e.g. body, head, title then only one element is returned instead of an array
 
 e.g. '#myDiv' returns node with the id 'myDiv'
 
 e.g. '.myClass' returns all nodes with the class 'myClass', see also [class="myClass"] below
-
-e.g. 'p' returns all the p nodes
 
 e.g. '*' returns all nodes
 
@@ -1127,7 +1125,7 @@ sb.objects = {
 @Name: sb.sb.nodeList
 @Description: Used to create sb.nodeLists which are groups of sb.elements that have many of the same methods as sb.element but which act on all sb.elements in the sb.nodeList. It also has all the properties of an sb.array. These are returned by sb.s$
 */
-//sb.sb.nodeList 
+//sb.nodeList 
 sb.nodeList = function(params){
 	
 	for(var prop in params){
@@ -1538,13 +1536,13 @@ sb.ajax.prototype = {
 		
 		if(this.format === ''){
 			if(this.contentType){
-				if(this.contentType.match('json')){
+				if(this.contentType.match('application/json')){
 					this.format = 'json';
-				} else if (this.contentType.match('javascript')){
+				} else if (this.contentType.match('text/javascript')){
 					this.format = 'javascript';
-				} else if (this.contentType.match('xml')){
+				} else if (this.contentType.match('text/xml')){
 					this.format = 'xml';
-				} else if(this.contentType.match('boolean')){
+				} else if(this.contentType.match('boolean/value')){
 					this.format = 'boolean';
 				}
 			} else {
