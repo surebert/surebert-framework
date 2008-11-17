@@ -2531,7 +2531,7 @@ sb.element.prototype = {
 	
 	/**
 	@Name: sb.element.prototype.events
-	@Description: Used to add events to an s$
+	@Description: Used to assign multiple events at once
 	@Param: object events
 	@Example:
 	var myDiv = s$('#myDiv');
