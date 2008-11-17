@@ -8,9 +8,6 @@
 var myArray = [1,10,2,3,4,5];
 var answer = myArray.random();
 //answer = 4; //<--could change each time
-
-//or
-sb.arrays.random.call(myArray);
 */
 sb.arrays.random = function(){
 		return this[sb.math.rand(0,this.length)];

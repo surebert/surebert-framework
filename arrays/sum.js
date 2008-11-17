@@ -9,9 +9,6 @@
 var myArray = [5, 5, 10, 15];
 var answer = myArray.sum();
 //answer =35;
-
-//or
-sb.arrays.sum.call(myArray);
 */
 sb.arrays.sum = function(){
 	var val = 0;

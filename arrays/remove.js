@@ -11,11 +11,9 @@ var myArray = [5, 10, 15];
 var answer = myArray.remove([10,5]);
 //answer =[15];
 
-var answer = myArray.remove(5);
-//answer =[10, 15];
-
-//or
-sb.arrays.remove.call(myArray, [10, 15]);
+var myArray = [6, 7, 8];
+var answer = myArray.remove(6);
+//answer =[7,8];
 */
 sb.arrays.remove = function(values){
 	

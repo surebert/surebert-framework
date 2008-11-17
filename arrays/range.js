@@ -9,9 +9,6 @@ sb.include('arrays.natsort');
 var myArray = [1,10,2,3,4,5];
 var answer = myArray.range();
 //answer = 9; //<--the difference between 10 (the highest number) and 1 (the lowest number)
-
-//or
-sb.arrays.range.call(myArray);
 */
 sb.arrays.range = function(){
 	var a = this.natsort();

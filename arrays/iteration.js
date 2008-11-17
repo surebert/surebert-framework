@@ -4,14 +4,14 @@
 */
 sb.arrays.iteration = {
 	
-	/*
+	/**
 	@Name: sb.arrays.pointer
 	@Description: Used to keep track of the array key we are referenceing with next, prev, end, current, rewind
 	
 	*/
 	pointer : 0,
 	
-	/*
+	/**
 	@Name: sb.arrays.current
 	@Description: Returns the array value of the key we are currently on as referenced by the pointer.  Starts at 0 and chanegs base don use of next(), prev(), rewind(), end()
 	@Example:
@@ -29,7 +29,7 @@ sb.arrays.iteration = {
 		return this[this.pointer];
 	},
 	
-	/*
+	/**
 	@Name: sb.arrays.end
 	@Description: Returns the array value of the last key and sets the array's pointer to that key
 	@Example:
@@ -43,7 +43,7 @@ sb.arrays.iteration = {
 		return this[this.pointer];
 	},
 	
-	/*
+	/**
 	@Name: sb.arrays.first
 	@Description: Returns the first value in the array without moving the pointer.
 	@Example:
@@ -56,7 +56,7 @@ sb.arrays.iteration = {
 		return this[0];
 	},
 	
-	/*
+	/**
 	@Name: sb.arrays.last
 	@Description: Returns the last value of the array without moving the pointer.
 	@Example:
@@ -69,7 +69,7 @@ sb.arrays.iteration = {
 		return this[this.length-1];
 	},
 
-	/*
+	/**
 	@Name: sb.arrays.next
 	@Description: Returns the next value of the array and moves the pointer forward to it.
 	@Example:
@@ -84,7 +84,7 @@ sb.arrays.iteration = {
 		return this[this.pointer];
 	},
 	
-	/*
+	/**
 	@Name: sb.arrays.rewind
 	@Description: Returns the first value of the array and moves the pointer back to the beginning.
 	@Example:
@@ -97,7 +97,7 @@ sb.arrays.iteration = {
 		return this[this.pointer];
 	},
 
-	/*
+	/**
 	@Name: sb.arrays.prev
 	@Description: Returns the next value of the array and moves the pointer forward to it.
 	@Example:

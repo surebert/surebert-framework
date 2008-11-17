@@ -6,9 +6,6 @@
 @Return: Array A new array with the same value as the one it is making a copy of
 @Example:
 var myNewArray = myArray.copy();
-
-//or
-var myNewArray = sb.arrays.copy.call(myArray);
 */
 sb.arrays.copy = function(){
 	return this.filter(function(){return true;});

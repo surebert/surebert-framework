@@ -10,9 +10,6 @@ var myArray = ['zero', 'one', 'two'];
 var answer = myArray.inject(1, 'bagel');
 
 //answer is now ['zero', 'bagel', 'one', 'two'];
-
-//or
-sb.arrays.inject.call(myArray, 1, 'bagel');
 */
 sb.arrays.inject = function(index, val){
 	if(index <0){return this;}

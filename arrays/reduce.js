@@ -3,7 +3,7 @@
 @Name: sb.arrays.reduce
 @Author: Paul Visco
 @Version: 1.1 11/19/07
-@Description: This emulates sb.arrays.reduce from javascript 1.6 and is taken from the MDC site reference.  .reduce executes the callback function once for each element present in the array, excluding holes in the array, receiving four arguments: the initial value (or value from the previous callback call), the value of the current element, the current index, and the array over which iteration is occurring.
+@Description: This emulates Array.prototype.reduce from javascript 1.6 and is taken from the MDC site reference.  .reduce executes the callback function once for each element present in the array, excluding holes in the array, receiving four arguments: the initial value (or value from the previous callback call), the value of the current element, the current index, and the array over which iteration is occurring.
 
 The call to the reduce callback would look something like this: 
 @Param: function The function to apply the array elements to

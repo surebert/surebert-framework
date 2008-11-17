@@ -9,9 +9,6 @@
 var myArray = [5, 5, 10, 15];
 var answer = myArray.unique();
 //answer =[5,10,15];
-
-//or
-sb.arrays.unique.call(myArray);
 */
 sb.arrays.unique = function(){
 	var n=[];

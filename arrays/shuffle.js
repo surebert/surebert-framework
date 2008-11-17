@@ -10,9 +10,6 @@
 var myArray = [5, 10, 15];
 myArray.shuffle();
 //myArray =[10, 15, 5]; //<-could change each time
-
-//or
-sb.arrays.shuffle.call(myArray);
 */
 sb.arrays.shuffle = function(){
 	var i=this.length,j,t;

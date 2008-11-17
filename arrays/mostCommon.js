@@ -14,9 +14,6 @@ var answer = myArray.mostCommon();
 var myArray = [5, 5, 10, 15];
 var answer = myArray.mostCommon();
 //answer = 5;
-
-//or
-sb.arrays.mostCommon.call(myArray);
 */
 sb.arrays.mostCommon = function(){
 	var count=0,max=0,num=0,mode=0;

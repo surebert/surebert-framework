@@ -6,9 +6,6 @@
 @Return: returns the array emptied
 @Example:
 myArray.empty();
-
-//or
-sb.arrays.empty.call(myArray);
 */
 sb.arrays.empty = function(){
 	this.length =0;

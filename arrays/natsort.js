@@ -10,9 +10,6 @@
 var myArray = [1,10,2,3,4,5];
 var answer = myArray.natsort();
 //answer = [1,2,3,4,5,10];
-
-//or
-sb.arrays.natsort.call(myArray);
 */
 sb.arrays.natsort = function(direction){
 	direction = (direction ==-1) ? -1 : 1;

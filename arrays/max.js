@@ -9,9 +9,6 @@
 var myArray = [5, 10, 15];
 var answer = myArray.max();
 //answer = 15;
-
-//or
-sb.arrays.max.call(myArray);
 */
 sb.arrays.max = function(){
 	 var max=this[0];
