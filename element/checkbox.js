@@ -1,5 +1,6 @@
 /**
 @Name: sb.element.checkBox
+@Author: Paul Visco
 @Description: Used to create labeled cross-browser checkboxes.  When the label is selected it checks or unchecks the box
 @Param: Object params
 params.label - The text label
