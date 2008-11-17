@@ -1864,13 +1864,9 @@ sb.arrays = {
 	@Param: Object/String/Number val Method checks to see if val is in the array
 	@Return: Boolean True or False
 	@Example:
-	//with globals on
 	var myArray = [1,2,3];
 	var answer = myArray.inArray(2);
 	//answer is true
-	
-	//without globals on
-	sb.arrays.inArray.call(myArray, 2);
 	*/
 	inArray : function(val){
 		return this.some(function(v){return v===val;});
@@ -1890,9 +1886,6 @@ sb.arrays = {
 	
 	var answer = myArray.remove(5);
 	//answer =[10, 15];
-	
-	//without globals on
-	sb.arrays.remove.call(myArray, [10, 15]);
 	*/
 	remove : function(values){
 		
@@ -1915,6 +1908,11 @@ sb.strings = {
 	/**
 	@Name: sb.strings.hex2rgb
 	@Description: Used internally, converts hex to rgb
+	@Example:
+	var str = '#FF0000';
+	
+	var newString = str.hex2rgb();
+	//newString = 'rgb(255,0,0)'
 	*/
 	hex2rgb : function(asArray){
 		var hex = this.replace(/(^\s+|\s+$)/).replace("#", "");
@@ -1939,9 +1937,6 @@ sb.strings = {
 	
 	var newString = str.toCamel();
 	//newString = 'backgroundColor'
-	
-	//without globals
-	sb.strings.toCamel.call(str);
 	*/
 	toCamel : function(){
 		return String(this).replace(/-\D/gi, function(m){
