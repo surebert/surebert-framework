@@ -16,9 +16,6 @@ sb.cookies ={
 	@Param: String name The name of the cookie who's value you are trying to get
 	@Return: String Returns the value stored for the cookie or false if the cookie is not found
 	@Example:
-	var answer = get('myCookie');
-	//answer = the value the cookie was set to with sb.cookies.set
-	//if globals are not enabled
 	sb.cookies.get('myCookie', 'paul');
 	*/
 	get : function(name){
@@ -43,9 +40,6 @@ sb.cookies ={
 	@Param: String value The value the cookie holds, set cookies are limited to <4k
 	@Param: Days number The number of days to rememeber the value for. If not set they become session cookies and expire when the user closes the browser
 	@Example:
-	set('name', 'paul');
-	
-	//if globals are not enabled
 	sb.cookies.set('name', 'paul');
 	
 	*/
@@ -71,9 +65,6 @@ sb.cookies ={
 	@Description: Used to make the clients computer forget a cookie
 	@Param: String name The name (key) of the cookie which will be forgotten
 	@Example:
-	forget('myCookie');
-
-	//without globals
 	sb.cookies.forget('myCookie');
 	*/
 	forget : function(name){
