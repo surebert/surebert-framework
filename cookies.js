@@ -74,7 +74,7 @@ sb.cookies ={
 	
 	/**
 	@Name: sb.cookies.forgetAll
-	@Description: Forgets all cookies stored for your server
+	@Description: Forgets all cookies stored for your domain
 	@Example:
 	sb.cookies.forgetAll();
 	*/
