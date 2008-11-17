@@ -10,9 +10,6 @@ var myString = 'hello world on earth';
 
 var answer = myString.substrCount('world');
 //answer = 1;
-
-//or
-sb.strings.substrCount.call(myString);
 */
 sb.strings.substrCount = function(needle){
 	var cnt = 0;

@@ -9,9 +9,6 @@ var str = '12';
 
 var answer = str.isNumeric();
 //answer = true
-
-//without globals
-sb.strings.isNumeric.call(str);
 */
 sb.strings.isNumeric = function(){
 	return /^\d+?(\.\d+)?$/.test(this);

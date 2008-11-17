@@ -11,9 +11,6 @@ var myString = 'rgb(255,255,255)';
 
 var newString = myString.rgb2hex();
 //newString = '#FFFFFF'
-
-//or
-sb.strings.rgb2hex.call(myString);
 */
 
 sb.strings.rgb2hex = function(asArray){

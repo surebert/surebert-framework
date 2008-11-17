@@ -7,9 +7,6 @@ var str = '    hello world       ';
 
 var newString = str.trim();
 //newString = 'hello world'
-
-//without globals
-sb.strings.trim.call(str);
 */
 sb.strings.trim = function() {
 	var str = this.replace(/(^\s+|\s+$)/, '');

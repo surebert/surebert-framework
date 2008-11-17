@@ -7,17 +7,12 @@
 @Return: Number If the original value is an interger, an integer value is returned
 @Example:
 var myString = '12';
-
 var num = myString.toNumber() +2;
 //num = 14 //without running toNumber it would return '122'
 
 var myString = '12.4';
-
 var num = myString.toNumber() +2;
 //num = 14.4 //without running toNumber it would return '12.42'
-
-//or
-sb.strings.toNumber.call(myString);
 */
 sb.strings.toNumber = function(){
 	if(this.match(/\./)){

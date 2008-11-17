@@ -10,8 +10,6 @@ var myString = "hello\nworld";
 var newString = myString.nl2br();
 //newString = 'hello<br />world';
 
-//or
-sb.strings.nl2br.call(myString);
 */
 sb.strings.nl2br = function(){
 	var re = new RegExp("\n", "ig");

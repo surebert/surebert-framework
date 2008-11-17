@@ -9,8 +9,6 @@ var myString = 'http://www.google.com/logo.gif';
 var newString = myString.basename();
 //newString = 'logo.gif';
 
-//or
-sb.strings.basename.call(myString);
 */
 sb.strings.basename = function(){
 	var re = new RegExp("/\\/", "g");

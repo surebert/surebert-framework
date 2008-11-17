@@ -8,9 +8,6 @@
 var myString = 'hello<br />there';
 var newString = myString.br2nl();
 //newString = "hello\nthere";
-
-//or
-sb.strings.br2nl.call(myString);
 */
 sb.strings.br2nl = function(){
 	var re = new RegExp("<[br /|br]>", "ig");

@@ -11,9 +11,6 @@ var myString = 'There was a dog on earth';
 
 var newString = myString.hilite('dog');
 //newString = 'There was a <u style="backgroundColor:yellow;">dog</u> on earth';
-
-//or
-sb.strings.hilite.call(myString, 'dog');
 */
 sb.strings.hilite = function(needle, className){
 	className = (typeof className != 'undefined') ? ' class="'+className+'" ' : ' style="background-color:yellow;" ';

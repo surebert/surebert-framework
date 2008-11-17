@@ -10,9 +10,6 @@ var myString = 'hello world on earth';
 
 var answer = myString.strstr('world');
 //answer = true;
-
-//or
-sb.strings.strstr.call(myString);
 */
 sb.strings.strstr =  function(needle){
 	var f= this.indexOf(needle)+1;

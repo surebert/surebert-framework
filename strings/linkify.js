@@ -10,9 +10,6 @@ var myString = 'Here http://www.surebert.com is a great javascript toolkit';
 
 var newString = myString.linkify();
 //newString = 'Here <a href="http://www.surebert.com" target="_blank">::link::</a> is a great javascript toolkit';
-
-//or
-sb.strings.linkify.call(myString, target);
 */
 sb.strings.linkify = function(target){
 	target = target || '_blank';

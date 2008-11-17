@@ -11,9 +11,6 @@
 var myString = 'hello world';
 var answer = myString.substrReplace('girl', 0, 4);
 answer = 'girlo world';
-
-//or
-sb.strings.substrReplace.call(myString, 'girl', 0, 4);
 */
 sb.strings.substrReplace = function(replaceWith, start, length){
 	return this.replace(this.substring(start, (start+length)), replaceWith );

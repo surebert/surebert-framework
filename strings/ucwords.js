@@ -9,9 +9,6 @@ var myString = 'hello world';
 
 var newString = myString.ucwords();
 //newString = 'Hello World'
-
-//or
-sb.strings.ucwords.call(myString);
 */
 
 sb.strings.ucwords = function(){

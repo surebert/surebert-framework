@@ -9,9 +9,6 @@ var myString = 'hello              ';
 
 var newString = myString.rtrim();
 //newString = 'hello';
-
-//or
-sb.strings.rtrim.call(myString);
 */
 sb.strings.ltrim = function(){
 	return this.replace(/\s+$/, "");

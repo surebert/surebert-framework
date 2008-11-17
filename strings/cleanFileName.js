@@ -8,9 +8,6 @@
 var myString = 'hello there,, file . jpg';
 var newString = myString.cleanFileName();
 //newString = 'helloThereFile.jpg'
-
-//or
-sb.strings.cleanFileName.call(myString);
 */
 sb.strings.cleanFileName = function(){
 	var ext = this.match(/\.\w{2,3}$/);

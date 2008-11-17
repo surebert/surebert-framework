@@ -8,9 +8,6 @@
 var str = '<p>hello</p>';
 var newString = str.escapeHTML();
 //newString = '&lt;p&gt;hello&lt;/p&gt;'
-
-//without globals
-sb.strings.escapeHTML.call(str);
 */
 sb.strings.escapeHTML = function(){
 	var str = this.replace(/</g, '&lt;');

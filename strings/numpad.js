@@ -9,9 +9,6 @@ var myString = 9;
 
 var newString = myString.numpad();
 //newString = '09'
-
-//or
-sb.strings.numpad.call(myString);
 */
 sb.strings.numpad = function(){
 	return (this<=9) ? '0'+this : this;

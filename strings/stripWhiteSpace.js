@@ -9,9 +9,6 @@ var myString = 'hello world on earth';
 
 var newString = myString.stripWhitespace();
 //newString = 'helloworldonearth'
-
-//or
-sb.strings.stripWhitespace.call(myString);
 */
 sb.strings.stripWhitespace = function(){
 	return this.replace(new RegExp("\\s", "g"), "");

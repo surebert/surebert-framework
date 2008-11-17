@@ -9,9 +9,6 @@ var myString = 'hello <p>world</p> on earth';
 
 var newString = myString.stripHTML();
 //newString = 'hello world on earth'
-
-//or
-sb.strings.stripHTML.call(myString);
 */
 sb.strings.stripHTML = function(){
 	var re = new RegExp("(<([^>]+)>)", "ig");
