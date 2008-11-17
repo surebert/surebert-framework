@@ -2587,7 +2587,7 @@ sb.element.prototype = {
 	
 	/**
 	@Name: sb.element.prototype.styles
-	@Description: 
+	@Description: Sets multiple style properties for an sb.element
 	@Param: Object params An object with css style/value pairs that are applied to the object
 	@Return: returns itself
 	@Example:
