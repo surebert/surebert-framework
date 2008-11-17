@@ -1122,7 +1122,7 @@ sb.objects = {
 };
 
 /**
-@Name: sb.sb.nodeList
+@Name: sb.nodeList
 @Description: Used to create sb.nodeLists which are groups of sb.elements that have many of the same methods as sb.element but which act on all sb.elements in the sb.nodeList. It also has all the properties of an sb.array. These are returned by sb.s$
 */
 //sb.nodeList 
