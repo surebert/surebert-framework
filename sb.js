@@ -1706,7 +1706,7 @@ sb.ajax.prototype = {
 					t.count = 0;
 					
 					if(typeof t.onTimeout == 'function'){
-						t.timeout();
+						t.onTimeout();
 					}
 					
 					window.clearInterval(t.timer);
