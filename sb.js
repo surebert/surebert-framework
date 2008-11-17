@@ -2558,10 +2558,8 @@ sb.element.prototype = {
 	@Name: sb.element.prototype.eventRemove
 	@Description: Removes an event created with sb.element.prototype.event
 	@Param: String evt An event reference returned from the sb.element instances event method above.
-	
 	@Example:
-	
-	//sets the backgroundColor peroperty to red
+	//sets the backgroundColor property to red
 	var myEvt = myElement.event('click', function(e){
 		alert(this.innerHTML);
 	});
@@ -2574,11 +2572,9 @@ sb.element.prototype = {
 	},
 	
 	/**
-	@Name: sb.element.prototype.eventRemove
+	@Name: sb.element.prototype.eventsRemoveAll
 	@Description: Removes all event observers for the sb.element that were added using this.event() or this.events()
-
 	@Example:
-	
 	myElement.eventsRemoveAll();
 	*/
 	eventsRemoveAll : function(){
