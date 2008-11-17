@@ -69,8 +69,7 @@ function over10(val, key, arr) {
 
 var myArray = [5, 10, 15];
 myArray.every(over10);
-returns false because not every number in the array is over 10
-
+//returns false because not every number in the array is over 10
 */
 Array.prototype.every = function(func){
 	var k;
