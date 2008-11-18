@@ -1,4 +1,5 @@
 sb.include('effect');
+sb.include('browser.getScrollPosition');
 /**
 @Name:  sb.browser.scrollTo
 @Author: Paul Visco
