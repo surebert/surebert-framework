@@ -2728,7 +2728,7 @@ sb.element.prototype = {
 };
 
 if(!Array.prototype.forEach){
-	sb.include('arrays.js1_5')
+	sb.include('js1_5')
 }
 
 if(sb.browser.ie6){
