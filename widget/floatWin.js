@@ -1,5 +1,5 @@
 sb.include('Element.prototype.makeDraggable');
-sb.include('String.Prototype.isNumeric');
+sb.include('String.prototype.isNumeric');
 
 sb.widget.floatWin = function(o){
 	

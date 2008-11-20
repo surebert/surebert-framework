@@ -1,9 +1,9 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.6 04/24/04 - 11/21/08
+@Version: 4.601 04/24/04 - 11/21/08
 @Package: surebert
 */
-	
+
 /**
 @Name: $
 @Description: One of the most important parts of the surebert library. Can reference DOM elements in many way using CSS selectors.  The simplest use of it is to reference DOM elements by their id property.
@@ -623,7 +623,7 @@ var sb = {
 			try{
 				unit = unit[mods[m]];
 			} catch(e){
-				alert(e);
+				throw(mods.join('.')+' cannot be loaded by sb.include');
 			}
 		
 			if(typeof unit == 'undefined'){
