@@ -1,6 +1,6 @@
-//sb.include('forms.textarea');
+sb.include('forms.textarea');
 sb.include('browser.removeSelection');
-sb.include('flashGate');
+sb.include('sharedObject');
 sb.include('String.prototype.isNumeric');
 
 /*
@@ -61,7 +61,7 @@ sb.forms.textarea.textBling.prototype = {
 	},
 	
 	clearStorage : function(){
-		sb.sharedObject.forget(this.editBox.id);
+		sb.sharedObject.clear(this.editBox.id);
 	},
 	
 	addEvents : function(){
