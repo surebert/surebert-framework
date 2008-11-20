@@ -10,7 +10,7 @@
  */
 
 /**
-@Name: String.prototype.md5
+@Name: sb.md5
 @Author: Paul Visco
 @Version: 1.0 11/19/07
 @Description: Converts a string into a unqiue, md5 one way hash
@@ -19,7 +19,7 @@
 var myString = 'hello world';
 var md5String = String.prototype.md5.hex.call(myString);
 */
-String.prototype.md5 = {
+sb.md5 = {
 	
 	/**
 	@Description: Used Internally. The case of the hex output (0 = lowercase 1 = uppercase)
@@ -309,7 +309,7 @@ String.prototype.md5 = {
 			for(var j = 0; j < 4; j++){
 				
 			  if(i * 8 + j * 6 > binarray.length * 32) {
-			  	str += String.prototype.md5.b64pad;
+			  	str += sb.md5.b64pad;
 			  } else {
 			  	str += tab.charAt((triplet >> 6*(3-j)) & 0x3F);
 			  }
@@ -329,5 +329,5 @@ String.prototype.md5 = {
 'hello world'.md5(); //return the md5 of the string 'hello world'
 */
 String.prototype.md5 = function(){
-	return String.prototype.md5.hex(this);
+	return sb.md5.hex(this);
 };
