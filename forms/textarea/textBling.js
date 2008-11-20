@@ -1,7 +1,7 @@
 //sb.include('forms.textarea');
 sb.include('browser.removeSelection');
 sb.include('flashGate');
-sb.include('strings.isNumeric');
+sb.include('String.prototype.isNumeric');
 
 /*
 Author: Paul Visco
@@ -27,8 +27,8 @@ myBling.basic();
 */
 
 sb.forms.textarea.textBling = function(editBar, editBox){
-	this.editBar = sb.s$(editBar);
-	this.editBox = sb.s$(editBox);
+	this.editBar = $(editBar);
+	this.editBox = $(editBox);
 	this.editBar.editBox = this.editBox;
 	this.addEvents();
 };

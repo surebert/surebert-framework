@@ -1,4 +1,4 @@
-sb.include('strings.numpad');
+sb.include('String.prototype.numpad');
 
 /**
 @Name: sb.date
@@ -58,10 +58,10 @@ sb.date.prototype= {
 			d.setTime(this.timestamp*1000);
 		}
 		
-		d.m = sb.strings.numpad.call(d.getMonth()+1);
+		d.m = String(d.getMonth()+1).numpad();
 		d.F = sb.dates.months[d.getMonth()];
 		d.M = d.F.substr(0,3);
-		d.d = sb.strings.numpad.call(d.getDate());
+		d.d = String(d.getDate()).numpad();
 
 		d.l = String(sb.dates.days[d.getDay()]);
 		d.D = d.l.substr(0,3);
@@ -69,15 +69,15 @@ sb.date.prototype= {
 		d.Y = String(d.getFullYear());
 		d.y = d.Y.substr(2,4); 
 		
-		d.H = sb.strings.numpad.call(d.getHours());
+		d.H = String(d.getHours()).numpad();
 		d.G = d.getHours();
 		d.g = (d.H >12) ?  d.H-12 : d.H;
-		d.h = (d.H >12) ?  sb.strings.numpad.call(d.H-12) : d.H;
+		d.h = (d.H >12) ?  String(d.H-12).numpad() : d.H;
 		d.a = (d.H < 12) ? 'am' : 'pm';
 		d.A = d.a.toUpperCase();
 		
 		d.i = d.getMinutes();
-		d.s = sb.strings.numpad.call(d.getSeconds());
+		d.s = String(d.getSeconds()).numpad();
 		d.U = Date.parse(d)/1000;
 		d.n = d.getMilliseconds();
 		d.date = d.m+'/'+d.d+'/'+d.y;

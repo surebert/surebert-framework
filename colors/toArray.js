@@ -1,3 +1,4 @@
+sb.include('String.prototype.stripWhiteSpace');
 /**
 @Name: sb.colors.toArray
 @Author: Paul Visco
@@ -13,14 +14,12 @@ var colorArray = sb.colors.toArray('rbg(255,255,255)');
 */
 sb.colors.toArray = function(color){
 
-	sb.include('strings.stripWhiteSpace');
-
 	if(color.match(/\#/)){
-		color = sb.strings.hex2rgb.call(color);
+		color = color.hex2rgb();
 	}
 	
 	var re = new RegExp('rgb\\((\\d{1,}),(\\d{1,}),(\\d{1,})\\)', "ig");
-	var colors = re.exec(sb.strings.stripWhitespace.call(color));
+	var colors = re.exec(color.stripWhitespace());
 	
 	return [colors[1], colors[2], colors[3]];
 	

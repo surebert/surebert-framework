@@ -19,7 +19,7 @@
 
 @Example: 
 //set the DOM el we want to work with
-var myDiv = s$('#accord');
+var myDiv = $('#accord');
 //create an custom effect
 var myEffect = new sb.effect({
 	el : myDiv,
@@ -93,7 +93,7 @@ sb.effect.prototype = {
 	setParams : function(params){
 		sb.objects.infuse(params, this);
 		if(typeof params.el !='undefined'){
-			this.el = sb.s$(this.el);
+			this.el = $(this.el);
 		} 
 		
 	},

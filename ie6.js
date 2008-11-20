@@ -54,7 +54,7 @@ sb.ie6 = {
 	pngFixBg : function(el){
 			var png='';
 
-			el = sb.s$(el);
+			el = $(el);
 		
 			if(el.currentStyle.backgroundImage.match(/\.png/)){
 			png = el.currentStyle.backgroundImage;

@@ -2,11 +2,11 @@ sb.include('browser.removeSelection');
 
 /**
 @Name: sb.drag
-@Description: Used by sb.element.prototype.makeDraggable.
-An event handler which makes DOM nodes draggable.  Any super element (from sb.element or s$) can become draggable using this.  Draggable elements have three additional methods and two setting.  The additional methods are ondragstop, ondragstart, and ondrag.  The properties are lockX and lockY.  Any element within the element being set as draggable that has a className which contains "dragHandle" is set as the handle to drag the object with.  Items can have multiple handles.
+@Description: Used by Element.prototype.makeDraggable.
+An event handler which makes DOM nodes draggable.  Any super element (from sb.element or $) can become draggable using this.  Draggable elements have three additional methods and two setting.  The additional methods are ondragstop, ondragstart, and ondrag.  The properties are lockX and lockY.  Any element within the element being set as draggable that has a className which contains "dragHandle" is set as the handle to drag the object with.  Items can have multiple handles.
 @Example:
 <div id="dragme" class="dragPaper" ><p class="dragHandle" style="background-color:red;border:1px solid black;">Drag From Here</p><p>Here is an drag box with a handle and some text</p></div>
-var draggableThing = s$('#dragme');
+var draggableThing = $('#dragme');
 draggableThing.makeDraggable();
 
 //to stop this element from being draggable
@@ -85,7 +85,7 @@ sb.drag = {
 		var x=e.clientX, y=e.clientY, el;
 		var scroll = sb.browser.getScrollPosition();
 		
-		el = sb.s$(this);
+		el = $(this);
 		
 		//set handlers
 		if(typeof this.ondrag == 'function'){
@@ -107,7 +107,7 @@ sb.drag = {
 		}
 		
 		while(el.nodeType == 3 || el.getStyle('position') == 'static'){
-			el = sb.s$(el.parentNode);
+			el = $(el.parentNode);
 		}
 		
 		el.x = {

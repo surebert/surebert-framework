@@ -1,9 +1,9 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.51 04/24/04 11/03/08
+@Version: 4.6 04/24/04 - 11/21/08
 @Package: surebert
 */
-
+	
 /**
 @Name: $
 @Description: One of the most important parts of the surebert library. Can reference DOM elements in many way using CSS selectors.  The simplest use of it is to reference DOM elements by their id property.
@@ -53,10 +53,12 @@ e.g. 'p, b, #wrapper' Commas allow you to make multiple selections at once.This 
 
 e.g  '*:not(p)' LIMITED SUPPORT - returns all nodes that are not p tags
 */
+
 $ = function(selector, root, superfy) {
 	
 	root = root || document;
-	superfy = superfy || false;
+	
+	superfy = superfy || true;
 	
 	//return items that are already objects
 	if(!(typeof selector == 'string')){return selector;}
@@ -84,32 +86,6 @@ $ = function(selector, root, superfy) {
 		return nodeList;
 	}
 	
-};
-
-s$ = function(selector, root){
-
-	if(typeof selector == 'string'){
-		return $(selector, root, true);	
-	} else if(typeof selector == 'object' && Element.emulated && !selector.styles){
-		
-		selector = (selector instanceof Array) ? selector : [selector];
-		
-		var x,prop,sbe = sb.element.prototype,len = selector.length;
-	
-		for(x=0;x<len;x++){
-			for(prop in sbe){
-				selector[x][prop] = sbe[prop];
-			}
-		}
-		if(selector.length == 1){
-			return selector[0];
-		} else {
-			return selector;
-		}
-			
-	} else {
-		return selector;
-	}
 };
 
 /**
@@ -574,36 +550,6 @@ $.parsePseudoSelectors = function(within, selector){
 var sb = {
 	$ : $,
 	
-	s$ : s$,
-	
-	/**
-	@Name: sb.addGlobals
-	@Description: Used Internally.  Used as create a few useful globals if sbNoGlobals is not true.
-	*/
-	addGlobals : function(){
-		var prop;
-		
-		for(prop in sb.strings){
-			if(typeof String.prototype[prop] =='undefined'){
-				String.prototype[prop] = sb.strings[prop];
-			}
-		}
-	
-		for(prop in sb.arrays){
-			if(typeof Array.prototype[prop] =='undefined'){
-				Array.prototype[prop] = sb.arrays[prop];
-			}	
-		}
-		
-		for(prop in sb.element.prototype){
-			if(typeof Element != 'undefined' && typeof Element.prototype[prop] =='undefined'){
-				
-				Element.prototype[prop] = sb.element.prototype[prop];
-			}	
-		}
-
-	},
-	
 	/**
 	@Name: sb.base
 	@Description: Used Internally to find required files
@@ -657,12 +603,15 @@ var sb = {
 	@Name: sb.include
 	@Description:  Includes another surebert module.  Make sure you surebert files are in /surebert or that you have set sb.base before using this.
 	@Example:
-	sb.include('strings.nl2br');
+	sb.include('String.prototype.nl2br');
 	*/
 	include : function(module){
 		
 		var mods = module.split('.');
 		var path ='', file, unit=sb,m;
+		if(mods[0] == 'String' || mods[0] == 'Element' || mods[0] == 'Array'){
+			unit = window;
+		}
 		
 		for(m=0;m<mods.length;m++){
 			
@@ -673,7 +622,9 @@ var sb = {
 			
 			try{
 				unit = unit[mods[m]];
-			} catch(e){}
+			} catch(e){
+				alert(e);
+			}
 		
 			if(typeof unit == 'undefined'){
 					
@@ -717,6 +668,7 @@ var sb = {
 							
 						evaled=0;
 						delete e.stack;
+						
 						sb.consol.error(sb.messages[13]+"\nURL: "+url+"\n"+sb.objects.dump(e));
 						
 					}
@@ -1143,8 +1095,6 @@ sb.nodeList = function(params){
 		};
 	});
 	
-	this.remapElementPrototypesToSelf();
-	
 };
 
 sb.nodeList.prototype = {
@@ -1166,13 +1116,13 @@ sb.nodeList.prototype = {
 	@Description: Empties the nodes array
 	*/
 	nodes_to_super : function(){
-		
+	
 		if(Element.emulated){
-			var x,prop,sbe = sb.element.prototype,len = this.nodes.length;
+			var x,prop,ep = Element.prototype,len = this.nodes.length;
 		
 			for(x=0;x<len;x++){
-				for(prop in sbe){
-					this.nodes[x][prop] = sbe[prop];
+				for(prop in ep){
+					this.nodes[x][prop] = ep[prop];
 				}
 			}
 			
@@ -1214,9 +1164,9 @@ sb.nodeList.prototype = {
 		
 		var prop,x=0,node;
 		
-		var add_sbep = (this.create_super_elements && Element.emulated);
+		var add_ep = (this.create_super_elements && Element.emulated);
 		
-		var sbep = sb.element.prototype;
+		var ep = Element.prototype;
 		
 		for(x=0;x<len;x++){
 			node=nodes[x];
@@ -1227,9 +1177,10 @@ sb.nodeList.prototype = {
 			
 			if(!this.sb_ids[node.sb_id]){
 				
-				if(add_sbep){
-					for(prop in sbep){
-						node[prop] = sbep[prop];
+				if(add_ep){
+					
+					for(prop in ep){
+						node[prop] = ep[prop];
 					}
 				}
 				this.nodes.push(node);
@@ -1239,7 +1190,7 @@ sb.nodeList.prototype = {
 	},
 	/**
 	@Name: sb.nodeList.prototype.drop
-	@Description: drop dom nodes, either array o single node from a sb.sb.nodeList
+	@Description: drop dom nodes, either array o single node from a sb.nodeList
 	@Example: 
 	var nodes = $('ol li');
 	//adds element with id 'wrapper' to the node list
@@ -1250,7 +1201,7 @@ sb.nodeList.prototype = {
 	drop : function(el){
 		
 		var t = this;
-		el = sb.s$(el);
+		el = $(el);
 		
 		this.nodes = t.nodes.filter(function(v){
 			if(sb.typeOf(el) == 'sb.element'){
@@ -1266,7 +1217,7 @@ sb.nodeList.prototype = {
 	},
 	
 	/**
-	@Name: sb.sb.nodeList.prototype.length()
+	@Name: sb.nodeList.prototype.length()
 	@Description: Return the length of the this.nodes array which represents how many nodes the nodeList instance is holding
 	*/
 	length : function(){
@@ -1274,7 +1225,7 @@ sb.nodeList.prototype = {
 	},
 	
 	/**
-	@Name: sb.sb.nodeList.prototype.fireElementPrototypes
+	@Name: sb.nodeList.prototype.fireElementPrototypes
 	@Description: Used Internally. Adds the prototypes from sb.element to the group
 	*/
 	fireElementPrototypes : function(func){
@@ -1293,25 +1244,29 @@ sb.nodeList.prototype = {
 	},
 	
 	/**
-	@Name: sb.sb.nodeList.prototype.remapElementPrototypesToSelf
-	@Description: Used Internally. Adds the sb.element.prototype properties to the sb.nodeList instance
+	@Name: sb.nodeList.prototype.addElementPrototypes
+	@Description: Used Internally. Adds the Element.prototype properties to the sb.nodeList instance
 	*/
-	remapElementPrototypesToSelf : function(){
-		var sbep = sb.element.prototype;
-		for(var prop in sbep){
-			
-			if (typeof sbep[prop] == 'function') {
-				this[prop] = this.fireElementPrototypes(prop);
-			}
+	addElementPrototypes : function(){
+		var ep = Element.prototype;
+		
+		//had to add try catch for ff as there are some native ep thats throw errors
+		for(var prop in ep){
+			try{
+				if (ep.hasOwnProperty(prop) && typeof ep[prop] == 'function') {
+				
+					this[prop] = this.fireElementPrototypes(prop);
+				}
+			}catch(e){}
 		}
 	},
 	/**
-	@Name: sb.sb.nodeList.prototype.typeOf
+	@Name: sb.nodeList.prototype.typeOf
 	@Description: Used Internally for sb.typeOf
 	*/
 	typeOf : function(){
 		
-		return 'sb.sb.nodeList';
+		return 'sb.nodeList';
 	}
 	
 };
@@ -1852,99 +1807,83 @@ sb.dom = {
 };
 
 /**
-@Name: sb.arrays
-@Description: These are used as native array prototypes if globals are not turned off.  Even when globals are turned off methods every, filter, forEach, indexOf, lastIndexOf, map, reduce, and reduceRight all are global if not already defined by you browser as part of javascript 1.6-1.8.  This allows you to use these javascript array method in any browser.
+@Name: Array.inArray
+@Description: Checks to see if a value is contained in the array
+@Param: Object/String/Number val Method checks to see if val is in the array
+@Return: Boolean True or False
+@Example:
+var myArray = [1,2,3];
+var answer = myArray.inArray(2);
+//answer is true
 */
-	
-sb.arrays = {
-	
-	/**
-	@Name: sb.arrays.inArray
-	@Description: Checks to see if a value is contained in the array
-	@Param: Object/String/Number val Method checks to see if val is in the array
-	@Return: Boolean True or False
-	@Example:
-	var myArray = [1,2,3];
-	var answer = myArray.inArray(2);
-	//answer is true
-	*/
-	inArray : function(val){
-		return this.some(function(v){return v===val;});
-	},
-	/**
-	@Name: sb.arrays.remove
-	@Author: Paul Visco
-	@Version: 1.1 11/19/07
-	@Description: Removes a value or a set of values from an array.
-	@Param: values Array If passed an array of values, all the values in the argument array are removed from the array being manipulated
-	@Param: value Object/String/Number If a single object, string, number, etc is passed to the function than only that value is removed.
-	@Return: Array Returns the array minus the values that were specified for removal.
-	@Example:
-	var myArray = [5, 10, 15];
-	var answer = myArray.remove([10,5]);
-	//answer =[15];
-	
-	var answer = myArray.remove(5);
-	//answer =[10, 15];
-	*/
-	remove : function(values){
-		
-		return this.filter(function(v){
-			if(sb.typeOf(values) !='array'){
-				return v != values;
-			} else {
-				return !sb.arrays.inArray.call(values, v);
-			}
-		});
-	}
+Array.prototype.inArray = function(val){
+	return this.some(function(v){return v===val;});
 };
 
 /**
-@Name: sb.strings
-@Description: String manipulation methods - these are prototyped to the native Strings when globals are not disabled
+@Name: Array.remove
+@Author: Paul Visco
+@Version: 1.1 11/19/07
+@Description: Removes a value or a set of values from an array.
+@Param: values Array If passed an array of values, all the values in the argument array are removed from the array being manipulated
+@Param: value Object/String/Number If a single object, string, number, etc is passed to the function than only that value is removed.
+@Return: Array Returns the array minus the values that were specified for removal.
+@Example:
+var myArray = [5, 10, 15];
+var answer = myArray.remove([10,5]);
+//answer =[15];
+
+var answer = myArray.remove(5);
+//answer =[10, 15];
 */
-sb.strings = {
+Array.prototype.remove = function(values){
 	
-	/**
-	@Name: sb.strings.hex2rgb
-	@Description: Used internally, converts hex to rgb
-	@Example:
-	var str = '#FF0000';
-	
-	var newString = str.hex2rgb();
-	//newString = 'rgb(255,0,0)'
-	*/
-	hex2rgb : function(asArray){
-		var hex = this.replace(/(^\s+|\s+$)/).replace("#", "");
-		var rgb = parseInt(hex, 16); 
-		var r   = (rgb >> 16) & 0xFF;
-		var g = (rgb >> 8) & 0xFF; 
-		var b  = rgb & 0xFF;
-		
-		if(asArray){
-			return [r,g,b];
+	return this.filter(function(v){
+		if(sb.typeOf(values) !='array'){
+			return v != values;
 		} else {
-			return 'rgb('+r+', '+g+', '+b+')';
+			return !values.inArray(v);
 		}
-	},
-	
-	/**
-	@Name: sb.strings.toCamel
-	@Description: Converts all dashes to camelStyle
-	@Return: String The original string with dashes converted to camel - useful when switching between CSS and javascript style properties
-	@Example:
-	var str = 'background-color';
-	
-	var newString = str.toCamel();
-	//newString = 'backgroundColor'
-	*/
-	toCamel : function(){
-		return String(this).replace(/-\D/gi, function(m){
-			return m.charAt(m.length - 1).toUpperCase();
-		});
-	}
+	});
 };
 
+/**
+@Name: String.prototype.hex2rgb
+@Description: Used internally, converts hex to rgb
+@Example:
+var str = '#FF0000';
+var newString = str.hex2rgb();
+//newString = 'rgb(255,0,0)'
+*/
+String.prototype.hex2rgb = function(asArray){
+	var hex = this.replace(/(^\s+|\s+$)/).replace("#", "");
+	var rgb = parseInt(hex, 16); 
+	var r   = (rgb >> 16) & 0xFF;
+	var g = (rgb >> 8) & 0xFF; 
+	var b  = rgb & 0xFF;
+	
+	if(asArray){
+		return [r,g,b];
+	} else {
+		return 'rgb('+r+', '+g+', '+b+')';
+	}
+};
+	
+/**
+@Name: String.prototype.toCamel
+@Description: Converts all dashes to camelStyle
+@Return: String The original string with dashes converted to camel - useful when switching between CSS and javascript style properties
+@Example:
+var str = 'background-color';
+
+var newString = str.toCamel();
+//newString = 'backgroundColor'
+*/
+String.prototype.toCamel = function(){
+	return String(this).replace(/-\D/gi, function(m){
+		return m.charAt(m.length - 1).toUpperCase();
+	});
+};
 /**
 @Name: sb.styles
 @Description: Methods used to manipulate CSS and javascript styles
@@ -2094,7 +2033,7 @@ sb.events = {
 			tar = sb.events.target(e);
 			
 		}
-		return sb.s$(tar);
+		return $(tar);
 	},
 		
 	/**
@@ -2120,7 +2059,7 @@ sb.events = {
 	
 	/**
 	@Name: sb.events.removeAll
-	@Description: Removes all event listeners added with sb.events.add or sb.elements or s$'s event method
+	@Description: Removes all event listeners added with sb.events.add or sb.elements or $'s event method
 
 	@Example:
 	sb.events.removeAll();
@@ -2186,7 +2125,7 @@ sb.events = {
 	      tar = tar.parentNode;
 	   }
 	
-	   return sb.s$(tar);
+	   return $(tar);
 	}
 	
 };
@@ -2194,7 +2133,7 @@ sb.events = {
 /**
 @Name: sb.element
 @Description: Used to create DOM nodes.  If a string is passed to the fuction it simply return document.createElement(str);
-@Param: Object o An object of properties which are used to contruct the DOM object,  all properites are appending as properties to the dom object.  sb.elements have many methods whcih are all listed in the sb.element.prototype object below
+@Param: Object o An object of properties which are used to contruct the DOM object,  all properites are appending as properties to the dom object.  sb.elements have many methods whcih are all listed in the Element.prototype object below
 @Param: String o If passed a nodeName as a string it simply returns document.createElement(nodeName);
 @Param: Object sb.element If passed an sb.element it uses that element as a template and clones it
 @Return: Element A DOM element hat can be inserted into the DOM or further manipulated
@@ -2247,7 +2186,7 @@ sb.element = function(o){
 	
 	//copy properties from the sb.element prototype
 	if(Element.emulated){
-		sb.objects.infuse(sb.element.prototype, el);
+		sb.objects.infuse(Element.prototype, el);
 		o = sb.objects.copy(o);
 	}
 	
@@ -2289,442 +2228,449 @@ sb.element = function(o){
 };
 
 /**
+ * Create Element for IE and browsers that don't have it, notify that we are emulating so that we can copy properties as required
+ */
+if(typeof Element == 'undefined'){
+		Element = function(){};
+		Element.emulated = true;
+		Element.prototype = {};
+}
+
+/**
 @Name: sb.element.protoype
-@Description: Methods of sb.element instances. Assume that myElement is an sb.element instance in all examples of sb.element.prototype
+@Description: Methods of sb.element instances. Assume that myElement is an sb.element instance in all examples of Element.prototype
 */
-sb.element.prototype = {
+Element.prototype.$ = function(selector){
+	return $(selector, this);
+};
+	
+/**
+@Name: Element.prototype.addClassName
+@Description: Adds a className to the sb.element, using this methods sb.element instances can have multiple classNames
+@Param: String c The classname to add
+@Return: returns itself
+@Example:
+myElement.addClassName('redStripe');
+*/
+Element.prototype.addClassName = function(className){
+	this.className += ' '+className;
+	
+	return this;
+};
 
-	s$ : function(selector){
-		return s$(selector, this);
-	},
-	
-	/**
-	@Name: sb.element.prototype.addClassName
-	@Description: Adds a className to the sb.element, using this methods sb.element instances can have multiple classNames
-	@Param: String c The classname to add
-	@Return: returns itself
-	@Example:
-	myElement.addClassName('redStripe');
-	*/
-	addClassName : function(className){
-		this.className += ' '+className;
-		
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.append
-	@Description: Appends another DOM element to the element as a child
-	@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
-	@Example:
-	myElement.append(myOtherElement);
-	*/
-	append : function(el){return this.appendChild(sb.$(el));},
-	
-	/**
-	@Name: sb.element.prototype.appendTo
-	@Description: Appends the element to another DOM element as a child
-	@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
-	@Return: Element A refernce to the appended node
-	@Example:
-	//appends myElement to the page body
-	myElement.appendTo('body');
-	
-	//appends myElement to a div with the ID "myDiv"
-	myElement.appendTo('#myDiv');
-	
-	*/
-	appendTo : function(el){
-		return sb.$(el).appendChild(this);
-	},
-	
-		/**
-	@Name: sb.element.prototype.appendToTop
-	@Description: Appends the element to the top DOM element as a child
-	@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
-	@Return: Element A refernce to the appended node
-	@Example:
-	//appends myElement to the page body
-	myElement.appendToTop('body');
-	
-	//appends myElement to a div with the ID "myDiv"
-	myElement.appendToTop('#myDiv');
-	
-	*/
-	appendToTop : function(el){
-		el = sb.$(el);
-	
-		if(el.childNodes.length ===0){
-			return this.appendTo(el);
-		} else {
-			return this.appendBefore(el.firstChild);
-		}
-	},
+/**
+@Name: Element.prototype.append
+@Description: Appends another DOM element to the element as a child
+@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
+@Example:
+myElement.append(myOtherElement);
+*/
+Element.prototype.append = function(el){return this.appendChild(sb.$(el));};
+
+/**
+@Name: Element.prototype.appendTo
+@Description: Appends the element to another DOM element as a child
+@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
+@Return: Element A refernce to the appended node
+@Example:
+//appends myElement to the page body
+myElement.appendTo('body');
+
+//appends myElement to a div with the ID "myDiv"
+myElement.appendTo('#myDiv');
+
+*/
+Element.prototype.appendTo = function(el){
+	return sb.$(el).appendChild(this);
+};
 
 	/**
-	@Name: sb.element.prototype.appendAfter
-	@Description: Appends the element after another DOM element as a sibling
-	@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
-	@Example:
-	//appends myElement to the parent of "#myDiv" as a sibling of "#myDiv" directly after "#myDiv"
-	myElement.appendAfter('#myDiv');
-	
-	*/
-	appendAfter : function(after){
-		var after = s$(after);
-		
-		if(after.nextSibling){
-			while((after = after.nextSibling) && after.nodeType != 1){}
-			var nxtSib = after;
-		}
-	
-		if(nxtSib){
-			return nxtSib.parentNode.insertBefore(this, nxtSib);
-		} else {
-			return this.appendTo(after.parentNode);
-		}
-		
-	},
-	
-	/**
-	@Name: sb.element.prototype.appendBefore
-	@Description: Appends the element before another DOM element as a sibling
-	@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
-	@Example:
-	//appends myElement to the parent of "#myDiv" as a sibling of "#myDiv" directly before "#myDiv"
-	myElement.appendBefore('#myDiv');
-	
-	*/
-	appendBefore : function(before){
-		before = sb.$(before);
-		return before.parentNode.insertBefore(this, before);
-	},
-	
-	/**
-	@Name: sb.element.prototype.getX
-	@Description: Calculates the absolute x position of an element
-	@Return: Integer the x position of an element
-	@Example:
-	myElement.getX();
-	*/
-	getX : function(){
-		var x = 0, el=this;
-		while(el !== null){
-			x += el.offsetLeft;
-			el = el.offsetParent;
-		}
-		return x;
-	},
-	
-	/**
-	@Name: sb.element.prototype.getY
-	@Description: Calculates the absolute x position of an element
-	@Return: Integer the y position of an element
-	
-	@Example:
-	myElement.getY();
-	*/
-	getY : function(){
-		var y = 0, el=this;
-		while(el !== null){
-			y += el.offsetTop;
-			el = el.offsetParent;
-		}
-		return y;
-	},
-	
-	/**
-	@Name: sb.element.prototype.hasClassName
-	@Description: Checks to see if the element has the className specified.  Elements can have more than one className.
-	@Return: Boolean True if the element contains the className and False if it doesn't
-	@Param: String c The className to check for
-	@Example:
-	myElement.hasClassName('redStripe');
-	*/
-	hasClassName: function(classname){
-		
-		return this.className.match("\\b"+classname+"\\b");
-	},
-	
-	/**
-	@Name: sb.element.prototype.remove
-	@Description: Removes an element from the DOM
-	@Return: returns itself
-	@Example:
-	myElement.remove();
-	*/
-	remove : function(){
-		if(typeof this.parentNode !='undefined'){
-			this.parentNode.removeChild(this);
-		}
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.removeClassName
-	@Description: Removes a className from the elements className array.  Elements can have more than one className
-	@Param: String c Specified the className to remove from the element
-	@Return: returns itself
-	@Example:
-	myElement.removeClassName('redStripe');
-	*/
-	removeClassName : function(className){
-		this.className = this.className.replace(new RegExp("\b*"+className+"\b*"), "");
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.replace
-	@Description: Replaces an element with another element in the DOM
-	@Param: Object/String A reference to another DOM node, either as a string which is passed to the sb.$ function or as an element reference
-	@Return: returns itself
-	@Example:
-	myElement.replace('#myOtherElement');
-	*/
-	replace : function(node){
-		node = sb.$(node);
-		if(typeof node.parentNode !='undefined'){
-			node.parentNode.replaceChild(this, node);
-		}
-		node = null;
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.event
-	@Description: Used to set event cross-browser event handlers.  For more information see sb.events.
-	@Param: String evt The event to handle e.g. mouseover, mouseout, mousedown, mouseup, click, dblclick, focus, blurr, scroll, contextmenu, keydown, keyup, keypress
-	@Param: Function func The function to use as an event handler.  It is passed the e from the event in every brower as the first argument.  It also references "this" as the object the event is listening on.
-	@Return: The event that is added is returned so that you can use the reference to remove it with sb.events.remove or the sb.element instances sb.eventRemove
-	@Example:
-	
-	//sets the backgroundColor peroperty to red
-	myElement.event('click', function(e){
-		//alerts the x value of the click 
-		alert(e.clientX);
-		//alerts the innerHTML of myElement
-		alert(this.innerHTML);
-	});
-	
-	*/
-	event : function (evt, func){
-		
-		var event = sb.events.add(this, evt, func);
-		this.eventsAdded.push(event);
-		this.lastEventAdded = event;
-		return this;
-		
-	},
-	
-	/**
-	@Name: sb.element.prototype.lastEventAdded
-	@Description: Used keep track of the last event added to a sb.element.  
-	*/
-	lastEventAdded : [],
-	
-	/**
-	@Name: sb.element.prototype.eventsAdded
-	@Description: Used keep track of events added to a sb.element.  All events added with this.event are pushed into this array where they are stored for removal
-	
-	*/
-	eventsAdded : [],
-	
-	/**
-	@Name: sb.element.prototype.events
-	@Description: Used to assign multiple events at once
-	@Param: object events
-	@Example:
-	var myDiv = s$('#myDiv');
-	myDiv.events({
-		click : function(){
-			do something
-		},
-		mouseover : function(){
-			//do somthing
-		}
-	});
-	*/
-	events : function(events){
-		for(var event in events){
-			if(typeof events[event] =='function'){
-				this.event(event, events[event]);
-			}
-		}
-		
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.eventRemove
-	@Description: Removes an event created with sb.element.prototype.event
-	@Param: String evt An event reference returned from the sb.element instances event method above.
-	@Example:
-	//sets the backgroundColor property to red
-	var myEvt = myElement.event('click', function(e){
-		alert(this.innerHTML);
-	});
-	
-	myElement.eventRemove(myEvt);
-	*/
-	eventRemove : function (evt){
-		sb.events.remove(evt);
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.eventsRemoveAll
-	@Description: Removes all event observers for the sb.element that were added using this.event() or this.events()
-	@Example:
-	myElement.eventsRemoveAll();
-	*/
-	eventsRemoveAll : function(){
-		this.eventsAdded.forEach(function(evt){
-			sb.events.remove(evt);
-		});
-		this.eventsAdded = [];
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.styles
-	@Description: Sets multiple style properties for an sb.element
-	@Param: Object params An object with css style/value pairs that are applied to the object
-	@Return: returns itself
-	@Example:
-	myElement.styles({
-		backgroundColor : '#000000',
-		fontSize : '18px',
-		border : '1px solid #FF0000'
-	});
-	*/
-	styles : function(params){
-		
-		for(var prop in params){
-			if(params.hasOwnProperty(prop)){
-				try{
-				this.setStyle(prop, params[prop]);
-				}catch(e){}
-			}
-		}
-		
-		return this;
-	},
-	
-	/**
-	@Name: sb.element.prototype.getStyle
-	@Description: calculates the style of an sb.element based on the current style read from css
-	@Param: String prop The property to look up
-	@Return: returns property value
-	@Example:
-	myElement.getStyle('background-color');
-	//or
-	myElement.getStyle('backgroundColor').
-	*/
-	getStyle : function(prop){
-		var val;
-		if(prop.match(/^border$/)){
-			prop = 'border-left-width';				
-		} 
-		
-		if(prop.match(/^padding$/)){
-			prop = 'padding-left';				
-		}
-		
-		if(prop.match(/^margin$/)){
-			prop = 'margin-left';		
-		}
-		
-		if(prop.match(/^border-color$/)){
-			prop = 'border-left-color';				
-		}
-				
-		try{
-			if (this.style[prop]) {
-				val = this.style[prop];
-				
-			} else if (this.currentStyle) {
-				
-				prop = sb.strings.toCamel.call(prop);
-				val = this.currentStyle[prop];
-				
-			} else if (document.defaultView && document.defaultView.getComputedStyle) {
-					
-				prop = prop.replace(/([A-Z])/g, "-$1");
-				prop = prop.toLowerCase();
-				
-				val = document.defaultView.getComputedStyle(this,"").getPropertyValue(prop);
-				
-			} else {
-				val=null;
-			}
-			
-			if(prop == 'opacity' && val === undefined){
-				val = 1;
-			}
-			
-			if(val){
-				val = val.toLowerCase();
-				if(val == 'rgba(0, 0, 0, 0)'){val = 'transparent';}
-				
-				if(typeof sb.colors.html !='undefined'){
-					if(sb.colors.html[val]){
-						val = sb.strings.hex2rgb.call(sb.colors.html[val]);
-					}
-				}
-				
-				if(val.match("^#")){
-					val = sb.strings.hex2rgb.call(val);
-				}
-			
-				return val;
-			} else {
-				return null;
-			}
-			
-		} catch(e){
-			sb.consol.log(sb.messages[18]+prop+"\nID: #"+this.id+"\nError: "+e);
-		}
-	},
-	
-	/**
-	@Name: sb.element.prototype.getStyle
-	@Description: Sets the style of an sb.element
-	@Param: String prop The property to assign a value to
-	@Param: String val The value to assign to the property specified
-	@Return: returns property value
-	@Example:
-	myElement.setStyle('backgroundColor', blue);
-	//or
-	myElement.setStyle('opacity', 0.5);
-	*/
-	setStyle : function(prop, val){
-		
-			if(sb.arrays.inArray.call(sb.styles.pxProps, prop) && val !=='' && !val.match(/em|cm|pt|px|%/)){
-				val +='px';
-			}
-			
-			prop = sb.strings.toCamel.call(prop);
-		
-			if(prop == 'opacity'){
-				if(val <= 0){ val =0;}
-				if(val >= 1){ val =1;}
-				this.style.opacity = val;
-				
-				if(typeof this.style.filter == 'string' && sb.browser.ie6===1){
-					this.style.zoom = 1;
-					this.style.filter = "alpha(opacity:"+val*100+")";
-				}
-				
-			} else {
-				
-				try{
-					this.style[prop] = val;
-				}catch(e){}
-			}
-	},
-	typeOf : function(){
-		return 'sb.element';
+@Name: Element.prototype.appendToTop
+@Description: Appends the element to the top DOM element as a child
+@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
+@Return: Element A refernce to the appended node
+@Example:
+//appends myElement to the page body
+myElement.appendToTop('body');
+
+//appends myElement to a div with the ID "myDiv"
+myElement.appendToTop('#myDiv');
+
+*/
+Element.prototype.appendToTop = function(el){
+	el = sb.$(el);
+
+	if(el.childNodes.length ===0){
+		return this.appendTo(el);
+	} else {
+		return this.appendBefore(el.firstChild);
 	}
+};
+
+/**
+@Name: Element.prototype.appendAfter
+@Description: Appends the element after another DOM element as a sibling
+@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
+@Example:
+//appends myElement to the parent of "#myDiv" as a sibling of "#myDiv" directly after "#myDiv"
+myElement.appendAfter('#myDiv');
+
+*/
+Element.prototype.appendAfter = function(after){
+	var after = $(after);
+	
+	if(after.nextSibling){
+		while((after = after.nextSibling) && after.nodeType != 1){}
+		var nxtSib = after;
+	}
+
+	if(nxtSib){
+		return nxtSib.parentNode.insertBefore(this, nxtSib);
+	} else {
+		return this.appendTo(after.parentNode);
+	}
+	
+};
+
+/**
+@Name: Element.prototype.appendBefore
+@Description: Appends the element before another DOM element as a sibling
+@Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
+@Example:
+//appends myElement to the parent of "#myDiv" as a sibling of "#myDiv" directly before "#myDiv"
+myElement.appendBefore('#myDiv');
+
+*/
+Element.prototype.appendBefore = function(before){
+	before = sb.$(before);
+	return before.parentNode.insertBefore(this, before);
+};
+
+/**
+@Name: Element.prototype.getX
+@Description: Calculates the absolute x position of an element
+@Return: Integer the x position of an element
+@Example:
+myElement.getX();
+*/
+Element.prototype.getX = function(){
+	var x = 0, el=this;
+	while(el !== null){
+		x += el.offsetLeft;
+		el = el.offsetParent;
+	}
+	return x;
+};
+
+/**
+@Name: Element.prototype.getY
+@Description: Calculates the absolute x position of an element
+@Return: Integer the y position of an element
+
+@Example:
+myElement.getY();
+*/
+Element.prototype.getY = function(){
+	var y = 0, el=this;
+	while(el !== null){
+		y += el.offsetTop;
+		el = el.offsetParent;
+	}
+	return y;
+};
+
+/**
+@Name: Element.prototype.hasClassName
+@Description: Checks to see if the element has the className specified.  Elements can have more than one className.
+@Return: Boolean True if the element contains the className and False if it doesn't
+@Param: String c The className to check for
+@Example:
+myElement.hasClassName('redStripe');
+*/
+Element.prototype.hasClassName = function(classname){
+	
+	return this.className.match("\\b"+classname+"\\b");
+};
+
+/**
+@Name: Element.prototype.remove
+@Description: Removes an element from the DOM
+@Return: returns itself
+@Example:
+myElement.remove();
+*/
+Element.prototype.remove = function(){
+	if(typeof this.parentNode !='undefined'){
+		this.parentNode.removeChild(this);
+	}
+	return this;
+};
+
+/**
+@Name: Element.prototype.removeClassName
+@Description: Removes a className from the elements className array.  Elements can have more than one className
+@Param: String c Specified the className to remove from the element
+@Return: returns itself
+@Example:
+myElement.removeClassName('redStripe');
+*/
+Element.prototype.removeClassName = function(className){
+	this.className = this.className.replace(new RegExp("\b*"+className+"\b*"), "");
+	return this;
+};
+
+/**
+@Name: Element.prototype.replace
+@Description: Replaces an element with another element in the DOM
+@Param: Object/String A reference to another DOM node, either as a string which is passed to the sb.$ function or as an element reference
+@Return: returns itself
+@Example:
+myElement.replace('#myOtherElement');
+*/
+Element.prototype.replace = function(node){
+	node = sb.$(node);
+	if(typeof node.parentNode !='undefined'){
+		node.parentNode.replaceChild(this, node);
+	}
+	node = null;
+	return this;
+};
+
+/**
+@Name: Element.prototype.event
+@Description: Used to set event cross-browser event handlers.  For more information see sb.events.
+@Param: String evt The event to handle e.g. mouseover, mouseout, mousedown, mouseup, click, dblclick, focus, blurr, scroll, contextmenu, keydown, keyup, keypress
+@Param: Function func The function to use as an event handler.  It is passed the e from the event in every brower as the first argument.  It also references "this" as the object the event is listening on.
+@Return: The event that is added is returned so that you can use the reference to remove it with sb.events.remove or the sb.element instances sb.eventRemove
+@Example:
+
+//sets the backgroundColor peroperty to red
+myElement.event('click', function(e){
+	//alerts the x value of the click 
+	alert(e.clientX);
+	//alerts the innerHTML of myElement
+	alert(this.innerHTML);
+});
+
+*/
+Element.prototype.event = function (evt, func){
+	
+	var event = sb.events.add(this, evt, func);
+	this.eventsAdded.push(event);
+	this.lastEventAdded = event;
+	return this;
+	
+};
+
+/**
+@Name: Element.prototype.lastEventAdded
+@Description: Used keep track of the last event added to a sb.element.  
+*/
+Element.prototype.lastEventAdded = [];
+
+/**
+@Name: Element.prototype.eventsAdded
+@Description: Used keep track of events added to a sb.element.  All events added with this.event are pushed into this array where they are stored for removal
+
+*/
+Element.prototype.eventsAdded = [];
+
+/**
+@Name: Element.prototype.events
+@Description: Used to assign multiple events at once
+@Param: object events
+@Example:
+var myDiv = $('#myDiv');
+myDiv.events({
+	click : function(){
+		do something
+	},
+	mouseover : function(){
+		//do somthing
+	}
+});
+*/
+Element.prototype.events = function(events){
+	for(var event in events){
+		if(typeof events[event] =='function'){
+			this.event(event, events[event]);
+		}
+	}
+	
+	return this;
+};
+
+/**
+@Name: Element.prototype.eventRemove
+@Description: Removes an event created with Element.prototype.event
+@Param: String evt An event reference returned from the sb.element instances event method above.
+@Example:
+//sets the backgroundColor property to red
+var myEvt = myElement.event('click', function(e){
+	alert(this.innerHTML);
+});
+
+myElement.eventRemove(myEvt);
+*/
+Element.prototype.eventRemove = function (evt){
+	sb.events.remove(evt);
+	return this;
+};
+
+/**
+@Name: Element.prototype.eventsRemoveAll
+@Description: Removes all event observers for the sb.element that were added using this.event() or this.events()
+@Example:
+myElement.eventsRemoveAll();
+*/
+Element.prototype.eventsRemoveAll = function(){
+	this.eventsAdded.forEach(function(evt){
+		sb.events.remove(evt);
+	});
+	this.eventsAdded = [];
+	return this;
+};
+
+/**
+@Name: Element.prototype.styles
+@Description: Sets multiple style properties for an sb.element
+@Param: Object params An object with css style/value pairs that are applied to the object
+@Return: returns itself
+@Example:
+myElement.styles({
+	backgroundColor : '#000000',
+	fontSize : '18px',
+	border : '1px solid #FF0000'
+});
+*/
+Element.prototype.styles = function(params){
+	
+	for(var prop in params){
+		if(params.hasOwnProperty(prop)){
+			try{
+			this.setStyle(prop, params[prop]);
+			}catch(e){}
+		}
+	}
+	
+	return this;
+};
+
+/**
+@Name: Element.prototype.getStyle
+@Description: calculates the style of an sb.element based on the current style read from css
+@Param: String prop The property to look up
+@Return: returns property value
+@Example:
+myElement.getStyle('background-color');
+//or
+myElement.getStyle('backgroundColor').
+*/
+Element.prototype.getStyle = function(prop){
+	var val;
+	if(prop.match(/^border$/)){
+		prop = 'border-left-width';				
+	} 
+	
+	if(prop.match(/^padding$/)){
+		prop = 'padding-left';				
+	}
+	
+	if(prop.match(/^margin$/)){
+		prop = 'margin-left';		
+	}
+	
+	if(prop.match(/^border-color$/)){
+		prop = 'border-left-color';				
+	}
+			
+	try{
+		if (this.style[prop]) {
+			val = this.style[prop];
+			
+		} else if (this.currentStyle) {
+			
+			prop = prop.toCamel();
+			val = this.currentStyle[prop];
+			
+		} else if (document.defaultView && document.defaultView.getComputedStyle) {
+				
+			prop = prop.replace(/([A-Z])/g, "-$1");
+			prop = prop.toLowerCase();
+			
+			val = document.defaultView.getComputedStyle(this,"").getPropertyValue(prop);
+			
+		} else {
+			val=null;
+		}
+		
+		if(prop == 'opacity' && val === undefined){
+			val = 1;
+		}
+		
+		if(val){
+			val = val.toLowerCase();
+			if(val == 'rgba(0, 0, 0, 0)'){val = 'transparent';}
+			
+			if(typeof sb.colors.html !='undefined'){
+				if(sb.colors.html[val]){
+					val = sb.colors.html[val].hex2rgb();
+				}
+			}
+			
+			if(val.match("^#")){
+				val = val.hex2rgb();
+			}
+		
+			return val;
+		} else {
+			return null;
+		}
+		
+	} catch(e){
+		sb.consol.log(sb.messages[18]+prop+"\nID: #"+this.id+"\nError: "+e);
+	}
+};
+
+/**
+@Name: Element.prototype.prototype.getStyle
+@Description: Sets the style of an sb.element
+@Param: String prop The property to assign a value to
+@Param: String val The value to assign to the property specified
+@Return: returns property value
+@Example:
+myElement.setStyle('backgroundColor', blue);
+//or
+myElement.setStyle('opacity', 0.5);
+*/
+Element.prototype.setStyle = function(prop, val){
+	
+		if(sb.styles.pxProps.inArray(prop) && val !=='' && !val.match(/em|cm|pt|px|%/)){
+			val +='px';
+		}
+		
+		prop = prop.toCamel();
+		
+		if(prop == 'opacity'){
+			if(val <= 0){ val =0;}
+			if(val >= 1){ val =1;}
+			this.style.opacity = val;
+			
+			if(typeof this.style.filter == 'string' && sb.browser.ie6===1){
+				this.style.zoom = 1;
+				this.style.filter = "alpha(opacity:"+val*100+")";
+			}
+			
+		} else {
+			
+			try{
+				this.style[prop] = val;
+			}catch(e){}
+		}
+};
+
+Element.prototype.typeOf = function(){
+	return 'sb.element';
 };
 
 if(!Array.prototype.forEach){
@@ -2742,17 +2688,6 @@ if(sb.browser.ie6){
 		pngFix: function(){},
 		pngFixBg: function(el){}
 	};
-}
-
-if(typeof window.sbNoGlobals === 'undefined'){
-	//if globals are enabled add them
-	sb.addGlobals();
-	
-	if(typeof Element == 'undefined'){
-		Element = function(){};
-		Element.emulated = true;
-		Element.prototype = {};
-	}
 }
 
 sb.dom.onReady({

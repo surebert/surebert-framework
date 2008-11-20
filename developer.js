@@ -9,11 +9,11 @@ sb.include('css.rules');
 
 sb.include('math.rand');
 sb.include('colors.rand');
-sb.include('strings.nl2br');
-sb.include('strings.escapeHTML');
-sb.include('element.prototype.disableSelection');
-sb.include('element.prototype.mv');
-sb.include('element.prototype.getPosition');
+sb.include('String.prototype.nl2br');
+sb.include('String.prototype.escapeHTML');
+sb.include('Element.prototype.disableSelection');
+sb.include('Element.prototype.mv');
+sb.include('Element.prototype.getPosition');
 
 sb.debug =1;
 sb.developer = {};
@@ -30,7 +30,7 @@ sb.messages = {
 	11 :"You have disabled flash functionality. i.e. sound and flash shared object storage space access by setting the sbNoFlash=1 before calling surebert.",
 	12 :"Surebert has tried to play this track 5 times with no sucess, perhaps you have flash functionality disabled or the sound does not exist.",
 	13: " is not a well formatted javascript file and cannot be loaded by sb.javascript",
-	14: ' cannot be used by s$, perhaps it does not exist or is not in the DOM yet?',
+	14: ' cannot be used by $, perhaps it does not exist or is not in the DOM yet?',
 	15 : 'The surebert.swf has not loaded yet and cannot receive calls to its internal functions, e.g. upload, sound, setDebug.',
 	16 : "sb.sound has tried to play the following file 10 times but surebert.flashGate has not loaded.  Try pushing the play function into the sb.onFlashGateLoad array \nSOUND: ",
 	17 : "The following image is not reporting height or width properly, perhaps because it has never been in view and so will not work with sb.ie6.pngFix, try running pngFix after it is in view\n",
@@ -155,10 +155,8 @@ sb.consol = {
 				}
 				
 				if(typeof allowHTML == "undefined"){
-					str = sb.strings.escapeHTML.call(String(str));
+					str = String(str).escapeHTML();
 				}
-				
-				//str = sb.strings.linkify.call(str);
 				
 			 	sb.css.rules.write("sbConsolNote", 'display:block;font-size:0.8em;margin-bottom:20px;padding:10px;font-size:12px;font-family:tahoma,verdana;text-align:left;');
 			 	sb.css.rules.write("sbConsolNote a", 'color:orange;font-size:1.2em;');

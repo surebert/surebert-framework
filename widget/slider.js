@@ -1,5 +1,5 @@
-sb.include('element.prototype.setOpacity');
-sb.include('element.prototype.getPosition');
+sb.include('Element.prototype.setOpacity');
+sb.include('Element.prototype.getPosition');
 
 /**
 @Name: sb.$

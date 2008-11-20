@@ -1,6 +1,6 @@
 sb.include('browser.removeSelection');
 sb.include('effect');
-sb.include('element.prototype.cssTransition');
+sb.include('Element.prototype.cssTransition');
 /**
 @Name : sb.widget.sortList
 @Version: 1.2 11/12/07
@@ -29,13 +29,13 @@ myList.onItemSelect = function(){
 };
 */
 //returns an element to its default position
-sb.element.prototype.getParent = function(){
+Element.prototype.getParent = function(){
 	if(this.parentNode){
-		return sb.s$(this.parentNode);
+		return $(this.parentNode);
 	}
 };
 
-sb.element.prototype.spring = function(){
+Element.prototype.spring = function(){
 	var self = this;
 	self.cssTransition([{
 		prop : 'fontSize',
@@ -55,7 +55,7 @@ sb.element.prototype.spring = function(){
 	}]).start();
 };
 
-sb.element.prototype.turnColor = function(){
+Element.prototype.turnColor = function(){
 	var self = this;
 	if(this.style.backgroundColor !='#ffffff'){
 		this.style.backgroundColor='#ffffff';
@@ -65,7 +65,7 @@ sb.element.prototype.turnColor = function(){
 	}
 };
 
-sb.element.prototype.turnColor2 = function(){
+Element.prototype.turnColor2 = function(){
 	var self = this;
 	if(self.trans){
 		self.trans.stop();
@@ -88,8 +88,8 @@ sb.element.prototype.turnColor2 = function(){
 
 sb.widget.sortList = function(id, innerHTML){
 	this.id = id;
-	this.list = sb.s$(id);
-	this.listItems = sb.s$(id+' li');
+	this.list = $(id);
+	this.listItems = $(id+' li');
 	this.addButtons(innerHTML);
 	this.addEvents();
 };
@@ -117,7 +117,7 @@ sb.widget.sortList.prototype = {
 	
 	addOrder : function(){
 		var order =0;
-		sb.s$(this.id+' li').forEach(function(li){
+		$(this.id+' li').forEach(function(li){
 			li.order =order;
 			li.firstChild.innerHTML = order;
 			order++;
@@ -126,7 +126,7 @@ sb.widget.sortList.prototype = {
 	
 	dataOut : function(){
 		var order =[];
-		sb.s$(this.id+' li').forEach(function(li, k){
+		$(this.id+' li').forEach(function(li, k){
 			order[k] = li.id;
 		});
 		return order;

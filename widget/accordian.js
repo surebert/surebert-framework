@@ -1,9 +1,9 @@
 sb.include('effect');
-sb.include('arrays.iteration');
-sb.include('element.prototype.cssTransition');
-sb.include('element.prototype.getNextSibling');
-sb.include('element.prototype.getDimensions');
-sb.include('element.prototype.getHeight');
+sb.include('Array.prototype.iteration');
+sb.include('Element.prototype.cssTransition');
+sb.include('Element.prototype.getNextSibling');
+sb.include('Element.prototype.getDimensions');
+sb.include('Element.prototype.getHeight');
 
 sb.widget.accordian = function(o){
 	this.className = o.className || 'sb_accord';
@@ -37,12 +37,12 @@ sb.widget.accordian.minHeight = (sb.browser.agent =='ie' && sb.browser.version==
 sb.widget.accordian.prototype = {
 	accordians : [],
 	loadAccordians : function(){
-		this.accordians = sb.s$('dl.'+this.className).nodes;
+		this.accordians = $('dl.'+this.className).nodes;
 	},
 	
 	getAndCloseSections : function(accordian){
 		accordian.style.overflow='hidden';
-		accordian.sections = accordian.s$('dt').nodes;
+		accordian.sections = accordian.$('dt').nodes;
 		accordian.titlesHeight = 0;
 		accordian.sections.forEach(function(section){
 			
@@ -170,7 +170,7 @@ sb.widget.accordian.prototype = {
 	
 		function show(e){
 			var target = sb.events.target(e);
-			var t = sb.s$(target);
+			var t = $(target);
 			if(target.nodeName == 'DT' && accordian.firing==0 && target.selected !=1){
 				accordian.firing =1;
 				

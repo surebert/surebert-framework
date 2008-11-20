@@ -1,6 +1,6 @@
 sb.include('math.rand');
 sb.include('colors.rand');
-sb.include('element.prototype.disableSelection');
+sb.include('Element.prototype.disableSelection');
 
 /**
 @Name: sb.widget.colorRandomizer

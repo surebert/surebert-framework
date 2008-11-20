@@ -1,5 +1,5 @@
 sb.include('browser.removeSelection');
-sb.include('element.prototype.clearPosition');
+sb.include('Element.prototype.clearPosition');
 
 /**
 @Name : sb.widget.swapList
@@ -9,17 +9,17 @@ sb.include('element.prototype.clearPosition');
 myList = new sb.widget.swapList('#myList', '');
 
 */
-sb.element.prototype.getParent = function(){
+Element.prototype.getParent = function(){
 	if(this.parentNode){
-		return sb.s$(this.parentNode);
+		return $(this.parentNode);
 	}
 	return false;
 };
 
 sb.widget.swapList = function(id, innerHTML){
 	this.id = id;
-	this.list = sb.s$(id);
-	this.listItems = sb.s$(id+' li');
+	this.list = $(id);
+	this.listItems = $(id+' li');
 	this.addButtons(innerHTML);
 	this.addEvents();
 };
@@ -46,7 +46,7 @@ sb.widget.swapList.prototype = {
 	
 	addOrder : function(){
 		var order =0;
-		sb.s$(this.id+' li').forEach(function(li){
+		$(this.id+' li').forEach(function(li){
 			li.order =order;
 			//li.firstChild.innerHTML = order;
 			order++;
@@ -55,7 +55,7 @@ sb.widget.swapList.prototype = {
 	
 	getOrder : function(){
 		var order =[];
-		sb.s$(this.id+' li').forEach(function(li, k){
+		$(this.id+' li').forEach(function(li, k){
 			order[k] = li.id;
 		});
 		return order;
@@ -85,7 +85,7 @@ sb.widget.swapList.prototype = {
 					});
 					
 					sb.widget.swapList.sorting=1;
-					sb.widget.swapList.clone = sb.s$(sb.widget.swapList.draggedItem.cloneNode(1));
+					sb.widget.swapList.clone = $(sb.widget.swapList.draggedItem.cloneNode(1));
 					sb.widget.swapList.clone.clearPosition();
 					sb.widget.swapList.clone.appendBefore(sb.widget.swapList.draggedItem);
 					
@@ -121,7 +121,7 @@ sb.widget.swapList.prototype = {
 					if(target.nodeName =='BUTTON' && target.parentNode && target.parentNode.nodeName =='LI'){
 						
 						var old = sb.widget.swapList.draggedItem.replace(target.parentNode);
-					//alert(sb.s$(self.id).getElementsByTagName('li').length);
+					//alert($(self.id).getElementsByTagName('li').length);
 						var newPos = target.parentNode.appendAfter(sb.$(self.id).getElementsByTagName('li')[sb.widget.swapList.draggedItem.order]);
 						
 						

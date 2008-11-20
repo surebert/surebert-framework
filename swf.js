@@ -125,7 +125,7 @@ sb.swf.prototype = {
 	mySwf.embed('#someElement');
 	*/
 	embed : function(el){
-		el = sb.s$(el);
+		el = $(el);
 		if(sb.browser.agent == 'ie'){
 			//el.outerHTML = this.toHTML();
 			el.innerHTML = this.toHTML();

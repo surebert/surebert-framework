@@ -4,7 +4,7 @@
 @Param: String textarea The id or a reference to the textarea which you want to allow tabs on.
 
 @Example:
-	s$('#myTextArea').events({
+	$('#myTextArea').events({
 		keydown :  sb.forms.textarea.allowTabs
 	});
 */

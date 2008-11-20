@@ -1,5 +1,5 @@
-sb.include('element.prototype.makeDraggable');
-sb.include('strings.isNumeric');
+sb.include('Element.prototype.makeDraggable');
+sb.include('String.Prototype.isNumeric');
 
 sb.widget.floatWin = function(o){
 	
@@ -135,7 +135,7 @@ sb.widget.floatWin = function(o){
 	floatWin.content.appendTo(floatWin);
 	floatWin.makeDraggable();
 	
-	if(sb.strings.isNumeric(o.opacity)){
+	if(o.opacity.isNumeric()){
 		floatWin.opacity = o.opacity;
 	} else {
 		floatWin.opacity = 0.85;

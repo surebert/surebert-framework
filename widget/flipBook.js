@@ -1,6 +1,6 @@
-sb.include('arrays.iteration');
+sb.include('Array.prototype.iteration');
 sb.include('effect');
-sb.include('element.prototype.cssTransition');
+sb.include('Element.prototype.cssTransition');
 /**
 @Name: sb.flipBook
 @Type: constructor
