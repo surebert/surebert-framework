@@ -113,6 +113,7 @@ sb.swf.prototype = {
 				
 		}
 		return html;
+		
 	},
 	
 	/**
@@ -124,8 +125,15 @@ sb.swf.prototype = {
 	mySwf.embed('#someElement');
 	*/
 	embed : function(el){
-		el.innerHTML = this.toHTML();
-		return  $(el);
+		el = $(el);
+		if(sb.browser.agent == 'ie'){
+			//el.outerHTML = this.toHTML();
+			el.innerHTML = this.toHTML();
+		} else {
+			el.innerHTML = this.toHTML();
+		}
+		
+		return el;
 	}
 };
 
