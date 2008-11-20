@@ -2191,12 +2191,12 @@ sb.element = function(o){
 	}
 	
 	if(typeof o.addAttributes !='undefined'){
-		this.setAttributes.call(el, o.addAttributes);
+		el.styles(o.addAttributes);
 		delete o.addAttributes;	
 	}
 	
 	if(typeof o.styles !='undefined'){
-		this.styles.call(el, o.styles);
+		el.styles(o.styles);
 		delete o.styles;	
 	}
 	
