@@ -11,6 +11,6 @@ var average = myArray.avg();
 average = 3.25
 */
 Array.prototype.avg = function(){
-	var tl = Array.prototype.sum.call(this);
+	var tl = this.sum();
 	return tl/this.length;
 };

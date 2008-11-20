@@ -21,7 +21,7 @@ Array.prototype.remove = function(values){
 		if(sb.typeOf(values) !='array'){
 			return v != values;
 		} else {
-			return !Array.prototype.inArray.call(values, v);
+			return !values(v);
 		}
 	});
 };

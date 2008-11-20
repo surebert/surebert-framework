@@ -12,7 +12,7 @@ var answer = myArray.regex(/\d{2}/);
 */
 Array.prototype.regex = function(expression) {
 	
-	return Array.prototype.filter.call(this, function(v, k, a) {
+	return this.filter(function(v, k, a) {
 	 	if(v.toString().match(expression)){return true;}
 	});
 	

@@ -12,6 +12,6 @@ var answer = myArray.unique();
 */
 Array.prototype.unique = function(){
 	var n=[];
-	this.forEach(function(v){if(!Array.prototype.inArray.call(n, v)){n.push(v);}});
+	this.forEach(function(v){if(!n.inArray(v)){n.push(v);}});
 	return n;
 };
