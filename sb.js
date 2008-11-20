@@ -1807,7 +1807,7 @@ sb.dom = {
 };
 
 /**
-@Name: Array.inArray
+@Name: Array.prototype.inArray
 @Description: Checks to see if a value is contained in the array
 @Param: Object/String/Number val Method checks to see if val is in the array
 @Return: Boolean True or False
@@ -1821,7 +1821,7 @@ Array.prototype.inArray = function(val){
 };
 
 /**
-@Name: Array.remove
+@Name: Array.prototype.remove
 @Author: Paul Visco
 @Version: 1.1 11/19/07
 @Description: Removes a value or a set of values from an array.
