@@ -9,6 +9,5 @@ var newString = str.trim();
 //newString = 'hello world'
 */
 String.prototype.trim = function() {
-	var str = this.replace(/(^\s+|\s+$)/, '');
+	return this.replace(/(^\s+|\s+$)/g, '');
 };
-
