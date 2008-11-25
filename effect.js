@@ -13,24 +13,23 @@
 	.el = The element to work with
 	.begin = the beginning value
 	.change = the change from the beginning value.  E.g. if the begin value is 10 and you want it to interate through to 20, change would be 10.  If you wanted it to interate through to 0, change would be -10
-	.handler = the function that run for each iteration.  It has reference to all of the "this" properties of the effect in addition to this.value which is the current value based on begin and change
 	.duration = the duration to use, 2 is the default, higher is slower, lower is faster.
-	.onEnd = a function which fires when the effect is complete
-
+	.onChange = the function that run for each iteration.  It has reference to all of the "this" properties of the effect in addition to this.value which is the current value based on begin and change
+	.onStop = a function which fires when the effect is complete
+	.onEnd = a function which fires when the effect is stopped
+	
 @Example: 
 //set the DOM el we want to work with
 var myDiv = $('#accord');
 //create an custom effect
 var myEffect = new sb.effect({
 	el : myDiv,
-	begin : myDiv.getHeight(),
-	change : -myDiv.getHeight(),
-	handler : function(c){
-		this.el.style.overflow = 'hidden';
-		document.title = this.value;
-		this.el.style.height = this.value+'px';
-	},
+	begin : 10,
+	change : 12,
 	duration : 120,
+	onChange : function(c){
+		this.el.style.fontSize = this.value+'px';
+	},
 	onEnd : function(){
 		//do something
 	},
@@ -67,21 +66,21 @@ sb.effect.prototype = {
 	@Type: integer
 	@Description: The duration of teh effect from begin to end.  Default is 24.  Lower numbers are faster, higher numbers are slower.
 	*/
-	duration :24, 
+	duration : 24, 
 	
 	/**
 	@Name: sb.effect.count
 	@Type: integer
-	@Description: The number of times the effect has iterated so far between begin and end.  You have reference to this in your effect handler as this.count
+	@Description: The number of times the effect has iterated so far between begin and end.  You have reference to this in your effect onChange as this.count
 	*/
-	count :0,
+	count : 0,
 	
 	/**
-	@Name: sb.effect.type
+	@Name: sb.effect.tween
 	@Type: string
 	@Description: The type of tweening used, see sb.tween
 	*/
-	type : 'inQuart',
+	tween : 'inQuart',
 	
 	/**
 	@Name: sb.effect.setParams()
@@ -115,12 +114,10 @@ sb.effect.prototype = {
 			if(t.time < t.duration){
 				
 				t.time++;
-				t.value = sb.effects.tween[t.type](t.time,t.begin,t.change,t.duration);
+				t.value = sb.effects.tween[t.tween](t.time,t.begin,t.change,t.duration);
 				t.valueRounded = Math.round(t.value);
-				if(typeof t.onTween=='function'){
-					t.onTween(t.value);
-				}
-				t.handler();
+			
+				t.onChange();
 				
 			} else {
 				

@@ -20,7 +20,7 @@ sb.browser.scrollTo = function(o){
 	}
 	//percent, duration, onEnd
 	sb.browser.scrolling = new sb.effect({
-		handler : function(){
+		onChange : function(){
 			window.scrollTo(0, this.value);
 		}
 	});
@@ -39,7 +39,7 @@ sb.browser.scrollTo = function(o){
 				sb.browser.scrolling.change = o.y-sb.browser.scrolling.begin;
 			}
 			
-			sb.browser.scrolling.type = (sb.browser.scrolling.change < 0) ? 'outQuart' : 'inQuart';
+			sb.browser.scrolling.tween = (sb.browser.scrolling.change < 0) ? 'outQuart' : 'inQuart';
 			
 			sb.browser.scrolling.restart();
 			return scrollTo;

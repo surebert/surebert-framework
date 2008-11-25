@@ -23,7 +23,7 @@ Element.prototype.fade = function(o){
 	//percent, duration, onEnd
 	var effect = new sb.effect({
 		el : this,
-		handler : function(){
+		onChange : function(){
 			this.el.setOpacity(Math.round(this.value)/100);
 		}
 	});
@@ -39,7 +39,7 @@ Element.prototype.fade = function(o){
 			} else {
 				effect.change = -1*effect.begin;
 			}
-			effect.type = (effect.change < 0) ? 'outQuart' : 'inQuart';
+			effect.tween = (effect.change < 0) ? 'outQuart' : 'inQuart';
 			
 			effect.restart();
 			return fadeTo;

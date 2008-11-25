@@ -31,71 +31,21 @@ var transitions = body.cssTransition([
 transitions.start();
 */
 Element.prototype.cssTransition = function(changes, duration){
-	var el = this;
+	var transition = new sb.effect.cssTransition(this, changes, duration);
+	return transition;
 	
-	var transitions = {
-		/**
-		@Name: Element.prototype.cssTransition.effects()
-		@Type: array
-		@Description: an array of all effects in the cssTransition
-		*/
-		effects : [],
-		
-		/**
-		@Name: Element.prototype.cssTransition.start()
-		@Type: method
-		@Description: starts the transition
-		@Example:
-		myTransition.start();
-		*/
-		start : function(){
-			this.effects.forEach(function(effect){
-				effect.start();
-			});
-		},
-		
-		/**
-		@Name: Element.prototype.cssTransition.stop()
-		@Type: method
-		@Description: stops the transition
-		@Example:
-		myTransition.stop();
-		*/
-		stop : function(){
-			this.effects.forEach(function(effect){
-				effect.stop();
-			});
-		},
-		
-		/**
-		@Name: Element.prototype.cssTransition.reset()
-		@Type: method
-		@Description: reset the transition
-		@Example:
-		myTransition.reset();
-		*/
-		reset : function(){
-			this.effects.forEach(function(effect){
-				effect.reset();
-			});
-		},
-		
-		/**
-		@Name: Element.prototype.cssTransition.restart()
-		@Type: method
-		@Description: reset the transition
-		@Example:
-		myTransition.restart();
-		*/
-		restart : function(){
-			this.effects.forEach(function(effect){
-				effect.restart();
-			});
-		}
-		
-	};
-	
+};
+
+/**
+@Name: Element.prototype.cssTransition()
+@Description: Used Internally
+*/
+sb.effect.cssTransition = function(el, changes, duration){
+	this.el = el;
+	this.effects = [];
+	var self = this;
 	changes.forEach(function(change){
+		
 		var effect =  new sb.effect({
 			el : el
 		});
@@ -104,8 +54,9 @@ Element.prototype.cssTransition = function(changes, duration){
 		effect.unit = change.unit ||'';
 		
 		effect.duration = change.duration || duration || 24;
-		effect.type = change.type || 'outQuad';
+		effect.tween = change.tween || 'outQuad';
 		if(change.prop =='backgroundColor' || change.prop =='color'){
+			sb.include('colors.getTweenColor');
 			effect.beginColor = change.begin;
 			effect.endColor = change.end;
 			
@@ -116,16 +67,16 @@ Element.prototype.cssTransition = function(changes, duration){
 			effect.begin =  change.begin;
 			effect.change = change.change;
 		}
-		effect.onTween = change.onTween || 0;
+		
 		effect.onEnd = change.onEnd || 0;
-		if(typeof change.handler =='function'){
+		if(typeof change.onChange =='function'){
 			
-			effect.handler = function(){
-				change.handler.call(effect);
+			effect.onChange = function(){
+				change.onChange.call(effect);
 			};
 		} else {
-			effect.handler = function(){
-			
+			effect.onChange = function(){
+				
 				//fix stupid IE height 0px prob
 				if (this.prop =='height' && sb.browser.ie6 && this.value<1){
 					
@@ -133,23 +84,82 @@ Element.prototype.cssTransition = function(changes, duration){
 				}
 				
 				if(this.prop =='backgroundColor' || this.prop =='color'){
-					sb.include('colors.getTweenColor');
+					
 					this.el.style[change.prop] = sb.colors.getTweenColor(this.beginColor, this.endColor, this.value);
 					
-				
 				} else  {
 					try{
-					this.el.setStyle(change.prop, String(this.value.toFixed(2))+this.unit);
-					} catch(e){
-					//	alert(this.prop);
-					}
+						this.el.setStyle(change.prop, String(this.value.toFixed(2))+this.unit);
+					} catch(e){}
 				} 
 			};
 			
 		}
 		
-		transitions.effects.push(effect);
+		self.effects.push(effect);
 	});
 	
-	return transitions;
+};
+
+sb.effect.cssTransition.prototype = {
+	/**
+	@Name: Element.prototype.cssTransition.effects()
+	@Type: array
+	@Description: an array of all effects in the cssTransition
+	*/
+	effects : [],
+		
+	/**
+	@Name: Element.prototype.cssTransition.start()
+	@Type: method
+	@Description: starts the transition
+	@Example:
+	myTransition.start();
+	*/
+	start : function(){
+		this.effects.forEach(function(effect){
+		
+			effect.start();
+		});
+	},
+	
+	/**
+	@Name: Element.prototype.cssTransition.stop()
+	@Type: method
+	@Description: stops the transition
+	@Example:
+	myTransition.stop();
+	*/
+	stop : function(){
+		this.effects.forEach(function(effect){
+			effect.stop();
+		});
+	},
+	
+	/**
+	@Name: Element.prototype.cssTransition.reset()
+	@Type: method
+	@Description: reset the transition
+	@Example:
+	myTransition.reset();
+	*/
+	reset : function(){
+		this.effects.forEach(function(effect){
+			effect.reset();
+		});
+	},
+	
+	/**
+	@Name: Element.prototype.cssTransition.restart()
+	@Type: method
+	@Description: reset the transition
+	@Example:
+	myTransition.restart();
+	*/
+	restart : function(){
+		this.effects.forEach(function(effect){
+			effect.restart();
+		});
+	}
+		
 };
