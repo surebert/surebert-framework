@@ -19,6 +19,8 @@ sb.flashGate = new sb.swf({
 	}
 });
 
+sb.flashGate.debug = 0;
+
 sb.flashGateContainer = new sb.element({
 	tag : 'x',
 	styles : {
@@ -29,12 +31,26 @@ sb.flashGateContainer = new sb.element({
 	}
 });
 
-sb.onbodyload.push(function(){
-	sb.flashGateContainer.appendToTop('body');
-	sb.flashGate.embed(sb.flashGateContainer);
-});
-
 var sb_onFlashGateLoaded = [];
+
+sb.dom.onReady({
+	id : 'body',
+	onReady : function(){
+		sb.flashGateContainer.appendToTop('body');
+		sb.flashGate.embed(sb.flashGateContainer);
+		sb_onFlashGateLoaded.forEach(function(v){
+			if(typeof v == 'function'){
+				v();
+			}
+		})
+	},
+	tries : 600,
+	ontimeout : function(){
+		if(sb.flashGate.debug){
+			throw('Cannot append flashGate to browser');
+		}
+	}
+});
 
 /**
  * @Name sb_onFlashGateLoad
