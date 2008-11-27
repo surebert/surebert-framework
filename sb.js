@@ -1409,7 +1409,7 @@ sb.ajax.prototype = {
 	
 	/**
 	@Name: sb.ajax.prototype.format
-	@Description: The format the data is retreived in.  Can be json, text, xml, head, js, send - s.  This value overides any sb.ajax.defaultFormat value set or if the content type of the server page matches a specific format.
+	@Description: The format the data is retreived in.   Can be json, text, xml, head, js, send - s.  This value overides any sb.ajax.defaultFormat value set or if the Content-type from server matches a specific format.
 	1. text - returns the data from the server side script as text and passes it to the instance's handler method
 	2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript.  This type is defaulted if the page is served with the term 'json' in the content type e.g. application/json 
 	3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript  This type is defaulted if the page is served with the term 'xml' in the content type e.g. application/xml 
