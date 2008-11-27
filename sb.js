@@ -621,10 +621,10 @@ var sb = {
 			path +=mods[m];
 			
 			try{
+				
 				unit = unit[mods[m]];
-			} catch(e){
-				throw(mods.join('.')+' cannot be loaded by sb.include');
-			}
+				
+			} catch(e){}
 		
 			if(typeof unit == 'undefined'){
 					
@@ -668,7 +668,7 @@ var sb = {
 							
 						evaled=0;
 						delete e.stack;
-						
+						throw('error evaling javascript from '+url);
 						sb.consol.error(sb.messages[13]+"\nURL: "+url+"\n"+sb.objects.dump(e));
 						
 					}
@@ -1335,47 +1335,38 @@ sb.ajax = function(params){
 };
 
 /**
-@Name: sb.ajax.infuse
-@Description: Used internally to compensate for globals not being on by default
+@Name: sb.ajax.log
+@Description: Used internally as a placeholder for sb.ajax.log found in sb.developer which is used to debug ajax transations
 */
-sb.ajax.infuse = sb.objects.infuse;
+sb.ajax.log = function(){};
 
-sb.ajax.infuse({
-	/**
-	@Name: sb.ajax.log
-	@Description: Used internally as a placeholder for sb.ajax.log found in sb.developer which is used to debug ajax transations
-	*/
-	log : function(){},
-	
-	/**
-	@Name: sb.ajax.defaultMethod
-	@Description: The default transport method used for communicating with server side scripts.  If this is changed, all insatnces with non specified transport methods will use this one.  It is 'get' by default.  Another option is 'post'.
-	*/
-	defaultMethod : 'post',
-	
-	/**
-	@Name: sb.ajax.defaultFormat
-	@Description: The default way the ajax instances handles the data retreived from the scripts. This sets the default format for all sb.ajax instances that do not already specify a format.  It is text by default but you can override this in your script.  The options are;
-	1. text - returns the data from the server side script as text and passes it to the instances handler method
-	2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript
-	3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript
-	4. js - evaluated the data returned from the server side script as javascript
-	5. send - only sends data and does not receive any data
-	6. head - only reads the header data from the HTML transaction and passes that to the instances handler method.  If a header property is specified on the sb.ajax instance, then only that header is passed
-	@Example:
-	sb.ajax.defaultFormat = 'json';
-	*/
-	defaultFormat : 'text',
-	
-	/**
-	@Name: sb.ajax.defaultURL
-	@Description: The default url the ajax instances semd data to. This sets the url for all sb.ajax instances that do not already specify a url.
-	@Example:
-	sb.ajax.defaultURL = 'process.php';
-	*/
-	defaultURL : ''
-	
-});
+/**
+@Name: sb.ajax.defaultMethod
+@Description: The default transport method used for communicating with server side scripts.  If this is changed, all insatnces with non specified transport methods will use this one.  It is 'get' by default.  Another option is 'post'.
+*/
+sb.ajax.defaultMethod = 'post';
+
+/**
+@Name: sb.ajax.defaultFormat
+@Description: The default way the ajax instances handles the data retreived from the scripts. This sets the default format for all sb.ajax instances that do not already specify a format.  It is text by default but you can override this in your script.  The options are;
+1. text - returns the data from the server side script as text and passes it to the instances handler method
+2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript
+3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript
+4. js - evaluated the data returned from the server side script as javascript
+5. send - only sends data and does not receive any data
+6. head - only reads the header data from the HTML transaction and passes that to the instances handler method.  If a header property is specified on the sb.ajax instance, then only that header is passed
+@Example:
+sb.ajax.defaultFormat = 'json';
+*/
+sb.ajax.defaultFormat = 'text';
+
+/**
+@Name: sb.ajax.defaultURL
+@Description: The default url the ajax instances semd data to. This sets the url for all sb.ajax instances that do not already specify a url.
+@Example:
+sb.ajax.defaultURL = 'process.php';
+*/
+sb.ajax.defaultURL = '';
 
 sb.ajax.prototype = {
 	
@@ -1507,16 +1498,18 @@ sb.ajax.prototype = {
 		
 		this.log(2, "\nHEADERS\nStatus: "+this.o.status+"\nStatus Text: "+this.o.statusText+"\n"+this.o.getAllResponseHeaders()+"\nRESPONSE: \n"+(this.o.responseText ||'PAGE WAS BLANK ;(')+"\n");
 		
-		//page status other than 200
-		if(this.o.status != 200 && this.local !==1){
-			return false;
-		}
-	
+		var cont = true;
 		
 		if(typeof this.timer !='undefined'){
 			window.clearInterval(this.timer);
 		}
 		
+		cont = this.onHeaders.call(this.o, this.o.status, this.o.statusText);	
+		
+		if(cont === false || (this.o.status != 200 && this.local !==1)){
+			return false;
+		}
+	
 		switch(this.format){
 			
 			case 'head':
@@ -1666,7 +1659,6 @@ sb.ajax.prototype = {
 					
 					window.clearInterval(t.timer);
 				} else {
-				
 					t.count++;
 				}
 			}, 1);
@@ -1709,28 +1701,74 @@ sb.ajax.prototype = {
 			this.timer.reset();
 		}
 		
-		if(typeof this.onabort =='function'){
-			this.onabort();
-		}
+		this.onAbort();
 		
 	},
 	
 	/**
-	@Name: sb.ajax.prototype.infuse
-	@Description: You can easily infuse sb.ajax objects with multiple properties
+	@Name: sb.ajax.prototype.handler
+	@Description: Fires when the ajax request gets its response back from the server
+	@Param: response String, json, or XML depending on ajax instance .format property
 	@Example:
 	var myAjax = new sb.ajax({
-		url : 'process.php'
-	});
-	
-	myAjax.infuse({
-		format :'text',
-		handler : function(result){
-			alert(result);
+		url : 'process.php',
+		onResponse : function(response){
+			alert(response);
 		}
 	});
 	*/
-	infuse : sb.objects.infuse
+	handler : function(){},
+	
+	/**
+	@Name: sb.ajax.prototype.onHeaders
+	@Description: Fires when the ajax request gets it headers back
+	@Example:
+	var myAjax = new sb.ajax({
+		url : 'process.php',
+		timeout : 500,
+		onTimeout : function(status, statusText){
+			//alert 400 if file not found
+			alert(status);
+			//you also have access to other headers
+			alert(this.getResponseHeader('Content-type');
+		}
+	});
+	
+	*/
+	onTimeout : function(){},
+	
+	/**
+	@Name: sb.ajax.prototype.onHeaders
+	@Description: Fires when the ajax request gets it headers back
+	@Example:
+	var myAjax = new sb.ajax({
+		url : 'process.php',
+		onHeaders : function(status, statusText){
+			//alert 400 if file not found
+			alert(status);
+			//you also have access to other headers
+			alert(this.getResponseHeader('Content-type');
+		}
+	});
+
+	*/
+	onHeaders : function(status, statusText){},
+	
+	/**
+	@Name: sb.ajax.prototype.abort
+	@Description: You can use this to abort an ajax function that is fetching.  In addition, if you have defined an onabort() method for your sb.ajax instance it will fire whenever the fetch is canceled.
+	@Example:
+	var myAjax = new sb.ajax({
+		url : 'process.php',
+		onAbort : function(){
+			alert('ajax call aborted');
+		}
+	});
+	
+	//aborts a fetch already in progress, you could attach this event to a cancel button, also used by timeout
+	myAjax.abort();
+	*/
+	onAbort : function(){}
 };
 
 sb.dom = {
