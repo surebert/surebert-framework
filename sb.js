@@ -659,7 +659,7 @@ var sb = {
 				method : 'get',
 				format : 'js',
 				debug : sb.loadDebug ? 1 : 0,
-				handler: function(r){
+				onResponse: function(r){
 				//#######look into this 
 					
 					try{
@@ -1313,7 +1313,7 @@ var myAjax = new sb.ajax({
 	url : 'process.php',
 	
 	//the handler function receives all data returned from the server side script, depending on the format specified, result has different properties, by default it is a text string
-	handler : function(result){ 
+	onResponse : function(result){ 
 		//alerts the text returned from the server side script
 		alert(result); 
 	}
@@ -1349,12 +1349,12 @@ sb.ajax.defaultMethod = 'post';
 /**
 @Name: sb.ajax.defaultFormat
 @Description: The default way the ajax instances handles the data retreived from the scripts. This sets the default format for all sb.ajax instances that do not already specify a format.  It is text by default but you can override this in your script.  The options are;
-1. text - returns the data from the server side script as text and passes it to the instances handler method
+1. text - returns the data from the server side script as text and passes it to the instances onResponse method
 2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript
 3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript
 4. js - evaluated the data returned from the server side script as javascript
 5. send - only sends data and does not receive any data
-6. head - only reads the header data from the HTML transaction and passes that to the instances handler method.  If a header property is specified on the sb.ajax instance, then only that header is passed
+6. head - only reads the header data from the HTML transaction and passes that to the instances onResponse method.  If a header property is specified on the sb.ajax instance, then only that header is passed
 @Example:
 sb.ajax.defaultFormat = 'json';
 */
@@ -1410,12 +1410,12 @@ sb.ajax.prototype = {
 	/**
 	@Name: sb.ajax.prototype.format
 	@Description: The format the data is retreived in.  Can be json, text, xml, head, js, send - s.  This value overides any sb.ajax.defaultFormat value set or if the content type of the server page matches a specific format.
-	1. text - returns the data from the server side script as text and passes it to the instances handler method
+	1. text - returns the data from the server side script as text and passes it to the instance's handler method
 	2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript.  This type is defaulted if the page is served with the term 'json' in the content type e.g. application/json 
 	3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript  This type is defaulted if the page is served with the term 'xml' in the content type e.g. application/xml 
 	4. js - evaluated the data returned from the server side script as javascript.  This type is defaulted if the page is served with the term 'javascript' in the content type e.g. application/javascript 
 	5. send - only sends data and does not receive any data
-	6. head - only reads the header data from the HTML transaction and passes that to the instances handler method.  If a header property is specified on the sb.ajax instance, then only that header is passed
+	6. head - only reads the header data from the HTML transaction and passes that to the instance's onResponse method.  If a header property is specified on the sb.ajax instance, then only that header is passed
 	@Type: Boolean
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1464,6 +1464,11 @@ sb.ajax.prototype = {
 		var js='';
 		
 		if (this.o.readyState != 4 || this.completed == 1) {return true; }
+		
+		//for backwards compatibility, remove soon
+		if(typeof this.handler == 'function'){
+			this.onResponse = this.handler;
+		}
 		
 		this.completed =1;
 
@@ -1553,7 +1558,7 @@ sb.ajax.prototype = {
 			}
 		}
 		
-		if(typeof this.handler =='function'){this.handler(this.response);}
+		this.onResponse(this.response);
 		
 		if(typeof this.node !='undefined'){
 			
@@ -1606,7 +1611,7 @@ sb.ajax.prototype = {
 	
 	/**
 	@Name: sb.ajax.prototype.fetch
-	@Description: Sends any data specified to the external server side file specified in your instances .url property and returns the data recieved to the instances handler method
+	@Description: Sends any data specified to the external server side file specified in your instances .url property and returns the data recieved to the instance's onResponse method
 	@Example:
 	var myAjax = new sb.ajax({
 		url : 'process.php'
@@ -1706,8 +1711,8 @@ sb.ajax.prototype = {
 	},
 	
 	/**
-	@Name: sb.ajax.prototype.handler
-	@Description: Fires when the ajax request gets its response back from the server
+	@Name: sb.ajax.prototype.onResponse
+	@Description: Fires when the ajax request gets its response back from the server.
 	@Param: response String, json, or XML depending on ajax instance .format property
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1717,7 +1722,7 @@ sb.ajax.prototype = {
 		}
 	});
 	*/
-	handler : function(){},
+	onResponse : function(){},
 	
 	/**
 	@Name: sb.ajax.prototype.onHeaders
@@ -1951,7 +1956,7 @@ sb.styles = {
 
 /**
 @Name: sb.events
-@Description: Cross browser event handling that references the proper "this" and passes the event to the handler function.  Using sb.events, multiple events can be added to a single DOM node for the same event.  e.g. multiple onclick handlers
+@Description: Cross browser event handling that references the proper "this" and passes the event to the handler method.  Using sb.events, multiple events can be added to a single DOM node for the same event.  e.g. multiple onclick handlers
 */
 sb.events = {
 	

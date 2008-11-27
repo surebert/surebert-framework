@@ -56,7 +56,7 @@ sb.utils.monitor.prototype = {
 				method : this.method,
 				format : 'head',
 				header : 'sb.utils.monitor',
-				handler : function(r){
+				onResponse : function(r){
 					
 					window.clearTimeout(self.timeout);
 					if(r==1){
