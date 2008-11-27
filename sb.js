@@ -1730,8 +1730,7 @@ sb.ajax.prototype = {
 	@Example:
 	var myAjax = new sb.ajax({
 		url : 'process.php',
-		timeout : 500,
-		onTimeout : function(status, statusText){
+		onHeaders : function(status, statusText){
 			//alert 400 if file not found
 			alert(status);
 			//you also have access to other headers
