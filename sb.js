@@ -115,6 +115,7 @@ $.parseSelectors = function(nodes, within){
 	var selectors = nodes.selector.split(",");
 	
 	var len = selectors.length;
+	var inheriters = [];
 	
 	for(s=0;s<len;s++){
 	
@@ -1164,6 +1165,7 @@ sb.nodeList.prototype = {
 	*/
 	add : function(nodes){
 		nodes = (nodes instanceof Array || nodes instanceof NodeList) ? nodes : [nodes];
+		
 		var len = nodes.length;
 		
 		var prop,x=0,node;
