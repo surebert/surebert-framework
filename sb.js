@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.601 04/24/04 - 11/21/08
+@Version: 4.602 04/24/04 - 12/02/08
 @Package: surebert
 */
 
@@ -54,18 +54,28 @@ e.g. 'p, b, #wrapper' Commas allow you to make multiple selections at once.This 
 e.g  '*:not(p)' LIMITED SUPPORT - returns all nodes that are not p tags
 */
 
-$ = function(selector, root, superfy) {
+$ = function(selector, root) {
 	
 	root = root || document;
 	
-	superfy = superfy || true;
-	
 	//return items that are already objects
-	if(!(typeof selector == 'string')){return selector;}
+	if(typeof selector != 'string'){
+		
+		if(typeof selector == 'object'){
+			if(selector.nodeType && Element.emulated === true){
+				var ep = Element.prototype;
+				for(var prop in ep){
+					selector[prop] = ep[prop];
+				}
+			} else if (typeof selector.typeOf == 'function' && selector.typeOf() == 'sb.nodeList'){
+				selector.get_element_prototypes();
+			}
+		}
+		
+		return selector;
+	}
 	
-	var nodeList = new sb.nodeList({
-		create_super_elements : superfy
-	});
+	var nodeList = new sb.nodeList();
 	
 	nodeList.setSelector(selector);
 	
@@ -621,10 +631,10 @@ var sb = {
 			path +=mods[m];
 			
 			try{
-				
 				unit = unit[mods[m]];
-				
-			} catch(e){}
+			} catch(e){
+				throw(mods.join('.')+' cannot be loaded by sb.include');
+			}
 		
 			if(typeof unit == 'undefined'){
 					
@@ -659,7 +669,7 @@ var sb = {
 				method : 'get',
 				format : 'js',
 				debug : sb.loadDebug ? 1 : 0,
-				onResponse: function(r){
+				handler: function(r){
 				//#######look into this 
 					
 					try{
@@ -668,7 +678,7 @@ var sb = {
 							
 						evaled=0;
 						delete e.stack;
-						throw('error evaling javascript from '+url);
+						
 						sb.consol.error(sb.messages[13]+"\nURL: "+url+"\n"+sb.objects.dump(e));
 						
 					}
@@ -1106,16 +1116,10 @@ sb.nodeList.prototype = {
 	selector : '',
 	
 	/**
-	@Name: sb.nodeList.prototype.create_super_elements
-	@Description: Determines if superElements should be created
+	@Name: sb.nodeList.prototype.assign_element_prototypes
+	@Description: Re-assigns Element.prototypes of the nodes in the .nodes array to make sure that it picks up any Element.prototypes that have been added after the $ selection was made.  This is only required in IE since the other browsers all respect actual Element.protoype
 	*/
-	create_super_elements : false,
-	
-	/**
-	@Name: sb.nodeList.prototype.empty
-	@Description: Empties the nodes array
-	*/
-	nodes_to_super : function(){
+	get_element_prototypes : function(){
 	
 		if(Element.emulated){
 			var x,prop,ep = Element.prototype,len = this.nodes.length;
@@ -1164,7 +1168,7 @@ sb.nodeList.prototype = {
 		
 		var prop,x=0,node;
 		
-		var add_ep = (this.create_super_elements && Element.emulated);
+		var emulated = Element.emulated;
 		
 		var ep = Element.prototype;
 		
@@ -1177,7 +1181,7 @@ sb.nodeList.prototype = {
 			
 			if(!this.sb_ids[node.sb_id]){
 				
-				if(add_ep){
+				if(emulated){
 					
 					for(prop in ep){
 						node[prop] = ep[prop];
@@ -1224,42 +1228,6 @@ sb.nodeList.prototype = {
 		return this.nodes.length;
 	},
 	
-	/**
-	@Name: sb.nodeList.prototype.fireElementPrototypes
-	@Description: Used Internally. Adds the prototypes from sb.element to the group
-	*/
-	fireElementPrototypes : function(func){
-		var t = this;
-		return function(){
-			var args = arguments;
-			t.nodes.forEach(function(node){
-				
-				if(typeof node[func] == 'function'){
-					node[func].apply(node, args);
-				}
-		
-			});
-			return this;
-		};
-	},
-	
-	/**
-	@Name: sb.nodeList.prototype.addElementPrototypes
-	@Description: Used Internally. Adds the Element.prototype properties to the sb.nodeList instance
-	*/
-	addElementPrototypes : function(){
-		var ep = Element.prototype;
-		
-		//had to add try catch for ff as there are some native ep thats throw errors
-		for(var prop in ep){
-			try{
-				if (ep.hasOwnProperty(prop) && typeof ep[prop] == 'function') {
-				
-					this[prop] = this.fireElementPrototypes(prop);
-				}
-			}catch(e){}
-		}
-	},
 	/**
 	@Name: sb.nodeList.prototype.typeOf
 	@Description: Used Internally for sb.typeOf
@@ -1313,7 +1281,7 @@ var myAjax = new sb.ajax({
 	url : 'process.php',
 	
 	//the handler function receives all data returned from the server side script, depending on the format specified, result has different properties, by default it is a text string
-	onResponse : function(result){ 
+	handler : function(result){ 
 		//alerts the text returned from the server side script
 		alert(result); 
 	}
@@ -1335,38 +1303,47 @@ sb.ajax = function(params){
 };
 
 /**
-@Name: sb.ajax.log
-@Description: Used internally as a placeholder for sb.ajax.log found in sb.developer which is used to debug ajax transations
+@Name: sb.ajax.infuse
+@Description: Used internally to compensate for globals not being on by default
 */
-sb.ajax.log = function(){};
+sb.ajax.infuse = sb.objects.infuse;
 
-/**
-@Name: sb.ajax.defaultMethod
-@Description: The default transport method used for communicating with server side scripts.  If this is changed, all insatnces with non specified transport methods will use this one.  It is 'get' by default.  Another option is 'post'.
-*/
-sb.ajax.defaultMethod = 'post';
-
-/**
-@Name: sb.ajax.defaultFormat
-@Description: The default way the ajax instances handles the data retreived from the scripts. This sets the default format for all sb.ajax instances that do not already specify a format.  It is text by default but you can override this in your script.  The options are;
-1. text - returns the data from the server side script as text and passes it to the instances onResponse method
-2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript
-3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript
-4. js - evaluated the data returned from the server side script as javascript
-5. send - only sends data and does not receive any data
-6. head - only reads the header data from the HTML transaction and passes that to the instances onResponse method.  If a header property is specified on the sb.ajax instance, then only that header is passed
-@Example:
-sb.ajax.defaultFormat = 'json';
-*/
-sb.ajax.defaultFormat = 'text';
-
-/**
-@Name: sb.ajax.defaultURL
-@Description: The default url the ajax instances semd data to. This sets the url for all sb.ajax instances that do not already specify a url.
-@Example:
-sb.ajax.defaultURL = 'process.php';
-*/
-sb.ajax.defaultURL = '';
+sb.ajax.infuse({
+	/**
+	@Name: sb.ajax.log
+	@Description: Used internally as a placeholder for sb.ajax.log found in sb.developer which is used to debug ajax transations
+	*/
+	log : function(){},
+	
+	/**
+	@Name: sb.ajax.defaultMethod
+	@Description: The default transport method used for communicating with server side scripts.  If this is changed, all insatnces with non specified transport methods will use this one.  It is 'get' by default.  Another option is 'post'.
+	*/
+	defaultMethod : 'post',
+	
+	/**
+	@Name: sb.ajax.defaultFormat
+	@Description: The default way the ajax instances handles the data retreived from the scripts. This sets the default format for all sb.ajax instances that do not already specify a format.  It is text by default but you can override this in your script.  The options are;
+	1. text - returns the data from the server side script as text and passes it to the instances handler method
+	2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript
+	3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript
+	4. js - evaluated the data returned from the server side script as javascript
+	5. send - only sends data and does not receive any data
+	6. head - only reads the header data from the HTML transaction and passes that to the instances handler method.  If a header property is specified on the sb.ajax instance, then only that header is passed
+	@Example:
+	sb.ajax.defaultFormat = 'json';
+	*/
+	defaultFormat : 'text',
+	
+	/**
+	@Name: sb.ajax.defaultURL
+	@Description: The default url the ajax instances semd data to. This sets the url for all sb.ajax instances that do not already specify a url.
+	@Example:
+	sb.ajax.defaultURL = 'process.php';
+	*/
+	defaultURL : ''
+	
+});
 
 sb.ajax.prototype = {
 	
@@ -1409,13 +1386,13 @@ sb.ajax.prototype = {
 	
 	/**
 	@Name: sb.ajax.prototype.format
-	@Description: The format the data is retreived in.   Can be json, text, xml, head, js, send - s.  This value overides any sb.ajax.defaultFormat value set or if the Content-type from server matches a specific format.
-	1. text - returns the data from the server side script as text and passes it to the instance's handler method
+	@Description: The format the data is retreived in.  Can be json, text, xml, head, js, send - s.  This value overides any sb.ajax.defaultFormat value set or if the content type of the server page matches a specific format.
+	1. text - returns the data from the server side script as text and passes it to the instances handler method
 	2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript.  This type is defaulted if the page is served with the term 'json' in the content type e.g. application/json 
 	3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript  This type is defaulted if the page is served with the term 'xml' in the content type e.g. application/xml 
 	4. js - evaluated the data returned from the server side script as javascript.  This type is defaulted if the page is served with the term 'javascript' in the content type e.g. application/javascript 
 	5. send - only sends data and does not receive any data
-	6. head - only reads the header data from the HTML transaction and passes that to the instance's onResponse method.  If a header property is specified on the sb.ajax instance, then only that header is passed
+	6. head - only reads the header data from the HTML transaction and passes that to the instances handler method.  If a header property is specified on the sb.ajax instance, then only that header is passed
 	@Type: Boolean
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1465,11 +1442,6 @@ sb.ajax.prototype = {
 		
 		if (this.o.readyState != 4 || this.completed == 1) {return true; }
 		
-		//for backwards compatibility, remove soon
-		if(typeof this.handler == 'function'){
-			this.onResponse = this.handler;
-		}
-		
 		this.completed =1;
 
 		this.contentType = this.o.getResponseHeader("Content-Type");
@@ -1503,18 +1475,16 @@ sb.ajax.prototype = {
 		
 		this.log(2, "\nHEADERS\nStatus: "+this.o.status+"\nStatus Text: "+this.o.statusText+"\n"+this.o.getAllResponseHeaders()+"\nRESPONSE: \n"+(this.o.responseText ||'PAGE WAS BLANK ;(')+"\n");
 		
-		var cont = true;
+		//page status other than 200
+		if(this.o.status != 200 && this.local !==1){
+			return false;
+		}
+	
 		
 		if(typeof this.timer !='undefined'){
 			window.clearInterval(this.timer);
 		}
 		
-		cont = this.onHeaders.call(this.o, this.o.status, this.o.statusText);	
-		
-		if(cont === false || (this.o.status != 200 && this.local !==1)){
-			return false;
-		}
-	
 		switch(this.format){
 			
 			case 'head':
@@ -1558,7 +1528,7 @@ sb.ajax.prototype = {
 			}
 		}
 		
-		this.onResponse(this.response);
+		if(typeof this.handler =='function'){this.handler(this.response);}
 		
 		if(typeof this.node !='undefined'){
 			
@@ -1611,7 +1581,7 @@ sb.ajax.prototype = {
 	
 	/**
 	@Name: sb.ajax.prototype.fetch
-	@Description: Sends any data specified to the external server side file specified in your instances .url property and returns the data recieved to the instance's onResponse method
+	@Description: Sends any data specified to the external server side file specified in your instances .url property and returns the data recieved to the instances handler method
 	@Example:
 	var myAjax = new sb.ajax({
 		url : 'process.php'
@@ -1664,6 +1634,7 @@ sb.ajax.prototype = {
 					
 					window.clearInterval(t.timer);
 				} else {
+				
 					t.count++;
 				}
 			}, 1);
@@ -1706,73 +1677,28 @@ sb.ajax.prototype = {
 			this.timer.reset();
 		}
 		
-		this.onAbort();
+		if(typeof this.onabort =='function'){
+			this.onabort();
+		}
 		
 	},
 	
 	/**
-	@Name: sb.ajax.prototype.onResponse
-	@Description: Fires when the ajax request gets its response back from the server.
-	@Param: response String, json, or XML depending on ajax instance .format property
+	@Name: sb.ajax.prototype.infuse
+	@Description: You can easily infuse sb.ajax objects with multiple properties
 	@Example:
 	var myAjax = new sb.ajax({
-		url : 'process.php',
-		onResponse : function(response){
-			alert(response);
+		url : 'process.php'
+	});
+	
+	myAjax.infuse({
+		format :'text',
+		handler : function(result){
+			alert(result);
 		}
 	});
 	*/
-	onResponse : function(){},
-	
-	/**
-	@Name: sb.ajax.prototype.onHeaders
-	@Description: Fires when the ajax request gets it headers back
-	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php',
-		onHeaders : function(status, statusText){
-			//alert 400 if file not found
-			alert(status);
-			//you also have access to other headers
-			alert(this.getResponseHeader('Content-type');
-		}
-	});
-	
-	*/
-	onTimeout : function(){},
-	
-	/**
-	@Name: sb.ajax.prototype.onHeaders
-	@Description: Fires when the ajax request gets it headers back
-	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php',
-		onHeaders : function(status, statusText){
-			//alert 400 if file not found
-			alert(status);
-			//you also have access to other headers
-			alert(this.getResponseHeader('Content-type');
-		}
-	});
-
-	*/
-	onHeaders : function(status, statusText){},
-	
-	/**
-	@Name: sb.ajax.prototype.abort
-	@Description: You can use this to abort an ajax function that is fetching.  In addition, if you have defined an onabort() method for your sb.ajax instance it will fire whenever the fetch is canceled.
-	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php',
-		onAbort : function(){
-			alert('ajax call aborted');
-		}
-	});
-	
-	//aborts a fetch already in progress, you could attach this event to a cancel button, also used by timeout
-	myAjax.abort();
-	*/
-	onAbort : function(){}
+	infuse : sb.objects.infuse
 };
 
 sb.dom = {
@@ -1955,7 +1881,7 @@ sb.styles = {
 
 /**
 @Name: sb.events
-@Description: Cross browser event handling that references the proper "this" and passes the event to the handler method.  Using sb.events, multiple events can be added to a single DOM node for the same event.  e.g. multiple onclick handlers
+@Description: Cross browser event handling that references the proper "this" and passes the event to the handler function.  Using sb.events, multiple events can be added to a single DOM node for the same event.  e.g. multiple onclick handlers
 */
 sb.events = {
 	
