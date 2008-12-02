@@ -9,5 +9,5 @@ myElement.isDescendantOf('#parent');
 
 Element.prototype.isDescendantOf = function(el){
 
-	return $(el, '*').nodes.inArray(this);
+	return $(el).$('*').nodes.inArray(this);
 };
