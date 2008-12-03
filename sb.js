@@ -1263,6 +1263,21 @@ sb.nodeList.prototype = {
 	},
 	
 	/**
+	@Name: sb.nodeList.prototype.styles(o)
+	@Description: Runs the style method of each node in the nodeList and pass the o style object
+	@Example:
+	
+	var nodeList = $('li,p');
+	nodeList.styles({
+		backgroundColor : 'red',
+		color: 'yellow'
+	});
+	*/
+	styles : function(styles){
+		this.firePerNode(Element.prototype.styles, styles);
+	},
+	
+	/**
 	@Name: sb.nodeList.prototype.typeOf
 	@Description: Used Internally for sb.typeOf
 	*/
