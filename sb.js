@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.605 04/24/04 - 12/02/08
+@Version: 4.603 04/24/04 - 12/02/08
 @Package: surebert
 */
 
@@ -62,7 +62,7 @@ $ = function(selector, root) {
 	if(typeof selector != 'string'){
 		
 		if(typeof selector == 'object'){
-			if(selector.nodeType && Element.emulated === true){
+			if(Element.emulated === true && selector.nodeType && selector.nodeType == 1){
 				var ep = Element.prototype;
 				for(var prop in ep){
 					selector[prop] = ep[prop];
