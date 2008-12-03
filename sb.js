@@ -2624,10 +2624,11 @@ Element.prototype.styles = function(params){
 @Example:
 myElement.getStyle('background-color');
 //or
-myElement.getStyle('backgroundColor').
+myElement.getStyle('padding').
 */
 Element.prototype.getStyle = function(prop){
 	var val;
+	
 	if(prop.match(/^border$/)){
 		prop = 'border-left-width';				
 	} 
@@ -2643,35 +2644,36 @@ Element.prototype.getStyle = function(prop){
 	if(prop.match(/^border-color$/)){
 		prop = 'border-left-color';				
 	}
-			
-	try{
-		if (this.style[prop]) {
-			val = this.style[prop];
-			
-		} else if (this.currentStyle) {
-			
-			prop = prop.toCamel();
-			val = this.currentStyle[prop];
-			
-		} else if (document.defaultView && document.defaultView.getComputedStyle) {
-				
-			prop = prop.replace(/([A-Z])/g, "-$1");
-			prop = prop.toLowerCase();
-			
-			val = document.defaultView.getComputedStyle(this,"").getPropertyValue(prop);
-			
-		} else {
-			val=null;
-		}
+	
+	if (this.style[prop]) {
+		val = this.style[prop];
 		
-		if(prop == 'opacity' && val === undefined){
-			val = 1;
-		}
+	} else if (this.currentStyle) {
 		
-		if(val){
+		prop = prop.toCamel();
+		val = this.currentStyle[prop];
+		
+	} else if (document.defaultView && document.defaultView.getComputedStyle) {
+			
+		prop = prop.replace(/([A-Z])/g, "-$1");
+		prop = prop.toLowerCase();
+		
+		val = document.defaultView.getComputedStyle(this,"").getPropertyValue(prop);
+		
+	} else {
+		val=null;
+	}
+	
+	if(prop == 'opacity' && val === undefined){
+		val = 1;
+	}
+	
+	if(val){
+		if(typeof val == 'String'){
+			
 			val = val.toLowerCase();
 			if(val == 'rgba(0, 0, 0, 0)'){val = 'transparent';}
-			
+		
 			if(typeof sb.colors.html !='undefined'){
 				if(sb.colors.html[val]){
 					val = sb.colors.html[val].hex2rgb();
@@ -2682,18 +2684,17 @@ Element.prototype.getStyle = function(prop){
 				val = val.hex2rgb();
 			}
 		
-			return val;
-		} else {
-			return null;
 		}
 		
-	} catch(e){
-		sb.consol.log(sb.messages[18]+prop+"\nID: #"+this.id+"\nError: "+e);
+		return val;
+	} else {
+		return null;
 	}
+
 };
 
 /**
-@Name: Element.prototype.prototype.getStyle
+@Name: Element.prototype.prototype.setStyle
 @Description: Sets the style of an sb.element
 @Param: String prop The property to assign a value to
 @Param: String val The value to assign to the property specified
@@ -2709,19 +2710,23 @@ Element.prototype.setStyle = function(prop, val){
 			val +='px';
 		}
 		
-		prop = prop.toCamel();
-		
 		if(prop == 'opacity'){
-			if(val <= 0){ val =0;}
-			if(val >= 1){ val =1;}
+			if(val <= 0){ 
+				val = 0;
+			} else if(val >= 1){ 
+				val = 1;
+			}
+			
 			this.style.opacity = val;
 			
-			if(typeof this.style.filter == 'string' && sb.browser.ie6===1){
+			if(typeof this.style.filter == 'string' && this.style.zoom){
 				this.style.zoom = 1;
 				this.style.filter = "alpha(opacity:"+val*100+")";
 			}
 			
 		} else {
+			
+			prop = prop.toCamel();
 			
 			try{
 				this.style[prop] = val;
