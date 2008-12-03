@@ -2,18 +2,21 @@
 @Name: sb.nodeList.prototype.stylesTrail
 @Description: Cahnegs the styles of a nodelist in order that they appear in the nodelist on a timeout, and then changes the styles back to how their were
 @Example:
-	$('li').stylesTrail({
-		styles : {
-			backgroundColor : 'orange',
-			border : '2px dotted red'
-		},
-		offset : 6,
-		onEnd : function(){
-			
-		}
-	});
+$('li').styleTrail({
+	styles : {
+		backgroundColor : 'orange',
+		borderColor : 'red',
+		borderWidth : '2px'
+	},
+	offset : 6,
+	offsetOff : 80,
+	onEnd : function(){
+		
+	}
+});
  */
-sb.nodeList.prototype.stylesTrail = function(params){
+
+sb.nodeList.prototype.styleTrail = function(params){
 	styles = params.styles || {backgroundColor : 'orange'};
 	offset = params.offset || 300;
 	offsetOff = params.offsetOff || 80;
