@@ -1,6 +1,4 @@
-
 sb.include('String.prototype.stripHTML');
-sb.include('Array.prototype.sum');
 
 /**
 @Name: sb.widget.magicTable
