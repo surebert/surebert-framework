@@ -25,7 +25,6 @@ o.onCellMouseOver Function - see below
 @Example:
 var myTable = new sb.widget.magicTable({
 	table : '#jimmy',
-	//these are the defaults, if you want them you can leave the classes property out
 	sortable : 1,
 	onCellClick : function(td){
 		td.style.backgroundColor = 'pink';
