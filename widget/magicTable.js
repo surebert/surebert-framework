@@ -19,10 +19,16 @@ o.classes.sortedBy String The classname added to the <th> being sorted on, defau
 var myTable = new sb.widget.magicTable({
 	table : '#jimmy',
 	//these are the defaults, if you want them you can leave the classes property out
-	classes : {
-		unsortable : 'unsortable',
-		sortable : 'sortable',
-		sorted_by : 'sorted_by'
+	sortable : 1,
+	onCellClick : function(td){
+		td.style.backgroundColor = 'pink';
+		if(td.innerHTML == 'delete'){
+			$(td.parentNode).remove();
+		}
+	},
+	onRowClick : function(tr){
+		tr.style.backgroundColor = 'red';
+		//alert(tr.innerHTML);
 	}
 });
 
@@ -35,6 +41,17 @@ var myTable = new sb.widget.magicTable({
 			['Matthew', 36, '228-7613'],
 			['Terry', 29, '228-5731']
 		]
+	},
+	sortable : 1,
+	onCellClick : function(td){
+		td.style.backgroundColor = 'pink';
+		if(td.innerHTML == 'delete'){
+			$(td.parentNode).remove();
+		}
+	},
+	onRowClick : function(tr){
+		tr.style.backgroundColor = 'red';
+		//alert(tr.innerHTML);
 	}
 });
 */
@@ -200,6 +217,9 @@ sb.widget.magicTable.prototype = {
 		o.format = 'json';
 		o.onResponse = o.onResponse || function(r){
 			self.addRows(r);
+			if(typeof o.onLoaded == 'function'){
+				o.onLoaded(r);
+			}
 		};
 		var aj = new sb.ajax(o).fetch();
 	},
