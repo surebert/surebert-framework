@@ -31,6 +31,7 @@ var myTable = new sb.widget.magicTable({
 		//alert(tr.innerHTML);
 	}
 });
+myTable.sortBy('colName');
 
 //or
 var myTable = new sb.widget.magicTable({
@@ -54,6 +55,8 @@ var myTable = new sb.widget.magicTable({
 		//alert(tr.innerHTML);
 	}
 });
+myTable.table.appendTo('body');
+
 */
 sb.widget.magicTable = function(o){
 
@@ -112,44 +115,6 @@ sb.widget.magicTable = function(o){
 
 sb.widget.magicTable.prototype = {
 
-	create : function(headers, rows){
-	
-		this.table = new sb.element({
-			tag : 'table'
-		});
-	
-		this.head = new sb.element({
-			tag : 'thead'
-		});
-	
-		this.body = new sb.element({
-			tag : 'tbody'
-		});
-		
-		this.table.appendChild(this.head);
-		this.table.appendChild(this.body);
-		this.addHeaders(headers);
-		this.addRows(rows);
-	},
-	
-	addCells : function(data, parent, tag){
-		var self = this;
-		if(data[0].forEach){
-			data.forEach(function(row){
-				self.addCells(row, parent, tag);
-			});
-		} else {
-		
-			var tr = parent.appendChild(new sb.element({
-				tag : 'tr'
-			}));
-			
-			data.forEach(function(cell){
-				tr.appendChild(new sb.element({tag : tag, innerHTML : cell}));
-			});
-		}
-	},
-	
 	/**
 	@Name: sb.widget.table.prototype.addHeaders
 	@Description: Adds rows to table headers
@@ -512,6 +477,52 @@ sb.widget.magicTable.prototype = {
 		if(text.match(/^[a-z_]+\d+(\.\w+)$/))
 			return 'natural';
 		return 'nocase';
+	},
+	
+	/**
+	@Name: sb.widget.table.prototype.create
+	@Description: Used Internally
+	*/
+	create : function(headers, rows){
+	
+		this.table = new sb.element({
+			tag : 'table'
+		});
+	
+		this.head = new sb.element({
+			tag : 'thead'
+		});
+	
+		this.body = new sb.element({
+			tag : 'tbody'
+		});
+		
+		this.table.appendChild(this.head);
+		this.table.appendChild(this.body);
+		this.addHeaders(headers);
+		this.addRows(rows);
+	},
+	
+	/**
+	@Name: sb.widget.table.prototype.addCells
+	@Description: Used Internally
+	*/
+	addCells : function(data, parent, tag){
+		var self = this;
+		if(data[0].forEach){
+			data.forEach(function(row){
+				self.addCells(row, parent, tag);
+			});
+		} else {
+		
+			var tr = parent.appendChild(new sb.element({
+				tag : 'tr'
+			}));
+			
+			data.forEach(function(cell){
+				tr.appendChild(new sb.element({tag : tag, innerHTML : cell}));
+			});
+		}
 	}
 		
 };
