@@ -76,9 +76,7 @@ $ = function(selector, root) {
 	}
 	
 	var nodeList = new sb.nodeList();
-	
-	nodeList.setSelector(selector);
-	
+	nodeList.selector = selector;
 	if(document.querySelectorAll){
 		
 		nodeList.add(root.querySelectorAll(selector));
@@ -86,11 +84,12 @@ $ = function(selector, root) {
 	} else {
 		$.parseSelectors(nodeList, root);
 	}
+	
 
 	if(nodeList.length() === 0 && nodeList.selector.match(/^\#\w+$/) ){
 		return null;
 	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#\w+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
-		
+	
 		return nodeList.nodes[0];
 	} else {
 		return nodeList;
@@ -1164,7 +1163,7 @@ sb.nodeList.prototype = {
 	
 	*/
 	add : function(nodes){
-		nodes = (nodes instanceof Array || nodes instanceof NodeList) ? nodes : [nodes];
+		nodes = (nodes instanceof Array || (typeof NodeList !='undefined' && nodes instanceof NodeList)) ? nodes : [nodes];
 		
 		var len = nodes.length;
 		
