@@ -10,10 +10,17 @@ sb.include('Array.prototype.sum');
 @param o Object
 o.table String/Node Reference to an HTML table e.g. #myTable, or myTable
 o.table Object Define table to be created {headers : [], rows : []}
+o.sortable boolean Should the table be sortable
 o.classes Object class names to use for properties
 o.classes.unsortable String The classname for columns you want to set as unsortable, the default is 'unsortable'
 o.classes.sortable String The classname added to all sortable columns <th>s by sb.magicTable, default is 'sortable'
-o.classes.sortedBy String The classname added to the <th> being sorted on, default is 'sortedBy'
+o.classes.sorted_by String The classname added to the <th> being sorted on, default is 'sorted_by'
+o.classes.force_sort String The className used for forcing sort type
+o.onCellClick Function - see below
+o.onRowClick Function - see below
+o.onColClick Function - see below
+o.onCellMouseOut Function - see below
+o.onCellMouseOver Function - see below
 
 @Example:
 var myTable = new sb.widget.magicTable({
@@ -73,13 +80,13 @@ sb.widget.magicTable = function(o){
 	}
 	
 	this.sortable = o.sortable;
-	if(this.sortable && o.classes){
+	if(this.sortable){
 		
 		this.classes = {
-			unsortable : (o.classes.unsortable) ? o.classes.unsortable : 'sb_unsortable',
-			sortable : (o.classes.sortable) ? o.classes.sortable : 'sb_sortable',
-			sorted_by : (o.classes.sorted_by) ? o.classes.sorted_by : 'sb_sorted_by',
-			force_sort : (o.classes.force_sort) ? o.classes.force_sort : 'sb_force_sort'
+			unsortable : (o.classes && o.classes.unsortable) ? o.classes.unsortable : 'sb_unsortable',
+			sortable : (o.classes && o.classes.sortable) ? o.classes.sortable : 'sb_sortable',
+			sorted_by : (o.classes && o.classes.sorted_by) ? o.classes.sorted_by : 'sb_sorted_by',
+			force_sort : (o.classes && o.classes.force_sort) ? o.classes.force_sort : 'sb_force_sort'
 		};
 
 		this.setSortStyles();
@@ -130,6 +137,15 @@ sb.widget.magicTable.prototype = {
 	@Description: Adds rows to a table instance
 	@Example:
 	myTable.addRows(['Blythe', '50','Wed, November 24, 2004','04/12/03','3.9.05', '$6,89']);
+	//or
+	myTable.addRows([
+	 	['Julie', 'f', 54, 3456],
+		['Wendy', 'f', 22, 4562],
+		['Gina', 'f', 78, 5773],
+		['Timmy', 'm', 12, 5467],
+		['Jason', 'm', 45, 3452],
+		['Tony', 'm', 5, 3456]
+	]);
 	*/
 	addRows : function(data){
 		this.addCells(data, this.body, 'td');
@@ -196,8 +212,12 @@ sb.widget.magicTable.prototype = {
 	@Param: reverse boolean Sort DESC
 	@Example:
 	myTable.sortBy('age');
-	//or reversse
+	//or reverse
 	myTable.sortBy('age', true);
+	//sort by column 0
+	myTable.sortBy(0);
+	//sort by a <th> node DOM reference
+	myTable.sortBy(th);
 	*/
 	sortBy : function(header, reverse){
 		var rows = [];
@@ -208,7 +228,7 @@ sb.widget.magicTable.prototype = {
 		//UPDATE TO use cellIndex
 		this.table.$('thead th').forEach(function(v,k){
 			
-			if((typeof header == 'string' && header == v.innerHTML.stripHTML().toLowerCase()) || header == v){
+			if((typeof header == 'string' && header == v.innerHTML.stripHTML().toLowerCase()) || header == v || header == k){
 				
 				col = k;
 				var customSort = v.className.match(new RegExp(self.classes.force_sort+"_(\\w+)"));
@@ -239,6 +259,7 @@ sb.widget.magicTable.prototype = {
 		});
 
 		var compare = sb.widget.magicTable.compare[sortRule];
+		
 		rows.sort(function(a, b) {
 			return compare(a.text + '', b.text + '', a.td, b.td);
 		});
@@ -320,9 +341,7 @@ sb.widget.magicTable.prototype = {
 		th.style.backgroundColor = 'red';
 	};
 	*/
-	onHeaderClick : function(th){
-		th.style.backgroundColor = 'blue';
-	},
+	onHeaderClick : function(th){},
 
 	/**
 	@Name: sb.widget.magicTable.prototype.onCellMouseOver
@@ -361,7 +380,7 @@ sb.widget.magicTable.prototype = {
 		    };
 		    v.unselectable = "on";
 		    v.style.MozUserSelect = "none";
-
+			v.style.cursor = 'pointer';
 		    if(v.title == ''){
 			    if(v.hasClassName(self.classes.unsortable)){
 					v.title = 'Column not sortable';
