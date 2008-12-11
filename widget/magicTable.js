@@ -14,6 +14,10 @@ o.classes.unsortable String The classname for columns you want to set as unsorta
 o.classes.sortable String The classname added to all sortable columns <th>s by sb.magicTable, default is 'sortable'
 o.classes.sorted_by String The classname added to the <th> being sorted on, default is 'sorted_by'
 o.classes.force_sort String The className used for forcing sort type
+o.classes.asc String The className you want used for ascending sorts, if you don't just want the default arrow
+o.classes.desc String The className you want used for descending sorts, if you don't just want the default arrow
+o.classes.even String The className used even rows if you want even/odd CSS
+o.classes.odd String The className used odd rows if you want even/odd CSS
 o.onCellClick Function - see below
 o.onCellMouseOut Function - see below
 o.onCellMouseOver Function - see below
@@ -281,11 +285,21 @@ sb.widget.magicTable.prototype = {
 		if(reverse){
 			rows.reverse();
 		}
-
+		
+		
 		var tbody = this.table.$('tbody').nodes[0];
 		rows.forEach(function(row,k,a){
+			var tr = row.tr;
 			
-			tbody.appendChild(row.tr);
+			if(self.classes.even){
+				tr.removeClassName('even');
+				tr.removeClassName('odd');
+				if(k % 2 == 0){ tr.addClassName('even');} else {
+					tr.addClassName('odd');
+				}
+			}
+			
+			tbody.appendChild(tr);
 		});
 
 		rows = null;
