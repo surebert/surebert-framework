@@ -2,7 +2,7 @@ sb.include('String.prototype.stripHTML');
 
 /**
 @Name: sb.widget.magicTable
-@Version: 1.1 12-08-2008 12-09-2008
+@Version: 1.2 12-08-2008 12-11-2008
 @Author: Paul Visco
 @Description:  Makes or adds interactivity to an HTML table.  All events are attached to the table and delegated from their to keep overhead very low
 @param o Object The following properties are used, however, you can add any additional properties to o that you would like and they will be transferred to your magicTable instance
@@ -85,14 +85,12 @@ sb.widget.magicTable = function(o){
 	}
 	
 	if(this.sortable){
+		this.classes = this.classes || {};
 		
-		this.classes = {
-			unsortable : (this.classes && this.classes.unsortable) ? this.classes.unsortable : 'sb_unsortable',
-			sortable : (this.classes && this.classes.sortable) ? this.classes.sortable : 'sb_sortable',
-			sorted_by : (this.classes && this.classes.sorted_by) ? this.classes.sorted_by : 'sb_sorted_by',
-			force_sort : (this.classes && this.classes.force_sort) ? this.classes.force_sort : 'sb_force_sort'
-		};
-
+		this.classes.unsortable = (this.classes.unsortable) ? this.classes.unsortable : 'sb_unsortable';
+		this.classes.sortable = (this.classes.sortable) ? this.classes.sortable : 'sb_sortable';
+		this.classes.sorted_by = (this.classes.sorted_by) ? this.classes.sorted_by : 'sb_sorted_by';
+		this.classes.force_sort = (this.classes.force_sort) ? this.classes.force_sort : 'sb_force_sort';
 		
 		if(this.sortTypes){
 			this.setSortTypes(this.sortTypes);
@@ -170,20 +168,36 @@ sb.widget.magicTable.prototype = {
 	/**
 	@Name: sb.widget.magicTable.loadRows
 	@Description: Loads more rows from the server.  It expects the loading page to be in json format and to be an array of arrays which represent the values in the rows.  Null values should be represented by null.
+	@Param: o String The url to load the data from
 	@Param: o object
 	o.url String The url to load the data from
+	o.onLoad Function The function that runs, once the rows are returned from the server but before they are added.  If it returns false they are not added.
 	@Example:
+	myTable.loadRows('/some/data');
+ 
 	myTable.loadRows({
-		url : '/some/data'
+		url : '/some/data',
+		//if you return false, the rows are not added
+		onLoad : function(response){
+			alert('response');
+			return true;
+		}
 	});
 	*/
+	
 	loadRows : function(o){
 		var self = this;
+		if(typeof o == 'string'){
+			o = {url: o};
+		}
 		o.format = 'json';
 		o.onResponse = o.onResponse || function(r){
-			self.addRows(r);
-			if(typeof o.onLoaded == 'function'){
-				o.onLoaded(r);
+			var addRows = true;
+			if(typeof o.onLoad == 'function'){
+				addRows = o.onLoad(r);
+			}
+			if(addRows !== false){
+				self.addRows(r);
 			}
 		};
 		var aj = new sb.ajax(o).fetch();
@@ -212,16 +226,23 @@ sb.widget.magicTable.prototype = {
 		var sortRule = '';
 		var self = this;
 	
-		//UPDATE TO use cellIndex
 		this.table.$('thead th').forEach(function(v,k){
 			v.removeClassName(self.classes.sorted_by);
+			v.reverse = null;
+			
+			if(self.classes.desc && self.classes.asc){
+				v.removeClassName(self.classes.desc);
+				v.removeClassName(self.classes.asc);
+			} else {
+				v.innerHTML = v.innerHTML.replace(/ \u2191|\u2193/, '');
+			}
+			
 			if((typeof header == 'string' && header == v.innerHTML.stripHTML().toLowerCase()) || header == v || header == k){
 				
 				col = k;
 				var customSort = v.className.match(new RegExp(self.classes.force_sort+"_(\\w+)"));
 				if(customSort){
 					sortRule = customSort[1];
-					
 				}
 		
 				if(!sb.widget.magicTable.compare[sortRule]){
@@ -229,7 +250,15 @@ sb.widget.magicTable.prototype = {
 				}
 				
 				v.addClassName(self.classes.sorted_by);
-
+				
+				if(self.classes.desc && self.classes.asc){
+					v.className += ' '+((reverse) ? self.classes.desc : self.classes.asc);
+				} else {
+					v.innerHTML = v.innerHTML+' '+((reverse) ? "\u2191" : "\u2193");
+				}
+				
+				v.reverse = (reverse) ? true : false;
+				
 			}
 		});
 
@@ -262,7 +291,61 @@ sb.widget.magicTable.prototype = {
 		rows = null;
 		this.onAfterSort(header);
 	},
-
+	
+	/**
+	@Name: sb.widget.magicTable.prototype.getHeaderValue
+	@Description: Cleans the header data for a th
+	@Param: th Element The th that was clicked.
+	@Example:
+	myTable.getHeaderValue = function(){
+	   
+	};	
+	*/
+	getHeaderValue : function(){
+		
+		if(typeof arguments[0] == 'number'){
+			cell = this.head.rows[0].cells[arguments[0]];
+		} else if(arguments[0].innerHTML){
+			cell = arguments[0];
+		}
+		
+		if(!cell.innerHTML){
+			throw("argument must be th node or cellIndex");
+			return false;
+		}
+		var str = cell.innerHTML.stripHTML();
+		str = str.replace(/ \u2191|\u2193/, '');
+		return str;
+	},
+	
+	/**
+	@Name: sb.widget.magicTable.prototype.getHeaderValue
+	@Description: Cleans the header data for a th
+	@Param: td Element The td element to get the value of
+	@Param: rowIndex The row index
+	@Param: cellIndex The cell index
+	@Example:
+	//returns the value of the td node passed to the function
+	var data = myTable.getCellValue(td);
+	
+	//returns the value of cell 3 in row 0
+	var data = myTable.getCellValue(0,3);
+	*/
+	getCellValue : function(){
+		if(arguments.length == 2){
+			cell = this.body.rows[arguments[0]].cells[arguments[1]];
+		} else if(arguments[0].innerHTML){
+			cell = arguments[0];
+		}
+		
+		if(!cell.innerHTML){
+			throw("argument must be td node or cellIndex");
+			return false;
+		}
+		
+		return cell.innerHTML.stripHTML();
+	},
+	
 	/**
 	@Name: sb.widget.magicTable.prototype.onBeforeSort
 	@Description: fires after .sortBy is run but before actual sort begins.  The "this" is the magicTable instance itself.
@@ -395,6 +478,7 @@ sb.widget.magicTable.prototype = {
 		    v.unselectable = "on";
 		    v.style.MozUserSelect = "none";
 			v.style.cursor = 'pointer';
+			
 		    if(v.title == ''){
 			    if(v.hasClassName(self.classes.unsortable)){
 					v.title = 'Column not sortable';
@@ -402,80 +486,9 @@ sb.widget.magicTable.prototype = {
 			    } else {
 
 					v.addClassName(self.classes.sortable);
-			    	v.title = 'Click to sort, shift-click to reverse sort';
+			    	v.title = 'Click to sort, click again to reverse sort';
 			    }
 		    }
-		});
-	},
-	
-	/**
-	@Name: sb.widget.magicTable.prototype.addEvents
-	@Description: Used internally
-	*/
-	
-	addEvents : function(){
-		var self = this;
-		this.table.events({
-			mousemove : function(e){
-			
-				target = sb.events.target(e);
-				
-				if(target.nodeName == 'TD'){
-					if(self.prevover != target){
-						if(self.prevover){
-							self.onCellMouseOut(self.prevover);
-						}
-						self.onCellMouseOver(target);
-					}
-
-					self.prevover = target;
-				}
-				
-			},
-			click : function(e){
-				var target = sb.events.target(e);
-				
-				if(target.nodeName == 'TD'){
-					
-					if(typeof self.onCellClick == 'function'){
-						self.onCellClick(target);
-					}
-					self.onRowClick(target.parentNode);
-				
-					if(typeof self.onColClick == 'function'){
-						
-						var header = self.head.$('th').nodes[target.cellIndex];
-						
-						var column = {
-							th : header,
-							title : header.innerHTML.stripHTML(),
-							values : [],
-							tds : new sb.nodeList(),
-							prevColumn : self._prevColumn
-						};
-						
-						self.body.$('tr').forEach(function(tr){
-							var td = tr.$('td').nodes[target.cellIndex];
-							column.tds.add(td);
-							column.values.push(td.innerHTML.stripHTML());
-						});
-
-						self.onColClick(column);
-						self._prevColumn = column;
-					}
-					
-				} else if(target.nodeName == 'TH'){
-					self.onHeaderClick(target);
-				}
-			},
-			
-			mousedown : function(e){
-				
-				if(self.sortable && target.nodeName == 'TH'  && !target.hasClassName(self.classes.unsortable)){
-					
-					self.sortBy(target, e.shiftKey);
-				}
-			}
 		});
 	},
 	
@@ -485,8 +498,9 @@ sb.widget.magicTable.prototype = {
 	*/
 	guessSortRule: function(col) {
 		var rows = this.table.tBodies[0].rows;
-		for(var i = 0; i < rows.length; i++) {
-			var text = rows[i].cells[col].innerHTML.stripHTML();
+		var len = rows.length;
+		for(var row = 0; row < len; row++) {
+			var text = this.getCellValue(row, col);
 			if(text.length) return sb.widget.magicTable.guessFormat(text);
 		}
 		return 'nocase';
@@ -557,12 +571,88 @@ sb.widget.magicTable.prototype = {
 				v.addClassName(self.classes.force_sort+'_'+headers[k]);
 			});
 		}
+	},
+	
+		/**
+	@Name: sb.widget.magicTable.prototype.addEvents
+	@Description: Used internally
+	*/
+	
+	addEvents : function(){
+		var self = this;
+		this.table.events({
+			mousemove : function(e){
+			
+				target = sb.events.target(e);
+				
+				if(target.nodeName == 'TD'){
+					if(self.prevover != target){
+						if(self.prevover){
+							self.onCellMouseOut(self.prevover);
+						}
+						self.onCellMouseOver(target);
+					}
+
+					self.prevover = target;
+				}
+				
+			},
+			click : function(e){
+				var target = sb.events.target(e);
+				
+				if(target.nodeName == 'TD'){
+					
+					if(typeof self.onCellClick == 'function'){
+						self.onCellClick(target);
+					}
+					self.onRowClick(target.parentNode);
+				
+					if(typeof self.onColClick == 'function'){
+						
+						var header = self.head.rows[0].cells[target.cellIndex];
+						
+						var column = {
+							th : header,
+							title : self.getHeaderValue(target.cellIndex),
+							values : [],
+							tds : new sb.nodeList(),
+							prevColumn : self._prevColumn
+						};
+					
+						self.body.$('tr').forEach(function(tr){
+							var td = tr.cells[target.cellIndex];
+							column.tds.add(td);
+							column.values.push(td.innerHTML.stripHTML());
+						});
+						
+						self.onColClick(column);
+						self._prevColumn = column;
+					}
+					
+				} else if(target.nodeName == 'TH'){
+					self.onHeaderClick(target);
+				}
+			},
+			
+			mousedown : function(e){
+				
+				if(self.sortable && target.nodeName == 'TH'  && !target.hasClassName(self.classes.unsortable)){
+					if(target.reverse === false){
+						target.reverse = true;
+					} else {
+						target.reverse = false;
+					}
+					
+					self.sortBy(target, target.reverse);
+				}
+			}
+		});
 	}
 		
 };
 
 /*
-@Name: sb.widget.magicTable.currencyValue
+@Name: sb.widget.magicTable.getCurrencyValue
 @Description: Used internally
 */
 sb.widget.magicTable.getCurrencyValue = function(s) {
@@ -591,7 +681,7 @@ sb.widget.magicTable.guessFormat = function(text) {
 		return 'eudate';
 	if(!isNaN(Date.parse(text)))
 		return 'date';
-	if(!isNaN(sb.widget.magicTable.compare.currencyValue(text)))
+	if(!isNaN(sb.widget.magicTable.getCurrencyValue(text)))
 		return 'currency';
 	if(text.match(/^[a-z_]+\d+(\.\w+)$/))
 		return 'natural';
