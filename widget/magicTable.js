@@ -3,7 +3,7 @@ sb.include('String.prototype.stripHTML');
 /**
 @Name: sb.widget.magicTable
 @Version: 1.1 12-08-2008 12-09-2008
-@Author: Paul Visco sort functions taken from http://www.tagarga.com/blok/post/2
+@Author: Paul Visco
 @Description:  Makes or adds interactivity to an HTML table.  All events are attached to the table and delegated from their to keep overhead very low
 @param o Object The following properties are used, however, you can add any additional properties to o that you would like and they will be transferred to your magicTable instance
 o.table String/Node Reference to an HTML table e.g. #myTable, or myTable
@@ -487,28 +487,8 @@ sb.widget.magicTable.prototype = {
 		var rows = this.table.tBodies[0].rows;
 		for(var i = 0; i < rows.length; i++) {
 			var text = rows[i].cells[col].innerHTML.stripHTML();
-			if(text.length) return this.guessFormat(text);
+			if(text.length) return sb.widget.magicTable.guessFormat(text);
 		}
-		return 'nocase';
-	},
-
-	/**
-	@Name: sb.widget.magicTable.prototype.guessFormat
-	@Description: Used internally
-	*/
-	guessFormat: function(text) {
-		if(!isNaN(Number(text)))
-			return 'numeric';
-		if(text.match(/^\d{2}[\/-]\d{2}[\/-]\d{2,4}$/))
-			return 'usdate';
-		if(text.match(/^\d\d?\.\d\d?\.\d{2,4}$/))
-			return 'eudate';
-		if(!isNaN(Date.parse(text)))
-			return 'date';
-		if(!isNaN(sb.widget.magicTable.compare.currencyValue(text)))
-			return 'currency';
-		if(text.match(/^[a-z_]+\d+(\.\w+)$/))
-			return 'natural';
 		return 'nocase';
 	},
 	
@@ -581,9 +561,46 @@ sb.widget.magicTable.prototype = {
 		
 };
 
+/*
+@Name: sb.widget.magicTable.currencyValue
+@Description: Used internally
+*/
+sb.widget.magicTable.getCurrencyValue = function(s) {
+	//-$1,234.56 or -1,234.56$
+	var m = '';
+	s = s.replace(/\,/g, '');
+	if(m = s.match(/^(-?)\D(\d+(\.\d+)?)$/)) {
+		return parseFloat(m[1] + m[2]);
+	}
+	if(m = s.match(/^(-?\d+(\.\d+)?)\D$/))
+		return parseFloat(m[1]);
+	return parseFloat('NaN');
+};
+
+
+/**
+@Name: sb.widget.magicTable.guessFormat
+@Description: Used internally
+*/
+sb.widget.magicTable.guessFormat = function(text) {
+	if(!isNaN(Number(text)))
+		return 'numeric';
+	if(text.match(/^\d{2}[\/-]\d{2}[\/-]\d{2,4}$/))
+		return 'usdate';
+	if(text.match(/^\d\d?\.\d\d?\.\d{2,4}$/))
+		return 'eudate';
+	if(!isNaN(Date.parse(text)))
+		return 'date';
+	if(!isNaN(sb.widget.magicTable.compare.currencyValue(text)))
+		return 'currency';
+	if(text.match(/^[a-z_]+\d+(\.\w+)$/))
+		return 'natural';
+	return 'nocase';
+};
+
 /**
 @Name: sb.widget.magicTable.prototype.compare
-@Description: The sort methods avaiable to sb.widget.magicTable.  You can add your own too!
+@Description: The sort methods avaiable to sb.widget.magicTable.  You can add your own too!  compare, getCurrencyValue and guessFormat sort functions adapted from http://www.tagarga.com/blok/post/2
 */
 sb.widget.magicTable.compare = {
 
@@ -642,28 +659,12 @@ sb.widget.magicTable.compare = {
 	},
 
 	/**
-	@Name: sb.widget.magicTable.prototype.currencyValue
-	@Description: Sort currencyValue
-	*/
-	currencyValue : function(s) {
-		// -$1.234,56 or -1.234,56$
-		var m = '';
-		s = s.replace(/\./g, '').replace(/,/g, '.');
-		if(m = s.match(/^(-?)\D(\d+(\.\d+)?)$/)) {
-			return parseFloat(m[1] + m[2]);
-		}
-		if(m = s.match(/^(-?\d+(\.\d+)?)\D$/))
-			return parseFloat(m[1]);
-		return parseFloat('NaN');
-	},
-
-	/**
 	@Name: sb.widget.magicTable.prototype.currency
 	@Description: Sort by currency
 	*/
 	currency : function(a, b) {
-		return (sb.widget.magicTable.compare.currencyValue(a) || 0) -
-			(sb.widget.magicTable.compare.currencyValue(b) || 0);
+		return (sb.widget.magicTable.getCurrencyValue(a) || 0) -
+			(sb.widget.magicTable.getCurrencyValue(b) || 0);
 	},
 	
 	/**
