@@ -2,10 +2,10 @@ sb.include('String.prototype.stripHTML');
 
 /**
 @Name: sb.widget.magicTable
-@Version: 0.1 12-08-2008 12-08-2008
+@Version: 1.1 12-08-2008 12-09-2008
 @Author: Paul Visco sort functions taken from http://www.tagarga.com/blok/post/2
 @Description:  Makes or adds interactivity to an HTML table.  All events are attached to the table and delegated from their to keep overhead very low
-@param o Object
+@param o Object The following properties are used, however, you can add any additional properties to o that you would like and they will be transferred to your magicTable instance
 o.table String/Node Reference to an HTML table e.g. #myTable, or myTable
 o.table Object Define table to be created {headers : [], rows : []}
 o.sortable boolean Should the table be sortable
@@ -15,11 +15,13 @@ o.classes.sortable String The classname added to all sortable columns <th>s by s
 o.classes.sorted_by String The classname added to the <th> being sorted on, default is 'sorted_by'
 o.classes.force_sort String The className used for forcing sort type
 o.onCellClick Function - see below
-o.onRowClick Function - see below
-o.onColClick Function - see below
 o.onCellMouseOut Function - see below
 o.onCellMouseOver Function - see below
-
+o.onRowClick Function - see below
+o.onColClick Function - see below
+o.onBeforeSort Function - see below
+o.onAfterSort Function - see below
+o.sortTypes Array - An array of sort types from sb.widget.magicTable.compare that are then used as forced sort types for the columns, must match the number of columns
 @Example:
 var myTable = new sb.widget.magicTable({
 	table : '#jimmy',
@@ -63,54 +65,39 @@ myTable.table.appendTo('body');
 
 */
 sb.widget.magicTable = function(o){
-
-	if(o.table && o.table.headers && o.table.rows){
-		this.create(o.table.headers, o.table.rows);
+	
+	for(var prop in o){
+		if(typeof this[prop] != 'function' || (typeof this[prop] == 'function' && prop.match(/^on/))){
+			this[prop] = o[prop];
+		}
+	}
+	
+	if(this.table && this.table.headers && this.table.rows){
+		this.create(this.table.headers, this.table.rows, this.sortTypes);
 	}
 
-	if(typeof o.table == 'string' || o.table.appendTo){
-		this.table = $(o.table);
+	if(typeof this.table == 'string' || this.table.appendTo){
+		this.table = $(this.table);
 		
 		this.head = $(this.table.tHead);
 		
 		this.body = $(this.table.tBodies[0]);
 	}
 	
-	this.sortable = o.sortable;
 	if(this.sortable){
 		
 		this.classes = {
-			unsortable : (o.classes && o.classes.unsortable) ? o.classes.unsortable : 'sb_unsortable',
-			sortable : (o.classes && o.classes.sortable) ? o.classes.sortable : 'sb_sortable',
-			sorted_by : (o.classes && o.classes.sorted_by) ? o.classes.sorted_by : 'sb_sorted_by',
-			force_sort : (o.classes && o.classes.force_sort) ? o.classes.force_sort : 'sb_force_sort'
+			unsortable : (this.classes && this.classes.unsortable) ? this.classes.unsortable : 'sb_unsortable',
+			sortable : (this.classes && this.classes.sortable) ? this.classes.sortable : 'sb_sortable',
+			sorted_by : (this.classes && this.classes.sorted_by) ? this.classes.sorted_by : 'sb_sorted_by',
+			force_sort : (this.classes && this.classes.force_sort) ? this.classes.force_sort : 'sb_force_sort'
 		};
 
+		
+		if(this.sortTypes){
+			this.setSortTypes(this.sortTypes);
+		}
 		this.setSortStyles();
-	}
-
-	if(typeof o.onCellClick == 'function'){
-		this.onCellClick = o.onCellClick;
-	}
-
-	if(typeof o.onRowClick == 'function'){
-		this.onRowClick = o.onRowClick;
-	}
-
-	if(typeof o.onColClick == 'function'){
-		this.onColClick = o.onColClick;
-	}
-
-	if(typeof o.onHeaderClick == 'function'){
-		this.onHeaderClick = o.onHeaderClick;
-	}
-
-	if(typeof o.onCellMouseOver == 'function'){
-		this.onCellMouseOver = o.onCellMouseOver;
-	}
-
-	if(typeof o.onCellMouseOut == 'function'){
-		this.onCellMouseOut = o.onCellMouseOut;
 	}
 	
 	this.addEvents();
@@ -217,6 +204,9 @@ sb.widget.magicTable.prototype = {
 	myTable.sortBy(th);
 	*/
 	sortBy : function(header, reverse){
+		
+		this.onBeforeSort(header);
+		
 		var rows = [];
 		var col = 0;
 		var sortRule = '';
@@ -224,7 +214,7 @@ sb.widget.magicTable.prototype = {
 	
 		//UPDATE TO use cellIndex
 		this.table.$('thead th').forEach(function(v,k){
-			
+			v.removeClassName(self.classes.sorted_by);
 			if((typeof header == 'string' && header == v.innerHTML.stripHTML().toLowerCase()) || header == v || header == k){
 				
 				col = k;
@@ -240,8 +230,6 @@ sb.widget.magicTable.prototype = {
 				
 				v.addClassName(self.classes.sorted_by);
 
-			} else {
-				v.removeClassName(self.classes.sorted_by);
 			}
 		});
 
@@ -272,8 +260,37 @@ sb.widget.magicTable.prototype = {
 		});
 
 		rows = null;
+		this.onAfterSort(header);
 	},
 
+	/**
+	@Name: sb.widget.magicTable.prototype.onBeforeSort
+	@Description: fires after .sortBy is run but before actual sort begins.  The "this" is the magicTable instance itself.
+	@Param: th Element The th that was clicked.
+	@Example:
+	myTable.onBeforeSort = function(th){
+	   //do something
+	};	
+	*/
+	onBeforeSort : function(th){},
+	
+	/**
+	@Name: sb.widget.magicTable.prototype.onAfterSort
+	@Description: fires after .sortBy is run and after actual sort is done.  The "this" is the magicTable instance itself.
+	@Param: td Element The th that was clicked.
+	@Example:
+	myTable.onAfterSort = function(th){
+	   //renumber the first td in each row after sort
+		var rows = this.table.$('tbody tr');
+		var x = 1;
+		rows.forEach(function(v){
+			v.firstChild.innerHTML = x;
+			x++;
+		});
+	};		
+	*/
+	onAfterSort : function(th){},
+	
 	/**
 	@Name: sb.widget.magicTable.prototype.onCellClick
 	@Description: fires when a cell is clicked.  The "this" is the magicTable instance itself.
@@ -499,7 +516,7 @@ sb.widget.magicTable.prototype = {
 	@Name: sb.widget.table.prototype.create
 	@Description: Used Internally
 	*/
-	create : function(headers, rows){
+	create : function(headers, rows, sortTypes){
 	
 		this.table = new sb.element({
 			tag : 'table'
@@ -517,6 +534,9 @@ sb.widget.magicTable.prototype = {
 		this.table.appendChild(this.body);
 		this.addHeaders(headers);
 		this.addRows(rows);
+		if(sortTypes instanceof Array){
+			this.setSortTypes(sortTypes);
+		}
 	},
 	
 	/**
@@ -539,6 +559,24 @@ sb.widget.magicTable.prototype = {
 				tr.appendChild(new sb.element({tag : tag, innerHTML : cell}));
 			});
 		}
+	},
+	
+	/**
+	@Name: sb.widget.table.prototype.setSortTypes
+	@Description: Allow you to predefine the column sort types, must match column header.  Compare types defined in sb.widget.magicTable.prototype.compare
+	@Param: headers Array An array that represents the predefined sort type for each column as in 
+	@Example:
+	myTable.setSortTypes(['alpha', 'numeric', 'natural', 'natural', 'usdate', 'usdate', 'alpha']);
+	*/
+	setSortTypes : function(headers){
+		var ths = this.table.$('thead th');
+		var self = this;
+		
+		if(headers.length == ths.length()){
+			ths.forEach(function(v,k){
+				v.addClassName(self.classes.force_sort+'_'+headers[k]);
+			});
+		}
 	}
 		
 };
@@ -555,6 +593,14 @@ sb.widget.magicTable.compare = {
 	*/
 	alpha : function(a, b) {
 		return a > b ? 1 : a < b ? -1 : 0;
+	},
+	
+	/**
+	@Name: sb.widget.magicTable.prototype.reverseAlpha
+	@Description: Sort reverse alphabetically
+	*/
+	reverseAlpha : function(a, b) {
+		return a < b ? 1 : a > b ? -1 : 0;
 	},
 	
 	/**
