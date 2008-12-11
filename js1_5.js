@@ -21,7 +21,8 @@ myArray.forEach(addOne);
 Array.prototype.forEach = function(func){
 	var k;
 	if(typeof func == 'function'){
-		for(k=0;k<this.length;k++){
+		var len = this.length;
+		for(k=0;k<len;k++){
 			func(this[k], k, this);
 		}
 	}
