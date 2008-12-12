@@ -9,15 +9,8 @@ sb.include('String.prototype.stripHTML');
 o.table String/Node Reference to an HTML table e.g. #myTable, or myTable
 o.table Object Define table to be created {headers : [], rows : []}
 o.sortable boolean Should the table be sortable
-o.classes Object class names to use for properties
-o.classes.unsortable String The classname for columns you want to set as unsortable, the default is 'unsortable'
-o.classes.sortable String The classname added to all sortable columns <th>s by sb.magicTable, default is 'sortable'
-o.classes.sorted_by String The classname added to the <th> being sorted on, default is 'sorted_by'
-o.classes.force_sort String The className used for forcing sort type
-o.classes.asc String The className you want used for ascending sorts, if you don't just want the default arrow
-o.classes.desc String The className you want used for descending sorts, if you don't just want the default arrow
-o.classes.even String The className used even rows if you want even/odd CSS
-o.classes.odd String The className used odd rows if you want even/odd CSS
+o.defaultSortedBy number The cell index of the column to sort by, starts at zero, default to zero
+o.classes Object class names to use for properties, see magicTable.prototype.classes for more info
 o.onCellClick Function - see below
 o.onCellMouseOut Function - see below
 o.onCellMouseOver Function - see below
@@ -30,6 +23,7 @@ o.sortTypes Array - An array of sort types from sb.widget.magicTable.compare tha
 var myTable = new sb.widget.magicTable({
 	table : '#jimmy',
 	sortable : 1,
+	defaultSortBy : 2,
 	onCellClick : function(td){
 		td.style.backgroundColor = 'pink';
 		if(td.innerHTML == 'delete'){
@@ -72,7 +66,14 @@ sb.widget.magicTable = function(o){
 	
 	for(var prop in o){
 		if(typeof this[prop] != 'function' || (typeof this[prop] == 'function' && prop.match(/^on/))){
-			this[prop] = o[prop];
+			if(prop == 'classes' && typeof o[prop] == 'object'){
+				var classes = o[prop];
+				for(var cls in classes){
+					this.classes[cls] = classes[cls];
+				}
+			} else {
+				this[prop] = o[prop];
+			}
 		}
 	}
 	
@@ -89,12 +90,6 @@ sb.widget.magicTable = function(o){
 	}
 	
 	if(this.sortable){
-		this.classes = this.classes || {};
-		
-		this.classes.unsortable = (this.classes.unsortable) ? this.classes.unsortable : 'sb_unsortable';
-		this.classes.sortable = (this.classes.sortable) ? this.classes.sortable : 'sb_sortable';
-		this.classes.sorted_by = (this.classes.sorted_by) ? this.classes.sorted_by : 'sb_sorted_by';
-		this.classes.force_sort = (this.classes.force_sort) ? this.classes.force_sort : 'sb_force_sort';
 		
 		if(this.sortTypes){
 			this.setSortTypes(this.sortTypes);
@@ -103,11 +98,50 @@ sb.widget.magicTable = function(o){
 	}
 	
 	this.addEvents();
+	
+	this.sortBy(this.defaultSortedBy || 0);
 
 };
 
 sb.widget.magicTable.prototype = {
-
+	
+	/**
+	 @Name: sb.widget.table.prototype.classes
+	 @Description: The CSS classnames to use.  These are all optional and some have defaults, see below
+	 @Example:
+	 	myTable.classes.unsortable String The classname for columns you want to set as unsortable, the default is 'unsortable'
+		myTable.classes.sortable String The classname added to all sortable columns <th>s by sb.magicTable, default is 'sortable'
+		myTable.classes.sorted_by String The classname added to the <th> being sorted on, default is 'sorted_by'
+		myTable.classes.force_sort String The className used for forcing sort type
+		myTable.classes.asc String The className you want used for ascending sorts, if you don't just want the default arrow
+		myTable.classes.desc String The className you want used for descending sorts, if you don't just want the default arrow
+		myTable.classes.even String The className used even rows if you want even/odd CSS
+		myTable.classes.odd String The className used odd rows if you want even/odd CSS
+	*/
+	classes : {
+		unsortable : 'sb_unsortable',
+		sortable : 'sb_sortable',
+		sorted_by : 'sb_sorted_by',
+		force_sort : 'sb_force_sort'
+	},
+	
+	/**
+	@Name: sb.widget.table.prototype.defaultSortedBy
+	@Description: The default column to sort by, either by cellIndex or title.  See constructor arguments above.
+	@Example:
+	var myTable = new sb.widget.magicTable({
+		table : '#jimmy',
+		sortable : 1,
+		defaultSortBy : 2,
+	});
+	var myTable = new sb.widget.magicTable({
+		table : '#jimmy',
+		sortable : 1,
+		defaultSortBy : 'age',
+	});
+	*/
+	defaultSortedBy : 0,
+	
 	/**
 	@Name: sb.widget.table.prototype.addHeaders
 	@Description: Adds rows to table headers
