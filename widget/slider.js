@@ -1,6 +1,6 @@
 sb.include('Element.prototype.setOpacity');
 sb.include('Element.prototype.getPosition');
-sb.include('Element.prototype.disableSelection');
+sb.include('browser.removeSelection');
 
 /**
 @Name: sb.$
@@ -75,6 +75,7 @@ sb.widget.slider.prototype = {
 			}
 			
 			this.nob.value = this.value;
+			sb.browser.removeSelection();
 			if(typeof(this.onChangeValue)=='function'){
 				this.onChangeValue();
 			}
@@ -232,7 +233,6 @@ sb.widget.slider.prototype = {
 			});
 			this.display.append(document.createTextNode(' '));
 			this.display.appendTo(this.track);
-			this.display.disableSelection();
 		}
 		
 		this.addDefaultStyles();
