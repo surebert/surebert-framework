@@ -1,5 +1,6 @@
 sb.include('Element.prototype.setOpacity');
 sb.include('Element.prototype.getPosition');
+sb.include('Element.prototype.disableSelection');
 
 /**
 @Name: sb.$
@@ -10,7 +11,7 @@ max integer The maximum value for the slider, defaults to 100
 defaultValue integer The default value for the slider
 allowFloats boolean Determines if float values are allowed or rounded
 displayName boolean Is the name of the slider displayed on it
-displayName boolean Is the value of the slider displayed on it
+displayValue boolean Is the value of the slider displayed on it
 @Example:
 var bri = new sb.slider({
 	name : 'brightness',
@@ -231,6 +232,7 @@ sb.widget.slider.prototype = {
 			});
 			this.display.append(document.createTextNode(' '));
 			this.display.appendTo(this.track);
+			this.display.disableSelection();
 		}
 		
 		this.addDefaultStyles();
