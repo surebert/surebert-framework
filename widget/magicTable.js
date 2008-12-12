@@ -69,7 +69,9 @@ sb.widget.magicTable = function(o){
 			if(prop == 'classes' && typeof o[prop] == 'object'){
 				var classes = o[prop];
 				for(var cls in classes){
-					this.classes[cls] = classes[cls];
+					if(typeof classes[cls] == 'string'){
+						this.classes[cls] = classes[cls];
+					}
 				}
 			} else {
 				this[prop] = o[prop];
@@ -328,7 +330,7 @@ sb.widget.magicTable.prototype = {
 			if(self.classes.even){
 				tr.removeClassName('even');
 				tr.removeClassName('odd');
-				if(k % 2 == 0){ tr.addClassName('even');} else {
+				if(k % 2 === 0){ tr.addClassName('even');} else {
 					tr.addClassName('odd');
 				}
 			}
@@ -350,6 +352,7 @@ sb.widget.magicTable.prototype = {
 	};	
 	*/
 	getHeaderValue : function(){
+		var cell;
 		
 		if(typeof arguments[0] == 'number'){
 			cell = this.head.rows[0].cells[arguments[0]];
@@ -359,8 +362,8 @@ sb.widget.magicTable.prototype = {
 		
 		if(!cell.innerHTML){
 			throw("argument must be th node or cellIndex");
-			return false;
 		}
+		
 		var str = cell.innerHTML.stripHTML();
 		str = str.replace(/ \u2191|\u2193/, '');
 		return str;
@@ -380,6 +383,9 @@ sb.widget.magicTable.prototype = {
 	var data = myTable.getCellValue(0,3);
 	*/
 	getCellValue : function(){
+		
+		var cell;
+		
 		if(arguments.length == 2){
 			cell = this.body.rows[arguments[0]].cells[arguments[1]];
 		} else if(arguments[0].innerHTML){
@@ -388,7 +394,6 @@ sb.widget.magicTable.prototype = {
 		
 		if(!cell.innerHTML){
 			throw("argument must be td node or cellIndex");
-			return false;
 		}
 		
 		return cell.innerHTML.stripHTML();
@@ -527,7 +532,7 @@ sb.widget.magicTable.prototype = {
 		    v.style.MozUserSelect = "none";
 			v.style.cursor = 'pointer';
 			
-		    if(v.title == ''){
+		    if(v.title === ''){
 			    if(v.hasClassName(self.classes.unsortable)){
 					v.title = 'Column not sortable';
 					
@@ -549,7 +554,7 @@ sb.widget.magicTable.prototype = {
 		var len = rows.length;
 		for(var row = 0; row < len; row++) {
 			var text = this.getCellValue(row, col);
-			if(text.length) return sb.widget.magicTable.guessFormat(text);
+			if(text.length){ return sb.widget.magicTable.guessFormat(text);}
 		}
 		return 'nocase';
 	},
@@ -631,7 +636,7 @@ sb.widget.magicTable.prototype = {
 		this.table.events({
 			mousemove : function(e){
 			
-				target = sb.events.target(e);
+				var target = sb.events.target(e);
 				
 				if(target.nodeName == 'TD'){
 					if(self.prevover != target){
@@ -684,6 +689,7 @@ sb.widget.magicTable.prototype = {
 			
 			mousedown : function(e){
 				
+				var target = sb.events.target(e);
 				if(self.sortable && target.nodeName == 'TH'  && !target.hasClassName(self.classes.unsortable)){
 					if(target.reverse === false){
 						target.reverse = true;
@@ -703,16 +709,10 @@ sb.widget.magicTable.prototype = {
 @Name: sb.widget.magicTable.getCurrencyValue
 @Description: Used internally
 */
-sb.widget.magicTable.getCurrencyValue = function(s) {
-	//-$1,234.56 or -1,234.56$
-	var m = '';
-	s = s.replace(/\,/g, '');
-	if(m = s.match(/^(-?)\D(\d+(\.\d+)?)$/)) {
-		return parseFloat(m[1] + m[2]);
-	}
-	if(m = s.match(/^(-?\d+(\.\d+)?)\D$/))
-		return parseFloat(m[1]);
-	return parseFloat('NaN');
+sb.widget.magicTable.getCurrencyValue = function(str) {
+	var m;
+	str = str.replace(/\,|\$/g, '');
+	return parseFloat(str);
 };
 
 
@@ -721,29 +721,32 @@ sb.widget.magicTable.getCurrencyValue = function(s) {
 @Description: Used internally
 */
 sb.widget.magicTable.guessFormat = function(text) {
-	if(!isNaN(Number(text)))
+	if(!isNaN(Number(text))){
 		return 'numeric';
-	if(text.match(/^\d{2}[\/-]\d{2}[\/-]\d{2,4}$/))
+	} else if(text.match(/^\d{2}[\/\-]\d{2}[\/\-]\d{2,4}$/)){ 
 		return 'usdate';
-	if(text.match(/^\d\d?\.\d\d?\.\d{2,4}$/))
+	} else if(text.match(/^\d\d?\.\d\d?\.\d{2,4}$/)){
 		return 'eudate';
-	if(!isNaN(Date.parse(text)))
+	} else if(!isNaN(Date.parse(text))){
 		return 'date';
-	if(!isNaN(sb.widget.magicTable.getCurrencyValue(text)))
+	} else if(!isNaN(sb.widget.magicTable.getCurrencyValue(text))){
 		return 'currency';
-	if(text.match(/^[a-z_]+\d+(\.\w+)$/))
+	} else if(text.match(/^[a-z_]+\d+(\.\w+)$/)){
 		return 'natural';
-	return 'nocase';
+	} else {
+		return 'nocase';
+	}
+
 };
 
 /**
 @Name: sb.widget.magicTable.prototype.compare
-@Description: The sort methods avaiable to sb.widget.magicTable.  You can add your own too!  compare, getCurrencyValue and guessFormat sort functions adapted from http://www.tagarga.com/blok/post/2
+@Description: The sort methods avaiable to sb.widget.magicTable.  You can add your own too!  some compare and guessFormat sort functions adapted from http://www.tagarga.com/blok/post/2
 */
 sb.widget.magicTable.compare = {
 
 	/**
-	@Name: sb.widget.magicTable.prototype.alpha
+	@Name: sb.widget.magicTable.compare.alpha
 	@Description: Sort alphabetically
 	*/
 	alpha : function(a, b) {
@@ -751,7 +754,7 @@ sb.widget.magicTable.compare = {
 	},
 	
 	/**
-	@Name: sb.widget.magicTable.prototype.reverseAlpha
+	@Name: sb.widget.magicTable.compare.reverseAlpha
 	@Description: Sort reverse alphabetically
 	*/
 	reverseAlpha : function(a, b) {
@@ -759,7 +762,7 @@ sb.widget.magicTable.compare = {
 	},
 	
 	/**
-	@Name: sb.widget.magicTable.prototype.nocase
+	@Name: sb.widget.magicTable.compare.nocase
 	@Description: Sort alphabetically, case insensitively
 	*/
 	nocase : function(a, b) {
@@ -767,7 +770,7 @@ sb.widget.magicTable.compare = {
 	},
 
 	/**
-	@Name: sb.widget.magicTable.prototype.numeric
+	@Name: sb.widget.magicTable.compare.numeric
 	@Description: Sort numerically
 	*/
 	numeric : function(a, b) {
@@ -775,7 +778,7 @@ sb.widget.magicTable.compare = {
 	},
 
 	/**
-	@Name: sb.widget.magicTable.prototype.natural
+	@Name: sb.widget.magicTable.compare.natural
 	@Description: Sort naturally
 	*/
 	natural : function(a, b) {
@@ -783,21 +786,22 @@ sb.widget.magicTable.compare = {
 			var q = [];
 			s.replace(/(\D)|(\d+)/g, function($0, $1, $2) {
 				q.push($1 ? 1 : 2);
-				q.push($1 ? $1.charCodeAt(0) : Number($2) + 1)
+				q.push($1 ? $1.charCodeAt(0) : Number($2) + 1);
 			});
 			q.push(0);
 			return q;
 		}
 		var aa = prepare(a), bb = prepare(b), i = 0;
 		do {
-			if(aa[i] != bb[i])
+			if(aa[i] != bb[i]){
 				return aa[i] - bb[i];
+			}
 		} while(aa[i++] > 0);
 		return 0;
 	},
 
 	/**
-	@Name: sb.widget.magicTable.prototype.currency
+	@Name: sb.widget.magicTable.compare.currency
 	@Description: Sort by currency
 	*/
 	currency : function(a, b) {
@@ -806,7 +810,7 @@ sb.widget.magicTable.compare = {
 	},
 	
 	/**
-	@Name: sb.widget.magicTable.prototype.date
+	@Name: sb.widget.magicTable.compare.date
 	@Description: Sort by date
 	*/
 	date : function(a, b) {
@@ -814,7 +818,7 @@ sb.widget.magicTable.compare = {
 	},
 
 	/**
-	@Name: sb.widget.magicTable.prototype.date
+	@Name: sb.widget.magicTable.compare.date
 	@Description: Sort by US date
 	*/
 	usdate : function(a, b) {
