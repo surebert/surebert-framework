@@ -173,7 +173,7 @@ sb.widget.slider.prototype = {
 		this.nob.setOpacity(0.5);
 		
 		this.nob.styles({
-				cursor : 'W-resize',
+				cursor : 'WE-resize',
 				position : 'absolute',
 				zIndex : 1
 		});
