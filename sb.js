@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.604 04/24/04 - 12/08/08
+@Version: 4.61 04/24/04 - 12/13/08
 @Package: surebert
 */
 
@@ -2709,27 +2709,21 @@ Element.prototype.setStyle = function(prop, val){
 			val +='px';
 		}
 		
-		if(prop == 'opacity'){
-			if(val <= 0){ 
-				val = 0;
-			} else if(val >= 1){ 
-				val = 1;
-			}
-			
+		if(prop == 'opacity' && typeof this.style.filter == 'string' && typeof this.style.zoom == 'string'){
 			this.style.opacity = val;
+			this.style.zoom = 1;
+			this.style.filter = "alpha(opacity:"+val*100+")";
 			
-			if(typeof this.style.filter == 'string' && this.style.zoom){
-				this.style.zoom = 1;
-				this.style.filter = "alpha(opacity:"+val*100+")";
-			}
 			
 		} else {
+		
+			if(prop == 'cssFloat' && typeof this.style.styleFloat == 'string'){
+				prop = 'styleFloat';
+			}
 			
-			prop = prop.toCamel();
-			
-			try{
+			if(typeof this.style[prop] == 'string'){
 				this.style[prop] = val;
-			}catch(e){}
+			}
 		}
 };
 
