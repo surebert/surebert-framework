@@ -5,7 +5,7 @@ Math for floating pattern from code by Altan d.o.o. (snow@altan.hr, http://www.a
 
 XHTML compliant will work in when using DOCTYPE XHTML
 
-@Author: Paul Visco 11-05-04, 10-29-08
+@Author: Paul Visco 11-05-04, 12-15-08
 @Example: 
 sb.include('widget.particles');
 sb.widget.particles.init(5, 'hello');
@@ -38,7 +38,7 @@ sb.widget.particles = {
 		},
 		events : {
 			mousedown : function(e){
-				var target = sb.events.target(e);
+				var target = e.target;
 				if(target.nodeName =='SB_PARTICLE' || (target.parentNode && target.parentNode.nodeName =='SB_PARTICLE')){
 					sb.widget.particles.playSound();
 					target.remove();

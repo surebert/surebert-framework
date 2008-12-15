@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://elmwoodstrip.org?u=paul
-@Version: 4.07 11/03/08
+@Version: 4.08 11/03/08 12/15/2008
 @Description:These functions are used when developing.  This file does not need to be included in production version of your site.  It basically allows for debugging during development. Used Internally. 
 */
 
@@ -359,7 +359,7 @@ sb.consol = {
 					this.resizing =1;
 				},
 				dblclick : function(e){
-					if(sb.events.target(e).nodeName == 'DIV'){
+					if(e.target.nodeName == 'DIV'){
 						self.box.resize(0);
 						self.resizer.mv(self.box.getX(), self.box.getY(), 999);
 					}

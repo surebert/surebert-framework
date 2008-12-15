@@ -16,7 +16,7 @@ var y = new sb.widget.colorRandomizer({
 			self.palette.remove();
 			return;
 		}
-		var target = sb.events.target(e);
+		var target = e.target;
 		
 		document.body.style.backgroundColor = target.style.backgroundColor;
 		

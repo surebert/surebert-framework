@@ -3,7 +3,7 @@ sb.include('Element.prototype.getPosition');
 sb.include('browser.removeSelection');
 
 /**
-@Name: sb.$
+@Name: sb.widget.slider
 @Description: A widget for creating simple sliders
 @Param: object Has the following properties
 min integer The minimum value for the slider, defaults to 0
@@ -146,7 +146,7 @@ sb.widget.slider.prototype = {
 					return false;
 				});
 		
-				sb.events.preventDefault(e);
+				e.preventDefault();
 				return false;
 			}
 		);

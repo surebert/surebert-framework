@@ -2,7 +2,7 @@ sb.include('String.prototype.stripHTML');
 
 /**
 @Name: sb.widget.magicTable
-@Version: 1.3 12-08-2008 12-11-2008
+@Version: 1.31 12-08-2008 12-15-2008
 @Author: Paul Visco
 @Description:  Makes or adds interactivity to an HTML table.  All events are attached to the table and delegated from their to keep overhead very low
 @param o Object The following properties are used, however, you can add any additional properties to o that you would like and they will be transferred to your magicTable instance
@@ -636,7 +636,7 @@ sb.widget.magicTable.prototype = {
 		this.table.events({
 			mousemove : function(e){
 			
-				var target = sb.events.target(e);
+				var target = e.target;
 				
 				if(target.nodeName == 'TD'){
 					if(self.prevover != target){
@@ -651,7 +651,7 @@ sb.widget.magicTable.prototype = {
 				
 			},
 			click : function(e){
-				var target = sb.events.target(e);
+				var target = e.target;
 				
 				if(target.nodeName == 'TD'){
 					
@@ -689,7 +689,7 @@ sb.widget.magicTable.prototype = {
 			
 			mousedown : function(e){
 				
-				var target = sb.events.target(e);
+				var target = e.target;
 				if(self.sortable && target.nodeName == 'TH'  && !target.hasClassName(self.classes.unsortable)){
 					if(target.reverse === false){
 						target.reverse = true;

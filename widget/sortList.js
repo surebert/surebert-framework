@@ -3,7 +3,7 @@ sb.include('effect');
 sb.include('Element.prototype.cssTransition');
 /**
 @Name : sb.widget.sortList
-@Version: 1.2 11/12/07
+@Version: 1.21 11/12/07 12/15/08
 @Description: used to make sortable lists
 @Example:
 myList = new sb.widget.sortList('#myList', '');
@@ -142,7 +142,7 @@ sb.widget.sortList.prototype = {
 			mousedown : function(e){
 				if(sb.widget.sortList.sorting ===1){return;}
 				
-				var target = sb.events.target(e);
+				var target = e.target;
 				
 				if(target.nodeName =='BUTTON' && target.parentNode && target.parentNode.nodeName =='LI'){
 					var currentItems = sb.$(self.id+ ' li');
@@ -168,7 +168,7 @@ sb.widget.sortList.prototype = {
 						y = e.clientY;
 						sb.browser.removeSelection();
 						if(sb.widget.sortList.draggedItem){
-							var target = sb.events.target(e);
+							var target = e.target;
 							
 							if(target.nodeName =='BUTTON' && target.parentNode && target.parentNode.nodeName =='LI' && target.parentNode !=this){
 								if(dir==1){

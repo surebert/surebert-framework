@@ -70,7 +70,7 @@ sb.forms.textarea.textBling.prototype = {
 			this.editBox.event('onchange', sb.forms.textarea.textBling.save);
 			
 			this.editBar.event('mousedown', function(e){
-				var target = sb.events.target(e);
+				var target = e.target;
 				
 				//for safari which uses the span as the target
 				if(target.nodeName =='SPAN'){

@@ -3,7 +3,7 @@ sb.include('cookies');
 sb.include('flashGate');
 /**
 @Name: sb.widget.editor
-@Author: Paul Visco http://www.estrip.org?u=paul
+@Author: Paul Visco v1.01 11/03/07 12/15/08
 @Description: The surebert widget creates a live text editor.  It replaces all iframes passed to the constructor with real text editors.  if they cannot be built it replaces them with empty textareas.  The textareas have setContent and getContent methods just like real sb.widget.editor instances so that you can set and get the data in the same way.
 @Param: string id The id of the iframe to replace with an editor
 @Param: function onload A function which is run after the editor is created.  The 'this' in the function is the editor.
@@ -304,7 +304,7 @@ sb.widget.editor.prototype = {
 			events : {
 				click : function(e){
 					
-					var target = sb.events.target(e);
+					var target = e.target;
 					if(target.nodeName =='BUTTON'){
 						
 						if(typeof target.command == 'string' && t.box.style.display === ''){

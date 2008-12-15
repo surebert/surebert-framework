@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.61 04/24/04 - 12/13/08
+@Version: 4.62 04/24/04 - 12/15/08
 @Package: surebert
 */
 
@@ -61,8 +61,9 @@ $ = function(selector, root) {
 	//return items that are already objects
 	if(typeof selector != 'string'){
 		
-		if(typeof selector == 'object'){
+		if(typeof selector == 'object' && selector !== null){
 			if(Element.emulated === true && selector.nodeType && selector.nodeType == 1){
+				
 				var ep = Element.prototype;
 				for(var prop in ep){
 					selector[prop] = ep[prop];
@@ -76,7 +77,9 @@ $ = function(selector, root) {
 	}
 	
 	var nodeList = new sb.nodeList();
-	nodeList.selector = selector;
+	
+	nodeList.setSelector(selector);
+	
 	if(document.querySelectorAll){
 		
 		nodeList.add(root.querySelectorAll(selector));
@@ -85,7 +88,6 @@ $ = function(selector, root) {
 		$.parseSelectors(nodeList, root);
 	}
 	
-
 	if(nodeList.length() === 0 && nodeList.selector.match(/^\#\w+$/) ){
 		return null;
 	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#\w+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
@@ -117,12 +119,12 @@ $.parseSelectors = function(nodes, within){
 	var inheriters = [];
 	
 	for(s=0;s<len;s++){
-	
+		
 		inheriters = selectors[s].split(" ");
 		root = [within];
 		
 		selectors[s].split(" ").forEach(function(selector,k,a){
-			
+	
 			if(selector.indexOf(">")+1){
 				
 				root = $.getElementsByParent(selector);
@@ -455,6 +457,7 @@ $.getElementsBySiblingCombinator = function(within, selector){
 				node.sbid = sb.uniqueID();
 				elements.push(node);
 			}
+			
 		}
 	}
 	return elements;
@@ -2002,30 +2005,78 @@ sb.events = {
 		alert(this.innerHTML);
 	});
 	*/
-	
 	add : function() {
 		
 	    if(window.addEventListener){
 	   
 	        return function(el, type, fn) {
 	        	el = sb.$(el);
-	        	var evt = {el:el, type:type, fn:fn};
-	            el.addEventListener(type, fn, false);
+	        	var f = function(e) {
+	        		
+	        		var sb_target = e.target;
+	        		var sb_related_target = e.relatedTarget;
+	        		delete e.target;
+	        		delete e.relatedTarget;
+	        		e.__defineGetter__("target", function() { return sb.events.distillTarget(sb_target); });
+	        		e.__defineGetter__("relatedTarget", function() { return sb.events.distillTarget(sb_related_target); });
+	                fn.call(el, e);
+	                delete sb_target;
+	        		delete sb_related_target;
+	            };
+	        	var evt = {el:el, type:type, fn:f, remove : sb.events.removeThis};
+	            el.addEventListener(type, f, true);
 	            return sb.events.record(evt);
 	        };
 	    } else if ( window.attachEvent){
 	        return function(el, type, fn) {
 	        	el = sb.$(el);
-	        	
+	        	var tar = false;
+				
 	            var f = function() {
-	                fn.call(el, window.event);
+	            	var e = window.event;
+	            	var tar = null;
+		            switch(e.type){
+						case 'mouseout':
+							tar = e.relatedTarget || e.toElement;
+							break;
+						
+						case 'mouseover':
+							tar = e.relatedTarget || e.fromElement;
+							break;
+					}
+					
+					if(tar){
+	            		e.relatedTarget = sb.events.distillTarget(tar);
+	            	} 
+	            	
+	            	if(e.srcElement){
+	            		e.target = sb.events.distillTarget(e.srcElement);;
+	            	}
+	            	
+	            	e.preventDefault = function(){
+	            		e.returnValue = false;
+	            	};
+	            	
+	            	e.stopPropagation = function(){
+	            		e.cancelBubble = true;
+	            	};
+	            	
+	                fn.call(el, e);
 	            };
-	            var evt = {el:el, type:type, fn:f};
+	            var evt = {el:el, type:type, fn:f, remove : sb.events.removeThis};
 	            el.attachEvent('on'+type, f);
-	             return sb.events.record(evt);
+	            return sb.events.record(evt);
 	        };
 	    }
 	}(),
+	
+	/**
+	@Name: sb.events.removeThis
+	@Description: used internally
+	*/
+	removeThis : function(){
+		sb.events.remove(this);
+	},
 	
 	/**
 	@Name: sb.events.log
@@ -2033,67 +2084,12 @@ sb.events = {
 	*/
 	log : [],
 	
-	/**
-	@Name: sb.events.preventDefault
-	@Description: Used to prevent default actions from occurring on an event e.g. links that are clicked would do whatever is in the event handler but not the ordinary default event of goign to the page specified by the href attribute.
-	@Param: Object event An event reference as passed to a handler function as e
-	@Example:
-	var myEvent = sb.events.add('#myList', 'click', function(e){
-		sb.events.preventDefault(e);
-	});
-	
-	*/
-	preventDefault : function(e){
-		 
-		if(typeof e.stopPropagation == 'function'){
-			e.preventDefault();
-		} else {
-			e.returnValue = false;
-		} 
-	},
 	
 	record : function(evt){
 		sb.events.log.push(evt);
 		return evt;
 	},
-	
-	/**
-	@Name: sb.events.relatedTarget
-	@Description: Related targets are specified for events that have related targets. e.g. mouseover and mouseout.  when the event is mouseout the relatedTarget refers to the element the mouse is moving to.  When the event is mouseover, the relatedTarget refers to the element that the mouse is moving from. 
-	@Param: Object event An event reference as passed to a handler function as e
-	@Return: Element The related target DOM node as explained in the description
-	@Example:
-	var myEvent = sb.events.add('#myList', 'click', function(e){
-		var target = sb.events.relatedTarget(e);
-		alert(target.nodeName);
-	});
-	*/
-	
-	relatedTarget : function(e){
-		var tar = false;
-		switch(e.type){
-			case 'mouseout':
-				tar = e.relatedTarget || e.toElement;
-				break;
-			
-			case 'mouseover':
-				tar = e.relatedTarget || e.fromElement;
-				break;
-		}
-		
-		try{
-			
-			if (tar.nodeType && (tar.nodeType== 3 || tar.nodeName == 'EMBED')){
-			  tar = tar.parentNode;
-			}
-			
-		} catch(error){
-			
-			tar = sb.events.target(e);
-			
-		}
-		return $(tar);
-	},
+
 		
 	/**
 	@Name: sb.events.remove
@@ -2129,60 +2125,16 @@ sb.events = {
 		});
 		sb.events.log=[];
 	},
-
-	/**
-	@Name: sb.events.stopAndPrevent
-	@Description: used to stop event bubbling and prevent default actions for an event, see sb.events.stopPropagation and sb.events.preventDefault for more info
-	@Param: Object event An event reference as passed to a handler function as e
-	@Example:
-	var myEvent = sb.events.add('#myList', 'click', function(e){
-		sb.events.stopAndPrevent(e);
-		
-	});
-	
-	*/
-	stopAndPrevent : function(e){
-		sb.events.stopPropagation(e);
-		sb.events.preventDefault(e);
-	},
 	
 	/**
-	@Name: sb.events.stopAndPrevent
-	@Description: Used to stop event bubbling e.g. when a ordered list is clicked the event bubbles to its children.
-	@Param: Object event An event reference as passed to a handler function as e
-	@Example:
-	var myEvent = sb.events.add('#myList', 'click', function(e){
-		sb.events.stopPropagation(e);
-	});
+	@Name: sb.events.distillTarget
+	@Description: Used internally
 	
-	*/
-	stopPropagation : function(e){
-		 
-		if(typeof e.stopPropagation == 'function'){
-			e.stopPropagation();
-		} else {
-			e.cancelBubble = true;
-		} 
-	},
-	
-	/**
-	@Name: sb.events.target
-	@Description: Determines the target of the event, becaus eof event bubbling, this is not necessarily the this of the event. e.g when an orderlist is clicked, the target might have been one of the child list items, however, it's click event fires because teh chidlren are within it.  By referencing the target you can see which child was clicked.
-	@Param: Object event An event reference as passed to a handler function as e
-	@Return: Element The target DOM node as explained in the description
-	@Example:
-	var myEvent = sb.events.add('#myList', 'click', function(e){
-		var target = sb.events.target(e);
-		alert(target.innerHTML);
-	});
-	
-	*/
-	target : function(e){
-		var tar = (e.target !==undefined) ? e.target : e.srcElement;
-	   
-	   if (tar.nodeType && (tar.nodeType== 3 || tar.nodeName == 'EMBED')){
-	      tar = tar.parentNode;
-	   }
+	 */
+	distillTarget : function(tar){
+		if (tar && tar.nodeType && (tar.nodeType== 3 || tar.nodeName == 'EMBED')){
+			tar = tar.parentNode;
+		}
 	
 	   return $(tar);
 	}
@@ -2459,8 +2411,12 @@ Element.prototype.hasClassName = function(classname){
 myElement.remove();
 */
 Element.prototype.remove = function(){
+	try{
 	if(typeof this.parentNode !='undefined'){
 		this.parentNode.removeChild(this);
+	}
+	}catch(e){
+		alert(this.innerHTML);
 	}
 	return this;
 };
@@ -2515,17 +2471,11 @@ myElement.event('click', function(e){
 Element.prototype.event = function (evt, func){
 	
 	var event = sb.events.add(this, evt, func);
-	this.eventsAdded.push(event);
-	this.lastEventAdded = event;
-	return this;
+	
+	//this.eventsAdded.push(event);
+	return event;
 	
 };
-
-/**
-@Name: Element.prototype.lastEventAdded
-@Description: Used keep track of the last event added to a sb.element.  
-*/
-Element.prototype.lastEventAdded = [];
 
 /**
 @Name: Element.prototype.eventsAdded
@@ -2723,6 +2673,8 @@ Element.prototype.setStyle = function(prop, val){
 			
 			if(typeof this.style[prop] == 'string'){
 				this.style[prop] = val;
+			} else {
+				throw("style["+prop+"] does not exist in this browser's style implemenation");
 			}
 		}
 };

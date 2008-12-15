@@ -3,7 +3,7 @@ sb.include('Element.prototype.clearPosition');
 
 /**
 @Name : sb.widget.swapList
-@Version: 1.2 11/12/07
+@Version: 1.21 11/12/07 12/15/08
 @Description: used to make swappable lists
 @Example:
 myList = new sb.widget.swapList('#myList', '');
@@ -71,7 +71,7 @@ sb.widget.swapList.prototype = {
 			mousedown : function(e){
 				if(sb.widget.swapList.sorting ===1){return;}
 				
-				var target = sb.events.target(e);
+				var target = e.target;
 				if(target.nodeName =='BUTTON' && target.parentNode && target.parentNode.nodeName =='LI'){
 					
 					sb.widget.swapList.draggedItem = target.getParent();
@@ -101,7 +101,7 @@ sb.widget.swapList.prototype = {
 					sb.widget.swapList.mousemove = sb.events.add(document, 'mousemove', function(e){
 						sb.browser.removeSelection();
 						if(sb.widget.swapList.draggedItem){
-							var target = sb.events.target(e);
+							var target = e.target;
 							
 							sb.widget.swapList.draggedItem.mv(e.clientX-x+40, e.clientY-y);
 							
@@ -114,7 +114,7 @@ sb.widget.swapList.prototype = {
 			
 			mouseup : function(e){
 				
-				var target = sb.events.target(e);
+				var target = e.target;
 			
 				if(sb.widget.swapList.draggedItem){
 					

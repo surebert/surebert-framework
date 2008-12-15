@@ -5,6 +5,12 @@ sb.include('Element.prototype.getNextSibling');
 sb.include('Element.prototype.getDimensions');
 sb.include('Element.prototype.getHeight');
 
+/**
+@Name: sb.widget.accordian
+@Description: Used to an accordian interface beta
+@Author: Paul Visco v1.01 11/05/07 12/15/08
+@Example:
+*/
 sb.widget.accordian = function(o){
 	this.className = o.className || 'sb_accord';
 	
@@ -169,7 +175,7 @@ sb.widget.accordian.prototype = {
 	addClickEvent: function(accordian){
 	
 		function show(e){
-			var target = sb.events.target(e);
+			var target = e.target;
 			var t = $(target);
 			if(target.nodeName == 'DT' && accordian.firing==0 && target.selected !=1){
 				accordian.firing =1;

@@ -1,7 +1,7 @@
 /**
 @Name:  Element.prototype.addToolTip
 @Author: Paul Visco
-@Version: 1.0 11/16/07
+@Version: 1.02 11/16/07 12/15/08
 @Description: Adds a tooltip capability to any DOM element
 @Example: 
 //simple
@@ -52,7 +52,7 @@ Element.prototype.addToolTip = function(o){
 			
 			this.sb_tooltip.events({
 				mousedown : function(e){
-					var target = sb.events.target(e);
+					var target = e.target;
 					
 					if(target.nodeName == 'A' && target.title=='close'){
 						this.close();

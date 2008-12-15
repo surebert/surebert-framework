@@ -2,6 +2,7 @@ sb.include('browser.removeSelection');
 
 /**
 @Name: sb.drag
+@Author: Paul Visco v1.02 09/02/06 12/15/08
 @Description: Used by Element.prototype.makeDraggable.
 An event handler which makes DOM nodes draggable.  Any super element (from sb.element or $) can become draggable using this.  Draggable elements have three additional methods and two setting.  The additional methods are ondragstop, ondragstart, and ondrag.  The properties are lockX and lockY.  Any element within the element being set as draggable that has a className which contains "dragHandle" is set as the handle to drag the object with.  Items can have multiple handles.
 @Example:
@@ -42,7 +43,7 @@ sb.drag = {
 	
 	move : function(e){
 		
-		sb.events.preventDefault(e);
+		e.preventDefault();
 		var scroll = sb.browser.getScrollPosition();
 		var x = e.clientX, y = e.clientY, el = sb.drag.el;
 		
@@ -65,7 +66,7 @@ sb.drag = {
 	
 	stop : function(e){
 		
-		sb.events.preventDefault(e);
+		e.preventDefault();
 		if(sb.drag.mmove){
 			sb.events.remove(sb.drag.mmove);
 		}
@@ -128,7 +129,7 @@ sb.drag = {
 		
 		//set as global dragable element
 		sb.drag.el = el;
-		var target = sb.events.target(e);
+		var target = e.target;
 		
 		if(target.hasClassName('dragHandle')){
 			sb.drag.mmove = sb.events.add(document, 'mousemove', sb.drag.move);

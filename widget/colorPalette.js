@@ -2,7 +2,7 @@
 /**
 @Name: sb.widgets.colorPalette
 @Description: Used to create a websafe color palette table
-@Author: Paul Visco
+@Author: Paul Visco v1.01 11/05/07 12/15/08
 @Example:
 
 sb.include('widget.colorPalette');
@@ -10,7 +10,7 @@ sb.include('widget.colorPalette');
 var table = new sb.widget.colorPalette('jimmy');
 table.event('click', function(e){
 	
-	var td = sb.events.target(e);
+	var td = e.target;
 	if(td.nodeName =='TD'){
 			if(table.selectedColor){
 				table.selectedColor.style.border='';
