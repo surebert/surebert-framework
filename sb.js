@@ -3,6 +3,293 @@
 @Version: 4.62 04/24/04 - 12/15/08
 @Package: surebert
 */
+var sb = {
+	
+	/**
+	@Name: sb.base
+	@Description: Used Internally to find required files
+	*/
+	base : (typeof window.sbBase !='undefined') ? window.sbBase : '/surebert',
+	
+	/**
+	@Name: sb.colors
+	@Description: Methods used to calculate and manipulate color values, see also /colors direcory
+	*/
+	colors : {},
+	
+	/**
+	@Name: sb.consol
+	@Description: Used Internally.  Used as placeholder for sb.developer functions
+	*/
+	consol : {
+		log : function(){},
+		write : function(){},
+		error : function(){}
+	},
+
+	/**
+	@Name: sb.createIfNotExists
+	@Description:  Sets up global alias for a variable if one does not already exist.
+	@Example:
+	//checks to see if global jump function exists and creates it if it does not
+	sb.createIfNotExists('jump', function(){alert('jump');});
+	
+	*/
+	createIfNotExists : function(i, o){
+		if(!window[i] && o!==null){
+			window[i] = o;
+		}
+	},
+	
+	/**
+	@Name: sb.css
+	@Description: Used Internally.  Used as placeholder for sb.css functions
+	*/
+	css : {},
+	
+	/**
+	@Name: sb.included
+	@Description:  An array of all modules that are included, updated live and can be used for debugging and making compressed libraries before putting into production
+	@Example:
+	alert(sb.included);
+	*/
+	included : [],
+	/**
+	@Name: sb.include
+	@Description:  Includes another surebert module.  Make sure you surebert files are in /surebert or that you have set sb.base before using this.
+	@Example:
+	sb.include('String.prototype.nl2br');
+	*/
+	include : function(module){
+		
+		var mods = module.split('.');
+		var path ='', file, unit=sb,m;
+		if(mods[0] == 'String' || mods[0] == 'Element' || mods[0] == 'Array'){
+			unit = window;
+		}
+		
+		for(m=0;m<mods.length;m++){
+			
+			if(m !==0 && m < mods.length && mods.length >1){
+				path +='.';
+			}
+			path +=mods[m];
+			
+			try{
+				
+				unit = unit[mods[m]];
+				
+			} catch(e){}
+		
+			if(typeof unit == 'undefined'){
+					
+				this.included.push(path);
+				file = path.replace(/\./g, "/");
+				sb.load(sb.base+'/'+file+'.js');
+			
+			}
+		}
+	},
+	
+	/**
+	@Name: sb.load
+	@Description: Used to load external javascript from the same server synchronously and on demand.
+	@Return: Returns 0 upon eval success or 1 if not
+	@Example: 
+	sb.load('/surebert/surebert.effects.js');
+	
+	if(sb.load('../js/myJavascript.js')){
+	
+		//run function from myJavascript.js
+
+	}
+	*/
+	load : function(url){
+		var evaled = 0;
+
+		(function(){
+			var load = new sb.ajax({
+				url : url,
+				async : 0,
+				method : 'get',
+				format : 'js',
+				debug : sb.loadDebug ? 1 : 0,
+				onResponse: function(r){
+				//#######look into this 
+					
+					try{
+						evaled=1;
+					}catch(e){
+							
+						evaled=0;
+						delete e.stack;
+						
+						sb.consol.error(sb.messages[13]+"\nURL: "+url+"\n"+sb.objects.dump(e));
+						
+					}
+					load=null;
+				}
+			}).fetch();}());
+			
+		return evaled;
+	},
+	
+	/**
+	@Name: sb.math
+	@Description: Used Internally. A placeholder for sb.math
+	*/
+	math : {},
+	
+	/**
+	@Name: sb.messages
+	@Description: a placeholder used internally for holding error messages which are defined in sb.developer.  This array just keeps errors from occuring when referencing messages if sb.developer is not included.
+	*/
+
+	messages : [],
+	
+	/**
+	@Name: sb.onbodyload
+	@Description: an array of functions that run once the DOM loads, they are fired in order, funcitons can be function references or inline anonymous functions
+	@Example:
+	sb.onbodyload.push({myFunction});
+	*/
+	onbodyload : [],
+	
+	/**
+	@Name: sb.onleavepage
+	@Description: an array of functions that run once when leaving the page, they are fired in order
+	@Example:
+	sb.onleavepage.push({myFunction});
+	*/
+	onleavepage : [],
+
+	/**
+	@Name: sb.toArray
+	@Description: converts other types of iterable objects into an array e.g. an arguments list or an element sb.nodeList returned from getElementsByTagName.
+	@Param: Object Iterable non-array
+	@Return: Array A normal iteratable array with all the properties of an array and the values of the iterable object it was passed.
+	@Example: 
+	var images = document.getElementsByTagName('img');
+	images = sb.toArray(images);
+	images.forEach(function(image,key,arr){
+		alert(image.src);
+	});
+	*/
+	toArray : function(o){
+		var a=[];
+		var len=o.length;
+		for(var x=0;x<len;x++){
+			a.push(o[x]);
+		}
+		return a;
+	},
+	
+	/**
+	@Name: sb.typeOf
+	@Description: returns the type of the object it is passed
+	@Param: object o Any type of javascript object, string, array, function, number, etc
+	@Return: String 'function', 'array', 'string', 'object', 'textnode', 'element', 'boolean', 'float', 'number', or returns value of object's custom typeOf() if it exists, 'null'
+	@Example:
+		var obj = {name : 'joe'}
+		sb.typeOf(obj); //return 'object'
+	*/
+	typeOf : function(o){
+		var type='';
+		
+		if(o === null){
+			return 'null';
+		} else if (o instanceof Function) { 
+			type = 'function'; 
+		} else if (o instanceof Array) {
+			type = 'array';
+		} else if(typeof o == 'number'){
+			type = 'number';
+			if(String(o).match(/\./)){
+				type = 'float';
+			}
+		} else if(typeof o == 'string'){
+			type = 'string';
+		} else if(o === true || o === false){
+			type='boolean';
+		} else {
+			type = (typeof o).toLowerCase();
+		}
+		
+		if(typeof o =='object' ){
+		
+			if(typeof o.typeOf == 'function'){
+				type = o.typeOf();
+			} else if (o.nodeType){
+				if (o.nodeType == 3) {
+					type = 'textnode';
+					
+				} else if (o.nodeType == 1) {
+					type = 'element';
+				}
+			} else if(typeof o.length !='undefined' && type !='array'){
+				type = 'sb.nodeList';
+			} 
+		}
+		
+		return type;
+	},
+	
+	/**
+	@Name: sb.uid
+	@Description: a placeholder used internally when creating unqiue IDs for DOM elements
+	*/
+	uid : 0,
+	
+	/**
+	@Name: sb.uniqueID
+	@Description: produces a unique id, ideal for DOM element which are created on the fly but require unique ids
+	@Return: String a unique id string for a dom elements id string e.g. 'uid_5'
+	@Example:
+	var myUniqueId = sb.uniqueID();
+	//myUniqueId = 'uid_5' //<--just an example return would be unique each time it is called on a page
+	*/
+	uniqueID : function(){
+		return 'uid_'+(sb.uid +=1);
+	},
+	
+	/**
+	@Name: sb.unixTime
+	@Description: calculates the current time as a unix timestamp
+	@Return: Number A unix timestamp
+	@Example:
+	var unixtime = sb.unixTime();
+	//unixtime = 1170091311//<- just a possible example - would return current time
+	*/
+	
+	unixTime : function(){
+		return parseInt(String(new Date().getTime()).substring(0,10), 10);
+	},
+	
+	/**
+	@Name: sb.functions
+	@Description: Used Internally. A placeholder for sb.functions
+	*/
+	functions : {},
+	
+	/**
+	@Name: sb.utils
+	@Description: Used Internally. A placeholder for sb.utils
+	*/
+	utils : {},
+	
+	/**
+	@Name: sb.widget
+	@Description: Used Internally. A placeholder for sb.widgets
+	*/
+	widget : {},
+	
+	/**
+	@Name: sb.forms
+	@Description: Used Internally. A placeholder for sb.forms
+	*/
+	forms : {}
+	
+};
 
 /**
 @Name: $
@@ -66,7 +353,9 @@ $ = function(selector, root) {
 				
 				var ep = Element.prototype;
 				for(var prop in ep){
-					selector[prop] = ep[prop];
+					if(ep.hasOwnProperty(prop)){
+						selector[prop] = ep[prop];
+					}
 				}
 			} else if (typeof selector.typeOf == 'function' && selector.typeOf() == 'sb.nodeList'){
 				selector.getElementPrototypes();
@@ -450,14 +739,14 @@ $.getElementsBySiblingCombinator = function(within, selector){
 	
 	for(x=0;x<len;x++){
 		var node = siblings[x];
-		while(node = node.nextSibling){
+		
+		while((node = node.nextSibling)){
 			nn = node.nodeName.toLowerCase();
 			if(nn == nodeName){break;}
 			if(node.nodeType == 1 && nn == siblingNodeName){
 				node.sbid = sb.uniqueID();
 				elements.push(node);
 			}
-			
 		}
 	}
 	return elements;
@@ -560,294 +849,7 @@ $.parsePseudoSelectors = function(within, selector){
 	return elements;
 };
 
-var sb = {
-	$ : $,
-	
-	/**
-	@Name: sb.base
-	@Description: Used Internally to find required files
-	*/
-	base : (typeof window.sbBase !='undefined') ? window.sbBase : '/surebert',
-	
-	/**
-	@Name: sb.colors
-	@Description: Methods used to calculate and manipulate color values, see also /colors direcory
-	*/
-	colors : {},
-	
-	/**
-	@Name: sb.consol
-	@Description: Used Internally.  Used as placeholder for sb.developer functions
-	*/
-	consol : {
-		log : function(){},
-		write : function(){},
-		error : function(){}
-	},
-
-	/**
-	@Name: sb.createIfNotExists
-	@Description:  Sets up global alias for a variable if one does not already exist.
-	@Example:
-	//checks to see if global jump function exists and creates it if it does not
-	sb.createIfNotExists('jump', function(){alert('jump');});
-	
-	*/
-	createIfNotExists : function(i, o){
-		if(!window[i] && o!==null){
-			window[i] = o;
-		}
-	},
-	
-	/**
-	@Name: sb.css
-	@Description: Used Internally.  Used as placeholder for sb.css functions
-	*/
-	css : {},
-	
-	/**
-	@Name: sb.included
-	@Description:  An array of all modules that are included, updated live and can be used for debugging and making compressed libraries before putting into production
-	@Example:
-	alert(sb.included);
-	*/
-	included : [],
-	/**
-	@Name: sb.include
-	@Description:  Includes another surebert module.  Make sure you surebert files are in /surebert or that you have set sb.base before using this.
-	@Example:
-	sb.include('String.prototype.nl2br');
-	*/
-	include : function(module){
-		
-		var mods = module.split('.');
-		var path ='', file, unit=sb,m;
-		if(mods[0] == 'String' || mods[0] == 'Element' || mods[0] == 'Array'){
-			unit = window;
-		}
-		
-		for(m=0;m<mods.length;m++){
-			
-			if(m !==0 && m < mods.length && mods.length >1){
-				path +='.';
-			}
-			path +=mods[m];
-			
-			try{
-				
-				unit = unit[mods[m]];
-				
-			} catch(e){}
-		
-			if(typeof unit == 'undefined'){
-					
-				this.included.push(path);
-				file = path.replace(/\./g, "/");
-				sb.load(sb.base+'/'+file+'.js');
-			
-			}
-		}
-	},
-	
-	/**
-	@Name: sb.load
-	@Description: Used to load external javascript from the same server synchronously and on demand.
-	@Return: Returns 0 upon eval success or 1 if not
-	@Example: 
-	sb.load('/surebert/surebert.effects.js');
-	
-	if(sb.load('../js/myJavascript.js')){
-	
-		//run function from myJavascript.js
-
-	}
-	*/
-	load : function(url){
-		var evaled = 0;
-
-		(function(){
-			var load = new sb.ajax({
-				url : url,
-				async : 0,
-				method : 'get',
-				format : 'js',
-				debug : sb.loadDebug ? 1 : 0,
-				onResponse: function(r){
-				//#######look into this 
-					
-					try{
-						evaled=1;
-					}catch(e){
-							
-						evaled=0;
-						delete e.stack;
-						
-						sb.consol.error(sb.messages[13]+"\nURL: "+url+"\n"+sb.objects.dump(e));
-						
-					}
-					load=null;
-				}
-			}).fetch();}());
-			
-		return evaled;
-	},
-	
-	/**
-	@Name: sb.math
-	@Description: Used Internally. A placeholder for sb.math
-	*/
-	math : {},
-	
-	/**
-	@Name: sb.messages
-	@Description: a placeholder used internally for holding error messages which are defined in sb.developer.  This array just keeps errors from occuring when referencing messages if sb.developer is not included.
-	*/
-
-	messages : [],
-	
-	/**
-	@Name: sb.onbodyload
-	@Description: an array of functions that run once the DOM loads, they are fired in order, funcitons can be function references or inline anonymous functions
-	@Example:
-	sb.onbodyload.push({myFunction});
-	*/
-	onbodyload : [],
-	
-	/**
-	@Name: sb.onleavepage
-	@Description: an array of functions that run once when leaving the page, they are fired in order
-	@Example:
-	sb.onleavepage.push({myFunction});
-	*/
-	onleavepage : [],
-
-	/**
-	@Name: sb.toArray
-	@Description: converts other types of iterable objects into an array e.g. an arguments list or an element sb.nodeList returned from getElementsByTagName.
-	@Param: Object Iterable non-array
-	@Return: Array A normal iteratable array with all the properties of an array and the values of the iterable object it was passed.
-	@Example: 
-	var images = document.getElementsByTagName('img');
-	images = sb.toArray(images);
-	images.forEach(function(image,key,arr){
-		alert(image.src);
-	});
-	*/
-	toArray : function(o){
-		var a=[];
-		var len=o.length;
-		for(var x=0;x<len;x++){
-			a.push(o[x]);
-		}
-		return a;
-	},
-	
-	/**
-	@Name: sb.typeOf
-	@Description: returns the type of the object it is passed
-	@Param: object o Any type of javascript object, string, array, function, number, etc
-	@Return: String 'function', 'array', 'string', 'object', 'textnode', 'element', 'boolean', 'float', 'number', or returns value of object's custom typeOf() if it exists, 'null'
-	@Example:
-		var obj = {name : 'joe'}
-		sb.typeOf(obj); //return 'object'
-	*/
-	typeOf : function(o){
-		var type='';
-		
-		if(o === null){
-			return 'null';
-		} else if (o instanceof Function) { 
-			type = 'function'; 
-		} else if (o instanceof Array) {
-			type = 'array';
-		} else if(typeof o == 'number'){
-			type = 'number';
-			if(String(o).match(/\./)){
-				type = 'float';
-			}
-		} else if(typeof o == 'string'){
-			type = 'string';
-		} else if(o === true || o === false){
-			type='boolean';
-		} else {
-			type = (typeof o).toLowerCase();
-		}
-		
-		if(typeof o =='object' ){
-		
-			if(typeof o.typeOf == 'function'){
-				type = o.typeOf();
-			} else if (o.nodeType){
-				if (o.nodeType == 3) {
-					type = 'textnode';
-					
-				} else if (o.nodeType == 1) {
-					type = 'element';
-				}
-			} else if(typeof o.length !='undefined' && type !='array'){
-				type = 'sb.nodeList';
-			} 
-		}
-		
-		return type;
-	},
-	
-	/**
-	@Name: sb.uid
-	@Description: a placeholder used internally when creating unqiue IDs for DOM elements
-	*/
-	uid : 0,
-	
-	/**
-	@Name: sb.uniqueID
-	@Description: produces a unique id, ideal for DOM element which are created on the fly but require unique ids
-	@Return: String a unique id string for a dom elements id string e.g. 'uid_5'
-	@Example:
-	var myUniqueId = sb.uniqueID();
-	//myUniqueId = 'uid_5' //<--just an example return would be unique each time it is called on a page
-	*/
-	uniqueID : function(){
-		return 'uid_'+(sb.uid +=1);
-	},
-	
-	/**
-	@Name: sb.unixTime
-	@Description: calculates the current time as a unix timestamp
-	@Return: Number A unix timestamp
-	@Example:
-	var unixtime = sb.unixTime();
-	//unixtime = 1170091311//<- just a possible example - would return current time
-	*/
-	
-	unixTime : function(){
-		return parseInt(String(new Date().getTime()).substring(0,10), 10);
-	},
-	
-	/**
-	@Name: sb.functions
-	@Description: Used Internally. A placeholder for sb.functions
-	*/
-	functions : {},
-	
-	/**
-	@Name: sb.utils
-	@Description: Used Internally. A placeholder for sb.utils
-	*/
-	utils : {},
-	
-	/**
-	@Name: sb.widget
-	@Description: Used Internally. A placeholder for sb.widgets
-	*/
-	widget : {},
-	
-	/**
-	@Name: sb.forms
-	@Description: Used Internally. A placeholder for sb.forms
-	*/
-	forms : {}
-	
-};
+sb.$ = $;
 
 /**
 @Name: sb.browser
@@ -2020,8 +2022,6 @@ sb.events = {
 	        		e.__defineGetter__("target", function() { return sb.events.distillTarget(sb_target); });
 	        		e.__defineGetter__("relatedTarget", function() { return sb.events.distillTarget(sb_related_target); });
 	                fn.call(el, e);
-	                delete sb_target;
-	        		delete sb_related_target;
 	            };
 	        	var evt = {el:el, type:type, fn:f, remove : sb.events.removeThis};
 	            el.addEventListener(type, f, true);
@@ -2050,7 +2050,7 @@ sb.events = {
 	            	} 
 	            	
 	            	if(e.srcElement){
-	            		e.target = sb.events.distillTarget(e.srcElement);;
+	            		e.target = sb.events.distillTarget(e.srcElement);
 	            	}
 	            	
 	            	e.preventDefault = function(){
@@ -2328,17 +2328,17 @@ myElement.appendAfter('#myDiv');
 
 */
 Element.prototype.appendAfter = function(after){
-	var after = $(after);
+	var a = $(after);
 	
-	if(after.nextSibling){
-		while((after = after.nextSibling) && after.nodeType != 1){}
-		var nxtSib = after;
+	if(a.nextSibling){
+		while((a = a.nextSibling) && a.nodeType != 1){}
+		var nxtSib = a;
 	}
 
 	if(nxtSib){
 		return nxtSib.parentNode.insertBefore(this, nxtSib);
 	} else {
-		return this.appendTo(after.parentNode);
+		return this.appendTo(a.parentNode);
 	}
 	
 };
