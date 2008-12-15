@@ -2024,7 +2024,7 @@ sb.events = {
 	                fn.call(el, e);
 	            };
 	        	var evt = {el:el, type:type, fn:f, remove : sb.events.removeThis};
-	            el.addEventListener(type, f, true);
+	            el.addEventListener(type, f, false);
 	            return sb.events.record(evt);
 	        };
 	    } else if ( window.attachEvent){
