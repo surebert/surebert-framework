@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.62 04/24/04 - 12/15/08
+@Version: 4.63 04/24/04 - 12/16/08
 @Package: surebert
 */
 var sb = {
@@ -377,9 +377,9 @@ $ = function(selector, root) {
 		$.parseSelectors(nodeList, root);
 	}
 	
-	if(nodeList.length() === 0 && nodeList.selector.match(/^\#\w+$/) ){
+	if(nodeList.length() === 0 && nodeList.selector.match(/^\#[\w-]+$/) ){
 		return null;
-	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#\w+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
+	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#[\w-]+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
 	
 		return nodeList.nodes[0];
 	} else {
@@ -467,7 +467,7 @@ $.parseSelectors = function(nodes, within){
 				
 				return true;
 				
-			}  else if((selector.indexOf("#") === 0 && selector.match(/^\#\w+$/)) || selector.match(/\w+\#\w+/)) {
+			}  else if((selector.indexOf("#") === 0 && selector.match(/^\#[\w-]+$/)) || selector.match(/\w+\#[\w-]+/)) {
 				
 				var element = $.getElementById(selector);
 			
