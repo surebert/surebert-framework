@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.63 04/24/04 - 12/16/08
+@Version: 4.631 04/24/04 - 12/16/08
 @Package: surebert
 */
 var sb = {
@@ -2411,12 +2411,8 @@ Element.prototype.hasClassName = function(classname){
 myElement.remove();
 */
 Element.prototype.remove = function(){
-	try{
 	if(typeof this.parentNode !='undefined'){
 		this.parentNode.removeChild(this);
-	}
-	}catch(e){
-		alert(this.innerHTML);
 	}
 	return this;
 };
