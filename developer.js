@@ -1,6 +1,6 @@
 /**
-@Author: Paul Visco of http://elmwoodstrip.org?u=paul
-@Version: 4.08 11/03/08 12/15/2008
+@Author: Paul Visco
+@Version: 4.1 11/03/08 01/20/2008
 @Description:These functions are used when developing.  This file does not need to be included in production version of your site.  It basically allows for debugging during development. Used Internally. 
 */
 
@@ -353,10 +353,11 @@ sb.consol = {
 			},
 			events : {
 				mousedown : function(e){
-					this.origY = this.getY();
-					this.style.width = self.box.offsetWidth+'px';
-					this.style.position = 'absolute';
-					this.resizing =1;
+					var target = e.target;
+					target.origY = target.getY();
+					target.style.width = self.box.offsetWidth+'px';
+					target.style.position = 'absolute';
+					target.resizing =1;
 				},
 				dblclick : function(e){
 					if(e.target.nodeName == 'DIV'){
