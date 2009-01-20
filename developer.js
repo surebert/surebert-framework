@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco
-@Version: 4.1 11/03/08 01/20/2008
+@Version: 4.11 11/03/08 01/20/2008
 @Description:These functions are used when developing.  This file does not need to be included in production version of your site.  It basically allows for debugging during development. Used Internally. 
 */
 
@@ -154,7 +154,7 @@ sb.consol = {
 					this.open();
 				}
 				
-				if(typeof allowHTML == "undefined"){
+				if(allowHTML !== true){
 					str = String(str).escapeHTML();
 				}
 				
@@ -217,7 +217,7 @@ sb.consol = {
 	@Name: sb.consol.ajaxLog
 	@Description:  Used internally to debug ajax messages
 	*/
-	ajaxLog : new sb.debugStyle('#8fb0d2', '#1866b7', 1),
+	ajaxLog : new sb.debugStyle('#8fb0d2', '#1866b7', 0),
 	
 	/**
 	@Name: sb.consol.dump
