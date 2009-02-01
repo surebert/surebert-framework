@@ -1944,7 +1944,7 @@ var newString = str.toCamel();
 //newString = 'backgroundColor'
 */
 String.prototype.toCamel = function(){
-	return String(this).replace(/-\D/gi, function(m){
+	return String(this).replace(/[-_]\D/gi, function(m){
 		return m.charAt(m.length - 1).toUpperCase();
 	});
 };
