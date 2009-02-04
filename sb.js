@@ -1,8 +1,9 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.631 04/24/04 - 12/16/08
+@Version: 4.64 04/24/04 - 02/04/08
 @Package: surebert
 */
+
 var sb = {
 	
 	/**
@@ -57,10 +58,22 @@ var sb = {
 	/**
 	@Name: sb.include
 	@Description:  Includes another surebert module.  Make sure you surebert files are in /surebert or that you have set sb.base before using this.
+	@Param: module You can include multiple modules by separating with a comma
 	@Example:
 	sb.include('String.prototype.nl2br');
+	//or multiple modules
+	sb.include('cookies,date');
 	*/
 	include : function(module){
+		
+		if(module.match(',')){
+			var modules = module.split(',');
+			modules.forEach(function(v){
+				sb.include(v);
+			});
+			
+			return true;
+		}
 		
 		var mods = module.split('.');
 		var path ='', file, unit=sb,m;
@@ -82,11 +95,16 @@ var sb = {
 			} catch(e){}
 		
 			if(typeof unit == 'undefined'){
-					
+				
 				this.included.push(path);
 				file = path.replace(/\./g, "/");
-				sb.load(sb.base+'/'+file+'.js');
-			
+				
+				if(sb.base != '/surebert/load'){
+					file = file+'.js';
+				} 
+				
+				sb.load(sb.base+'/'+file);
+				
 			}
 		}
 	},
@@ -1944,7 +1962,7 @@ var newString = str.toCamel();
 //newString = 'backgroundColor'
 */
 String.prototype.toCamel = function(){
-	return String(this).replace(/[-_]\D/gi, function(m){
+	return String(this).replace(/-\D/gi, function(m){
 		return m.charAt(m.length - 1).toUpperCase();
 	});
 };
