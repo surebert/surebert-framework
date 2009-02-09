@@ -1334,36 +1334,10 @@ sb.nodeList.sb_id = 0;
 sb.nodeList.singleTags = ['html', 'body', 'base', 'head', 'title'];
 
 /**
-@Name: sb.toJSON
-@Description:  Converts a string or object to json.  Taken from http://devers.blogspot.com/2007/09/worlds-smallest-tojson-function.html
+@Name: sb.json
+@Description: namespace for json functionality
 */
-sb.toJSON = function(x) {
-	
-	switch (typeof x) {
-		case 'object':
-			if (x) {
-				var list = [];
-				if (x instanceof Array) {
-					for (var i=0;i < x.length;i++) {
-						list.push(sb.toJSON(x[i]));
-					}
-					return '[' + list.join(',') + ']';
-				} else {
-					for (var prop in x) {
-						list.push('"' + prop + '":' + sb.toJSON(x[prop]));
-					}
-					return '{' + list.join(',') + '}';
-				}
-			} else {
-				return 'null';
-			}
-		case 'string':
-			return '"' + x.replace(/"/g, '\\"') + '"';
-			case 'number':
-			case 'boolean':
-			return new String(x);
-	}
-};
+sb.json = {};
 
 /**
 @Name: sb.ajax
