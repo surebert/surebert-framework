@@ -1,7 +1,15 @@
 /**
  @Name: sb.json
- @Description:  Converts a string or object to json.  Taken from http://devers.blogspot.com/2007/09/worlds-smallest-tojson-function.html
- */
+ @Author: Paul Visco v1.02 02/09/09 Taken from http://devers.blogspot.com/2007/09/worlds-smallest-tojson-function.html
+ @Description:  Converts a string or object to json.  
+ @Param: String x A String, array or object to convert to JSON
+ @Return: String in JSON format
+ @Example:
+ var f = {
+ 	name : 'fred'
+ };
+ sb.json.encode(f);
+*/
 sb.json.encode = function(x) {
 	
 	switch (typeof x) {
