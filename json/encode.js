@@ -30,6 +30,7 @@ sb.json.encode = function(x) {
 			} else {
 				return 'null';
 			}
+			break;
 		case 'string':
 			return '"' + x.replace(/"/g, '\\"') + '"';
 			case 'number':
