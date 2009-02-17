@@ -1967,7 +1967,7 @@ var newString = str.toCamel();
 //newString = 'backgroundColor'
 */
 String.prototype.toCamel = function(){
-	return String(this).replace(/-\D/gi, function(m){
+	return String(this).replace(/[_-]\D/gi, function(m){
 		return m.charAt(m.length - 1).toUpperCase();
 	});
 };
@@ -2743,3 +2743,13 @@ sb.events.add(window, 'unload', function(e){
 	});
 	sb.events.removeAll();
 });
+
+
+sb.browser.getHash = function(){
+  var hash = window.location.hash;
+  return hash.substring(1);
+};
+ 
+sb.browser.getLinkTarget = function(link){
+  return link.href.substring(link.href.indexOf('#')+1);
+};
