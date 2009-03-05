@@ -65,7 +65,6 @@ sb.widget.colorRandomizer.prototype = {
 			tag : 'div',
 			id : 'sb_color_randomizer',
 			events : this.events
-			
 		});
 		
 		for(var x=0;x<this.numSwatches;x++){

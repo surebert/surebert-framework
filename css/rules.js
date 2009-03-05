@@ -30,7 +30,7 @@ sb.css.rules.write('#myList:hover', 'background-color:blue;font-size:30px;');
 */
 
 sb.css.rules = {
-	numRules : 1,
+	numRules : 0,
 	
 	write : function(domEl, rule){
 	
@@ -52,7 +52,8 @@ sb.css.rules = {
 			this.sheet.insertRule(domEl+'{'+rule+'}', this.numRules);
 		} else if(this.sheet.addRule){
 			this.sheet.addRule(domEl, rule);
-		} else if (document.styleSheets.length >0){
+		} else if (document.styleSheets.length > 0){
+		
 			document.styleSheets[document.styleSheets.length-1].insertRule(domEl+'{'+rule+'}', this.numRules);
 		}
 		
