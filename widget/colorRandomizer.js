@@ -26,7 +26,7 @@ y.palette.appendTo('#themes');
 */
 sb.widget.colorRandomizer = function(params){
 	sb.objects.infuse(params, this);
-	this.init();
+	this.createDom();
 };
 
 sb.widget.colorRandomizer.prototype = {
@@ -103,13 +103,5 @@ sb.widget.colorRandomizer.prototype = {
 	stop : function(){
 		window.clearInterval(this.cycler);
 		this.cycler = 0;
-	},
-	
-	/**
-	@Name: sb.widget.colorRandomizer.prototype.addEvents
-	@Description: Used Internally - initializes the widget
-	 */
-	init : function(){
-		this.createDom();
 	}
 };
