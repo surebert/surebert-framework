@@ -69,8 +69,11 @@ sb.widget.colorRandomizer.prototype = {
 		
 		for(var x=0;x<this.numSwatches;x++){
 			this.swatches.push(new sb.element({
-				tag : 'button',
+				tag : 'a',
+				innerHTML : ' ',
 				styles : {
+					cssFloat : 'left',
+					display : 'block',
 					backgroundColor : sb.colors.rand()
 				}
 			}).appendTo(this.palette));

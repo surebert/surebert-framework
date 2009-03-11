@@ -26,14 +26,17 @@ Element.prototype.addToolTip = function(o){
 		this.sb_tooltip = new sb.element({
 			tag : 'div',
 			className : o.className || 'sb_tooltip',
-			innerHTML : o.tip,
 			aboutToShow : 0,
+			direction : o.direction || 'left',
 			showing : 0,
 			delay : o.delay || 125,
 			yOffset : o.yOffset || 20,
 			xOffset : o.xOffset || 20,
 			persistent : o.persistent || 0,
 			additionalClassName : o.additionalClassName || '',
+			update : function(html){
+				this.innerHTML = html+'<div class="sb_tooltip-pointer sb_tooltip-pointer-'+this.direction+'"></div>';
+			},
 			close : function(){
 				this.hide();
 				this.showing =0;
@@ -43,6 +46,7 @@ Element.prototype.addToolTip = function(o){
 				}
 			}
 		});
+		this.sb_tooltip.update(o.tip);
 		
 		if(this.sb_tooltip.additionalClassName !==''){
 			this.sb_tooltip.addClassName(this.sb_tooltip.additionalClassName);
