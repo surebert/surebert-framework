@@ -2253,9 +2253,15 @@ sb.element = function(o){
 	//copy additional props from o
 	sb.objects.infuse(o, el);
 	
-	if(sb.browser.ie6){
+	if(sb.browser.agent == 'ie' && sb.browser.version < 8){
+		
+		if(el.tag == 'form' && sb.events.observer){
+			el._sb_on_submit = sb.events.add(el, 'submit', sb.events.observer.delegateEvents);
+		}
+		
 		//remove attributes for ie's sake
 		el.removeAttribute('tag');
+		
 	}
 	
 	return el;
