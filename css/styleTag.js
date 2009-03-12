@@ -34,7 +34,7 @@ sb.css.styleTag.prototype = {
 	showing : 0,
 	
 	clear : function(){
-		if (sb.browser.agent == 'ie' && sb.browser.agent < 8) {
+		if (sb.browser.agent == 'ie' && sb.browser.version < 8) {
 			 this.styleSheet.styleSheet.cssText = '';
 		} else {
 			for(var x=this.styleSheet.childNodes.length-1;x>=0;x--){
@@ -65,7 +65,7 @@ sb.css.styleTag.prototype = {
 	},
 	
 	write: function(css){
-		if (sb.browser.agent == 'ie' && sb.browser.agent < 8) {
+		if (sb.browser.agent == 'ie' && sb.browser.version < 8) {
 			 this.styleSheet.styleSheet.cssText = css;
 		} else {
 			var data = document.createTextNode(css);
@@ -75,7 +75,7 @@ sb.css.styleTag.prototype = {
 	
 	replace : function(a, b){
 		
-		if (sb.browser.agent == 'ie' && sb.browser.agent < 8) {
+		if (sb.browser.agent == 'ie' && sb.browser.version < 8) {
 			  this.styleSheet.styleSheet.cssText = this.styleSheet.styleSheet.cssText.replace(a, b);
 		} else {
 			for(var x=this.styleSheet.childNodes.length-1;x>=0;x--){
