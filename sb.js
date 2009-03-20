@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.7 04/24/04 - 03/20/08
+@Version: 4.71 04/24/04 - 03/20/08
 @Package: surebert
 */
 
@@ -1428,7 +1428,7 @@ sb.ajax.prototype = {
 		
 		this.contentType = this.ajax.getResponseHeader("Content-Type");
 		this.contentLength = this.ajax.getResponseHeader("Content-Length");
-
+	
 		if(this.contentLength > this.maxContentLength){
 			
 			//this.addToLog(7);
@@ -1488,6 +1488,7 @@ sb.ajax.prototype = {
 				break;
 				
 			case 'json':
+			
 				js = 'this.response='+this.ajax.responseText;
 				break;
 				
@@ -1500,14 +1501,16 @@ sb.ajax.prototype = {
 		}
 
 		if(js !==''){
+			
 			try{
 				 eval(js);
+				 
 			}catch(e2){
 				this.log('Could not eval javascript from server');
 			}
 		}
 		
-   		this.onResponse(this.ajax.responseText);
+   		this.onResponse(this.response);
 
 		if(typeof this.node !='undefined'){
 			
@@ -1576,7 +1579,7 @@ sb.ajax.prototype = {
 		//This must be set to tru or false as IE 8 does not understand 0 or 1
 		this.async = !this.async ? false : true;
 		
-		this.format = this.format || 'text';
+		this.format = this.format || '';
 		this.method = this.method.toUpperCase();
 		
 		if(this.method == 'GET' && this.data !== undefined){
