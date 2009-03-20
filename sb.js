@@ -1381,12 +1381,6 @@ sb.ajax.defaultFormat = 'json';
 */
 sb.ajax.defaultFormat = 'text';
 
-/**
-@Name: sb.ajax.log
-@Description: Used internally as a placeholder for sb.ajax.log found in sb.developer which is used to debug ajax transations
-*/
-sb.ajax.log = function(){};
-
 sb.ajax.prototype = {
 
 	/**
@@ -1633,8 +1627,8 @@ sb.ajax.prototype = {
 			
 			info += "\nMETHOD: "+this.method+"\nFORMAT: "+this.format+"\nASYNC: "+this.async+"\nDATA: "+this.data;
 			
-			if(sb.consol){
-				consol.log(info);
+			if(sb.consol.ajaxLog){
+				sb.consol.ajaxLog(info);
 			} else if(typeof console != 'undefined'){
 				console.log(info);
 			}
