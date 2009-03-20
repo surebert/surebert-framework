@@ -1415,6 +1415,8 @@ sb.ajax.prototype = {
 	*/
 	onreadystatechange : function(){
 		
+		var js = '';
+		
 		if(this.ajax.readyState != 4 || this.completed == 1){return true;}
 
 		this.completed = 1;
