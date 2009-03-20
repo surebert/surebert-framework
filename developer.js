@@ -50,30 +50,6 @@ sb.objects.alert =  function(o){
 };
 	
 /**
-@Name: sb.ajax.log
-@Description: Used Internally. Another lookup table for surebert error messages
-*/
-sb.ajax.log = function(logId, data, color){
-	
-	var message = '<h2>'+sb.ajax.log.messages[logId]+"</h2>"+(data || '');
-	
-	sb.consol.ajaxLog(message);
-};
-
-/**
-@Name: sb.ajax.log.messages
-@Description: Used Internally. Another lookup table for surebert error messages
-*/
-sb.ajax.log.messages = {
-	0 : 'Could not create ajax request, must use firefox, ie 6+ for win, safari, netscape or opera.',
-	1 : 'Ajax - Data sent --&gt;',
-	2 : '&lt;-- Ajax - Response returned',
-	3 : 'invalid XML returned',
-	4 : 'Error evaling javascript from server',
-	5 : 'Dom node referenced by ajax object does not exist'
-};
-
-/**
 @Name: sb.debugMe
 @Package: sb.developer.js
 @Description: Sends surebert debugging info to the surebert consol.  It shows window size, agent, version, flashplayer and cookies.  This only fires after the document is finsihed loading. If you call it before, it will wait until the document has loaded before firing.
