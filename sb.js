@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.64 04/24/04 - 02/04/08
+@Version: 4.7 04/24/04 - 03/20/08
 @Package: surebert
 */
 
@@ -387,7 +387,7 @@ $ = function(selector, root) {
 	
 	nodeList.setSelector(selector);
 	
-	if(document.querySelectorAll){
+	if(document.querySelectorAllX){
 		
 		nodeList.add(root.querySelectorAll(selector));
 		
@@ -1186,8 +1186,8 @@ sb.nodeList.prototype = {
 	
 	*/
 	add : function(nodes){
-		nodes = (nodes instanceof Array || (typeof NodeList !='undefined' && nodes instanceof NodeList)) ? nodes : [nodes];
-		
+		//nodes = (nodes instanceof Array || (typeof NodeList !='undefined' && nodes instanceof NodeList)) ? nodes : [nodes];
+		nodes = nodes instanceof Array || (nodes instanceof NodeList || nodes instanceof StaticNodeList) ? nodes : [nodes];
 		var len = nodes.length;
 		
 		var prop,x=0,node;
@@ -1339,51 +1339,27 @@ sb.nodeList.singleTags = ['html', 'body', 'base', 'head', 'title'];
 */
 sb.json = {};
 
-/**
-@Name: sb.ajax
-@Description: sb.ajax is a constructor that can be used to instanitate objects which communicate in real time from the client to the server without refreshing the page, all properties can be passed as the only object argument
-@Return: Object A new ajax communication object
-@Example:
-var myAjax = new sb.ajax({
-	//optional 'get' is the default
-	method : 'post',
-	
-	//optional 'text' is the default
-	format : 'text',
-	
-	//optional no data needs to be sent to the server side script
-	data : 'name=paul&friend=tim&day=monday',
-	
-	// the server side script to call
-	url : 'process.php',
-	
-	//the handler function receives all data returned from the server side script, depending on the format specified, result has different properties, by default it is a text string
-	onResponse : function(result){ 
-		//alerts the text returned from the server side script
-		alert(result); 
-	}
-});
-*/
-sb.ajax = function(params){ 
-	
-	try{this.o=new window.XMLHttpRequest();}catch(e){
-		try{this.o=new window.ActiveXObject("Microsoft.XMLHTTP");}catch(e3){
+sb.ajax = function (params){
+
+	if(window.XMLHttpRequest){
+		this.ajax = new XMLHttpRequest();
+	} else {
+		try{this.ajax=new window.ActiveXObject("Microsoft.XMLHTTP");}catch(e3){
 			throw('This browser does not support surebert');
 		}
 	}
-	
+
 	sb.objects.infuse(params, this);
 	
 	if(sb.typeOf(params.data) == 'object'){
 		this.data = sb.objects.serialize(params.data);
 	}
-};
 
-/**
-@Name: sb.ajax.log
-@Description: Used internally as a placeholder for sb.ajax.log found in sb.developer which is used to debug ajax transations
-*/
-sb.ajax.log = function(){};
+	this.method = params.method || sb.ajax.defaultMethod;
+	var self = this;
+	this.ajax.onreadystatechange=function(){self.onreadystatechange();};
+	  
+};
 
 /**
 @Name: sb.ajax.defaultMethod
@@ -1406,22 +1382,13 @@ sb.ajax.defaultFormat = 'json';
 sb.ajax.defaultFormat = 'text';
 
 /**
-@Name: sb.ajax.defaultURL
-@Description: The default url the ajax instances semd data to. This sets the url for all sb.ajax instances that do not already specify a url.
-@Example:
-sb.ajax.defaultURL = 'process.php';
+@Name: sb.ajax.log
+@Description: Used internally as a placeholder for sb.ajax.log found in sb.developer which is used to debug ajax transations
 */
-sb.ajax.defaultURL = '';
+sb.ajax.log = function(){};
 
 sb.ajax.prototype = {
-	
-	/**
-	@Name: sb.ajax.prototype.completed
-	@Description: Is set to 0 when if the ajax call is not complete or set to 1 if it is compelete.  Used to check for complete state when using synchronous calls in safari.  Each instances completed status is reset on each fetch() call so that asynchronous calls can still be fetched more than once.
-	@Type: Boolean
-	*/
-	completed : 0,
-	
+
 	/**
 	@Name: sb.ajax.prototype.debug
 	@Description: Determines if the data sent and received is debugged to the to surebert debug consol which.  This  only works if you include sb.developer.js  This makes debuggin much easier.
@@ -1435,101 +1402,48 @@ sb.ajax.prototype = {
 	//or added afterwards with
 	myAjax.debug =1;
 	*/
-	debug : this.debug || 0,
-	
+	debug : sb.ajax.debug || 0,
+
 	/**
-	@Name: sb.ajax.prototype.data
-	@Description: The data sent to the server side script specified in the url property.  The values are passed as key value pairs e.g. x=1&y=2&name=joe.  You should always escape or URIencode data that includes anything other than alphanumeric data.
-	@Type: String
+	@Name: sb.ajax.prototype.timeout
+	@Description: The amount of time in milliseconds the ajax request will wait before it aborts.  This is optional
 	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php',
-		data : 'name=paul&day=monday&value='+escape($('myInput').value)
-	});
+	var myAjax.timeout = 1000;
 	
-	//or added afterwards with
-	myAjax.data = 'name=paul&day=monday&value='+escape($('myInput').value);
+	//fetches the data from the url specified
+	myAjax.fetch();
 	*/
-	data : this.data || '',
-	
-	/**
-	@Name: sb.ajax.prototype.format
-	@Description: The format the data is retreived in.   Can be json, text, xml, head, js, send - s.  This value overides any sb.ajax.defaultFormat value set or if the Content-type from server matches a specific format.
-	1. text - returns the data from the server side script as text and passes it to the instance's handler method
-	2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript.  This type is defaulted if the page is served with the term 'json' in the content type e.g. application/json 
-	3. xml - returns the data from the server side script as an XML node which can be parsed with traditional XML parsing methods in javascript  This type is defaulted if the page is served with the term 'xml' in the content type e.g. application/xml 
-	4. js - evaluated the data returned from the server side script as javascript.  This type is defaulted if the page is served with the term 'javascript' in the content type e.g. application/javascript 
-	5. send - only sends data and does not receive any data
-	6. head - only reads the header data from the HTML transaction and passes that to the instance's onResponse method.  If a header property is specified on the sb.ajax instance, then only that header is passed
-	@Type: Boolean
-	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php',
-		format : 'json'
-	});
-	
-	//or added afterwards with
-	myAjax.format = 'json';
-	*/
-	format : this.format || '',
-	
-	/**
-	@Name: sb.ajax.prototype.async
-	@Description: Determines if the script is paused while the data is loaded.
-	@Type: Boolean false performs synchronous and pauses, true performs asynchronously which is the default allowing other processes to continue
-	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php',
-		async : 1
-	});
-	
-	//or added afterwards with
-	myAjax.async = 1;
-	*/
-	async : this.async,
-	
-	/**
-	@Name: sb.ajax.prototype.local
-	@Description: Allows ajax object instances to fetch data from a local file instead of from a server.  Normally, the instance checks for the HTTP server response - e.g. 200, 404, 500, etc and if you grab a klocal file this does not exist.  If you are serving your pages from a web server you should never need to use this.
-	@Type: Boolean
-	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php',
-		local : 1
-	});
-	*/
-	local : this.local || 0,
-	
+	timeout : 0,
+
 	/**
 	@Name: sb.ajax.prototype.onreadystatechange
 	@Description: Used Internally
 	*/
-	onreadystatechange : function() {
-		var message = '';
-		var js='';
+	onreadystatechange : function(){
 		
-		if (this.o.readyState != 4 || this.completed == 1) {return true; }
+		if(this.ajax.readyState != 4 || this.completed == 1){return true;}
+
+		this.completed = 1;
 		
 		//for backwards compatibility, remove soon
 		if(typeof this.handler == 'function'){
 			this.onResponse = this.handler;
 		}
 		
-		this.completed =1;
+		this.contentType = this.ajax.getResponseHeader("Content-Type");
+		this.contentLength = this.ajax.getResponseHeader("Content-Length");
 
-		this.contentType = this.o.getResponseHeader("Content-Type");
-		this.contentLength = this.o.getResponseHeader("Content-Length");
-		
 		if(this.contentLength > this.maxContentLength){
 			
 			//this.addToLog(7);
 			if(typeof this.onContentLengthExceeded == 'function'){
 				this.onContentLengthExceeded();
 			}
-			this.o.abort();
+			//TODO does this work? after IE8 and safari 4
+			this.ajax.abort();
 			return;
 		}
-		
+
 		if(this.format === ''){
 			if(this.contentType){
 				if(this.contentType.match('application/json')){
@@ -1545,18 +1459,12 @@ sb.ajax.prototype = {
 				this.format = sb.ajax.defaultFormat;
 			}
 		} 
-		
-		this.log(2, "\nHEADERS\nStatus: "+this.o.status+"\nStatus Text: "+this.o.statusText+"\n"+this.o.getAllResponseHeaders()+"\nRESPONSE: \n"+(this.o.responseText ||'PAGE WAS BLANK ;(')+"\n");
-		
-		var cont = true;
-		
-		if(typeof this.timer !='undefined'){
-			window.clearInterval(this.timer);
+
+		if(this.debug){
+			this.log("\nHEADERS\nStatus: "+this.ajax.status+"\nStatus Text: "+this.ajax.statusText+"\n"+this.ajax.getAllResponseHeaders()+"\nRESPONSE: \n"+(this.ajax.responseText ||'PAGE WAS BLANK ;(')+"\n");
 		}
 		
-		cont = this.onHeaders.call(this.o, this.o.status, this.o.statusText);	
-		
-		if(cont === false || (this.o.status != 200 && this.local !==1)){
+		if(this.onHeaders(this.ajax.status, this.ajax.statusText) === false || this.ajax.status != 200){
 			return false;
 		}
 	
@@ -1564,172 +1472,63 @@ sb.ajax.prototype = {
 			
 			case 'head':
 				if(typeof this.header ==='undefined'){
-					this.response = this.o.getAllResponseHeaders();
+					this.response = this.ajax.getAllResponseHeaders();
 				} else {
-					this.response = this.o.getResponseHeader(this.header);
+					this.response = this.ajax.getResponseHeader(this.header);
 				
 				}
 				break;
 			case 'xml':
 			
-				if(this.o.responseXML !== null){ 
-					this.response = this.o.responseXML.documentElement;
+				if(this.ajax.responseXML !== null){ 
+					this.response = this.ajax.responseXML.documentElement;
 				} else { 
-					this.log(3);
+					this.log('invalid XML returned');
 				}
 				break;
 			
 			case 'js':
-				js =  this.o.responseText;
+				js =  this.ajax.responseText;
 				break;
 				
 			case 'json':
-				js = 'this.response='+this.o.responseText;
+				js = 'this.response='+this.ajax.responseText;
 				break;
 				
 			case 'boolean':
-				this.response = (this.o.responseText === 0) ? 0 : 1;
+				this.response = (this.ajax.responseText === 0) ? 0 : 1;
 				break;
 			
 			default:
-				this.response = this.o.responseText;
+				this.response = this.ajax.responseText;
 		}
-	
+
 		if(js !==''){
 			try{
 				 eval(js);
 			}catch(e2){
-				this.log(4);
+				this.log('Could not eval javascript from server');
 			}
 		}
 		
-		this.onResponse(this.response);
-		
+   		this.onResponse(this.ajax.responseText);
+
 		if(typeof this.node !='undefined'){
 			
 			if(sb.$(this.node)){
 				this.node = sb.$(this.node);
 				if(typeof this.node.value !='undefined'){
-					this.node.value = this.o.responseText;
+					this.node.value = this.ajax.responseText;
 				} else {
-					this.node.innerHTML = this.o.responseText;
+					this.node.innerHTML = this.ajax.responseText;
 				}
 			} else {
-				this.addToLog(5);
+				this.log('Cannot set innerHTML of: '+this.node+' as it does not exist');
 			}
 		}
 		
-		this.o.abort();
 		return this; 
-	},
-
-	log : function(logId, message){
-		if(this.debug ==1){
-			
-			var info = (message || '')+"\nSENT\nURL: ";
-			if(this.method == 'get'){
-				info += '<a href="'+this.url+'?'+this.data+'">'+this.url+'?'+this.data+'</a>';
-			} else {
-				info += this.url;
-			}
-			
-			info += "\nMETHOD: "+this.method+"\nFORMAT: "+this.format+"\nASYNC: "+this.async+"\nDATA: "+this.data;
-			
-			sb.ajax.log(logId, info);
-			if(typeof this.onLog == 'function'){
-				
-				this.onLog(logId, info);
-			}
-		}
-	},
-	
-	/**
-	@Name: sb.ajax.prototype.timeout
-	@Description: The amount of time in milliseconds the ajax request will wait before it aborts.  This is optional
-	@Example:
-	var myAjax.timeout = 1000;
-	
-	//fetches the data from the url specified
-	myAjax.fetch();
-	*/
-	timeout : 0,
-	
-	/**
-	@Name: sb.ajax.prototype.fetch
-	@Description: Sends any data specified to the external server side file specified in your instances .url property and returns the data recieved to the instance's onResponse method
-	@Example:
-	var myAjax = new sb.ajax({
-		url : 'process.php'
-	});
-	
-	//fetches the data from the url specified
-	myAjax.fetch();
-	*/
-	fetch : function(url) {
-		this.completed =0;
-		
-		this.method = (typeof this.method !='undefined') ? this.method : sb.ajax.defaultMethod; 
-
-		var t=this;
-		url = url || t.url || sb.ajax.defaultURL;
-		t.url =url;
-	
-		if(!t.o){
-			return false;
-		}
-		
-		if(typeof t.async =='undefined'){
-			t.async=true;
-		}
-		
-		t.log(1);
-		
-		t.o.onreadystatechange = function(){t.onreadystatechange();};
-	
-		if(sb.typeOf(t.data) == 'object'){
-			t.data = sb.objects.serialize(t.data);
-		}
-	
-		if(t.method=='get' && t.data !== undefined){
-			url = url+'?'+t.data;
-		}
-		
-		if(t.timeout){
-			
-			t.count = 0;
-			
-			t.timer = window.setInterval(function(){
-				if(t.count >= t.timeout){
-					t.abort();
-					t.count = 0;
-					
-					if(typeof t.onTimeout == 'function'){
-						t.onTimeout();
-					}
-					
-					window.clearInterval(t.timer);
-				} else {
-					t.count++;
-				}
-			}, 1);
-		}
-		
-		if(!url){
-			throw('A sb.ajax instance has no url set? But is trying to send the following data: '+t.data);
-		}
-		
-		t.o.open(t.method, url, t.async);
-	
-		if(t.method=='post'){
-			try{
-				t.o.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			}catch(e){}
-		}
-		
-		try{t.o.send(t.data); }catch(e1){}
-		
-		if (!t.async ){ t.onreadystatechange();}
-		
+	   		
 	},
 	
 	/**
@@ -1745,7 +1544,7 @@ sb.ajax.prototype = {
 	myAjax.abort();
 	*/
 	abort : function(){
-		this.o.abort();
+		this.ajax.abort();
 		
 		if(typeof this.onmillisec !='undefined'){
 			this.timer.reset();
@@ -1754,7 +1553,98 @@ sb.ajax.prototype = {
 		this.onAbort();
 		
 	},
+
+	/**
+	@Name: sb.ajax.prototype.fetch
+	@Description: Sends any data specified to the external server side file specified in your instances .url property and returns the data recieved to the instance's onResponse method
+	@Example:
+	var myAjax = new sb.ajax({
+		url : 'process.php'
+	});
 	
+	//fetches the data from the url specified in the constructor
+	myAjax.fetch();
+	*/
+	fetch : function(){
+
+		if(!this.url){
+			throw('A sb.ajax instance has no url set? But is trying to send the following data: '+this.data);
+		}
+
+		var url = this.url;
+		
+		this.completed = 0;
+
+		var data = this.data == 'object' ? sb.objects.serialize(this.data) : this.data;
+		
+		//This must be set to tru or false as IE 8 does not understand 0 or 1
+		this.async = !this.async ? false : true;
+		
+		this.format = this.format || 'text';
+		this.method = this.method.toUpperCase();
+		
+		if(this.method == 'GET' && data !== undefined){
+			url = url+'?'+data;
+		}
+		
+		this.ajax.open(this.method, url, this.async);
+
+		if(this.method == 'POST'){
+			this.ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		}
+
+		if(this.timeout){
+			
+			this.count = 0;
+
+			var self = this;
+			
+			this.timer = window.setInterval(function(){
+				if(self.count >= self.timeout){
+					self.abort();
+					self.count = 0;
+					
+					if(typeof self.onTimeout == 'function'){
+						self.onTimeout();
+					}
+					
+					window.clearInterval(self.timer);
+				} else {
+					self.count++;
+				}
+			}, 1);
+		}
+		
+		this.ajax.send(data);
+		if(!this.async){
+			this.onreadystatechange();
+		}
+	},
+
+	log : function(message){
+		if(this.debug ==1){
+			
+			var info = (message || '')+"\nSENT\nURL: ";
+			if(this.method == 'get'){
+				info += '<a href="'+this.url+'?'+this.data+'">'+this.url+'?'+this.data+'</a>';
+			} else {
+				info += this.url;
+			}
+			
+			info += "\nMETHOD: "+this.method+"\nFORMAT: "+this.format+"\nASYNC: "+this.async+"\nDATA: "+this.data;
+			
+			if(sb.consol){
+				consol.log(info);
+			} else if(typeof console != 'undefined'){
+				console.log(info);
+			}
+			
+			if(typeof this.onLog == 'function'){
+				
+				this.onLog(info);
+			}
+		}
+	},
 	/**
 	@Name: sb.ajax.prototype.onResponse
 	@Description: Fires when the ajax request gets its response back from the server.
@@ -1802,7 +1692,7 @@ sb.ajax.prototype = {
 
 	*/
 	onHeaders : function(status, statusText){},
-	
+
 	/**
 	@Name: sb.ajax.prototype.abort
 	@Description: You can use this to abort an ajax function that is fetching.  In addition, if you have defined an onabort() method for your sb.ajax instance it will fire whenever the fetch is canceled.
