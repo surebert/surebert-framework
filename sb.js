@@ -1569,7 +1569,7 @@ sb.ajax.prototype = {
 		
 		this.completed = 0;
 
-		var data = this.data == 'object' ? sb.objects.serialize(this.data) : this.data;
+		this.data = sb.typeOf(this.data) == 'object' ? sb.objects.serialize(this.data) : this.data;
 		
 		//This must be set to tru or false as IE 8 does not understand 0 or 1
 		this.async = !this.async ? false : true;
@@ -1577,8 +1577,8 @@ sb.ajax.prototype = {
 		this.format = this.format || 'text';
 		this.method = this.method.toUpperCase();
 		
-		if(this.method == 'GET' && data !== undefined){
-			url = url+'?'+data;
+		if(this.method == 'GET' && this.data !== undefined){
+			url = url+'?'+this.data;
 		}
 		
 		this.ajax.open(this.method, url, this.async);
@@ -1609,7 +1609,7 @@ sb.ajax.prototype = {
 			}, 1);
 		}
 		
-		this.ajax.send(data);
+		this.ajax.send(this.data);
 		if(!this.async){
 			this.onreadystatechange();
 		}
@@ -1619,12 +1619,7 @@ sb.ajax.prototype = {
 		if(this.debug ==1){
 			
 			var info = (message || '')+"\nSENT\nURL: ";
-			if(this.method == 'get'){
-				info += '<a href="'+this.url+'?'+this.data+'">'+this.url+'?'+this.data+'</a>';
-			} else {
-				info += this.url;
-			}
-			
+		
 			info += "\nMETHOD: "+this.method+"\nFORMAT: "+this.format+"\nASYNC: "+this.async+"\nDATA: "+this.data;
 			
 			if(sb.consol.ajaxLog){
