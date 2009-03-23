@@ -387,8 +387,7 @@ $ = function(selector, root) {
 	
 	nodeList.setSelector(selector);
 	
-	if(document.querySelectorAllX){
-		
+	if(document.querySelectorAll){
 		nodeList.add(root.querySelectorAll(selector));
 		
 	} else {
