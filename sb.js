@@ -1,23 +1,29 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.71 04/24/04 - 03/20/08
+@Version: 4.75 04/24/04 - 04/07/09
 @Package: surebert
 */
 
+//$.getElementsByParent updated to support .fromCode > li
+//sb.nodeList.prototype.forEach returns the nodeList instance itself
+//add String.prototype.toElement back to sb.js?
+//getELementsByClassName now takes advantage of native method when it exists
+//what about nodeList.prototype.events
+
 var sb = {
-	
+
 	/**
 	@Name: sb.base
 	@Description: Used Internally to find required files
 	*/
 	base : (typeof window.sbBase !='undefined') ? window.sbBase : '/surebert',
-	
+
 	/**
 	@Name: sb.colors
 	@Description: Methods used to calculate and manipulate color values, see also /colors direcory
 	*/
 	colors : {},
-	
+
 	/**
 	@Name: sb.consol
 	@Description: Used Internally.  Used as placeholder for sb.developer functions
@@ -34,20 +40,20 @@ var sb = {
 	@Example:
 	//checks to see if global jump function exists and creates it if it does not
 	sb.createIfNotExists('jump', function(){alert('jump');});
-	
+
 	*/
 	createIfNotExists : function(i, o){
 		if(!window[i] && o!==null){
 			window[i] = o;
 		}
 	},
-	
+
 	/**
 	@Name: sb.css
 	@Description: Used Internally.  Used as placeholder for sb.css functions
 	*/
 	css : {},
-	
+
 	/**
 	@Name: sb.included
 	@Description:  An array of all modules that are included, updated live and can be used for debugging and making compressed libraries before putting into production
@@ -65,59 +71,59 @@ var sb = {
 	sb.include('cookies,date');
 	*/
 	include : function(module){
-		
+
 		if(module.match(',')){
 			var modules = module.split(',');
 			modules.forEach(function(v){
 				sb.include(v);
 			});
-			
+
 			return true;
 		}
-		
+
 		var mods = module.split('.');
 		var path ='', file, unit=sb,m;
 		if(mods[0] == 'String' || mods[0] == 'Element' || mods[0] == 'Array'){
 			unit = window;
 		}
-		
+
 		for(m=0;m<mods.length;m++){
-			
+
 			if(m !==0 && m < mods.length && mods.length >1){
 				path +='.';
 			}
 			path +=mods[m];
-			
+
 			try{
-				
+
 				unit = unit[mods[m]];
-				
+
 			} catch(e){}
-		
+
 			if(typeof unit == 'undefined'){
-				
+
 				this.included.push(path);
 				file = path.replace(/\./g, "/");
-				
+
 				if(sb.base != '/surebert/load'){
 					file = file+'.js';
-				} 
-				
+				}
+
 				sb.load(sb.base+'/'+file);
-				
+
 			}
 		}
 	},
-	
+
 	/**
 	@Name: sb.load
 	@Description: Used to load external javascript from the same server synchronously and on demand.
 	@Return: Returns 0 upon eval success or 1 if not
-	@Example: 
+	@Example:
 	sb.load('/surebert/surebert.effects.js');
-	
+
 	if(sb.load('../js/myJavascript.js')){
-	
+
 		//run function from myJavascript.js
 
 	}
@@ -133,38 +139,38 @@ var sb = {
 				format : 'js',
 				debug : sb.loadDebug ? 1 : 0,
 				onResponse: function(r){
-				//#######look into this 
-					
+				//#######look into this
+
 					try{
 						evaled=1;
 					}catch(e){
-							
+
 						evaled=0;
 						delete e.stack;
-						
+
 						sb.consol.error(sb.messages[13]+"\nURL: "+url+"\n"+sb.objects.dump(e));
-						
+
 					}
 					load=null;
 				}
 			}).fetch();}());
-			
+
 		return evaled;
 	},
-	
+
 	/**
 	@Name: sb.math
 	@Description: Used Internally. A placeholder for sb.math
 	*/
 	math : {},
-	
+
 	/**
 	@Name: sb.messages
 	@Description: a placeholder used internally for holding error messages which are defined in sb.developer.  This array just keeps errors from occuring when referencing messages if sb.developer is not included.
 	*/
 
 	messages : [],
-	
+
 	/**
 	@Name: sb.onbodyload
 	@Description: an array of functions that run once the DOM loads, they are fired in order, funcitons can be function references or inline anonymous functions
@@ -172,7 +178,7 @@ var sb = {
 	sb.onbodyload.push({myFunction});
 	*/
 	onbodyload : [],
-	
+
 	/**
 	@Name: sb.onleavepage
 	@Description: an array of functions that run once when leaving the page, they are fired in order
@@ -186,7 +192,7 @@ var sb = {
 	@Description: converts other types of iterable objects into an array e.g. an arguments list or an element sb.nodeList returned from getElementsByTagName.
 	@Param: Object Iterable non-array
 	@Return: Array A normal iteratable array with all the properties of an array and the values of the iterable object it was passed.
-	@Example: 
+	@Example:
 	var images = document.getElementsByTagName('img');
 	images = sb.toArray(images);
 	images.forEach(function(image,key,arr){
@@ -201,7 +207,7 @@ var sb = {
 		}
 		return a;
 	},
-	
+
 	/**
 	@Name: sb.typeOf
 	@Description: returns the type of the object it is passed
@@ -213,11 +219,11 @@ var sb = {
 	*/
 	typeOf : function(o){
 		var type='';
-		
+
 		if(o === null){
 			return 'null';
-		} else if (o instanceof Function) { 
-			type = 'function'; 
+		} else if (o instanceof Function) {
+			type = 'function';
 		} else if (o instanceof Array) {
 			type = 'array';
 		} else if(typeof o == 'number'){
@@ -232,32 +238,32 @@ var sb = {
 		} else {
 			type = (typeof o).toLowerCase();
 		}
-		
+
 		if(typeof o =='object' ){
-		
+
 			if(typeof o.typeOf == 'function'){
 				type = o.typeOf();
 			} else if (o.nodeType){
 				if (o.nodeType == 3) {
 					type = 'textnode';
-					
+
 				} else if (o.nodeType == 1) {
 					type = 'element';
 				}
 			} else if(typeof o.length !='undefined' && type !='array'){
 				type = 'sb.nodeList';
-			} 
+			}
 		}
-		
+
 		return type;
 	},
-	
+
 	/**
 	@Name: sb.uid
 	@Description: a placeholder used internally when creating unqiue IDs for DOM elements
 	*/
 	uid : 0,
-	
+
 	/**
 	@Name: sb.uniqueID
 	@Description: produces a unique id, ideal for DOM element which are created on the fly but require unique ids
@@ -269,7 +275,7 @@ var sb = {
 	uniqueID : function(){
 		return 'uid_'+(sb.uid +=1);
 	},
-	
+
 	/**
 	@Name: sb.unixTime
 	@Description: calculates the current time as a unix timestamp
@@ -278,35 +284,35 @@ var sb = {
 	var unixtime = sb.unixTime();
 	//unixtime = 1170091311//<- just a possible example - would return current time
 	*/
-	
+
 	unixTime : function(){
 		return parseInt(String(new Date().getTime()).substring(0,10), 10);
 	},
-	
+
 	/**
 	@Name: sb.functions
 	@Description: Used Internally. A placeholder for sb.functions
 	*/
 	functions : {},
-	
+
 	/**
 	@Name: sb.utils
 	@Description: Used Internally. A placeholder for sb.utils
 	*/
 	utils : {},
-	
+
 	/**
 	@Name: sb.widget
 	@Description: Used Internally. A placeholder for sb.widgets
 	*/
 	widget : {},
-	
+
 	/**
 	@Name: sb.forms
 	@Description: Used Internally. A placeholder for sb.forms
 	*/
 	forms : {}
-	
+
 };
 
 /**
@@ -360,15 +366,15 @@ e.g  '*:not(p)' LIMITED SUPPORT - returns all nodes that are not p tags
 */
 
 $ = function(selector, root) {
-	
+
 	root = root || document;
-	
+
 	//return items that are already objects
 	if(typeof selector != 'string'){
-		
+
 		if(typeof selector == 'object' && selector !== null){
 			if(Element.emulated === true && selector.nodeType && selector.nodeType == 1){
-				
+
 				var ep = Element.prototype;
 				for(var prop in ep){
 					if(ep.hasOwnProperty(prop)){
@@ -379,30 +385,30 @@ $ = function(selector, root) {
 				selector.getElementPrototypes();
 			}
 		}
-		
+
 		return selector;
 	}
-	
+
 	var nodeList = new sb.nodeList();
-	
+
 	nodeList.setSelector(selector);
-	
+
 	if(document.querySelectorAll){
 		nodeList.add(root.querySelectorAll(selector));
-		
+
 	} else {
 		$.parseSelectors(nodeList, root);
 	}
-	
+
 	if(nodeList.length() === 0 && nodeList.selector.match(/^\#[\w-]+$/) ){
 		return null;
 	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#[\w-]+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
-	
+
 		return nodeList.nodes[0];
 	} else {
 		return nodeList;
 	}
-	
+
 };
 
 /**
@@ -412,124 +418,124 @@ $ = function(selector, root) {
 @Description: Used Internally
 */
 $.parseSelectors = function(nodes, within){
-	
+
 	within = within || document;
 	var root = [within];
 
 	var found = [],s=0;
-	
+
 	//split at comma
 	var selectors = nodes.selector.split(",");
-	
+
 	var len = selectors.length;
 	var inheriters = [];
-	
+
 	for(s=0;s<len;s++){
-		
+
 		inheriters = selectors[s].split(" ");
 		root = [within];
-		
+
 		selectors[s].split(" ").forEach(function(selector,k,a){
-	
+
 			if(selector.indexOf(">")+1){
-				
+
 				root = $.getElementsByParent(selector);
-				
+
 				if(k+1 == a.length){
 					nodes.add(root);
-					
+
 				}
-				
+
 				return true;
-				
+
 			} else if(selector.indexOf('[')+1){
-				
+
 				///look for attribute's by searching for sqaure brackets //
 				root = $.getElementsByAttributes(root, selector);
-			
+
 				if(k+1 == a.length){
 					nodes.add(root);
 				}
-				
+
 				return true;
 			} else if(selector.indexOf("~")+1){
-				
+
 				root = $.getElementsBySiblingCombinator(root, selector);
-				
+
 				if(k+1 == a.length){
 					nodes.add(root);
-					
+
 				}
-				
+
 				return true;
-		
+
 			} else if(selector.indexOf("+")+1){
-				
+
 				root = $.getElementsByAdjacentSibling(root, selector);
-				
+
 				if(k+1 == a.length){
 					nodes.add(root);
-					
+
 				}
-				
+
 				return true;
-		
+
 			} else if(selector.indexOf(":")+1){
 				//look for pseudo selectors
 				root = $.parsePseudoSelectors(root, selector);
-				
+
 				if(k+1 == a.length){
 					nodes.add(root);
 				}
-				
+
 				return true;
-				
+
 			}  else if((selector.indexOf("#") === 0 && selector.match(/^\#[\w-]+$/)) || selector.match(/\w+\#[\w-]+/)) {
-				
+
 				var element = $.getElementById(selector);
-			
+
 				if(element){
 					root = (element instanceof Array) ? element : [element];
-					
+
 					if(k+1 == a.length){
 						nodes.add(root);
-						
+
 					}
 				}
-				
+
 				return true;
-				
+
 			}  else if (selector.indexOf(".") !== false){
-				
+
 				var period_pos = selector.indexOf(".");
-				
+
 				var left_bracket_pos = selector.indexOf("[");
 				var right_bracket_pos = selector.indexOf("]");
-				
+
 				if(period_pos+1 && !(period_pos > left_bracket_pos && period_pos < right_bracket_pos)) {
-					
+
 					root = $.getElementsByClassName(selector, root[0]);
-					
+
 					if(k+1 == a.length){
 						nodes.add(root);
 					}
-					
+
 					return true;
 				}
 			}
-		
+
 			//Tag selectors - no class or id specified.
 			root = $.getElementsByTagName(root, selector);
-			
+
 			if(k+1 == a.length){
 				nodes.add(root);
 			}
-			
+
 			return true;
 		});
-	
+
 	}
-	
+
 	return nodes;
 };
 
@@ -538,7 +544,7 @@ $.parseSelectors = function(nodes, within){
 @Description: Used Internally
 */
 $.getElementById = function(selector){
-	
+
 	var parts = selector.split("#");
 	var element = document.getElementById(parts[1]);
 	return element;
@@ -552,22 +558,33 @@ $.getElementById = function(selector){
 */
 $.getElementsByClassName = function(selector, root){
 
+    var elements = [];
+
+    if(root.getElementsByClassName && selector.charAt(0) == '.'){
+
+        var x, nodes = root.getElementsByClassName(selector.replace(/\./, ''));
+
+        for(x=0;x<nodes.length;x++){
+            elements.push(nodes[x]);
+        }
+        return elements;
+    }
+
 	var parts = selector.split('.');
-	
-	var nodes = root.getElementsByTagName(parts[0] || '*');
-	var elements = [],className = parts[1], node, cur_class_name,len = nodes.length,x=0;
-	var rg = RegExp("\\b"+className+"\\b");
-	
+    var nodes = root.getElementsByTagName(parts[0] || '*');
+    var className = parts[1], node, cur_class_name,len = nodes.length,x=0;
+    var rg = RegExp("\\b"+className+"\\b");
+
 	do{
 		node = nodes[x];
 		cur_class_name = node.className;
 		if (cur_class_name.length && (cur_class_name == className || rg.test(cur_class_name))){
-			
+
 			elements.push(node);
         }
 		x++;
 	} while(x<len);
-	
+
 	return elements;
 };
 
@@ -581,17 +598,17 @@ $.getElementsByTagName = function(root, tag) {
 	var matches = [],len1 = root.length,len2,x=0,i=0,nodes,elements;
 
 	for(x=0;x<len1;x++){
-	
+
 		nodes = root[x].getElementsByTagName(tag || '*');
 		elements = [];
 		len2 = nodes.length;
-		
+
 		for(i=0;i<len2;i++){
 			elements.push(nodes[i]);
 		}
 		matches = matches.concat(elements);
 	}
-	
+
 	return matches;
 };
 
@@ -602,77 +619,77 @@ $.getElementsByTagName = function(root, tag) {
 $.getElementsByAttributes = function(within, selector){
 	var f = 1;
 	var tag,attr,operator,value;
-	
+
 	if (selector.match(/^(?:(\w*|\*))\[(\w+)([=~\|\^\$\*]?)=?['"]?([^\]'"]*)['"]?\]$/)) {
 		tag = RegExp.$1;
 		attr = (typeof sb.nodeList.attrConvert == 'function') ? sb.nodeList.attrConvert(RegExp.$2) : RegExp.$2;
-		
+
 		operator = RegExp.$3;
 		value = RegExp.$4 ||'';
 	}
-	
+
 	var elements = $.getElementsByTagName(within, tag);
-	
+
 	within = elements.filter(function(el,k,a){
-	
+
 		el.attrVal = el.getAttribute(attr, 2);
-		
+
 		//if attribute is null
 		if(!el.attrVal){
 			return false;
 		}
-		
+
 		switch(operator){
 			case '=':
 				if(el.attrVal != value){
 					return false;
 				}
 				break;
-				
+
 			case '~':
-			
+
 				if(!el.attrVal.match(new RegExp('(^|\\s)'+value+'(\\s|$)'))){
 					return false;
 				}
 				break;
-				
+
 			case '|':
-			
+
 				if(!el.attrVal.match(new RegExp(value+'-'))) {
 					return false;
 				}
 				break;
-				
+
 			case '^':
 				if(el.attrVal.indexOf(value) !== 0){
 					return false;
 				}
 				break;
-				
+
 			case '$':
 				if(el.attrVal.lastIndexOf(value)!=(el.attrVal.length-value.length)){
 					return false;
 				}
 				break;
-				
+
 			case '*':
 				if(!(el.attrVal.indexOf(value)+1)){
 					return false;
 				}
 				break;
-				
+
 			default:
 				if(!el.getAttribute(attr)){
 					return false;
 				}
 		}
-		
+
 		return true;
-		
+
 	});
-	
+
 	return within;
-	
+
 };
 
 /**
@@ -694,7 +711,7 @@ $.getPreviousSibling = function(node){
 };
 
 /**
-@Name: $.getFirstChild 
+@Name: $.getFirstChild
 @Description: Used Internally
 */
 $.getFirstChild = function(node){
@@ -702,15 +719,15 @@ $.getFirstChild = function(node){
 	while (node && node.nodeType && node.nodeType == 3) {
 		node = $.getNextSibling(node);
 	}
-	return node;	
+	return node;
 };
 
 /**
-@Name: $.getLastChild 
+@Name: $.getLastChild
 @Description: Used Internally
 */
 $.getLastChild = function(node){
-	
+
 	node = node.lastChild;
 	while (node && node.nodeType && node.nodeType == 3) {
 		node = $.getPreviousSibling(node);
@@ -723,23 +740,27 @@ $.getLastChild = function(node){
 @Description: Used Internally
 */
 $.getElementsByParent = function(selector){
-	var tags = selector.split(">");
+	var parents , tags = selector.split(">");
 
 	var elements = $.getElementsByTagName([document.body], tags[1]);
-	
-	var rg = new RegExp(tags[0], 'i');
+
 	var nodes = [];
 	var len = elements.length;
-	
+
+    var rg = new RegExp(tags[0], 'i');
+
+    if(tags[0].match(/\./)){
+         parents = $(tags[0]);
+    }
 	for(var n=0;n<len;n++){
-		if(rg.test(elements[n].parentNode.nodeName)){
-			elements[n].sbid = sb.uniqueID();
+		if(rg.test(elements[n].parentNode.nodeName) || (parents && parents.nodes.inArray(elements[n].parentNode))){
+            elements[n].sbid = sb.uniqueID();
 			nodes.push(elements[n]);
 		}
 	}
-	
-	return nodes;	
-	
+
+	return nodes;
+
 };
 
 /**
@@ -748,15 +769,15 @@ $.getElementsByParent = function(selector){
 */
 $.getElementsBySiblingCombinator = function(within, selector){
 	var parts = selector.split("~");
-			
+
 	var nodeName = parts[0],siblingNodeName = parts[1],elements = [],x=0,nn;
 
 	var siblings = $.getElementsByTagName(within, nodeName);
 	var len = siblings.length;
-	
+
 	for(x=0;x<len;x++){
 		var node = siblings[x];
-		
+
 		while((node = node.nextSibling)){
 			nn = node.nodeName.toLowerCase();
 			if(nn == nodeName){break;}
@@ -767,7 +788,7 @@ $.getElementsBySiblingCombinator = function(within, selector){
 		}
 	}
 	return elements;
-	
+
 };
 
 /**
@@ -776,7 +797,7 @@ $.getElementsBySiblingCombinator = function(within, selector){
 */
 $.getElementsByAdjacentSibling = function(within, selector){
 	var parts = selector.split("+");
-			
+
 	var nodeName =parts[0];
 	var adjacentNodeName = parts[1].toUpperCase();
 	var elements = $.getElementsByTagName([document.body], nodeName);
@@ -789,9 +810,9 @@ $.getElementsByAdjacentSibling = function(within, selector){
 			nodes.push(node);
 		}
 	}
-	
+
 	return nodes;
-			
+
 };
 
 /**
@@ -801,66 +822,66 @@ $.getElementsByAdjacentSibling = function(within, selector){
 $.parsePseudoSelectors = function(within, selector){
 
 	var nth,notSelector,elements = [],parts = selector.split(":");
-	
+
 	selector =parts[0];
 	var pseudo = parts[1];
-	
+
 	var nodes = $.getElementsByTagName(within, selector);
 	var parentNode;
-	
+
 	nodes.forEach(function(node,k,a){
-		
+
 		switch(pseudo){
-			
+
 			case 'before':
-		
+
 				var bf = new sb.element({
 					nodeName : 'span',
 					innerHTML : 'ddd'
 				}).appendToTop(node);
 				elements.push(bf);
-			
+
 				break;
-				
+
 			case 'first-child':
-				
+
 				if(!$.getPreviousSibling(node)){
 					elements.push(node);
 				}
 				break;
-				
+
 			case 'last-child':
 				if(!$.getNextSibling(node)){
 					elements.push(node);
 				}
 				break;
-			
+
 			case 'empty':
 				if(node.innerHTML ===''){
 					elements.push(node);
 				}
 				break;
-				
+
 			case 'only-child':
-			
+
 				if(!$.getPreviousSibling(node) && !$.getNextSibling(node)){
 					elements.push(node);
 				}
-					
+
 				break;
-				
-			default: 
-				
+
+			default:
+
 			if(pseudo.indexOf('not')+1){
 				notSelector = pseudo.match(/not\((.*?)\)/);
-				
+
 				if(node.nodeName.toLowerCase() != notSelector[1]){
 					elements.push(node);
 				}
 			}
 		}
-		
-		 
+
+
 	});
 
 	return elements;
@@ -873,7 +894,7 @@ sb.$ = $;
 @Description: Find out what browser we are using and gets the query string and screen data
 */
 sb.browser ={
-	
+
 	/**
 	@Name: sb.browser.ie6
 	@Type: boolean
@@ -884,24 +905,24 @@ sb.browser ={
 	}
 	*/
 	ie6 : 0,
-	
+
 	/**
 	@Name: sb.browser.getAgent
 	@Description: Determines the agent, version, and os of the client. Used Internally.  If you specify sbOutDatedBrowser as a function it will fire if the browser is opera < 9, firefox < 1.5, iexplorer <6 or safari < 1.3
 	*/
 	getAgent : function(){
-		
+
 		var opera = new RegExp("opera/(\\d{1}.\\d{1})", "i");
 		var safari = new RegExp("safari/(\\d{3})", "i");
 		var firefox = new RegExp("firefox/(\\d{1}.\\d{1})", "i");
 		var agent = window.navigator.userAgent;
 		var str;
-		
+
 		if(window.opera && window.document.childNodes) {
 			this.agent = 'op';
 			str = agent.match(opera);
 			this.version = str[1];
-			
+
 		} else if (document.all && !window.XMLHttpRequest && document.compatMode){
 			this.agent = 'ie';
 			this.version = 6;
@@ -909,22 +930,22 @@ sb.browser ={
 		}  else if (document.all && window.XMLHttpRequest && document.compatMode){
 			this.agent = 'ie';
 			this.version = 7;
-	
+
 		} else if(agent.match(firefox)){
 			this.agent = 'ff';
 			str = agent.match(firefox);
 			this.version = str[1];
 		} else if(agent.match(safari)){
-			
+
 			str = agent.match(safari);
-			
+
 			this.agent = 'sf';
 			if(agent.match(/iphone/i)){
 				this.agent += '_iphone';
 			} else if(agent.match(/ipod/i)){
 				this.agent += '_ipod';
 			}
-			
+
 			if(str[1] < 400){
 				this.version =1;
 			} else if(str[1] < 500){
@@ -932,14 +953,14 @@ sb.browser ={
 			} else if(str[1] < 600){
 				this.version =3;
 			}
-			
+
 		} else {
 			this.agent='other';
 		}
-	
+
 		return this.agent;
 	},
-	
+
 	/**
 	@Name: sb.browser.measure
 	@Description: Measures the inside view area of the window
@@ -957,16 +978,16 @@ sb.browser ={
 		    sb.browser.w = document.documentElement.clientWidth;
 		    sb.browser.h = document.documentElement.clientHeight;
 		}
-		
+
 		return [sb.browser.w, sb.browser.h];
 	},
-	
+
 	/**
 	@Name: sb.browser.init
 	@Description: Used Internally
 	*/
 	init : function(){
-	
+
 		this.getAgent();
 		this.measure();
 	}
@@ -975,7 +996,7 @@ sb.browser ={
 sb.browser.init();
 
 sb.objects = {
-		
+
 	/**
 	@Name: sb.objects.serialize
 	@Description: Serializes all the properties of an object into a post data style key value string
@@ -985,31 +1006,31 @@ sb.objects = {
 	*/
 	serialize : function(o){
 		var str, arr, a=[];
-	
+
 		sb.objects.forEach.call(o, function(value, prop, object){
-			
+
 			if(sb.typeOf(value) == 'array'){
-				
+
 				value.forEach(function(v, k){
 					a.push(prop+'[]='+encodeURIComponent(v));
 				});
-				
+
 			} else if(typeof value =='object'){
-				
+
 				sb.objects.forEach.call(value, function(v2, k2, o2){
-			
+
 					if(typeof v2 == 'object' || sb.typeOf(v2) == 'array'){
-						
+
 						str = sb.objects.serialize(v2);
 						arr = str.split("&");
 						str ='';
 						arr.forEach(function(v3, k3, a3){
 							arr[k3]= v3.replace(/(.*?)=(.*?)/g, prop+"['"+k2+"']['$1']=$2");
-							
+
 						});
-				
+
 						a.push(arr.join("&"));
-						
+
 					} else {
 						a.push(prop+"['"+k2+"']="+encodeURIComponent(v2));
 					}
@@ -1018,10 +1039,10 @@ sb.objects = {
 				a.push(prop+'='+encodeURIComponent(value));
 			}
 		});
-			
+
 		return a.join("&");
 	},
-	
+
 	/**
 	@Name: sb.objects.infuse
 	@Description: Used to add properties from one object to another.  If you have globals enabled you can just call infuse on any object or constructor and pass teh object to copy the properties from.
@@ -1029,7 +1050,7 @@ sb.objects = {
 	var boy = {
 		name : 'paul'
 	};
-	
+
 	var otherBoy : {
 		eats : function(){
 			alert('yum');
@@ -1041,17 +1062,17 @@ sb.objects = {
 	boy.infuse(otherBoy);
 	*/
 	infuse : function(from, to){
-		
+
 		to = to || this;
 		from = from || {};
 		sb.objects.forEach.call(from, function(val,prop,o){
-		
+
 			try{ to[prop] = val;} catch(e){}
 		});
 		from = null;
 		return to;
 	},
-	
+
 	/**
 	@Name: sb.objects.copy
 	@Description: Makes a copy of an object and it's properties
@@ -1061,17 +1082,17 @@ sb.objects = {
 		var o = {name : 'paul, language : 'javascript'};
 		var f = sb.objects.copy(o);
 	*/
-	
+
 	copy : function(o){
 		var copy = {};
-		
+
 		sb.objects.forEach.call(o, function(val,prop,obj){
 			copy[prop] = val;
 		});
-		
+
 		return copy;
 	},
-	
+
 	/**
 	@Name: sb.objects.dump
 	@Description: Returns the properties of the object and their values for an object
@@ -1091,11 +1112,11 @@ sb.objects = {
 					str += "\n"+p+' = CANNOT PROCESS VALUE!';
 				}
 			});
-			
+
 			if(!pre){ return str;} else { return '<pre style="margin:5px;border:1px;padding:5px;">'+str+'</pre>';}
-	
+
 	},
-	
+
 	forEach : function(func){
 		for(var prop in this){
 			if(this.hasOwnProperty(prop) && !sb.objects[prop] || prop =='infuse'){
@@ -1109,103 +1130,104 @@ sb.objects = {
 @Name: sb.nodeList
 @Description: Used to create sb.nodeLists which are groups of sb.elements that have many of the same methods as sb.element but which act on all sb.elements in the sb.nodeList. It also has all the properties of an sb.array. These are returned by sb.s$
 */
-//sb.nodeList 
+//sb.nodeList
 sb.nodeList = function(params){
-	
+
 	for(var prop in params){
 		this[prop] = params[prop];
 	}
-	
+
 	//initialize internal arrays
 	this.nodes = [];
 	this.sb_ids = {};
-	
+
 	var nls= this;
 	['forEach', 'map', 'filter', 'every', 'some', 'indexOf', 'lastIndexOf', 'inArray'].forEach(function(v,k,a){
 		nls[v] = function(func){
+            if(v == 'forEach'){ nls.nodes[v](func); return nls;}
 			return nls.nodes[v](func);
 		};
 	});
-	
+
 };
 
 sb.nodeList.prototype = {
-	
+
 	/**
 	@Name: sb.nodeList.prototype.selector
 	@Description: The CSS selector used to find the nodes
 	*/
 	selector : '',
-	
+
 	/**
 	@Name: sb.nodeList.prototype.assign_element_prototypes
 	@Description: Re-assigns Element.prototypes of the nodes in the .nodes array to make sure that it picks up any Element.prototypes that have been added after the $ selection was made.  This is only required in IE since the other browsers all respect actual Element.protoype
 	*/
 	getElementPrototypes : function(){
-	
+
 		if(Element.emulated){
 			var x,prop,ep = Element.prototype,len = this.nodes.length;
-		
+
 			for(x=0;x<len;x++){
 				for(prop in ep){
 					this.nodes[x][prop] = ep[prop];
 				}
 			}
-			
+
 		}
 	},
-	
+
 	/**
 	@Name: sb.nodeList.prototype.empty
 	@Description: Empties the nodes array
 	*/
 	empty : function(){
 		this.nodes = [];
-		
+
 	},
-	
+
 	/**
 	@Name: sb.nodeList.prototype.setSelector
-	@Param: string selector e.g. h1#wrapper 
+	@Param: string selector e.g. h1#wrapper
 	@Description: Used Internally. the CSS selector used to find populate the initial nodes array
 	*/
 	setSelector : function(selector){
 		this.selector = sb.nodeList.cleanSelector(selector);
-		
+
 	},
-	
+
 	/**
 	@Name: sb.nodeList.prototype.add
 	@Param: An array of other nodes to add
 	@Description: Adds more nodes to the nodeList nodes array and assigns sb_ids or adds super element properties if required
-	@Example: 
+	@Example:
 	var nodes = $('ol li');
 	//adds element with id 'wrapper' to the node list
 	nodes.add($('#wrapper'));
-	
+
 	*/
 	add : function(nodes){
 		//nodes = (nodes instanceof Array || (typeof NodeList !='undefined' && nodes instanceof NodeList)) ? nodes : [nodes];
 		nodes = nodes instanceof Array || (nodes instanceof NodeList || nodes instanceof StaticNodeList) ? nodes : [nodes];
 		var len = nodes.length;
-		
+
 		var prop,x=0,node;
-		
+
 		var emulated = Element.emulated;
-		
+
 		var ep = Element.prototype;
-		
+
 		for(x=0;x<len;x++){
 			node=nodes[x];
-			
+
 			if(!node.sb_id ){
 				node.sb_id = sb.nodeList.sb_id++;
 			}
-			
+
 			if(!this.sb_ids[node.sb_id]){
-				
+
 				if(emulated){
-					
+
 					for(prop in ep){
 						node[prop] = ep[prop];
 					}
@@ -1218,7 +1240,7 @@ sb.nodeList.prototype = {
 	/**
 	@Name: sb.nodeList.prototype.drop
 	@Description: drop dom nodes, either array o single node from a sb.nodeList
-	@Example: 
+	@Example:
 	var nodes = $('ol li');
 	//adds element with id 'wrapper' to the node list
 	nodes.drop('#wrapper');
@@ -1226,41 +1248,41 @@ sb.nodeList.prototype = {
 	nodes.drop('a');
 	*/
 	drop : function(el){
-		
+
 		var t = this;
 		el = $(el);
-		
+
 		this.nodes = t.nodes.filter(function(v){
 			if(sb.typeOf(el) == 'sb.element'){
 				return v != el;
 			} else {
 				return !el.nodes.some(function(v1){return v===v1;});
 			}
-			
+
 		});
 		this.length = this.nodes.length;
-		
+
 		return this;
 	},
-	
+
 	/**
 	@Name: sb.nodeList.prototype.firePerNode
 	@Description: fires a function once for each node
 	@Param: func function The function to fire on a per node basis.  The node is the this of the function.
 	@Param: * any additional paramaters get passed to the func as arguments
-	@Example: 
+	@Example:
 	var nodes = $('ol li');
 	//hide all the nodes from view
 	nodes.firePerNode(Element.prototype.hide);
-	
+
 	//inline function - alert the innerHTML of each
 	nodes.firePerNode(function(){alert(this.innerHTML);});
-	
+
 	//assuming you has a function that changed background color, this would pass the argument 'blue' as the first argument to that function
 	nodes.firePerNode(changeBackgroundColor, 'blue');
 	*/
 	firePerNode : function(func){
-		
+
 		if(typeof func == 'function'){
 			var args = [];
 			var len = arguments.length;
@@ -1271,10 +1293,10 @@ sb.nodeList.prototype = {
 				func.apply(node, args);
 			});
 		}
-		
+
 		return this;
 	},
-	
+
 	/**
 	@Name: sb.nodeList.prototype.length()
 	@Description: Return the length of the this.nodes array which represents how many nodes the nodeList instance is holding
@@ -1282,12 +1304,12 @@ sb.nodeList.prototype = {
 	length : function(){
 		return this.nodes.length;
 	},
-	
+
 	/**
 	@Name: sb.nodeList.prototype.styles(o)
 	@Description: Runs the style method of each node in the nodeList and pass the o style object
 	@Example:
-	
+
 	var nodeList = $('li,p');
 	nodeList.styles({
 		backgroundColor : 'red',
@@ -1295,25 +1317,25 @@ sb.nodeList.prototype = {
 	});
 	*/
 	styles : function(styles){
-		this.firePerNode(Element.prototype.styles, styles);
+		return this.firePerNode(Element.prototype.styles, styles);
 	},
-	
+
 	/**
 	@Name: sb.nodeList.prototype.typeOf
 	@Description: Used Internally for sb.typeOf
 	*/
 	typeOf : function(){
-		
+
 		return 'sb.nodeList';
 	}
-	
+
 };
 
 sb.nodeList.cleanSelector = function(selector){
-	
+
 	selector = selector.replace(/^\s+/, '');
 	selector = selector.replace(/\s+$/, '');
-		
+
 	//remove excess space after commas
 	selector = selector.replace(/, /g, ',');
 	selector = selector.replace(/\s*([>~\+])\s*/g, "$1");
@@ -1349,7 +1371,7 @@ sb.ajax = function (params){
 	}
 
 	sb.objects.infuse(params, this);
-	
+
 	if(sb.typeOf(params.data) == 'object'){
 		this.data = sb.objects.serialize(params.data);
 	}
@@ -1357,7 +1379,7 @@ sb.ajax = function (params){
 	this.method = params.method || sb.ajax.defaultMethod;
 	var self = this;
 	this.ajax.onreadystatechange=function(){self.onreadystatechange();};
-	  
+
 };
 
 /**
@@ -1391,7 +1413,7 @@ sb.ajax.prototype = {
 		url : 'process.php',
 		debug : 1
 	});
-	
+
 	//or added afterwards with
 	myAjax.debug =1;
 	*/
@@ -1402,7 +1424,7 @@ sb.ajax.prototype = {
 	@Description: The amount of time in milliseconds the ajax request will wait before it aborts.  This is optional
 	@Example:
 	var myAjax.timeout = 1000;
-	
+
 	//fetches the data from the url specified
 	myAjax.fetch();
 	*/
@@ -1413,23 +1435,23 @@ sb.ajax.prototype = {
 	@Description: Used Internally
 	*/
 	onreadystatechange : function(){
-		
+
 		var js = '';
-		
+
 		if(this.ajax.readyState != 4 || this.completed == 1){return true;}
 
 		this.completed = 1;
-		
+
 		//for backwards compatibility, remove soon
 		if(typeof this.handler == 'function'){
 			this.onResponse = this.handler;
 		}
-		
+
 		this.contentType = this.ajax.getResponseHeader("Content-Type");
 		this.contentLength = this.ajax.getResponseHeader("Content-Length");
-	
+
 		if(this.contentLength > this.maxContentLength){
-			
+
 			//this.addToLog(7);
 			if(typeof this.onContentLengthExceeded == 'function'){
 				this.onContentLengthExceeded();
@@ -1453,66 +1475,66 @@ sb.ajax.prototype = {
 			} else {
 				this.format = sb.ajax.defaultFormat;
 			}
-		} 
+		}
 
 		if(this.debug){
 			this.log("\nHEADERS\nStatus: "+this.ajax.status+"\nStatus Text: "+this.ajax.statusText+"\n"+this.ajax.getAllResponseHeaders()+"\nRESPONSE: \n"+(this.ajax.responseText ||'PAGE WAS BLANK ;(')+"\n");
 		}
-		
+
 		if(this.onHeaders(this.ajax.status, this.ajax.statusText) === false || this.ajax.status != 200){
 			return false;
 		}
-	
+
 		switch(this.format){
-			
+
 			case 'head':
 				if(typeof this.header ==='undefined'){
 					this.response = this.ajax.getAllResponseHeaders();
 				} else {
 					this.response = this.ajax.getResponseHeader(this.header);
-				
+
 				}
 				break;
 			case 'xml':
-			
-				if(this.ajax.responseXML !== null){ 
+
+				if(this.ajax.responseXML !== null){
 					this.response = this.ajax.responseXML.documentElement;
-				} else { 
+				} else {
 					this.log('invalid XML returned');
 				}
 				break;
-			
+
 			case 'js':
 				js =  this.ajax.responseText;
 				break;
-				
+
 			case 'json':
-			
+
 				js = 'this.response='+this.ajax.responseText;
 				break;
-				
+
 			case 'boolean':
 				this.response = (this.ajax.responseText === 0) ? 0 : 1;
 				break;
-			
+
 			default:
 				this.response = this.ajax.responseText;
 		}
 
 		if(js !==''){
-			
+
 			try{
 				 eval(js);
-				 
+
 			}catch(e2){
 				this.log('Could not eval javascript from server');
 			}
 		}
-		
+
    		this.onResponse(this.response);
 
 		if(typeof this.node !='undefined'){
-			
+
 			if(sb.$(this.node)){
 				this.node = sb.$(this.node);
 				if(typeof this.node.value !='undefined'){
@@ -1524,11 +1546,11 @@ sb.ajax.prototype = {
 				this.log('Cannot set innerHTML of: '+this.node+' as it does not exist');
 			}
 		}
-		
-		return this; 
-	   		
+
+		return this;
+
 	},
-	
+
 	/**
 	@Name: sb.ajax.prototype.abort
 	@Description: You can use this to abort an ajax function that is fetching.  In addition, if you have defined an onabort() method for your sb.ajax instance it will fire whenever the fetch is canceled.
@@ -1537,19 +1559,19 @@ sb.ajax.prototype = {
 		url : 'process.php'
 	});
 	myAjax.fetch();
-	
+
 	//aborts a fetch already in progress, you could attach this event to a cancel button
 	myAjax.abort();
 	*/
 	abort : function(){
 		this.ajax.abort();
-		
+
 		if(typeof this.onmillisec !='undefined'){
 			this.timer.reset();
 		}
-		
+
 		this.onAbort();
-		
+
 	},
 
 	/**
@@ -1559,7 +1581,7 @@ sb.ajax.prototype = {
 	var myAjax = new sb.ajax({
 		url : 'process.php'
 	});
-	
+
 	//fetches the data from the url specified in the constructor
 	myAjax.fetch();
 	*/
@@ -1570,21 +1592,21 @@ sb.ajax.prototype = {
 		}
 
 		var url = this.url;
-		
+
 		this.completed = 0;
 
 		this.data = sb.typeOf(this.data) == 'object' ? sb.objects.serialize(this.data) : this.data;
-		
+
 		//This must be set to tru or false as IE 8 does not understand 0 or 1
 		this.async = !this.async ? false : true;
-		
+
 		this.format = this.format || '';
 		this.method = this.method.toUpperCase();
-		
+
 		if(this.method == 'GET' && this.data !== undefined){
 			url = url+'?'+this.data;
 		}
-		
+
 		this.ajax.open(this.method, url, this.async);
 
 		if(this.method == 'POST'){
@@ -1592,27 +1614,27 @@ sb.ajax.prototype = {
 		}
 
 		if(this.timeout){
-			
+
 			this.count = 0;
 
 			var self = this;
-			
+
 			this.timer = window.setInterval(function(){
 				if(self.count >= self.timeout){
 					self.abort();
 					self.count = 0;
-					
+
 					if(typeof self.onTimeout == 'function'){
 						self.onTimeout();
 					}
-					
+
 					window.clearInterval(self.timer);
 				} else {
 					self.count++;
 				}
 			}, 1);
 		}
-		
+
 		this.ajax.send(this.data);
 		if(!this.async){
 			this.onreadystatechange();
@@ -1621,19 +1643,19 @@ sb.ajax.prototype = {
 
 	log : function(message){
 		if(this.debug ==1){
-			
+
 			var info = (message || '')+"\nSENT\nURL: ";
-		
+
 			info += "\nMETHOD: "+this.method+"\nFORMAT: "+this.format+"\nASYNC: "+this.async+"\nDATA: "+this.data;
-			
+
 			if(sb.consol.ajaxLog){
 				sb.consol.ajaxLog(info);
 			} else if(typeof console != 'undefined'){
 				console.log(info);
 			}
-			
+
 			if(typeof this.onLog == 'function'){
-				
+
 				this.onLog(info);
 			}
 		}
@@ -1651,7 +1673,7 @@ sb.ajax.prototype = {
 	});
 	*/
 	onResponse : function(){},
-	
+
 	/**
 	@Name: sb.ajax.prototype.onHeaders
 	@Description: Fires when the ajax request gets it headers back
@@ -1665,10 +1687,10 @@ sb.ajax.prototype = {
 			alert(this.getResponseHeader('Content-type');
 		}
 	});
-	
+
 	*/
 	onTimeout : function(){},
-	
+
 	/**
 	@Name: sb.ajax.prototype.onHeaders
 	@Description: Fires when the ajax request gets it headers back
@@ -1696,7 +1718,7 @@ sb.ajax.prototype = {
 			alert('ajax call aborted');
 		}
 	});
-	
+
 	//aborts a fetch already in progress, you could attach this event to a cancel button, also used by timeout
 	myAjax.abort();
 	*/
@@ -1710,7 +1732,7 @@ sb.dom = {
 	@Description: Used to run a function when a DOM element becomes available
 	@Param: object o An object of parameters
 	o.id - A reference to the id of the DOM node you are questioning the availability of, e.g. #navigation is the the ID of the DOM node I am polling for.
-	
+
 	@Example:
 
 	//In this example the onloaded function fires when the node with the id #navigation is available  the onloaded function, receives a this which is essentialy the element passed through sb.$
@@ -1726,54 +1748,54 @@ sb.dom = {
 		},
 		args : ['one', 'two']
 	});
-	
+
 	*/
-	
+
 	onReady : function(o){
 		var found =0, timer, count=0;
 		o.args = o.args || [];
 		o.interval = o.interval || 10;
-		
+
 		o.tries = o.tries || 600;
 		if(o.tries == -1){o.tries =99999999;}
-		
+
 		if(typeof o.onReady=='function'){
-			
+
 			timer = window.setInterval(function(){
-				
+
 				count +=1;
-				
+
 				if(count >= o.tries){
 					window.clearTimeout(timer);
-					
+
 					if(typeof o.onTimeout=='function'){
 						o.onTimeout(o.id);
 					}
 					return;
 				}
-				
+
 				if(o.id == 'body' && document.body){
 					window.clearTimeout(timer);
 					found=1;
 					o.id = document.body;
 				} else if(o.id !='body' && sb.$(o.id)){
-					
+
 					window.clearTimeout(timer);
 					found=1;
 				}
-				
+
 				if(found == 1){
 					o.onReady.apply(sb.$(o.id), o.args);
-					
+
 				}
-				
+
 			}, o.interval);
-			
+
 		} else {
 			throw('sb.dom.onReady: You object argument must have a onReady property that runs when the dom element "'+o.id+'" is available');
 		}
 	}
-	
+
 };
 
 /**
@@ -1807,7 +1829,7 @@ var answer = myArray.remove(5);
 //answer =[10, 15];
 */
 Array.prototype.remove = function(values){
-	
+
 	return this.filter(function(v){
 		if(sb.typeOf(values) !='array'){
 			return v != values;
@@ -1827,18 +1849,18 @@ var newString = str.hex2rgb();
 */
 String.prototype.hex2rgb = function(asArray){
 	var hex = this.replace(/(^\s+|\s+$)/).replace("#", "");
-	var rgb = parseInt(hex, 16); 
+	var rgb = parseInt(hex, 16);
 	var r   = (rgb >> 16) & 0xFF;
-	var g = (rgb >> 8) & 0xFF; 
+	var g = (rgb >> 8) & 0xFF;
 	var b  = rgb & 0xFF;
-	
+
 	if(asArray){
 		return [r,g,b];
 	} else {
 		return 'rgb('+r+', '+g+', '+b+')';
 	}
 };
-	
+
 /**
 @Name: String.prototype.toCamel
 @Description: Converts all dashes to camelStyle
@@ -1859,26 +1881,26 @@ String.prototype.toCamel = function(){
 @Description: Methods used to manipulate CSS and javascript styles
 */
 sb.styles = {
-	
+
 	/**
 	@Name: sb.styles.numRules
 	@Description: used internally
 	*/
 	numRules : 1,
-	
+
 	/**
 	@Name: sb.styles.newSheets
 	@Description: Used Internally
 	*/
 	sheets : [],
-	
+
 	/**
 	@Name: sb.styles.pxProps
 	@Description: Used Internally. These properties get 'px' added to their value if no measurement is specified
 	*/
-	
+
 	pxProps : ['fontSize', 'width', 'height', 'padding', 'border', 'margin', 'left', 'top']
-	
+
 };
 
 /**
@@ -1886,7 +1908,7 @@ sb.styles = {
 @Description: Cross browser event handling that references the proper "this" and passes the event to the handler function.  Using sb.events, multiple events can be added to a single DOM node for the same event.  e.g. multiple onclick handlers
 */
 sb.events = {
-	
+
 	/**
 	@Name: sb.events.add
 	@Description: Add an event listener to a DOM element, re-write of surebert events based on tips from http://www.digital-web.com/articles/seven_javascript_techniques/
@@ -1914,13 +1936,13 @@ sb.events = {
 	});
 	*/
 	add : function() {
-		
+
 	    if(window.addEventListener){
-	   
+
 	        return function(el, type, fn) {
 	        	el = sb.$(el);
 	        	var f = function(e) {
-	        		
+
 	        		var sb_target = e.target;
 	        		var sb_related_target = e.relatedTarget;
 	        		delete e.target;
@@ -1937,7 +1959,7 @@ sb.events = {
 	        return function(el, type, fn) {
 	        	el = sb.$(el);
 	        	var tar = false;
-				
+
 	            var f = function() {
 	            	var e = window.event;
 	            	var tar = null;
@@ -1945,28 +1967,28 @@ sb.events = {
 						case 'mouseout':
 							tar = e.relatedTarget || e.toElement;
 							break;
-						
+
 						case 'mouseover':
 							tar = e.relatedTarget || e.fromElement;
 							break;
 					}
-					
+
 					if(tar){
 	            		e.relatedTarget = sb.events.distillTarget(tar);
-	            	} 
-	            	
+	            	}
+
 	            	if(e.srcElement){
 	            		e.target = sb.events.distillTarget(e.srcElement);
 	            	}
-	            	
+
 	            	e.preventDefault = function(){
 	            		e.returnValue = false;
 	            	};
-	            	
+
 	            	e.stopPropagation = function(){
 	            		e.cancelBubble = true;
 	            	};
-	            	
+
 	                fn.call(el, e);
 	            };
 	            var evt = {el:el, type:type, fn:f, remove : sb.events.removeThis};
@@ -1975,7 +1997,7 @@ sb.events = {
 	        };
 	    }
 	}(),
-	
+
 	/**
 	@Name: sb.events.removeThis
 	@Description: used internally
@@ -1983,20 +2005,20 @@ sb.events = {
 	removeThis : function(){
 		sb.events.remove(this);
 	},
-	
+
 	/**
 	@Name: sb.events.log
 	@Description: used internally to keep track of all events registered on the page
 	*/
 	log : [],
-	
-	
+
+
 	record : function(evt){
 		sb.events.log.push(evt);
 		return evt;
 	},
 
-		
+
 	/**
 	@Name: sb.events.remove
 	@Description: Removes an event listener
@@ -2005,19 +2027,19 @@ sb.events = {
 	var myEvent = sb.events.add('#myList', 'click', function(e){
 		alert(this.innerHTML);
 	});
-	
+
 	sb.events.remove(myEvent);
 	*/
 	remove : function(evt){
-	
+
 		if (evt.el.removeEventListener){
 			evt.el.removeEventListener( evt.type, evt.fn, false );
 		} else if (evt.el.detachEvent){
 			evt.el.detachEvent( "on"+evt.type, evt.fn );
 		}
-		
+
 	},
-	
+
 	/**
 	@Name: sb.events.removeAll
 	@Description: Removes all event listeners added with sb.events.add or sb.elements or $'s event method
@@ -2031,20 +2053,20 @@ sb.events = {
 		});
 		sb.events.log=[];
 	},
-	
+
 	/**
 	@Name: sb.events.distillTarget
 	@Description: Used internally
-	
+
 	 */
 	distillTarget : function(tar){
 		if (tar && tar.nodeType && (tar.nodeType== 3 || tar.nodeName == 'EMBED')){
 			tar = tar.parentNode;
 		}
-	
+
 	   return $(tar);
 	}
-	
+
 };
 
 /**
@@ -2054,7 +2076,7 @@ sb.events = {
 @Param: String o If passed a nodeName as a string it simply returns document.createElement(nodeName);
 @Param: Object sb.element If passed an sb.element it uses that element as a template and clones it
 @Return: Element A DOM element hat can be inserted into the DOM or further manipulated
-@Example: 
+@Example:
 var myDiv = new sb.element({
 	tag : 'div',
 	className : 'redStripe',
@@ -2089,34 +2111,34 @@ sb.element = function(o){
 	if(sb.typeOf(o) == 'sb.element'){
 		return o;
 	}
-	
+
 	if(typeof o == 'object' ){
-		
+
 		if(o.tag == 'input' && sb.dom.createNamedElement){
-			
+
 			el = new sb.dom.createNamedElement(o.type, o.name, o.checked);
-			
+
 		} else {
 			el = document.createElement(o.tag);
 		}
 	}
-	
+
 	//copy properties from the sb.element prototype
 	if(Element.emulated){
 		sb.objects.infuse(Element.prototype, el);
 		o = sb.objects.copy(o);
 	}
-	
+
 	if(typeof o.addAttributes !='undefined'){
 		el.styles(o.addAttributes);
-		delete o.addAttributes;	
+		delete o.addAttributes;
 	}
-	
+
 	if(typeof o.styles !='undefined'){
 		el.styles(o.styles);
-		delete o.styles;	
+		delete o.styles;
 	}
-	
+
 	if(typeof o.children !='undefined'){
 		var len = o.children.length;
 		for(c=0;c<len;c++){
@@ -2124,29 +2146,29 @@ sb.element = function(o){
 		}
 		delete o.children;
 	}
-	
+
 	if(typeof o.events !='undefined'){
 		sb.objects.forEach.call(o.events, function(func,event,obj){
 			el.event(event, func);
 		});
-		
+
 		delete o.events;
 	}
-	
+
 	//copy additional props from o
 	sb.objects.infuse(o, el);
-	
+
 	if(sb.browser.agent == 'ie' && sb.browser.version < 8){
-		
+
 		if(el.tag == 'form' && sb.events.observer){
 			el._sb_on_submit = sb.events.add(el, 'submit', sb.events.observer.delegateEvents);
 		}
-		
+
 		//remove attributes for ie's sake
 		el.removeAttribute('tag');
-		
+
 	}
-	
+
 	return el;
 };
 
@@ -2166,7 +2188,7 @@ if(typeof Element == 'undefined'){
 Element.prototype.$ = function(selector){
 	return $(selector, this);
 };
-	
+
 /**
 @Name: Element.prototype.addClassName
 @Description: Adds a className to the sb.element, using this methods sb.element instances can have multiple classNames
@@ -2177,7 +2199,7 @@ myElement.addClassName('redStripe');
 */
 Element.prototype.addClassName = function(className){
 	this.className += ' '+className;
-	
+
 	return this;
 };
 
@@ -2241,7 +2263,7 @@ myElement.appendAfter('#myDiv');
 */
 Element.prototype.appendAfter = function(after){
 	var a = $(after);
-	
+
 	if(a.nextSibling){
 		while((a = a.nextSibling) && a.nodeType != 1){}
 		var nxtSib = a;
@@ -2252,7 +2274,7 @@ Element.prototype.appendAfter = function(after){
 	} else {
 		return this.appendTo(a.parentNode);
 	}
-	
+
 };
 
 /**
@@ -2311,7 +2333,7 @@ Element.prototype.getY = function(){
 myElement.hasClassName('redStripe');
 */
 Element.prototype.hasClassName = function(classname){
-	
+
 	return this.className.match("\\b"+classname+"\\b");
 };
 
@@ -2369,7 +2391,7 @@ Element.prototype.replace = function(node){
 
 //sets the backgroundColor peroperty to red
 myElement.event('click', function(e){
-	//alerts the x value of the click 
+	//alerts the x value of the click
 	alert(e.clientX);
 	//alerts the innerHTML of myElement
 	alert(this.innerHTML);
@@ -2377,12 +2399,12 @@ myElement.event('click', function(e){
 
 */
 Element.prototype.event = function (evt, func){
-	
+
 	var event = sb.events.add(this, evt, func);
-	
+
 	//this.eventsAdded.push(event);
 	return event;
-	
+
 };
 
 /**
@@ -2413,7 +2435,7 @@ Element.prototype.events = function(events){
 			this.event(event, events[event]);
 		}
 	}
-	
+
 	return this;
 };
 
@@ -2461,7 +2483,7 @@ myElement.styles({
 });
 */
 Element.prototype.styles = function(params){
-	
+
 	for(var prop in params){
 		if(params.hasOwnProperty(prop)){
 			try{
@@ -2469,7 +2491,7 @@ Element.prototype.styles = function(params){
 			}catch(e){}
 		}
 	}
-	
+
 	return this;
 };
 
@@ -2485,64 +2507,64 @@ myElement.getStyle('padding').
 */
 Element.prototype.getStyle = function(prop){
 	var val;
-	
+
 	if(prop.match(/^border$/)){
-		prop = 'border-left-width';				
-	} 
-	
+		prop = 'border-left-width';
+	}
+
 	if(prop.match(/^padding$/)){
-		prop = 'padding-left';				
+		prop = 'padding-left';
 	}
-	
+
 	if(prop.match(/^margin$/)){
-		prop = 'margin-left';		
+		prop = 'margin-left';
 	}
-	
+
 	if(prop.match(/^border-color$/)){
-		prop = 'border-left-color';				
+		prop = 'border-left-color';
 	}
-	
+
 	if (this.style[prop]) {
 		val = this.style[prop];
-		
+
 	} else if (this.currentStyle) {
-		
+
 		prop = prop.toCamel();
 		val = this.currentStyle[prop];
-		
+
 	} else if (document.defaultView && document.defaultView.getComputedStyle) {
-			
+
 		prop = prop.replace(/([A-Z])/g, "-$1");
 		prop = prop.toLowerCase();
-		
+
 		val = document.defaultView.getComputedStyle(this,"").getPropertyValue(prop);
-		
+
 	} else {
 		val=null;
 	}
-	
+
 	if(prop == 'opacity' && val === undefined){
 		val = 1;
 	}
-	
+
 	if(val){
 		if(typeof val == 'String'){
-			
+
 			val = val.toLowerCase();
 			if(val == 'rgba(0, 0, 0, 0)'){val = 'transparent';}
-		
+
 			if(typeof sb.colors.html !='undefined'){
 				if(sb.colors.html[val]){
 					val = sb.colors.html[val].hex2rgb();
 				}
 			}
-			
+
 			if(val.match("^#")){
 				val = val.hex2rgb();
 			}
-		
+
 		}
-		
+
 		return val;
 	} else {
 		return null;
@@ -2562,23 +2584,23 @@ myElement.setStyle('backgroundColor', blue);
 myElement.setStyle('opacity', 0.5);
 */
 Element.prototype.setStyle = function(prop, val){
-	
+
 		if(sb.styles.pxProps.inArray(prop) && val !=='' && !val.match(/em|cm|pt|px|%/)){
 			val +='px';
 		}
-		
+
 		if(prop == 'opacity' && typeof this.style.filter == 'string' && typeof this.style.zoom == 'string'){
 			this.style.opacity = val;
 			this.style.zoom = 1;
 			this.style.filter = "alpha(opacity:"+val*100+")";
-			
-			
+
+
 		} else {
-		
+
 			if(prop == 'cssFloat' && typeof this.style.styleFloat == 'string'){
 				prop = 'styleFloat';
 			}
-			
+
 			if(typeof this.style[prop] == 'string'){
 				this.style[prop] = val;
 			} else {
@@ -2638,7 +2660,32 @@ sb.browser.getHash = function(){
   var hash = window.location.hash;
   return hash.substring(1);
 };
- 
+
 sb.browser.getLinkTarget = function(link){
   return link.href.substring(link.href.indexOf('#')+1);
+};
+
+/**
+@Name: String.prototype.toElement
+@Description: Converts a string of HTML code to a sb.element for dom manipulation
+@Param: String parentNodeType The nodetype of the parent element returned if there is not already a single parent element for all elements contained in the html string - see example two - defaults to span if it is not given
+@Example:
+//would return div as the element with all its children
+sb.dom.HTMLToElement('<div id="joe"><p class="test">hey there</p></div>');
+//would return all elements grouped under a span because they have no comment parent
+sb.dom.HTMLToElement('<p class="test">hey there</p><p class="test2">hey there2</p>');
+*/
+String.prototype.toElement = function(parentNodeType){
+	parentNodeType = parentNodeType || 'span';
+
+	var temp = new sb.element({
+		nodeName : parentNodeType,
+		innerHTML : this
+	});
+
+	if(temp.childNodes.length > 1){
+		return $(temp);
+	} else {
+		return $(temp.firstChild);
+	}
 };
