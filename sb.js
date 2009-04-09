@@ -1,7 +1,7 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
 @Version: 4.75 04/24/04 - 04/07/09
-@Package: surebert
+@Package: surebert 
 */
 
 //$.getElementsByParent updated to support .fromCode > li
