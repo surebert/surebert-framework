@@ -1,5 +1,5 @@
 <?php
-class sb_Exception_UserError extends Exception{
+class sb_Exception_UserError extends sb_Exception{
 
 }
 ?>

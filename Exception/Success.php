@@ -1,5 +1,5 @@
 <?php
-class sb_Exception_Success extends Exception{
+class sb_Exception_Success extends sb_Exception{
 
 }
 ?>
