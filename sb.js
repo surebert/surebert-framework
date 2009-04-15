@@ -1372,6 +1372,8 @@ sb.ajax = function (params){
 
 	sb.objects.infuse(params, this);
 
+        this.format = this.format || 'text';
+
 	if(sb.typeOf(params.data) == 'object'){
 		this.data = sb.objects.serialize(params.data);
 	}
@@ -1644,7 +1646,7 @@ sb.ajax.prototype = {
 	log : function(message){
 		if(this.debug ==1){
 
-			var info = (message || '')+"\nSENT\nURL: ";
+			var info = (message || '')+"\nSENT\nURL: "+this.url;
 
 			info += "\nMETHOD: "+this.method+"\nFORMAT: "+this.format+"\nASYNC: "+this.async+"\nDATA: "+this.data;
 
