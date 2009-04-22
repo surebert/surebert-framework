@@ -1,4 +1,4 @@
-sb.include('String.prototype.stripWhiteSpace');
+sb.include('String.prototype.stripWhitespace');
 /**
 @Name: sb.colors.toArray
 @Author: Paul Visco
