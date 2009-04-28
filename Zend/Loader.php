@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to load the Zend framework and enable autoload
- * @version: 1.0 04/28/2009 04/28/2009
+ * @version: 1.0 04-28-2009 04-28-2009
  */
 
 class sb_Zend_Loader{
