@@ -1,7 +1,5 @@
 sb.include('forms.textarea');
 sb.include('browser.removeSelection');
-sb.include('sharedObject');
-sb.include('String.prototype.isNumeric');
 
 /*
 Author: Paul Visco
@@ -33,20 +31,6 @@ sb.forms.textarea.textBling = function(editBar, editBox){
 	this.addEvents();
 };
 
-sb.forms.textarea.textBling.save = function(){
-	sb.sharedObject.save(this.id, this.value);
-};
-
-sb.forms.textarea.textBling.restore = function(){
-	var str = sb.sharedObject.load(this.id);
-	if(str){this.value = str;}
-	return this.value;
-};
-
-sb.forms.textarea.textBling.clearStorage = function(){
-	sb.sharedObject.clear(this.id);
-};
-
 sb.forms.textarea.textBling.prototype = {
 	
 	renderStyles :1,
@@ -54,20 +38,8 @@ sb.forms.textarea.textBling.prototype = {
 	buttonCss :0,
 	buttonSize :1,
 	buttonColor :1,
-	fetchBackup :1,
-	
-	checkStorage : function(){
-		return sb.sharedObject.load(this.editBox.id);
-	},
-	
-	clearStorage : function(){
-		sb.sharedObject.clear(this.editBox.id);
-	},
 	
 	addEvents : function(){
-			
-			this.editBox.event('keydown', sb.forms.textarea.textBling.save);
-			this.editBox.event('onchange', sb.forms.textarea.textBling.save);
 			
 			this.editBar.event('mousedown', function(e){
 				var target = e.target;
@@ -76,7 +48,11 @@ sb.forms.textarea.textBling.prototype = {
 				if(target.nodeName =='SPAN'){
 					target=target.parentNode;
 				}
-				
+
+                                if(typeof target.onPress == 'function'){
+                                    target.onPress(e);
+                                }
+
 				if(target.kind){
 				
 					switch(target.kind){
@@ -87,24 +63,15 @@ sb.forms.textarea.textBling.prototype = {
 						case 'prompt':
 							var myPrompt = window.prompt(target.question, "");
 							if(myPrompt){
-								if(myPrompt.isNumeric()){
+								if(/^\d+?(\.\d+)?$/.test(myPrompt)){
 									myPrompt +='px';
 								}
 								sb.forms.textarea.addTags(this.editBox, '['+target.bling+'='+myPrompt+']', '[/'+target.bling+']');
 							}
 							break;
-							
-						case 'restore':
-							if(this.editBox.value !==''){
-								if(!window.confirm('Restoring the editor to the last draft saved point will erase anything in your text editor, is that ok?')){
-									return;
-								}
-							}
-							sb.forms.textarea.textBling.restore.call(this.editBox);
-							
-							break;
+						
 					}
-					
+
 					if(typeof this.update == 'function'){
 						this.update();
 					}
@@ -143,23 +110,6 @@ sb.forms.textarea.textBling.prototype = {
 		});
 		
 		btn.appendTo(this.editBar);
-	},
-	
-	addRestoreButton : function(){
-		var str = this.checkStorage();
-		if(str){
-			var btn = new sb.element({
-				tag : 'button',
-				innerHTML:'restore backup',
-				styles : {
-					backgroundColor:'red',
-					color:'white'
-				},
-				kind:'restore'
-			});
-			
-			btn.appendTo(this.editBar);
-		}
 	},
 	
 	basic : function(){
