@@ -35,34 +35,34 @@ class sb_JSON_RPC2_Response{
 	 */
 	public function __construct($json = null){
 		
-		if(!is_null($json)){
-			  
-			$o = json_decode($json);
-			
-			if(!is_object($o)){
-				
-				$this->error = new sb_JSON_RPC2_Error(-32700, 'Parse Error', $json);
-				
-				unset($this->result);
-				
-				return;
-			}
-			
-			foreach(get_object_vars($this) as $k=>$v){
-			
-				if(isset($o->$k)){
-					$this->$k = $o->$k;
-				}
-			}
-			
-			if(is_null($this->result)){
-				unset($this->result);
-			}
-			
-			if(isset($this->result)){
-				unset($this->error);
-			}
-		}
+            if(!is_null($json)){
+
+                $o = json_decode($json);
+
+                if(!is_object($o)){
+
+                    $this->error = new sb_JSON_RPC2_Error(-32700, 'Parse Error', $json);
+
+                    unset($this->result);
+
+                    return;
+                }
+
+                foreach(get_object_vars($this) as $k=>$v){
+
+                    if(isset($o->$k)){
+                            $this->$k = $o->$k;
+                    }
+                }
+
+                if(is_null($this->result)){
+                    unset($this->result);
+                }
+
+                if(isset($this->result)){
+                    unset($this->error);
+                }
+            }
 		
 	}
 	

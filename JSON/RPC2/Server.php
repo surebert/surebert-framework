@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to response to JSON_RPC2 requests  as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
- * @version 1.1 02/06/09 02/12/09
+ * @version 1.2 02/06/09 05/11/09
  * @author visco
  * <code>
  *
@@ -39,12 +39,21 @@ class sb_JSON_RPC2_Server{
 	 * @var boolean
 	 */
 	public $json_decode_assoc_array = true;
-	
+       
 	/**
 	 * If set to true then HTTP status headers 200, 400, 404, 500 are not send with response as some clients cannot parse 404 or 500 responses.
 	 * @var boolean
 	 */
 	public $suppress_http_status = false;
+
+         /**
+         * Determines if the response body is first serialized as php format before
+         * being json encoded to preserve hash array data that would otherwise
+         * be converted to objects.  This is set by the client and is set to true
+         * if the client passes a php_serialize_response HTTP header.
+         * @var boolean
+         */
+        public $php_serialize_response = false;
 	
 	/**
 	 * The sb_logger to write to
@@ -69,13 +78,16 @@ class sb_JSON_RPC2_Server{
 	 * Create an instance
 	 */
 	public function __construct($methods=Array()){
-		
-		$this->methods['get_methods'] = Array($this, 'get_methods');
-		
-		
-		if(!empty($methods)){
-			$this->serve_methods($methods);
-		}
+            if(isset($_SERVER) && isset($_SERVER['HTTP_PHP_SERIALIZE_RESPONSE'])){
+                $this->php_serialize_response = true;
+            }
+
+            $this->methods['get_methods'] = Array($this, 'get_methods');
+            $this->methods['get_phpdoc'] = Array($this, 'get_phpdoc');
+
+            if(!empty($methods)){
+                    $this->serve_methods($methods);
+            }
 	}
 	
 	/**
@@ -271,7 +283,7 @@ class sb_JSON_RPC2_Server{
 		} else {
 			$response->id = $request->id;
 		}
-	
+
 		if($this->logger instanceof sb_Logger){
 			$this->logger->add_log_types(Array('sb_json_rpc2_server'));
 			$this->logger->sb_json_rpc2_server("--> ". $input);
@@ -291,7 +303,7 @@ class sb_JSON_RPC2_Server{
 			} else if(is_array($request->params)){
 				$answer = call_user_func_array($this->methods[$request->method], $request->params);
 			}
-			
+
 			//if they return an error from the method call, return that
 			if($answer instanceof sb_JSON_RPC2_Error){
 				$response->error = $answer;
@@ -329,46 +341,50 @@ class sb_JSON_RPC2_Server{
 	 */
 	public function handle($json_request = null){
 	
-		$response = $this->parse_request($json_request);
-		
-		$message = 'OK';
-		$status = 200;
-		//headers from spec here http://json-rpc.googlegroups.com/web/json-rpc-over-http.html
-		if(isset($response->error) && $response->error instanceof sb_JSON_RPC2_Error){
-			$code = $response->error->code;
-			
-			if(
-			in_array($code, Array(-32700, -3260, -32603)) 
-			|| ($code <= -32000 && $code >= -32099)){
-				$status = 500;
-				$message = 'Internal Server Error';
-			} else if($code == -32600){
-				$message = 'Bad Request';
-				$status = 400;
-			} else if ($code == -32601){
-				$message = 'Not Found';
-				$status = 404;
-			}
-			
-		}
-		
-		if(!$this->suppress_http_status){
-			header("Content-Type: application/json-rpc");
-			header("HTTP/1.1 ".$status." ".$message);
-		}
-		
-		$json_response =  json_encode($response);
-		//FIX THIS
-		if(!empty($this->encryption_key)){
-			
-			$json_response = $this->encryptor->encrypt($json_response);
-		}
-	
-		if($this->gz_encode_level !== false){
-			$json_response = gzencode($json_response, $this->gz_encode_level);
-		}
-		
-		return $json_response;
+            $response = $this->parse_request($json_request);
+
+            $message = 'OK';
+            $status = 200;
+            //headers from spec here http://json-rpc.googlegroups.com/web/json-rpc-over-http.html
+            if(isset($response->error) && $response->error instanceof sb_JSON_RPC2_Error){
+                    $code = $response->error->code;
+
+                    if(
+                    in_array($code, Array(-32700, -3260, -32603))
+                    || ($code <= -32000 && $code >= -32099)){
+                            $status = 500;
+                            $message = 'Internal Server Error';
+                    } else if($code == -32600){
+                            $message = 'Bad Request';
+                            $status = 400;
+                    } else if ($code == -32601){
+                            $message = 'Not Found';
+                            $status = 404;
+                    }
+
+            }
+
+            if(!$this->suppress_http_status){
+                    header("Content-Type: application/json-rpc");
+                    header("HTTP/1.1 ".$status." ".$message);
+            }
+
+            //serialize PHP to preserve format of hashes if client requests it in headers
+            if($this->php_serialize_response){
+                $json_response = serialize($response);
+            } else {
+                $json_response =  json_encode($response);
+            }
+
+            if(!empty($this->encryption_key)){
+                    $json_response = $this->encryptor->encrypt($json_response);
+            }
+
+            if($this->gz_encode_level !== false){
+                    $json_response = gzencode($json_response, $this->gz_encode_level);
+            }
+
+            return $json_response;
 	
 	}
 
@@ -378,38 +394,32 @@ class sb_JSON_RPC2_Server{
 	 */
 	protected function get_methods($html = true){
 		
-		$arr = Array();
-	
-		foreach($this->methods as $name=>$func){
-			
-			if(is_array($func)){ //class
-				
-				$reflect = new ReflectionMethod($func[0], $func[1]);
-			
-			} else if(is_string($func)){ //function
-				$reflect = new ReflectionFunction($name);
-			}
-			
-		
-			$params = $reflect->getParameters();
-			$ps = '';
-			foreach($params as $param){
-				$ps[] = '$'.$param->getName();
-			}
-		
-			$key = $name.'('.implode(', ', $ps).')';
-			
-			$arr[$key] = $reflect->getDocComment();
-			
-		}
-		
-		if($html == false){
-			return $arr;
-		} else {
-			return $this->methods_to_html($arr);
-		}
+            $arr = Array();
+
+            foreach($this->methods as $name=>$func){
+
+                $reflect = $this->get_reflection($name);
+
+                if($reflect){
+                    $params = $reflect->getParameters();
+                    $ps = '';
+                    foreach($params as $param){
+                            $ps[] = '$'.$param->getName();
+                    }
+
+                    $key = $name.'('.implode(', ', $ps).')';
+
+                    $arr[$key] = $reflect->getDocComment();
+                }
+            }
+
+            if($html == false){
+                    return $arr;
+            } else {
+                    return $this->methods_to_html($arr);
+            }
 	}
-	
+        
 	/**
 	 * Coverts the methods served into an HTML string
 	 * @param $arr
@@ -417,15 +427,55 @@ class sb_JSON_RPC2_Server{
 	 */
 	protected function methods_to_html($methods){
 		
-		$html = '<style type="text/css">li{background-color:#c8c8d4;}h1{font-size:1.0em;padding:3px 0 3px 10px;color:white;background-color:#8181bd;}pre{color:#1d1d4d;}</style><ol>';
-		foreach($methods as $method=>$comments){
-			$html .= '<li><h1>$server->'.$method.';</h1><pre>'."\t".$comments.'</pre></li>';
-		}
-		
-		$html .= '</ol>';
-		
-		return $html;
+            $html = '<style type="text/css">li{background-color:#c8c8d4;}h1{font-size:1.0em;padding:3px 0 3px 10px;color:white;background-color:#8181bd;}pre{color:#1d1d4d;}</style><ol>';
+            foreach($methods as $method=>$comments){
+                    $html .= '<li><h1>$server->'.$method.';</h1><pre>'."\t".$comments.'</pre></li>';
+            }
+
+            $html .= '</ol>';
+
+            return $html;
 	}
+
+        /**
+         * Get reflection from php doc of method
+         * @param string $name The name of the method to grab the docs for
+         * @return ReflectionMethod/ReflectionFunction depending which type of object was requested by
+         */
+        protected function get_reflection($name){
+
+             if(isset($this->methods[$name])){
+                $func = $this->methods[$name];
+            } else {
+                return false;
+            }
+
+            if(is_array($func)){ //class
+
+                    $reflect = new ReflectionMethod($func[0], $func[1]);
+
+            } else if(is_string($func)){ //function
+                    $reflect = new ReflectionFunction($name);
+            }
+
+            return $reflect;
+        }
+        
+	protected function get_phpdoc($name){
+            
+            $reflect = $this->get_reflection($name);
+            
+            $response = new stdClass();
+            $response->phpdoc = $reflect->getDocComment();
+
+            if(preg_match("~@return (.*?) (.*?)\*/$~s", $response->phpdoc, $match)){
+                $response->return_type = $match[1];
+            } else {
+                $response->return_type = 'n/a';
+            }
+
+            return $response;
+        }
 	
 	
 }
