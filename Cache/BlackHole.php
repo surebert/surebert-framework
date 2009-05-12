@@ -1,16 +1,17 @@
 <?php
 /**
- * Does not actually cache any data, but uses the Cache interface so that
+ * Does not actually cache any data, but uses the Cache interface so that you can
+ * removed caching without changing application code
  * @author visco
- * @version 0.4 01/23/2009 01/28/2009
+ * @version 0.5 01-23-2009 05-12-2009
  * 
 <code>
-$cache = new sb_Cache_NoCache();
+$cache = new sb_Cache_BlackHole();
 $cache->store('/my/key', 'something');
 echo $cache->fetch('/my/key');
 </code>
  */
-class sb_Cache_NoCache implements sb_Cache_Base{
+class sb_Cache_BlackHole implements sb_Cache_Base{
 	
 	/**
 	 * Store the cache data in memcache
