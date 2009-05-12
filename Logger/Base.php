@@ -3,7 +3,7 @@
  * Abstract class base for logging
  *
  * @Author: Paul Visco
- * @Version: 1.32 4/17/2008 02/12/2009
+ * @Version: 1.35 4/17/2008 05/12/2009
  *
  */
 abstract class sb_Logger_Base{
@@ -40,21 +40,14 @@ abstract class sb_Logger_Base{
 	protected $_agent_str = 'n/a';
 	
 	/**
-	 * Sets the agent string representing the agent/user that initiated the action
-	 *
-	 * @param string $str It is a string instead of an object as it may require specific formating for your needs e.g. "\t".App::$user->uname."\t".App::$user->roswell_id."\t".App::$user->ip
-	 */
-	public function set_agent_string($str){
-		$this->_agent_str = $str;
-	}
-	
-	/**
 	* Creates an sb_Logger instance
 	* @param $log_types Array Sets the type of logging accepting, each one can be called as a method
+	* @param $agent String The agent string
 	*/
-	public function __construct($log_types = Array()){
+	public function __construct($log_types = Array(), $agent = ''){
 	
 		$this->add_log_types($log_types);
+		$this->_agent_str = !empty($agent) ? $agent : Gateway::$remote_addr;
 	}
 
 	/**
@@ -73,11 +66,50 @@ abstract class sb_Logger_Base{
 	}
 	
 	/**
+	 * Sets the agent string representing the agent/user that initiated the action
+	 *
+	 * @param string $str It is a string instead of an object as it may require specific formating for your needs e.g. "\t".App::$user->uname."\t".App::$user->roswell_id."\t".App::$user->ip
+	 */
+	public function set_agent_string($str){
+		$this->_agent_str = $str;
+	}
+	
+	/**
 	 * When any accepted logging method is called that is not defined it runs this
 	 * @param $log_type The type of log to produce
 	 * @param $arguments The arguments passed to the missing method, of which [0] is the message or object
 	 * @return boolean If the log is written or not
 	 */
-	abstract public function __call($log_type, $arguments);
+	public function __call($log_type, $arguments){
+
+		//if logging is not enabled, just return true
+		if(!$this->enabled){
+			return true;
+		}
+
+		if(array_key_exists($log_type, $this->_enabled_logs)){
+			$data = $arguments[0];
+
+			if(!is_string($data)){
+				if($this->_conversion_method == 'print_r'){
+					$data = print_r($data, 1);
+				} else {
+					$data = json_encode($data);
+				}
+			}
+
+			return $this->__write($data, $log_type);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Writes data to whatever output method is defined
+	 * @param string $data The data to be written
+	 * @param string $log_type The log_type being written to
+	 * @return boolean If the data was written or not
+	 */
+	abstract protected function __write($data, $log_type);
 }
 ?>
