@@ -3,7 +3,7 @@
  * Stores cached data in the file system
  * 
  * @author visco
- * @version 0.4 01/23/2009 01/28/2009
+ * @version 1.0 01/23/2009 05/14/2009
  * 
 <code>
 $mycache = new sb_Cache_FileSystem();

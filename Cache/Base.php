@@ -2,7 +2,7 @@
 /**
  * Used to cache data in various formats
  * @author visco
- * @version 0.32 01/24/2009 02/12/2009
+ * @version 1.0 01/24/2009 05/14/2009
  *
  */
 interface sb_Cache_Base{
@@ -19,7 +19,7 @@ interface sb_Cache_Base{
 	/**
 	 * Fetches the cache based on the key
 	 * @param $key
-	 * @return false if not found otherwise the data stored in the cache
+	 * @return mixed false if not found otherwise the data stored in the cache
 	 */
 	public function fetch($key);
 	

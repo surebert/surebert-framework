@@ -2,7 +2,7 @@
 /**
  * Stores data in Memcache, requires memcache server be installed and running on the host and port specified
  * @author visco
- * @version 0.4 01/23/2009 01/28/2009
+ * @version 1.0 01/23/2009 05/14/2009
  * 
 <code>
 App::$cache = new sb_Cache_Memcache('localhost', 11211, 'myapp');

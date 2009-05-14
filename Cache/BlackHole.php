@@ -3,7 +3,7 @@
  * Does not actually cache any data, but uses the Cache interface so that you can
  * removed caching without changing application code
  * @author visco
- * @version 0.5 01-23-2009 05-12-2009
+ * @version 1.0 01-23-2009 05-12-2009
  * 
 <code>
 $cache = new sb_Cache_BlackHole();

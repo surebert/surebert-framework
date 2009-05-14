@@ -3,7 +3,7 @@
  * 
  * Used to store cache data in a mysql table
  * @author visco
- * @version 0.4 01/23/2009 01/28/2009
+ * @version 1.0 01/23/2009 05/14/2009
  *
  *
 <code>
