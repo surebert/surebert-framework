@@ -18,7 +18,7 @@ class sb_View_FLVStream extends sb_View{
 	 *
 	 * @var string
 	 */
-	protected $base_dir = '/private/resources/';
+	public $base_dir = '/private/resources/';
 	
 	/**
 	 * Used to stream flv files to a flash video player, can be used to allow forwarding to parts of the video not yet loaded.  Adapted from code at www.flashguru.com
@@ -27,7 +27,7 @@ class sb_View_FLVStream extends sb_View{
 	 * @param string $video The path to the video
 	 * @param integer $position  The position in the video to play from
 	 */
-	public function template_not_found($video){
+	protected function template_not_found($video){
 		
 		$seekat = $this->args[0];
 		$filename = basename($video);

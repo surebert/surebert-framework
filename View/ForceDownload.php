@@ -16,7 +16,7 @@ class sb_View_ForceDownload extends sb_View{
 	 * 
 	 */
 	
-	protected static function force_download($file){
+	public static function force_download($file){
 		header("HTTP/1.1 200 OK");
 		header("Status: 200 OK");
 		header("Pragma: private");

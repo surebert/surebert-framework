@@ -20,39 +20,39 @@ class sb_View_XHTML extends sb_View{
 	 *
 	 * @var string
 	 */
-	protected $doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+	public $doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 	
 	/**
 	 * An example property - it is used to create the HTML header, any view that extends this one
 	 * can use this property or override it
 	 * @var string
 	 */
-	protected $title = 'Untitled';
+	public $title = 'Untitled';
 
 	/**
 	 * The meta tags for the HTML head - author, description, keywords
 	 * You can add additional properties on the fly, they will be rendered in the $this->html_head() method
 	 * @var sb_HTMLHeadMeta
 	 */
-	protected $meta;
+	public $meta;
 
 	/**
 	 * The CSS style tags for the page
 	 * @var array
 	 */
-	protected $styles = Array('app.css');
+	public $styles = Array('app.css');
 
 	/**
 	 * Additional <head> markup that you want appended before </head>
 	 * @var string
 	 */
-	protected $custom_head_markup = '';
+	public $custom_head_markup = '';
 
 	/**
 	 * Creates a javascript include tag
 	 * @param $scripts array/string The file names or an array of file names to include
 	 */
-	protected function include_javascript($scripts){
+	public function include_javascript($scripts){
 
 		$src = (!is_array($scripts)) ? Array($scripts) : $scripts;
 		$html = '';
@@ -70,7 +70,7 @@ class sb_View_XHTML extends sb_View{
 	 * Renders the HTML head
 	 * @param $custom_head_markup string A string of data to include in the HTML head, right before </head>
 	 */
-	protected function html_head($custom_head_markup=''){
+	public function html_head($custom_head_markup=''){
 
 		if(!empty($custom_head_markup)){$this->custom_head_markup = $custom_head_markup;}
 
