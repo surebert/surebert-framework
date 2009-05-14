@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.75 04/24/04 - 04/07/09
+@Version: 4.76 04/24/04 - 05/14/09
 @Package: surebert 
 */
 
@@ -1865,7 +1865,7 @@ String.prototype.hex2rgb = function(asArray){
 
 /**
 @Name: String.prototype.toCamel
-@Description: Converts all dashes to camelStyle
+@Description: Converts all dashes, underscores or whitespace to camelStyle
 @Return: String The original string with dashes converted to camel - useful when switching between CSS and javascript style properties
 @Example:
 var str = 'background-color';
@@ -1874,7 +1874,7 @@ var newString = str.toCamel();
 //newString = 'backgroundColor'
 */
 String.prototype.toCamel = function(){
-	return String(this).replace(/[_-]\D/gi, function(m){
+	return String(this).replace(/[-_\s]\D/gi, function(m){
 		return m.charAt(m.length - 1).toUpperCase();
 	});
 };
