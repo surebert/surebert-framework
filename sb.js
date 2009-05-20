@@ -2095,7 +2095,7 @@ var myDiv = new sb.element({
 		backgroundColor : 'blue',
 		fontSize : '18px'
 	},
-	addAttributes : function{
+	addAttributes : {
 		friend : 'xxx'
 	}
 });
