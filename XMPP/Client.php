@@ -231,7 +231,6 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
                 $this->on_presence(new sb_XMPP_Presence('<packet>'.$xml.'</packet>'));
             }
 
-            time::display();
             if($x % 10 == 0){
 
                 $this->send_presence($this->status);
