@@ -308,10 +308,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
         return parent::write($data);
     }
-
-   
-
-   
+	
     protected function on_message(sb_XMPP_Message $message){}
 
     /**
@@ -336,7 +333,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
      */
     protected function log($message){
 
-        echo "\n\n" . $message;
+        file_put_contents("php://stdout", "\n\n" . $message);
     }
 
     /**
