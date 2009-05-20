@@ -2095,7 +2095,7 @@ var myDiv = new sb.element({
 		backgroundColor : 'blue',
 		fontSize : '18px'
 	},
-	addAttributes : {
+	htmlAttributes : {
 		friend : 'xxx'
 	}
 });
@@ -2131,9 +2131,13 @@ sb.element = function(o){
 		o = sb.objects.copy(o);
 	}
 
-	if(typeof o.addAttributes !='undefined'){
-		el.styles(o.addAttributes);
-		delete o.addAttributes;
+	if(typeof o.htmlAttributes !='undefined'){
+		for(var prop in o.htmlAttributes){
+			if(o.htmlAttributes.hasOwnProperty(prop)){
+				el.setAttribute(prop, o.htmlAttributes[prop]);
+			}
+		}
+		delete o.htmlAttributes;
 	}
 
 	if(typeof o.styles !='undefined'){
