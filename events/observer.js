@@ -22,7 +22,7 @@ var eventListener = {
  
 sb.events.observer.observe(eventListener);
 //then you can remove with
-// sb.events.observer.myObserver(eventListener);
+// sb.events.observer.unobserve(eventListener);
 */
 
 sb.events.observer = {
