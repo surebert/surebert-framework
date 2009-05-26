@@ -5,10 +5,8 @@
 @Return: sb.element The parent node of the nodeName type specified or false
 
 @Example:
-//get all ancestors
-mySbElement.getAncestors();
-//get all ancestors within (up to) myOtherDiv
-mySbElement.getAncestors(myOtherSbElement);
+//get the containing div
+mySbElement.getContaining('div');
 
 */
 Element.prototype.getContaining = function(nodeName){
