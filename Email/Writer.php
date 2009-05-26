@@ -129,15 +129,15 @@ class sb_Email_Writer{
 		foreach($this->emails as &$email){
 			
 				$this->add_security_info($email);
-				
-				$this->construct_multipart_message($email);
-				
+
 				//all email goes to DEBUG_EMAIL if specified
 				if(defined("DEBUG_EMAIL")){
-					$email->body = "Should be sent to: '.$email->to.' when not in debug mode!\n\n".$email->body;
+					$email->body = "DEBUG MODE: Should be sent to: ".$email->to." when not in debug mode!\n\n".$email->body;
 					$email->to = DEBUG_EMAIL;
 				}
 
+				$this->construct_multipart_message($email);
+				
 				if(mail($email->to, $email->subject, $email->body, $email->headers)){
 					
 					$email->sent = 1;
