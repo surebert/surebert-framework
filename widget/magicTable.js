@@ -637,7 +637,10 @@ sb.widget.magicTable.prototype = {
 			mousemove : function(e){
 			
 				var target = e.target;
-				
+				if(typeof this.onMouseMove == 'function'){
+					this.onMouseMove(target);
+				}
+
 				if(target.nodeName == 'TD'){
 					if(self.prevover != target){
 						if(self.prevover){
@@ -827,3 +830,4 @@ sb.widget.magicTable.compare = {
 		return (a[2] - b[2]) || (a[0] - b[0]) || (a[1] - b[1]);
 	}
 };
+
