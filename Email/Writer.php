@@ -2,10 +2,12 @@
 
 /**
  * Used to send plain text emails, HTML emails, or plain text and html emails with attachments both inline and not REQUIRES sb_Email.php and sb_Files (<-unless you specify the mime types on attachments manually)
- * 
+ *
+ * If DEBUG_EMAIL constant is defined, then all email goes to that address.
+ *
  * @Author Paul Visco
  * @package: sb_Email
- * @Version 2.21 06/08/03 03/30/09
+ * @Version 2.24 06/08/03 05/26/09
  *
  * @example 
  * <code>
@@ -130,6 +132,12 @@ class sb_Email_Writer{
 				
 				$this->construct_multipart_message($email);
 				
+				//all email goes to DEBUG_EMAIL if specified
+				if(defined("DEBUG_EMAIL")){
+					$email->body = "Should be sent to: '.$email->to.' when not in debug mode!\n\n".$email->body;
+					$email->to = DEBUG_EMAIL;
+				}
+
 				if(mail($email->to, $email->subject, $email->body, $email->headers)){
 					
 					$email->sent = 1;
