@@ -225,13 +225,18 @@ class sb_JSON_RPC2_Client {
 			$this->logger->sb_json_rpc2_client("<-- ".$body);
 		}
 
+		//check if response body is serialized json_response object and just unserialize and return if it is
 		if($this->php_serialize_response && !empty($body)) {
-			$response = @unserialize($body);
-
-		} else {
-			$response = new sb_JSON_RPC2_Response($body);
+			
+			$serialized = @unserialize($body);
+			if($serialized !== false){
+				$response = $serialized;
+			}
 		}
 
+		if(!isset($response)){
+			$response = new sb_JSON_RPC2_Response($body);
+		}
 
 		return $response;
 	}
@@ -253,10 +258,14 @@ class sb_JSON_RPC2_Client {
 
 		$response = $this->dispatch($request);
 
-		if(isset($response->error)) {
-			throw(new Exception($response->error->code.': '.$response->error->message.".\nData Received: ".(isset($response->error->data) ? $response->error->data : 'NONE')));
+		if($response instanceof sb_JSON_RPC2_Response){
+			if(isset($response->error)) {
+				throw(new Exception($response->error->code.': '.$response->error->message.".\nData Received: ".(isset($response->error->data) ? $response->error->data : 'NONE')));
+			} else {
+				return $response->result;
+			}
 		} else {
-			return $response->result;
+			return $response;
 		}
 	}
 
