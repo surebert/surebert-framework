@@ -76,6 +76,7 @@ class sb_Files{
 				
 				case 'html':
 				case 'txt':
+				case 'css':
 					$m = 'text/'.$ext;
 					break;
 				
