@@ -15,7 +15,7 @@ var fade = $('#myDiv').fade({percent : 20, duration : 24, onEnd : function(){
 
 //fades back to 80% after two seconds
 window.setTimeout(function(){
-	fade({percent : 20, duration : 24);
+	fade({percent : 20, duration : 24});
 }, 2000);
 */
 Element.prototype.fade = function(o){
