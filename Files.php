@@ -73,10 +73,10 @@ class sb_Files{
 					$m = 'application/'.$ext;
 					break;
 					
-				
 				case 'html':
 				case 'txt':
 				case 'css':
+                case 'csv':
 					$m = 'text/'.$ext;
 					break;
 				
