@@ -97,7 +97,7 @@ class sb_Files{
 					break;
 
                 case 'zip':
-                    $m = 'application/zip';
+                    $m = 'application/x-zip-compressed';
                     break;
 					
 				default:
