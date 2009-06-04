@@ -95,6 +95,10 @@ class sb_Files{
 				case 'wav':
 					$m = 'audio/x-wav';
 					break;
+
+                case 'zip':
+                    $m = 'application/zip';
+                    break;
 					
 				default:
 					$m = false;
