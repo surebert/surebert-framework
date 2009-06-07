@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.76 04/24/04 - 05/14/09
+@Version: 4.77 04/24/04 - 06/06/09
 @Package: surebert 
 */
 
@@ -1372,8 +1372,6 @@ sb.ajax = function (params){
 
 	sb.objects.infuse(params, this);
 
-        this.format = this.format || 'text';
-
 	if(sb.typeOf(params.data) == 'object'){
 		this.data = sb.objects.serialize(params.data);
 	}
@@ -1463,7 +1461,8 @@ sb.ajax.prototype = {
 			return;
 		}
 
-		if(this.format === ''){
+		if(!this.format){
+
 			if(this.contentType){
 				if(this.contentType.match('application/json')){
 					this.format = 'json';
@@ -1513,6 +1512,7 @@ sb.ajax.prototype = {
 			case 'json':
 
 				js = 'this.response='+this.ajax.responseText;
+
 				break;
 
 			case 'boolean':
