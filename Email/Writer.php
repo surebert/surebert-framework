@@ -7,7 +7,7 @@
  *
  * @Author Paul Visco
  * @package: sb_Email
- * @Version 2.24 06/08/03 05/26/09
+ * @Version 2.241 06/08/03 06/16/09
  *
  * @example 
  * <code>
@@ -309,10 +309,21 @@ class sb_Email_Writer{
 		 
 		//add all attachments for this email
 		foreach($email->attachments as &$attachment){
-			
+
+            //if only filepath is set, grab name and contents from there
+            if(isset($attachment->filepath)){
+                if(empty($attachment->name)){
+                    $attachment->name = basename($attachment->filepath);
+                }
+
+                if(empty($attachment->contents)){
+                    $attachment->contents = file_get_contents($attachment->filepath);
+                }
+            }
+
 			$attachment->extension = strtolower(end(explode(".", $attachment->name)));
 			
-			//try and gues the mime type unless it is set
+			//try and guess the mime type unless it is set
 			if(empty($attachment->mime_type)){
 				$attachment->mime_type = sb_Files::extension_to_mime($attachment->extension);
 			}
