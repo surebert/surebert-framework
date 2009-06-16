@@ -151,9 +151,9 @@ class sb_Email_Writer{
 		}
 		
 		if($sent_emails == count($this->emails)){
-			return 1;
+			return true;
 		} else {
-			return 0;
+			return false;
 		}
 	}
 	
@@ -180,7 +180,7 @@ class sb_Email_Writer{
 			}
 			
 			$this->emails[] = $email;
-			return 1;
+			return true;
 		}
 		
 	}
@@ -372,11 +372,11 @@ class sb_Email_Writer{
 	private function check_headers_for_injection(sb_Email $email){
 		//try and catch injection attempts and alert admin user
 		if (preg_match("~\r|:~i",$email->to) || preg_match("~\r|:~i",$email->from)){
-			return 1;
+			return true;
 			//do something here to alert admin
 		}
 		
-		return 0;
+		return false;
 	}
 }
 
