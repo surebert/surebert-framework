@@ -18,7 +18,7 @@ hovering.hover();
 hovering.mouseout();
 
 //stop observing hover
-hovering.observe();
+hovering.unobserve();
 
 //start observing hover again  - takes optional interval argument
 hovering.overserve();
