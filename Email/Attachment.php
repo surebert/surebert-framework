@@ -123,7 +123,7 @@ class sb_Email_Attachment{
      * @param string $gnupg_path Optional The path to your .gnupg directory, must be
      * readible by apache, by default served out of /private/resources e.g. ROOT.'/private/resources/.gnupg
      */
-    public function pgp_enccrypt($pgp_encrypt_key, $gnupg_path='') {
+    public function pgp_encrypt($pgp_encrypt_key, $gnupg_path='') {
 
         if(empty($gnupg_path)){
             $gnupg_path = ROOT.'/private/resources/.gnupg';
