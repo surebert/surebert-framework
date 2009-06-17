@@ -2,9 +2,9 @@
 /**
  * Describes an email attachment, when found they are attached to sb_Email objects
  *
- * @author: Paul Visco
+ * @author: Paul Visco and James Buczkowski
  * @package: email
- * @version 2.1 07/09/2007 06/16/09
+ * @version 2.2 07/09/2007 06/17/09
  *
  */
 class sb_Email_Attachment{
@@ -114,6 +114,32 @@ class sb_Email_Attachment{
         //add mime type for zip files, sb_Files should handle this after 1.41
         $this->mime_type ='application/x-zip-compressed';
 
+    }
+
+    /**
+     * Encrypts the extension with PGP using gpg extension for php http://pecl.php.net/package/gnupg
+     * @author James Buczkowski
+     * @param string $pgp_encrypt_key The key to use to encrypt
+     * @param string $gnupg_path Optional The path to your .gnupg directory, must be
+     * readible by apache, by default served out of /private/resources e.g. ROOT.'/private/resources/.gnupg
+     */
+    public function pgp_enccrypt($pgp_encrypt_key, $gnupg_path='') {
+
+        if(empty($gnupg_path)){
+            $gnupg_path = ROOT.'/private/resources/.gnupg';
+        }
+
+        putenv("GNUPGHOME=".$gnupg_path);
+        
+        $gpg = new gnupg();
+        // throw exception if error occurs
+        $gpg->seterrormode(gnupg::ERROR_EXCEPTION);
+
+        $gpg->addencryptkey($pgp_encrypt_key);
+
+        $this->contents = $gpg->encrypt($this->contents);
+        $this->mime_type = 'application/pgp';
+        $this->name .= '.pgp';
     }
 
 
