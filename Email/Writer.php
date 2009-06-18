@@ -7,57 +7,45 @@
  *
  * @Author Paul Visco
  * @package: sb_Email
- * @Version 2.241 06/08/03 06/16/09
+ * @Version 2.25 06/08/03 06/16/09
  *
  * @example 
  * <code>
  *
-//create an email to send
-$myMail = new sb_Email();
-
-//set the from address, you can use commas to delimit multiple recipients
-$myMail->to = 'test@gmail.com,test@roswellpark.org';
-$myMail->from = 'test@test.org';
-$myMail->subject ='Testing new sbEmailWriter';
+//create an email to send $to, $subject, $message, $from
+$myMail = new sb_Email('paul.visco@roswellpark.org', 'Testing Email', 'Hello World', 'paul.visco@roswellpark.org');
 
 //you can set the cc array to add addresses which are cced
-$myMail->cc = Array("paulsidekick@gmail.com");
-
-//the plain text body, this is all you need if you do not want HTML email
-$myMail->body = 'testing';
+//$myMail->cc = Array("paulsidekick@gmail.com");
 
 //you can reference inline attachments in the HTML by their cid:{THEIR NAME} e.g.
 //$myMail->body_HTML = '<h1>Hello there</h1><img src="cid:MyPicture.jpg" />';
 
-$myMail->body_HTML = '<h1>Hello there</h1>';
+//$myMail->body_HTML = '<h1>Hello there</h1>';
 
 //create an optional attachment
-$myAttachment = new sb_EmailAttachment();
+//$myAttachment = new sb_Email_Attachment(ROOT.'/private/config/App.php', 'application/php');
+
+//or zipping the attachment
+//$myAttachment->zip();
+
+//PGP encrypt the attachment
+//$myAttachment->pgp_encrypt('B902E698D01A6C99243D67A827C86F40B3FE5700');
+
+//add the attachment to the email object, you could add more attachments as necessary
+$myMail->add_attachment($myAttachment);
+
+var_dump($myMail->send());
+
+//you can also manually add an attachment from a non file
+//create an optional attachment
+$myAttachment = new sb_Email_Attachment();
 
 //set up the properties for the attachment
 $myAttachment->name = 'MyPicture.jpg';
 
 //this is the content, in this case I am ready the blob data from a saved image file but you could easily replace this with blob data from a database.  The mime type will be added based on the extension using sb_Files::extension_to_mime.  For bizarre mime-types that are not in sb_Files::extension_to_mime you can override this by setting the mime-type manually $myAttachment->mime_type ='bizarre/weird';
-$myAttachment->contents = file_get_contents($myAttachment->filepath);
-
-//add the attachment to the email object, you could add more attachments as necessary
-$myMail->add_attachment($myAttachment);
-
-//instanciate the email writer
-$myEmailWriter = new sb_Email_Writer();
-
-//when set, it logs all email that was sent
-$myEmailWriter->log_file = ROOT.'/private/logs/sb_Email_Writer.log';
-
-//add the email above to the outbox
-$myEmailWriter->add_email_to_outbox($myMail);
-
-//then send, you could add more emails before sending
-if($myEmailWriter->send()){
-	//they were sent
-} else {
-	//there was an error
-}
+$myAttachment->contents = $filedata;
 
  * </code>
  */
@@ -319,6 +307,11 @@ class sb_Email_Writer{
                 if(empty($attachment->contents)){
                     $attachment->contents = file_get_contents($attachment->filepath);
                 }
+
+                if(empty($attachment->mime_type)){
+                    $attachment->mime_type = sb_Files::file_to_mime($attachment->filepath);
+                }
+
             }
 
 			$attachment->extension = strtolower(end(explode(".", $attachment->name)));
