@@ -79,6 +79,26 @@ class sb_Email_Attachment{
 	public $mime_type;
 
     /**
+     *
+     * @param String $filepath Optional The path to the file to attach
+     * @param String $mime_type Optional The mime type of the file
+     */
+    public function __construct($filepath=null, $mime_type){
+
+        if($mime_type){
+            $this->mime_type = $mime_type;
+        }
+
+        if($filepath){
+            $this->filepath = $filepath;
+            $this->contents = file_get_contents($filepath);
+            $this->name = basename($filepath);
+            sb_Files::file_to_mime($this->filepath);
+        }
+
+    }
+
+    /**
      * Zips the attachment before sending and sets the proper mime type
      */
     public function zip(){
@@ -118,7 +138,7 @@ class sb_Email_Attachment{
 
     /**
      * Encrypts the extension with PGP using gpg extension for php http://pecl.php.net/package/gnupg
-     * @author James Buczkowski
+     * @author James Buczkowski, Paul Visco
      * @param string $pgp_encrypt_key The key to use to encrypt
      * @param string $gnupg_path Optional The path to your .gnupg directory, must be
      * readible by apache, by default served out of /private/resources e.g. ROOT.'/private/resources/.gnupg
@@ -129,6 +149,10 @@ class sb_Email_Attachment{
             $gnupg_path = ROOT.'/private/resources/.gnupg';
         }
 
+        if(!is_dir($gnupg_path)){
+            throw(new Exception('In order to use pgp engryption you must either pass a valid .gnupg path as the second argument of '.__METHOD__.' or have the .gnupg directory reside in the /private/resources'));
+        }
+        
         putenv("GNUPGHOME=".$gnupg_path);
         
         $gpg = new gnupg();
