@@ -3,8 +3,7 @@
  * Various functions for working with files
  * @author Paul Visco
  * @package files
- * @version 1.2 11/19/07
- * 
+ * @version 1.25 11-19-07 06-16-09
  *
  */
 class sb_Files{
