@@ -5,7 +5,22 @@
  * @author: Paul Visco and James Buczkowski
  * @package: email
  * @version 2.2 07/09/2007 06/17/09
- *
+<code>
+$attachment = new sb_Email_Attachment($filepath, $mime_type);
+//an instance of sb_Email
+$email->add_attachment($attachment);
+
+
+//OR from string/blob data
+$attachment = new sb_Email_Attachment();
+$attachment->contents = $data_from_db;
+$attachment->mime_type = "image/jpeg";
+$attachment->name = "picture.jpg";
+$email->add_attachment($attachment);
+
+//if you wish to zip
+$attachment->zip();
+</code>
  */
 class sb_Email_Attachment{
 
@@ -83,7 +98,7 @@ class sb_Email_Attachment{
      * @param String $filepath Optional The path to the file to attach
      * @param String $mime_type Optional The mime type of the file
      */
-    public function __construct($filepath=null, $mime_type){
+    public function __construct($filepath=null, $mime_type=null){
 
         if($mime_type){
             $this->mime_type = $mime_type;
@@ -113,10 +128,13 @@ class sb_Email_Attachment{
 
         $zip = new ZipArchive();
         $zipfile_path = ROOT."/private/cache/compression/".md5(microtime(true)).'_'.$this->name.".zip";
+        $zip_dir = dirname($zipfile_path);
+        if(!is_dir($zip_dir) && !@mkdir($zip_dir, 0755, true)){
+            throw(new Exception("Cannot create /private/cache/compression directory\n"));
+        }
 
-        @mkdir(dirname($zipfile_path), 0755, true);
         if ($zip->open($zipfile_path, ZIPARCHIVE::CREATE)!==TRUE) {
-            throw(new Exception("cannot open <$zipfile_path>\n"));
+            throw(new Exception("Cannot open <$zipfile_path>\n"));
         }
 
         $zip->addFromString($this->name, file_get_contents($this->filepath));

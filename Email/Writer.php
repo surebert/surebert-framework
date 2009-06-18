@@ -68,10 +68,13 @@ class sb_Email_Writer{
 		if($logger instanceOf sb_Logger){
 	
 			$this->logger->add_log_type(Array('sb_Email_Writer_Sent', 'sb_Email_Writer_Error'));
-		} else {
-			$this->logger = new sb_Logger_FileSystem(Array('sb_Email_Writer_Sent',  'sb_Email_Writer_Error'));
-		}
-		
+		} else if(isset(App::$logger) && App::$logger instanceof sb_Logger_Base){
+            App::$logger->add_log_types(Array('sb_Email_Writer_Sent',  'sb_Email_Writer_Error'));
+            $this->logger = App::$logger;
+        } else {
+            $this->logger = new sb_Logger_FileSystem(Array('sb_Email_Writer_Sent',  'sb_Email_Writer_Error'));
+        }
+
 		$this->remote_addr = (!empty($remote_addr)) ? $remote_addr : Gateway::$remote_addr;
 		$this->http_host = (!empty($http_host)) ? $http_host : (isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : php_uname('n')) ;
 	}
