@@ -91,7 +91,7 @@ class sb_Files{
 				case 'mid':
 					$m = 'audio/x-midi';
 					break;
-				
+
 				case 'wav':
 					$m = 'audio/x-wav';
 					break;
@@ -107,6 +107,28 @@ class sb_Files{
 			
 			return $m;
 	}
+
+    /**
+     * Gets mime type from file from finfo ext
+     *
+     * @param string $file Path to file
+     * @return string The mime type from finfo
+     */
+    public static function file_to_mime($file){
+
+        if(class_exists('finfo')){
+            $finfo = @new finfo(FILEINFO_MIME, "/usr/share/misc/magic");
+
+            if($finfo){
+                /* get mime-type for a specific file */
+                $filename = ROOT.'/private/resources/.gnupg';
+                return $finfo->file($filename);
+            } else {
+                $ext = strtolower(end(explode(".", basename($file))));
+                return self::extension_to_mime($file);
+            }
+        }
+    }
 	
 	/**
 	 * Recursively deletes the files in a diretory
