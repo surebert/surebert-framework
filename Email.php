@@ -4,7 +4,7 @@
  * 
  * @author: Paul Visco
  * @package: email
- * @Version 2.2 10/15/07 - added cc and bcc support
+ * @Version 2.21 10-15-07 - 06-21-09 added cc and bcc support
  *
 <code>
  //create an email to send $to, $subject, $message, $from
@@ -194,7 +194,7 @@ class sb_Email{
 
         $this->to = $to;
         $this->subject = $subject;
-        $this->message = $message;
+        $this->body = $message;
         $this->from = $from;
 
     }
