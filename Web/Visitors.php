@@ -3,8 +3,8 @@
  * 
  * Keeps track of online users with an in memory mysql table
  * 
- * @author Paul Visco 02/17/2005
- * @version 2.2 02/22/08 08/14/08
+ * @author Paul Visco
+ * @version 2.22 10-02-2004 06-25-2009
  * 
  * Requires the following SQL change myDatabase database to a database you want to use, if you already have one, skip the create step and just use it.  replace @myDatabase, @myUser, @myPass and @myHost with the appropriate data for your project
  * 
@@ -18,6 +18,7 @@
 	ip INT,
 	tstamp INT(10) UNSIGNED,
 	uname VARCHAR(15),
+    dname VARCHAR(50),
 	agent VARCHAR(50),
 	agent_str VARCHAR(500),
 	PRIMARY KEY (id)
@@ -26,18 +27,8 @@
 GRANT ALL ON @myDatabase.* TO '@myUser'@'@myHost' IDENTIFIED BY '@myPass';
 
  * <code>
-	sb_Web_Visitors::$db=new sb_PDO("mysql:dbname=@myDatabase;host=@myHost", '@myUser', '@myPass');
-	
-	//turn off sql debugging to sql.log in the ../_cache folder
-	sb_Web_Visitors::$db->debug =0;
-	$visitor = new sb_Web_Visitor();
-	$visitor->ip = $_SERVER['REMOTE_ADDR'];
-	$visitor->tstamp=time();
-	$visitor->mobl=0;
-	$visitor->uname = 'joe';
-	$visitor->agent_str = $_SERVER['HTTP_USER_AGENT'];
-	
-	sb_Web_Visitors::log($visitor);
+	$visitor = new sb_Web_Visitor(App::$user->uname, App::$user->dname);
+    $visitor->log(App::$db);
 
 	$visitors = sb_Web_Visitors::get_visitor_data();
 	echo '<b title="'.implode(",", sb_Web_Visitors::list_users()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
@@ -57,7 +48,7 @@ class sb_Web_Visitors{
 	 *
 	 * @var boolean
 	 */
-	public static $debug = 1;
+	public static $debug = 0;
 
 	/**
 	 * List of known user agents that can be distilled from longer user agent names
@@ -145,7 +136,7 @@ class sb_Web_Visitors{
 			':uname' => $visitor->uname
 		));
 	
-		$sql = "INSERT INTO online_visitors (mobl, ip, tstamp, uname, agent, agent_str) VALUES (:mobl, INET_ATON(:ip), :tstamp, :uname, :agent, :agent_str)";
+		$sql = "INSERT INTO online_visitors (mobl, ip, tstamp, uname, dname, agent, agent_str) VALUES (:mobl, INET_ATON(:ip), :tstamp, :uname, :dname, :agent, :agent_str)";
 		
 		$insert = self::$db->prepare($sql);
 		
@@ -154,11 +145,12 @@ class sb_Web_Visitors{
 			':ip' => $visitor->ip,
 			':tstamp' => $visitor->tstamp,
 			':uname' => $visitor->uname,
+            ':dname' => $visitor->dname,
 			':agent' => $visitor->agent,
 			':agent_str' => $visitor->agent_str
 		);
 		
-		if(!$insert->execute($values) && self::$debug ==1){
+		if(!$insert->execute($values) && self::$debug == 1){
 			print_r($insert->errorInfo());
 		}
 	}
@@ -246,11 +238,12 @@ class sb_Web_Visitors{
 	public static function list_users(){
 		$expiration = (time()-self::$time_before_offline);
 			
-		$sql = "SELECT DISTINCT uname FROM online_visitors WHERE uname !='guest' AND uname !='' AND tstamp > :expiration ORDER BY uname";
+		$sql = "SELECT DISTINCT uname, dname FROM online_visitors WHERE uname !='guest' AND uname !='' AND tstamp > :expiration ORDER BY uname";
 		$result = self::$db->s2o($sql, Array(":expiration" => $expiration));
 		$users = Array();
 		foreach($result as $user){
-			array_push($users, $user->uname);
+            $name = !empty($user->dname) ? $user->dname : $user->uname;
+			array_push($users, $name);
 		}
 		
 		return $users;
@@ -271,6 +264,7 @@ class sb_Web_Visitors{
 	
 		$data = "\nuname\tip";
 		foreach($users as $user){
+
 			$data .= "\n".$user->uname."\t".$user->ip;
 		}
 		
@@ -293,8 +287,8 @@ class sb_Web_Visitors{
 /**
  * Represents all online users
  * 
- * @author Paul Visco 10/02/2004
- * @version 2.1 02/22/2008
+ * @author Paul Visco
+ * @version 2.2 10-02-2004 06-25-2009
  * 
  *
  */
@@ -309,19 +303,82 @@ class sb_Web_VisitorCount{
 /**
  * Describes an online visitor
  * 
- * @author Paul Visco 10/02/2004
- * @version 2.1 02/22/2008
+ * @author Paul Visco 
+ * @version 2.2 10-02-2004 06-25-2009
  * 
  *
  */
 class sb_Web_Visitor{
-	
+	/**
+     * The IP address of the visitor
+     * @var string
+     */
 	public $ip;
+    /**
+     * The tstamp of the visit
+     * @var integer
+     */
 	public $tstamp;
-	public $uname ='guest';
+
+    /**
+     * The unique user name of the visitor in your system, or guest
+     * @var string
+     */
+	public $uname;
+    
+    /**
+     * The display name of the visitor in your system
+     * @var string
+     */
+    public $dname;
+
+    /**
+     * The user agent of the visitor in short SF, FF, IE, bot etc
+     * @var string
+     */
 	public $agent;
+
+    /**
+     * The full agent string if the short name was not determined
+     * @var string
+     */
 	public $agent_str;
+
+    /**
+     * If the user coming from a mobile device
+     * @var boolean
+     */
 	public $mobl;
+
+    /**
+     * Creates a new sb_Web_Visitor
+     * @param string $uname The unique username of the visitor
+     * @param string $dname The display name of the visitor
+     * @param boolean $mobl If the user is coming from mobile site or not
+     */
+    public function __construct($uname='guest', $dname='', $mobl=0){
+
+        $this->uname = $uname;
+        $this->dname = $dname;
+        $this->mobl = $mobl;
+        $this->tstamp = time();
+        $this->ip = class_exists('Gateway') ? Gateway::$remote_addr : '';
+        $this->agent = class_exists('Gateway') ? Gateway::$remote_addr : '';
+    }
+
+    /**
+     * Logs a sb_Web_Visitor in the database
+     * @param PDO $db Optional database connection to use for sb_Web_Vistors
+     */
+    public function log($db=null){
+        
+        if($db instanceof PDO){
+            sb_Web_Visitors::$db=$db;
+        }
+
+        sb_Web_Visitors::log($this);
+
+    }
 }
 
 ?>
