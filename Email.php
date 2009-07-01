@@ -25,7 +25,7 @@ $myMail = new sb_Email('paul.visco@roswellpark.org', 'Testing Email', 'Hello Wor
 //$myAttachment->zip();
 
 //PGP encrypt the attachment
-//$myAttachment->pgp_encrypt('B902E698D01A6C99243D67A827C86F40B3FE5700');
+//$myAttachment->pgp_encrypt('XXXX98D01A6CXXXXXX5700');
 
 //add the attachment to the email object, you could add more attachments as necessary
 $myMail->add_attachment($myAttachment);
