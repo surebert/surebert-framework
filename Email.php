@@ -160,7 +160,7 @@ class sb_Email{
 	 *
 	 * @var array
 	 */
-	public $header_info;
+	public $headers = Array();
 	
 	/**
 	 * The body of the email
@@ -229,6 +229,25 @@ class sb_Email{
         //return if sent
         return self::$outbox->send();
 
+    }
+
+    /**
+     * Ups the importance of the email, in outlook this displays a exclamation point
+     */
+    public function make_important(){
+        $this->headers[] = $this->add_header('Priority', 'Urgent');
+        $this->headers[] = $this->add_header('Importance', 'high');
+    }
+
+    /**
+     * Adds custom email headers by key value
+     * <code>
+     * $mail->add_header('Priority', 'low');
+     * </code>
+     */
+    public function add_header($key, $value){
+        $this->headers[] = Array('Priority' => 'Urgent');
+        $this->headers[] = Array('Importance' => 'high');
     }
 
 }

@@ -264,7 +264,7 @@ class sb_Email_Reader{
 		}
 		
 		//add the entire header in case we want access to custom headers later
-		$this->header_info = $header;
+		$this->headers = $header;
 	}
 	
 	/**
