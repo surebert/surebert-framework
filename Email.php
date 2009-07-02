@@ -246,8 +246,7 @@ class sb_Email{
      * </code>
      */
     public function add_header($key, $value){
-        $this->headers[] = Array('Priority' => 'Urgent');
-        $this->headers[] = Array('Importance' => 'high');
+        $this->headers[$key] = $value;
     }
 
 }

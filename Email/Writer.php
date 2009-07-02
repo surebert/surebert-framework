@@ -229,10 +229,8 @@ class sb_Email_Writer {
 
         $email->_header_text .= "MIME-Version: 1.0"."\r\n";
         
-        foreach($email->headers as $header) {
-            foreach($header as $key=>$val){
-                $email->_header_text .= $key.":".$val."\r\n";
-            }
+        foreach($email->headers as $key=>$val) {
+            $email->_header_text .= $key.":".$val."\r\n";
         }
         
         $email->_header_text .= "Content-Type: multipart/mixed;"."\r\n";
