@@ -346,7 +346,7 @@ e.g. 'p:empty' returns all the p tags that are empty
 
 e.g  '#myDiv *:not(p)' returns all nodes that are not p tags within #myDiv
 
-e.g  'input[name"choosen"]' returns all the input nodes with the name 'choosen'
+e.g  'input[name="choosen"]' returns all the input nodes with the name 'choosen'
 
 e.g. 'a[href="http://www.surebert.com"] return all the a tags that have the href http://www.surebert.com
 

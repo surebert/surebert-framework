@@ -17,6 +17,7 @@ $('li').stylesTrail({
  */
 
 sb.nodeList.prototype.stylesTrail = function(params){
+  
 	styles = params.styles || {backgroundColor : 'orange'};
 	offset = params.offset || 300;
 	offsetOff = params.offsetOff || 80;

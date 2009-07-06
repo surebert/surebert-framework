@@ -8,6 +8,7 @@ var pos = sb.browser.getScrollPosition();
 */
 sb.browser.getScrollPosition = function(){
 	var x=0,y=0;
+
 	if(window.pageYOffset){
 		y = window.pageYOffset;
 	} else if (document.documentElement && document.documentElement.scrollTop){
@@ -22,7 +23,9 @@ sb.browser.getScrollPosition = function(){
 	} 
 	
 	sb.browser.scrollX = x;
+    
 	return [sb.browser.scrollX, sb.browser.scrollY];
+
 };
 
 sb.events.add(window, 'scroll', sb.browser.getScrollPosition);
