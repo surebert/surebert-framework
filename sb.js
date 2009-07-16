@@ -1160,7 +1160,7 @@ sb.nodeList.prototype = {
 	selector : '',
 
 	/**
-	@Name: sb.nodeList.prototype.assign_element_prototypes
+	@Name: sb.nodeList.prototype.getElementPrototypes
 	@Description: Re-assigns Element.prototypes of the nodes in the .nodes array to make sure that it picks up any Element.prototypes that have been added after the $ selection was made.  This is only required in IE since the other browsers all respect actual Element.protoype
 	*/
 	getElementPrototypes : function(){
