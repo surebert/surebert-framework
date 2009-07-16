@@ -2554,7 +2554,7 @@ Element.prototype.getStyle = function(prop){
 	}
 
 	if(val){
-		if(typeof val == 'String'){
+		if(typeof val == 'string'){
 
 			val = val.toLowerCase();
 			if(val == 'rgba(0, 0, 0, 0)'){val = 'transparent';}

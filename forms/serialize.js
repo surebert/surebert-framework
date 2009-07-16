@@ -1,6 +1,6 @@
 /**
 @Name: sb.forms.serialize
-@Description: Returns all key values forms that are filled out in a form as a string of key value pairs e.g. first_name=paul&day=monday.  It  can handle all form input types including text, select, select-multiple, radio, checkbox
+@Description: Serializes a form input types including text, textarea, select, select-multiple, radio, checkbox
 @Param: String form The name of the form to serialize
 
 @Return: String The serialized form dat e.g.first_name=paul&day=monday
@@ -14,22 +14,22 @@ var data = sb.forms.serialize("#myForm");
 //data = first_name=paul&last_name=visco
 */
 sb.forms.serialize = function(form) { 
-	var dat=[],s,e=sb.toArray(sb.$(form).elements);
+	var dat=[],s,e=sb.toArray(sb.$(form).elements),enc=encodeURIComponent;
 	e.forEach(function(v){
 		var n=v.name,t=v.type;
 		if(n && v.value){
 			if(t=='select-one'){
-				dat.push(n + "=" + encodeURIComponent(v.options[v.selectedIndex].value));
+				dat.push(n + "=" + enc(v.options[v.selectedIndex].value));
 			} else if(t =="select-multiple"){
 				for(s=0;s<v.options.length;s++){
 					if(v.options[s].selected===true){
-						dat.push(n + "=" + encodeURIComponent(v.options[s].value));	
+						dat.push(n + "=" + enc(v.options[s].value));
 					}
 				}
 			} else if(t == "checkbox" || t=="radio"){
-				if(v.checked==1){dat.push(n + "=" + escape(v.value));}
+				if(v.checked==1){dat.push(n + "=" + enc(v.value));}
 			} else {
-				dat.push(n + "=" + escape(v.value));
+				dat.push(n + "=" + enc(v.value));
 			}
 		}
 	});

@@ -1,4 +1,3 @@
-sb.include('Element.prototype.setOpacity');
 sb.include('Element.prototype.getPosition');
 sb.include('browser.removeSelection');
 
@@ -13,14 +12,14 @@ allowFloats boolean Determines if float values are allowed or rounded
 displayName boolean Is the name of the slider displayed on it
 displayValue boolean Is the value of the slider displayed on it
 @Example:
-var bri = new sb.slider({
+var bri = new sb.widget.slider({
 	name : 'brightness',
 	min : 0,
 	max : 255,
 	id : 'brightness',
 	defaultValue : 100,
 	allowFloats : 0,
-	onchangevalue : function(){
+	onChangeValue : function(){
 		document.body.style.backgroundColor = 'rgb('+this.value+','+this.value+','+this.value+')';
 		
 	}
@@ -28,7 +27,6 @@ var bri = new sb.slider({
 
 bri.appendTo('#brightnessDiv');
 
-bri.setX(30);
 */
 sb.widget.slider = function(params){
 	
@@ -79,11 +77,12 @@ sb.widget.slider.prototype = {
 			if(typeof(this.onChangeValue)=='function'){
 				this.onChangeValue();
 			}
+
+            this.track.setAttribute('value', this.value);
 	},
 	
 	getX : function(){
 		return this.nob.getPosition().left;
-		
 	},
 	
 	getPercentage : function(){
@@ -170,20 +169,19 @@ sb.widget.slider.prototype = {
 			
 		});
 		
-		this.nob.setOpacity(0.5);
-		
 		this.nob.styles({
 				cursor : 'col-resize',
 				position : 'absolute',
-				zIndex : 1
+				zIndex : 1,
+                opacity : 0.5
 		});
 
 		if(this.track.getStyle('backgroundColor')=='transparent'){
-			this.track.setStyle('backgroundColor', 'orange');
+			this.track.setStyle('backgroundColor', '#ACACAC');
 		}
 		
 		if(this.nob.getStyle('backgroundColor')=='transparent'){
-			this.nob.setStyle('backgroundColor', 'green');
+			this.nob.setStyle('backgroundColor', '#EFEFEF');
 		}
 		
 		if(this.nob.getStyle('width')=='0px' || this.nob.getStyle('width')=='auto'){
@@ -218,7 +216,8 @@ sb.widget.slider.prototype = {
 		});
 		
 		this.track.appendTo(this.container);
-	
+        this.track.setAttribute('name', this.name);
+
 		//create the nob
 		this.nob = new sb.element({
 			tag : 'nob'
@@ -250,6 +249,7 @@ sb.widget.slider.prototype = {
 		sb.events.add(window, 'resize', function(){t.calibrate();});
 	
 		this.calibrate();
+
 	},
 	
 	reset : function(){
