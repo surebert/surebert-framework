@@ -223,7 +223,7 @@ class sb_JSON_RPC2_Client{
 	 * @param $args
 	 * @return unknown_type
 	 */
-	protected function __call($method, $args){
+	public function __call($method, $args){
 		
 		$request = new sb_JSON_RPC2_Request();
 		$request->method = $method;
