@@ -20,7 +20,7 @@ var sb = {
 
 	/**
 	@Name: sb.colors
-	@Description: Methods used to calculate and manipulate color values, see also /colors direcory
+	@Description: Used Internally. Methods used to calculate and manipulate color values, see also /colors direcory
 	*/
 	colors : {},
 
@@ -32,20 +32,6 @@ var sb = {
 		log : function(){},
 		write : function(){},
 		error : function(){}
-	},
-
-	/**
-	@Name: sb.createIfNotExists
-	@Description:  Sets up global alias for a variable if one does not already exist.
-	@Example:
-	//checks to see if global jump function exists and creates it if it does not
-	sb.createIfNotExists('jump', function(){alert('jump');});
-
-	*/
-	createIfNotExists : function(i, o){
-		if(!window[i] && o!==null){
-			window[i] = o;
-		}
 	},
 
 	/**
@@ -909,7 +895,7 @@ sb.browser ={
     /**
 	@Name: sb.browser.agent
 	@Type: string
-	@Description: The browser agent in short form (op=opera, sf=safari, ff=firefox, ie=iexplorer
+	@Description: The browser agent in short form op=opera, sf=safari, ff=firefox, ie=iexplorer
 	*/
     agent : '',
 
