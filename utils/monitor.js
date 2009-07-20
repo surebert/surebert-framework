@@ -1,13 +1,28 @@
 /**
 @Name: sb.utils.monitor
 @Description: Monitors a url for a sb.utils.monitor header to verify that the connection is avaiable
-@Params: object o
+@Param: object o
 o.url String The url of the resource to monitor
 o.onConnected Function The call back function that fires when the monitor senses a connection and is provided the header "sb.utils.monitor:1" fromt he url specifed
 o.onDisconnected Function The callback function that fires when the monitor senses a disconnection by not being able to reach the file, or when the file sends a header of "sb.utils.monitor:0" 
 o.interval Integer The number of milliseconds to wait between checks
 o.data String the data value pairs passed ot the url being monitored
 o.method String get/post The method used when requesting the resource
+@Example:
+var monitor = new sb.utils.monitor({
+    url : '/some/url',
+    data : {
+        sample : 'data'
+    },
+    method : 'post',
+    onConnected : function(){
+        $('body').style.backgroundColor = 'red';
+    },
+    onDisconnected : function(){
+        $('body').style.backgroundColor = 'green';
+    },
+    interval : 100
+});
 */
 sb.utils.monitor = function(o){
 	o = o || {};
