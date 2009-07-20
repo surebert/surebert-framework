@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.80 04/24/04 - 06/06/09
+@Version: 4.80 04/24/04 - 07/20/09
 @Package: surebert 
 */
 
@@ -1356,6 +1356,25 @@ sb.nodeList.singleTags = ['html', 'body', 'base', 'head', 'title'];
 */
 sb.json = {};
 
+/**
+@Name: sb.ajax
+@Type: constructor
+@Description: Used to send and receive data back to the originating server without leaving the page. See additional sb.ajax object prototype for more information
+@Example:
+var aj = new sb.ajax({
+    url : '/some/url',
+    method : 'post', //optional
+    format : 'text', //optional
+    data : {
+        name : 'paul',
+        number : 6
+    },
+    onResponse : function(response){
+        alert(response);
+    }
+});
+aj.fetch();
+*/
 sb.ajax = function (params){
 
 	if(window.XMLHttpRequest){
@@ -1380,12 +1399,14 @@ sb.ajax = function (params){
 
 /**
 @Name: sb.ajax.defaultMethod
-@Description: The default transport method used for communicating with server side scripts.  If this is changed, all insatnces with non specified transport methods will use this one.  It is 'get' by default.  Another option is 'post'.
-*/
+@Type: string
+@Description: The default transport method used for communicating with server side scripts.  If this is changed, all insatnces with non specified transport methods will use this one.  It is 'post' by default.
+ */
 sb.ajax.defaultMethod = 'post';
 
 /**
 @Name: sb.ajax.defaultFormat
+@Type: string
 @Description: The default way the ajax instances handles the data retreived from the scripts. This sets the default format for all sb.ajax instances that do not already specify a format.  It is text by default but you can override this in your script.  The options are;
 1. text - returns the data from the server side script as text and passes it to the instances onResponse method
 2. json - returns the data from the server side script as a JSON object whose properties can easily be accessed with javascript
@@ -1394,7 +1415,7 @@ sb.ajax.defaultMethod = 'post';
 5. send - only sends data and does not receive any data
 6. head - only reads the header data from the HTML transaction and passes that to the instances onResponse method.  If a header property is specified on the sb.ajax instance, then only that header is passed
 @Example:
-sb.ajax.defaultFormat = 'json';
+sb.ajax.defaultFormat = 'text';
 */
 sb.ajax.defaultFormat = 'text';
 
@@ -1417,6 +1438,7 @@ sb.ajax.prototype = {
 
 	/**
 	@Name: sb.ajax.prototype.timeout
+    @Type: integer
 	@Description: The amount of time in milliseconds the ajax request will wait before it aborts.  This is optional
 	@Example:
 	var myAjax.timeout = 1000;
@@ -1551,6 +1573,7 @@ sb.ajax.prototype = {
 
 	/**
 	@Name: sb.ajax.prototype.abort
+    @Type: function
 	@Description: You can use this to abort an ajax function that is fetching.  In addition, if you have defined an onabort() method for your sb.ajax instance it will fire whenever the fetch is canceled.
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1574,6 +1597,7 @@ sb.ajax.prototype = {
 
 	/**
 	@Name: sb.ajax.prototype.fetch
+    @Type: function
 	@Description: Sends any data specified to the external server side file specified in your instances .url property and returns the data recieved to the instance's onResponse method
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1660,6 +1684,7 @@ sb.ajax.prototype = {
 	},
 	/**
 	@Name: sb.ajax.prototype.onResponse
+    @Type: function
 	@Description: Fires when the ajax request gets its response back from the server.
 	@Param: response String, json, or XML depending on ajax instance .format property
 	@Example:
@@ -1674,6 +1699,7 @@ sb.ajax.prototype = {
 
 	/**
 	@Name: sb.ajax.prototype.onHeaders
+    @Type: function
 	@Description: Fires when the ajax request gets it headers back
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1691,6 +1717,7 @@ sb.ajax.prototype = {
 
 	/**
 	@Name: sb.ajax.prototype.onHeaders
+    @Type: function
 	@Description: Fires when the ajax request gets it headers back
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1708,6 +1735,7 @@ sb.ajax.prototype = {
 
 	/**
 	@Name: sb.ajax.prototype.abort
+    @Type: function
 	@Description: You can use this to abort an ajax function that is fetching.  In addition, if you have defined an onabort() method for your sb.ajax instance it will fire whenever the fetch is canceled.
 	@Example:
 	var myAjax = new sb.ajax({
@@ -1840,6 +1868,7 @@ Array.prototype.remove = function(values){
 
 /**
 @Name: String.prototype.hex2rgb
+@Type: function
 @Description: Used internally, converts hex to rgb
 @Example:
 var str = '#FF0000';
@@ -1862,6 +1891,7 @@ String.prototype.hex2rgb = function(asArray){
 
 /**
 @Name: String.prototype.toCamel
+@Type: function
 @Description: Converts all dashes, underscores or whitespace to camelStyle
 @Return: String The original string with dashes converted to camel - useful when switching between CSS and javascript style properties
 @Example:
@@ -1910,6 +1940,7 @@ sb.events = {
 
 	/**
 	@Name: sb.events.add
+    @Type: function
 	@Description: Add an event listener to a DOM element, re-write of surebert events based on tips from http://www.digital-web.com/articles/seven_javascript_techniques/
 	@Param: Element/String el A reference to a DOM element or a string that can be passed through sb.$ to return a dom el e.g. '#myList'
 	@Param: String event The event to listen for without the on e.g. 'click'
@@ -2011,7 +2042,10 @@ sb.events = {
 	*/
 	log : [],
 
-
+    /**
+	@Name: sb.events.record
+	@Description: used internally
+	*/
 	record : function(evt){
 		sb.events.log.push(evt);
 		return evt;
@@ -2020,6 +2054,7 @@ sb.events = {
 
 	/**
 	@Name: sb.events.remove
+    @Type: function
 	@Description: Removes an event listener
 	@Param: Object event An event listener reference as returned from sb.events.add
 	@Example:
@@ -2041,6 +2076,7 @@ sb.events = {
 
 	/**
 	@Name: sb.events.removeAll
+    @Type: function
 	@Description: Removes all event listeners added with sb.events.add or sb.elements or $'s event method
 
 	@Example:
@@ -2070,6 +2106,7 @@ sb.events = {
 
 /**
 @Name: sb.element
+@Type: constructor
 @Description: Used to create DOM nodes.  If a string is passed to the fuction it simply return document.createElement(str);
 @Param: Object o An object of properties which are used to contruct the DOM object,  all properites are appending as properties to the dom object.  sb.elements have many methods whcih are all listed in the Element.prototype object below
 @Param: String o If passed a nodeName as a string it simply returns document.createElement(nodeName);
