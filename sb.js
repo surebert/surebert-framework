@@ -297,9 +297,9 @@ var sb = {
 
 /**
 @Name: $
-@Description: One of the most important parts of the surebert library. Can reference DOM elements in many way using CSS selectors.  The simplest use of it is to reference DOM elements by their id property.
 @Type: function
 @Param: String Use CSS selectors to return the elements desired
+@Description: One of the most important parts of the surebert library. Can reference DOM elements in many way using CSS selectors.  The simplest use of it is to reference DOM elements by their id property.
 @Example:
 e.g.'#myForm' An element id.  When passed an element ID it returns a reference to the element with that id'
 
@@ -1352,7 +1352,7 @@ sb.nodeList.singleTags = ['html', 'body', 'base', 'head', 'title'];
 
 /**
 @Name: sb.json
-@Description: namespace for json functionality
+@Description: Used Internally. Namespace for json functionality
 */
 sb.json = {};
 
