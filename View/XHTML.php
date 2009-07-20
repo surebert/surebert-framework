@@ -20,7 +20,7 @@ class sb_View_XHTML extends sb_View{
 	 *
 	 * @var string
 	 */
-	public $doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+	public $doc_type = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 	
 	/**
 	 * An example property - it is used to create the HTML header, any view that extends this one
