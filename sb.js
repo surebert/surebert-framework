@@ -1360,6 +1360,7 @@ sb.json = {};
 @Name: sb.ajax
 @Type: constructor
 @Description: Used to send and receive data back to the originating server without leaving the page. See additional sb.ajax object prototype for more information
+@Url: http://www.surebert.com/examples/ajax
 @Example:
 var aj = new sb.ajax({
     url : '/some/url',
