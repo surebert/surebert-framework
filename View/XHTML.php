@@ -48,6 +48,12 @@ class sb_View_XHTML extends sb_View{
 	 */
 	public $custom_head_markup = '';
 
+    /**
+     * The content type of the document expressed as e.g. UTF-8, ISO-8859-1, etc
+     * @var string
+     */
+    public $charset = 'UTF-8';
+
 	/**
 	 * Creates a javascript include tag
 	 * @param $scripts array/string The file names or an array of file names to include
@@ -77,7 +83,7 @@ class sb_View_XHTML extends sb_View{
 		$html = $this->doc_type."\n";
 		$html .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">'."\n";
 		$html .= '<head>'."\n";
-		$html .= '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'."\n";
+		$html .= '<meta http-equiv="Content-Type" content="text/html; charset='.$this->charset.'" />'."\n";
 
 		$html .= '<title>'.$this->title.'</title>'."\n";
 
