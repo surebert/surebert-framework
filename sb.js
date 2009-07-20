@@ -898,7 +898,7 @@ sb.browser ={
 	/**
 	@Name: sb.browser.ie6
 	@Type: boolean
-	@Description: Is teh page being displayed with ie 6. Normally you would access this information through sb.browser.agent and sb.browser.version but I added this for convenience with ie6
+	@Description: Is the page being displayed with IE 6. Normally you would access this information through sb.browser.agent and sb.browser.version but I added this for convenience with ie6
 	@Example.
 	if(sb.browser.ie6){
 		//do something
@@ -906,9 +906,24 @@ sb.browser ={
 	*/
 	ie6 : 0,
 
+    /**
+	@Name: sb.browser.agent
+	@Type: string
+	@Description: The browser agent in short form (op=opera, sf=safari, ff=firefox, ie=iexplorer
+	*/
+    agent : '',
+
+    /**
+	@Name: sb.browser.version
+	@Type: integer
+	@Description: The version number of the browser
+	*/
+    version : 0,
+
 	/**
 	@Name: sb.browser.getAgent
-	@Description: Determines the agent, version, and os of the client. Used Internally.  If you specify sbOutDatedBrowser as a function it will fire if the browser is opera < 9, firefox < 1.5, iexplorer <6 or safari < 1.3
+    @Type: function
+	@Description: Used Internally. Determines the agent, version, and os of the client.
 	*/
 	getAgent : function(){
 
