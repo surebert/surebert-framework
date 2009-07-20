@@ -1,14 +1,8 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.77 04/24/04 - 06/06/09
+@Version: 4.80 04/24/04 - 06/06/09
 @Package: surebert 
 */
-
-//$.getElementsByParent updated to support .fromCode > li
-//sb.nodeList.prototype.forEach returns the nodeList instance itself
-//add String.prototype.toElement back to sb.js?
-//getELementsByClassName now takes advantage of native method when it exists
-//what about nodeList.prototype.events
 
 var sb = {
 
@@ -304,6 +298,7 @@ var sb = {
 /**
 @Name: $
 @Description: One of the most important parts of the surebert library. Can reference DOM elements in many way using CSS selectors.  The simplest use of it is to reference DOM elements by their id property.
+@Type: function
 @Param: String Use CSS selectors to return the elements desired
 @Example:
 e.g.'#myForm' An element id.  When passed an element ID it returns a reference to the element with that id'
@@ -1732,6 +1727,7 @@ sb.dom = {
 
 	/**
 	@Name: sb.dom.onReady
+    @Type: function
 	@Description: Used to run a function when a DOM element becomes available
 	@Param: object o An object of parameters
 	o.id - A reference to the id of the DOM node you are questioning the availability of, e.g. #navigation is the the ID of the DOM node I am polling for.
@@ -1804,6 +1800,7 @@ sb.dom = {
 /**
 @Name: Array.prototype.inArray
 @Description: Checks to see if a value is contained in the array
+@Type: function
 @Param: Object/String/Number val Method checks to see if val is in the array
 @Return: Boolean True or False
 @Example:
@@ -1817,9 +1814,8 @@ Array.prototype.inArray = function(val){
 
 /**
 @Name: Array.prototype.remove
-@Author: Paul Visco
-@Version: 1.1 11/19/07
 @Description: Removes a value or a set of values from an array.
+@Type: function
 @Param: values Array If passed an array of values, all the values in the argument array are removed from the array being manipulated
 @Param: value Object/String/Number If a single object, string, number, etc is passed to the function than only that value is removed.
 @Return: Array Returns the array minus the values that were specified for removal.
@@ -2154,7 +2150,10 @@ sb.element = function(o){
 		delete o.children;
 	}
 
+    this.eventsAdded = [];
+
 	if(typeof o.events !='undefined'){
+
 		sb.objects.forEach.call(o.events, function(func,event,obj){
 			el.event(event, func);
 		});
@@ -2198,6 +2197,7 @@ Element.prototype.$ = function(selector){
 
 /**
 @Name: Element.prototype.addClassName
+@Type: function
 @Description: Adds a className to the sb.element, using this methods sb.element instances can have multiple classNames
 @Param: String c The classname to add
 @Return: returns itself
@@ -2212,6 +2212,7 @@ Element.prototype.addClassName = function(className){
 
 /**
 @Name: Element.prototype.append
+@Type: function
 @Description: Appends another DOM element to the element as a child
 @Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
 @Example:
@@ -2221,6 +2222,7 @@ Element.prototype.append = function(el){return this.appendChild(sb.$(el));};
 
 /**
 @Name: Element.prototype.appendTo
+@Type: function
 @Description: Appends the element to another DOM element as a child
 @Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
 @Return: Element A refernce to the appended node
@@ -2236,8 +2238,9 @@ Element.prototype.appendTo = function(el){
 	return sb.$(el).appendChild(this);
 };
 
-	/**
+/**
 @Name: Element.prototype.appendToTop
+@Type: function
 @Description: Appends the element to the top DOM element as a child
 @Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
 @Return: Element A refernce to the appended node
@@ -2261,6 +2264,7 @@ Element.prototype.appendToTop = function(el){
 
 /**
 @Name: Element.prototype.appendAfter
+@Type: function
 @Description: Appends the element after another DOM element as a sibling
 @Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
 @Example:
@@ -2286,6 +2290,7 @@ Element.prototype.appendAfter = function(after){
 
 /**
 @Name: Element.prototype.appendBefore
+@Type: function
 @Description: Appends the element before another DOM element as a sibling
 @Param: Element, String el Another DOM element reference or a string that can be passed through sb.$ to return a DOM node.
 @Example:
@@ -2300,6 +2305,7 @@ Element.prototype.appendBefore = function(before){
 
 /**
 @Name: Element.prototype.getX
+@Type: function
 @Description: Calculates the absolute x position of an element
 @Return: Integer the x position of an element
 @Example:
@@ -2316,6 +2322,7 @@ Element.prototype.getX = function(){
 
 /**
 @Name: Element.prototype.getY
+@Type: function
 @Description: Calculates the absolute x position of an element
 @Return: Integer the y position of an element
 
@@ -2333,6 +2340,7 @@ Element.prototype.getY = function(){
 
 /**
 @Name: Element.prototype.hasClassName
+@Type: function
 @Description: Checks to see if the element has the className specified.  Elements can have more than one className.
 @Return: Boolean True if the element contains the className and False if it doesn't
 @Param: String c The className to check for
@@ -2346,6 +2354,7 @@ Element.prototype.hasClassName = function(classname){
 
 /**
 @Name: Element.prototype.remove
+@Type: function
 @Description: Removes an element from the DOM
 @Return: returns itself
 @Example:
@@ -2360,6 +2369,7 @@ Element.prototype.remove = function(){
 
 /**
 @Name: Element.prototype.removeClassName
+@Type: function
 @Description: Removes a className from the elements className array.  Elements can have more than one className
 @Param: String c Specified the className to remove from the element
 @Return: returns itself
@@ -2373,6 +2383,7 @@ Element.prototype.removeClassName = function(className){
 
 /**
 @Name: Element.prototype.replace
+@Type: function
 @Description: Replaces an element with another element in the DOM
 @Param: Object/String A reference to another DOM node, either as a string which is passed to the sb.$ function or as an element reference
 @Return: returns itself
@@ -2390,6 +2401,7 @@ Element.prototype.replace = function(node){
 
 /**
 @Name: Element.prototype.event
+@Type: function
 @Description: Used to set event cross-browser event handlers.  For more information see sb.events.
 @Param: String evt The event to handle e.g. mouseover, mouseout, mousedown, mouseup, click, dblclick, focus, blurr, scroll, contextmenu, keydown, keyup, keypress
 @Param: Function func The function to use as an event handler.  It is passed the e from the event in every brower as the first argument.  It also references "this" as the object the event is listening on.
@@ -2409,13 +2421,14 @@ Element.prototype.event = function (evt, func){
 
 	var event = sb.events.add(this, evt, func);
 
-	//this.eventsAdded.push(event);
+	this.eventsAdded.push(event);
 	return event;
 
 };
 
 /**
 @Name: Element.prototype.eventsAdded
+@Type: array
 @Description: Used keep track of events added to a sb.element.  All events added with this.event are pushed into this array where they are stored for removal
 
 */
@@ -2423,6 +2436,7 @@ Element.prototype.eventsAdded = [];
 
 /**
 @Name: Element.prototype.events
+@Type: function
 @Description: Used to assign multiple events at once
 @Param: object events
 @Example:
@@ -2448,6 +2462,7 @@ Element.prototype.events = function(events){
 
 /**
 @Name: Element.prototype.eventRemove
+@Type: function
 @Description: Removes an event created with Element.prototype.event
 @Param: String evt An event reference returned from the sb.element instances event method above.
 @Example:
@@ -2465,6 +2480,7 @@ Element.prototype.eventRemove = function (evt){
 
 /**
 @Name: Element.prototype.eventsRemoveAll
+@Type: function
 @Description: Removes all event observers for the sb.element that were added using this.event() or this.events()
 @Example:
 myElement.eventsRemoveAll();
@@ -2479,6 +2495,7 @@ Element.prototype.eventsRemoveAll = function(){
 
 /**
 @Name: Element.prototype.styles
+@Type: function
 @Description: Sets multiple style properties for an sb.element
 @Param: Object params An object with css style/value pairs that are applied to the object
 @Return: returns itself
@@ -2504,6 +2521,7 @@ Element.prototype.styles = function(params){
 
 /**
 @Name: Element.prototype.getStyle
+@Type: function
 @Description: calculates the style of an sb.element based on the current style read from css
 @Param: String prop The property to look up
 @Return: returns property value
@@ -2581,6 +2599,7 @@ Element.prototype.getStyle = function(prop){
 
 /**
 @Name: Element.prototype.prototype.setStyle
+@Type: function
 @Description: Sets the style of an sb.element
 @Param: String prop The property to assign a value to
 @Param: String val The value to assign to the property specified
