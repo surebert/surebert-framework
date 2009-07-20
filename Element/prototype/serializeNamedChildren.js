@@ -1,6 +1,6 @@
 /**
 @Name: Element.prototype.serializeNamedChildren
-@Description:  Serialzies all named child elements with values elements contained within the Element including text, textarea, select, select-multiple, radio, checkbox
+@Description: Serialzies all child elements that have name attributes contained within the Element including text, textarea, select, select-multiple, radio, checkbox and any other misc elements with name attributes
 @Param: object o Optional, The properties of an sb.ajax instance, e.g. url, onResponse, etc, if sent the data is send to that address
 @Return: String first_name=paul&day=monday
 @Example:
