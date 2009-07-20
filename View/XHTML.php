@@ -77,6 +77,8 @@ class sb_View_XHTML extends sb_View{
 		$html = $this->doc_type."\n";
 		$html .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">'."\n";
 		$html .= '<head>'."\n";
+		$html .= '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'."\n";
+
 		$html .= '<title>'.$this->title.'</title>'."\n";
 
 		foreach(get_object_vars($this->meta) as $key=>$val){
