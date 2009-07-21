@@ -121,9 +121,7 @@ class sb_PDO extends PDO{
 	 * @param object $obj The object to convert to a bindParams hash with the colon in front of each key so that it can be used as a bid param array
 	 * @param array $omit An simple array of key names to omit from the array
 	 * @return array The object as an array desigend for passing to pdo's exec or bindParams
-	 * @Author Paul Visco
      * @Depreciated
-	 * @version 1.5
 	 * 
 	 */
 	public function o2p($obj, $omit=Array()){
@@ -143,16 +141,13 @@ class sb_PDO extends PDO{
 	 * <code>
 	 * $question = new Question();
 	 * $question->qid = 1;
-	 * $question->end_date = '01/22/1977';
-	 * $question->start_date = '01/22/1977';
-	 * $question->question = 'How old are you?';
+	 * $question->answer = 'grape';
 	 *
 	 * $params = sb_PDO::paramify($question);
-	 * //returns $params as Array ( [:qid] => 1 [:question] => How old are you? [:start_date] => 01/22/1977 [:end_date] => 01/22/1977 )
-	 *
-     * $this->request->post = Array('name' => paul, 'color' => 'red');
-     * $params = sb_PDO::paramify($this->request->post);
-     *
+	 * //returns $params as Array ( [:qid] => 1 [:answer] => 'grape' )
+     * 
+     * $params = sb_PDO::paramify(Array('qid' => 1, 'answer' => 'grape'));
+     * //returns $params as Array ( [:qid] => 1 [:answer] => 'grape' )
      * </code>
 	 *
 	 */
