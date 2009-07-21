@@ -116,37 +116,62 @@ class sb_PDO extends PDO{
 	}
 
 	/**
-	 * Converts an object into a bound params hash
+	 * Converts an object into a bound params hash, use sb_PDO::paramify
 	 *
 	 * @param object $obj The object to convert to a bindParams hash with the colon in front of each key so that it can be used as a bid param array
 	 * @param array $omit An simple array of key names to omit from the array
 	 * @return array The object as an array desigend for passing to pdo's exec or bindParams
 	 * @Author Paul Visco
+     * @Depreciated
 	 * @version 1.5
-	 * @example 
+	 * 
+	 */
+	public function o2p($obj, $omit=Array()){
+		
+		return self::paramify($obj, $omit);
+	}
+
+    /**
+	 * Converts an array into a bound params hash
+	 *
+	 * @param array/object $data The object/hash to convert to a bindParams compatible hash with the colon in front of each key so that it can be used as a bid param array
+	 * @param array $omit An simple array of key names to omit from the array
+	 * @return array The input data as an array designed for passing to pdo's execute or bindParams
+	 * @Author Paul Visco
+	 * @version 1.0
+	 * @example
 	 * <code>
 	 * $question = new Question();
 	 * $question->qid = 1;
 	 * $question->end_date = '01/22/1977';
 	 * $question->start_date = '01/22/1977';
 	 * $question->question = 'How old are you?';
-	 * 
-	 * $params = $mySb_PDo_instance->o2p($question);
+	 *
+	 * $params = sb_PDO::paramify($question);
 	 * //returns $params as Array ( [:qid] => 1 [:question] => How old are you? [:start_date] => 01/22/1977 [:end_date] => 01/22/1977 )
-	 * </code>
-	 * 
+	 *
+     * $this->request->post = Array('name' => paul, 'color' => 'red');
+     * $params = sb_PDO::paramify($this->request->post);
+     *
+     * </code>
+	 *
 	 */
-	public function o2p($obj, $omit=Array()){
-		
-		$arr = get_object_vars($obj);
+	public static function paramify($data, $omit=Array()){
 	    $params = Array();
-	    
-	    foreach($arr as $key=>$val){
+        if(is_object($data)){
+            $data = get_object_vars($data);
+        }
+
+        if(!is_array($data)){
+            throw(new sb_PDO_Exception('Paramify only accepts hashes and objects as data argument'));
+        }
+
+	    foreach($data as $key=>$val){
 	    	if(!in_array($key, $omit)){
 	        	$params[':'.$key] = $val;
 	    	}
 	    }
-	    
+
 	    return $params;
 	}
 	
