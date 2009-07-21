@@ -157,20 +157,20 @@ class sb_PDO extends PDO{
 	 *
 	 */
 	public static function paramify($data, $omit=Array()){
-	    $params = Array();
+	    
+        $params = Array();
+
         if(is_object($data)){
             $data = get_object_vars($data);
         }
 
-        if(!is_array($data)){
-            throw(new sb_PDO_Exception('Paramify only accepts hashes and objects as data argument'));
+        if(is_array($data)){
+            foreach($data as $key=>$val){
+                if(!in_array($key, $omit)){
+                    $params[':'.$key] = $val;
+                }
+            }
         }
-
-	    foreach($data as $key=>$val){
-	    	if(!in_array($key, $omit)){
-	        	$params[':'.$key] = $val;
-	    	}
-	    }
 
 	    return $params;
 	}

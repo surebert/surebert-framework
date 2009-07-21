@@ -40,10 +40,19 @@ class sb_PDO_Debugger extends sb_PDO{
         try{
             return parent::s2o($sql, $params, $class_name);
         } catch(Exception $e){
-             throw(new Exception('CALLED: '.__METHOD__."(\"".$sql."\", ".(is_null($params) ? 'null' : print_r($params, 1)).", '".$class_name."');\nERROR RETURNED: ".print_r($this->errorInfo(), 1)));
+            throw(new Exception('CALLED: '.__METHOD__."(\"".$sql."\", ".(is_null($params) ? 'null' : print_r($params, 1)).", '".$class_name."');\nERROR RETURNED: ".print_r($this->errorInfo(), 1)));
 
         }
 	}
+
+    public static function paramify($data, $omit=Array()){
+
+        if(!is_array($data) && !is_object($data)){
+            throw(new sb_PDO_Exception('Paramify only accepts hashes and objects as data argument'));
+        }
+
+        return parent::paramify($data, $omit);
+    }
 
 }
 
