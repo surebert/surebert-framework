@@ -17,7 +17,7 @@ var string = $('#myElement').serializeNamedChildren({
 Element.prototype.serializeNamedChildren = function(o) {
     var dat=[],s,enc=encodeURIComponent;
 
-    $('*[name]').forEach(function(v,k,a){
+    this.$('*[name]').forEach(function(v,k,a){
         var n=v.getAttribute('name'),t=v.type,val=v.getAttribute('value')||'',enc=encodeURIComponent;
 		
         switch(t){
