@@ -87,9 +87,12 @@ class sb_View_XHTML extends sb_View{
 
 		$html .= '<title>'.$this->title.'</title>'."\n";
 
-		foreach(get_object_vars($this->meta) as $key=>$val){
-			$html .= '<meta name="'.$key.'" content="'.$val.'" />'."\n";
-		}
+        if($this->meta instanceof sb_View_HTMLHeadMeta){
+
+            foreach(get_object_vars($this->meta) as $key=>$val){
+                $html .= '<meta name="'.$key.'" content="'.$val.'" />'."\n";
+            }
+        }
 
 		$html .= '<style type="text/css">';
 
