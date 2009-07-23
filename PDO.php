@@ -176,7 +176,7 @@ class sb_PDO extends PDO{
 	 * @param string $sql
 	 * @return PDO_Statement A PDO_statment instance
 	 */
-	public function prepare($sql){
+	public function prepare($sql, $driver_options=array()){
 		
 		$md5 = md5($sql);
 		
@@ -184,7 +184,7 @@ class sb_PDO extends PDO{
 			return $this->prepared_sql[$md5];
 		}
 		
-		$stmt = parent::prepare($sql);
+		$stmt = parent::prepare($sql, $driver_options);
 		$this->prepared_sql[$md5] = $stmt;
 		return $stmt;
 	}
