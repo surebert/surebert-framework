@@ -43,15 +43,19 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 		$file_path = $this->get_file_path($key);
 		$dir = dirname($file_path);
 		
-		if(!is_dir($dir)){;
-			mkdir($dir, 0777, true);
+		if(!is_dir($dir)){
+            try{
+                mkdir($dir, 0777, true);
+            } catch (Exception $e){
+                throw new Exception('Could create cache directory: '.$key." - ".$e->getMessage());
+            }
 		}
-	
-	    $fh = fopen($file_path, 'a+');
-	    
-	    if(!$fh){
-	    	throw new Exception('Could not write to cache: '.$key);
-	    }
+
+        try{
+            $fh = fopen($file_path, 'a+');
+        } catch (Exception $e){
+            throw new Exception('Could not write to cache: '.$key." - ".$e->getMessage());
+        }
 	    
 	    //exclusive lock
 	    flock($fh, LOCK_EX); 
@@ -146,22 +150,23 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 * @return boolean
 	 */
 	private function clear_dir($dir){
-		
-		$iterator = new RecursiveDirectoryIterator($dir);
-		
-		foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file){
-		  if ($file->isDir()) {
-		     if(!rmdir($file)){
+        
+		$iterator = new DirectoryIterator($dir);
+        foreach ($iterator as $file){
+
+		  if ($file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
+             $this->clear_dir($file->getPathname());
+		     if(!rmdir($file->getPathname())){
 		     	return false;
 		     }
-		  } else {
+		  } else if($file->isFile()){
 		    if(!unlink($file->getPathname())){
 		    	return false;
 		    }
 		  }
 		}
-		
-		return true;
+
+        return true;
 	}
 	
 	/**
