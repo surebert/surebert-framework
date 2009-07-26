@@ -99,7 +99,8 @@ class sb_Flash_FileUpload{
 		//$this->name = sb_Strings::clean_file_name($this->upload['name']);
 		$this->name = $this->uploaded_file['name'];
 		$this->path = $destination_directory.'/'.$this->name;
-        $ext = array_pop(explode('.', $this->name));
+        $arr = explode('.', $this->name);
+        $ext = array_pop($arr);
 
 		$this->ext = strtolower($ext);
 		$this->sizeK = round($this->uploaded_file['size']/1000);
