@@ -265,7 +265,9 @@ class sb_Chat_TalkBox{
 		$chatter = $this->db->s2o($sql, Array(":id" => $id));
 	
 		if(empty($chatter) && !$this->loaded_from_backup){
+
 			$sql = "INSERT INTO sb_TalkBox_".$this->room."_mem SELECT * FROM sb_TalkBox_".$this->room;
+            echo $sql;
 			$this->db->query($sql);
 			$this->loaded_from_backup = 1;
 			$this->display();

@@ -39,7 +39,7 @@ class sb_Mobile_SMS{
 	 *
 	 * @var array
 	 */
-	private $carriers = Array(
+	public static $carriers = Array(
 		'tmobile' => 'tmomail.net',
 		'sprint' => 'messaging.sprintpcs.com',
 		'nextel' => 'messaging.nextel.com',
@@ -56,9 +56,9 @@ class sb_Mobile_SMS{
 	 */
 	public function send($message){
 		
-		$send_to = str_replace("-","", $this->send_to['num']).'@'.$this->carriers[$this->send_to['carrier']];
+		$send_to = str_replace("-","", $this->send_to['num']).'@'.self::$carriers[$this->send_to['carrier']];
 		
-		$send_from = str_replace("-","", $this->send_from['num']).'@'.$this->carriers[$this->send_from['carrier']];
+		$send_from = str_replace("-","", $this->send_from['num']).'@'.self::$carriers[$this->send_from['carrier']];
 		
 		//define headers - send from receiver
 		$headers = "From: ".$send_from."\nEnvelope-To: ".$send_from."\n";

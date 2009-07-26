@@ -36,7 +36,7 @@ class sb_Graph_Bar3D{
 		$this->width =$width;
 		$this->height = $height;
 		$this->padding=1;
-
+        $this->colors = new stdClass();
 
 		$this->graph = imagecreate($width,$height);
 

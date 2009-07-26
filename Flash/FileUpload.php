@@ -59,7 +59,7 @@ class sb_Flash_FileUpload{
 	 * An english description of the PHP upload error codes from the manual, used to throw error
 	 * @var Array
 	 */
-	protected $upload_errors = Array(
+	public static $upload_errors = Array(
 	    UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
 	    UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
 	    UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded.',
@@ -74,6 +74,7 @@ class sb_Flash_FileUpload{
 	 * @param $key
 	 */
 	public function __construct($key='Filedata'){
+       
 		if(isset(Gateway::$request->files[$key])){
 			$this->uploaded_file = Gateway::$request->files[$key];
 			
@@ -105,9 +106,9 @@ class sb_Flash_FileUpload{
 		$this->ext = strtolower($ext);
 		$this->sizeK = round($this->uploaded_file['size']/1000);
 		$this->error = $this->uploaded_file['error'];
-		
-		if($this->error != UPLOAD_ERR_OK){
-			throw(new Exception($this->upload_errors[$this->error]));
+
+		if($this->error && $this->error != UPLOAD_ERR_OK){
+			throw(new Exception(self::$upload_errors[$this->error]));
 		}
 		
 		if(!move_uploaded_file($this->uploaded_file['tmp_name'], $this->path)){
