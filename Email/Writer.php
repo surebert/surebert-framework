@@ -294,8 +294,8 @@ class sb_Email_Writer {
                 }
 
             }
-
-            $attachment->extension = strtolower(end(explode(".", $attachment->name)));
+            $ex = explode(".", $attachment->name);
+            $attachment->extension = strtolower(array_pop($ex));
 
             //try and guess the mime type unless it is set
             if(empty($attachment->mime_type)) {
