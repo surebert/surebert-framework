@@ -32,15 +32,6 @@ sb.json.xsite = function(o){
     this.callback = o.callback || function(){};
     this.id = 'i'+(sb.json.xsite.instances.length+1);
 
-    //call and clean to prevent memory leaks
-    this.cc = function(scriptid, json){
-        
-        this.callback(json);
-        if(this.autoGC){
-            $('#'+scriptid).clear();
-        }
-    }
-
 };
 
 /**
@@ -81,20 +72,34 @@ sb.json.xsite.prototype = {
         } else {
 
             var data = sb.objects.serialize(this.data);
-            var scriptid = sb.uniqueID();
             var script = document.createElement('script');
+            script.autoGC = this.autoGC;
             script.setAttribute('type', 'text/javascript');
             script.setAttribute('charset', 'utf-8');
-            script.setAttribute('id', scriptid);
-            script.setAttribute('src', this.url+'?callback=sbjxs["'+this.id+'"].cc("'+scriptid+'", CONTENT);&'+data);
+            script.setAttribute('src', this.url+'?sb_callback=sbjxs["'+this.id+'"].callback&'+data);
             script.setAttribute('xsite', 1);
+            
+            script.onload = script.onreadystatechange = function(){
+                //IE does not fire regular onloaded
+                if (this.readyState && this.readyState !== "loaded") { return; }
 
-            script.clear = function(){
-                this.remove();
-                for (var prop in this) {
-                    try{delete this[prop];} catch(e){}
+                if(this.autoGC){
+                    this.cleanup();
                 }
             };
+            
+            //remove script tag
+            script.cleanup = function(){
+                
+                if(this.clearAttributes){
+                    this.clearAttributes();
+                }
+                
+                this.parentNode.removeChild(this);
+                //this.onload = this.onreadystatechange = null;
+                //this.cleanup = null;
+            };
+            
             document.getElementsByTagName('head')[0].appendChild(script);
             
             sb.json.xsite.instances[this.id] = this;
