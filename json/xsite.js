@@ -40,35 +40,35 @@ sb.json.xsite = function(o){
 };
 
 /**
- * @Name: sb.json.xsite.instances
- * @Description: Used Internally. An array of references to scripts loaded with sb.json.xsite
+@Name: sb.json.xsite.instances
+@Description: Used Internally. An array of references to scripts loaded with sb.json.xsite
  */
 sb.json.xsite.instances = [];
 var sbjxs = sb.json.xsite.instances;
 
 /**
- * @Name: sb.json.xsite.prototype
- * @Description: Used Internally.
+@Name: sb.json.xsite.prototype
+@Description: Used Internally.
  */
 sb.json.xsite.prototype = {
 
     /**
-     * @Name: sb.json.xsite.prototype.autoGC
-     * @Description: Determines if the script is auto garbage collected or not
+    @Name: sb.json.xsite.prototype.autoGC
+    @Description: Determines if the script is auto garbage collected or not
      */
     autoGC : true,
 
     /**
-     *@Name: sb.json.xsite.prototype.callback
-     *@Description: The callback function that the json data is passed to
+    @Name: sb.json.xsite.prototype.callback
+    @Description: The callback function that the json data is passed to
      */
     callback : function(){
 
     },
 
     /**
-     *@Name: sb.json.xsite.prototype.fetch
-     *@Description: Loads the json data from the url
+    @Name: sb.json.xsite.prototype.fetch
+    @Description: Loads the json data from the url
      */
     fetch : function(json){
 
