@@ -2,7 +2,7 @@
 /**
  * Used to model and standardize an Ajax Response
  * @author: Paul Visco
- * @version: 1.1 08/02/08 12/08/08
+ * @version: 1.2 08/02/08 7/28/09
  *
  * <code>
  * $response = new sb_Ajax_Response(new person());
@@ -20,6 +20,12 @@ class sb_Ajax_Response{
 	 * @var string
 	 */
 	public $content = null;
+
+    /**
+     * The callback javascript function to wrap the response in
+     * @var string
+     */
+    public $callback = null;
 	
 	/**
 	 * An array of headers to be passed back to the browser.
@@ -40,6 +46,10 @@ class sb_Ajax_Response{
 		if(!is_null($content)){
 			$this->set_content($content);
 		}
+
+        if(isset(Gateway::$request->get['sb_callback'])){
+            $this->callback = Gateway::$request->get['sb_callback'];
+        }
 	}
 	
 	/**
@@ -93,11 +103,18 @@ class sb_Ajax_Response{
 	 *
 	 */
 	public function dispatch(){
+
 		foreach($this->headers as $header=>$val){
 			header($header.': '.$val);
 		}
-		
-		echo $this->content;
+
+        //wrap in callback if set
+        if(!is_null($this->callback)){
+            echo $this->callback.'('.$this->content.');';
+        } else {
+            echo $this->content;
+        }
+        
 	}
 }
 ?>
