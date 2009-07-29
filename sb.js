@@ -141,7 +141,7 @@ var sb = {
     @Name: sb.script
 	@Description: creates a script tag for loading
 	@Return: DOM node A script tag
-    @Exmaple:
+    @Example:
 	var script = new sb.script({
         src : 'http://webservicesdev.roswellpark.org/test/script',
         onload : function(){
