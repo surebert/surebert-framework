@@ -153,12 +153,7 @@ var sb = {
     });
 
     script.load();
-     *
-     *<code>
-     *
-
-    </code>
-     */
+    */
     script : function(o){
         
         var script = new sb.element({
