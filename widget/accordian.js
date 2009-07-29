@@ -187,10 +187,10 @@ sb.widget.accordian.prototype = {
 		}
 	
 		if(accordian.fireOnMouseOver ==1){
-			accordian.event('mouseover', show);
+			accordian.evt('mouseover', show);
 		}
 		
-		accordian.event('mousedown', show);
+		accordian.evt('mousedown', show);
 	}
 	
 };

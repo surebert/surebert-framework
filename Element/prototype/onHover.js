@@ -1,7 +1,7 @@
 /**
 @Name: Element.prototype.onHover
 @Author: Paul Visco
-@Version: 0.1 5-21-09 06-03-09
+@Version: 0.11 5-21-09 07-29-09
 @Description: Fires an event when the user hovers over and element
 @Param: Function func The function to fire onhover, the this is the element itself
 @Param: integer interval The number of millseconds between firing
@@ -46,8 +46,8 @@ Element.prototype.onHover = function(func, interval){
             this.interval = interval || this.interval;
             var self = this;
             this.unobserve();
-            this.events.push(el.event('mouseover', function(){self.hover();}));
-            this.events.push(el.event('mouseout', function(){self.mouseout();}));
+            this.events.push(el.evt('mouseover', function(){self.hover();}));
+            this.events.push(el.evt('mouseout', function(){self.mouseout();}));
         },
 
         hover : function(interval){

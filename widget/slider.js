@@ -236,7 +236,7 @@ sb.widget.slider.prototype = {
 		
 		this.addDefaultStyles();
 		
-		this.track.event('mousedown', 
+		this.track.evt('mousedown',
 			function(e){
 				if(typeof t.onmousedown =='function'){t.onmousedown();}
 				t.setX(t.valueToPos(t.defaultValue)+e.clientX-t.origX-t.nob.offsetWidth/2);

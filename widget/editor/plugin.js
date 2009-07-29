@@ -32,7 +32,7 @@ var searchPlugin = new sb.widget.editor.plugin({
 		
 		var f,r,stage=1;
 		
-		inp.event('keydown', function(e){
+		inp.evt('keydown', function(e){
 			if(e.keyCode ==13  ){
 				switch(stage){
 					case 1:

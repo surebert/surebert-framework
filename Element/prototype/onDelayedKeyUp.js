@@ -1,7 +1,7 @@
 /**
 @Name: Element.prototype.onDelayedKeyup
 @Author: Paul Visco
-@Version: 0.1 06-17-09 06-17-09
+@Version: 0.11 06-17-09 07-29-09
 @Description: Fires after a delay on keyup.  New keypresses restart the count.
 Great for when you have a realtime ajax search but want to wait until after
 the user finishes typing.
@@ -58,7 +58,7 @@ Element.prototype.onDelayedKeyup = function(o){
 
             if(this.keyup){return;}
 
-            this.keyup = el.event('keyup', function(e){
+            this.keyup = el.evt('keyup', function(e){
 
                 if(typeof ret.onKeyUp == 'function'){
                     ret.onKeyUp.call(el, e);

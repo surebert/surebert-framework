@@ -19,7 +19,7 @@ sb.forms.textarea = {
 	@Example:
 	<textarea id="myTextArea">surebert toolkit rocks</textarea>
 	
-	$('#myTextArea').event('mouseup', function(e){
+	$('#myTextArea').evt('mouseup', function(e){
 		var sel = sb.forms.textarea.getSelection(this);
 	});
 

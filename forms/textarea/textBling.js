@@ -1,16 +1,9 @@
 sb.include('forms.textarea');
 sb.include('browser.removeSelection');
 
-/*
-Author: Paul Visco
-Created: 10/05/03
-Modified: 10/23/07 v2.0
-Note: TextBling is used for formatting text in a text area
-youtube ex. id: [youtube]Wq-eHv7OiBo[/youtube]
-*/
-
 /**
 @Name: sb.forms.textarea.textBling
+@Created: 10-05-03 07-29-09
 @Description: Allows tagging of selected text in textareas with custom tags and properties
 @Param: element editBar A reference to a DOM element that hold the buttons which add the tags
 Param: element editBox A reference to a textarea that the editing is occurring in
@@ -41,7 +34,7 @@ sb.forms.textarea.textBling.prototype = {
 	
 	addEvents : function(){
 			
-			this.editBar.event('mousedown', function(e){
+			this.editBar.evt('mousedown', function(e){
 				var target = e.target;
 				
 				//for safari which uses the span as the target

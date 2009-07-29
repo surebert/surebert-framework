@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.80 04/24/04 - 07/20/09
+@Version: 4.82 04/24/04 - 07/29/09
 @Package: surebert 
 */
 
@@ -2190,10 +2190,11 @@ sb.element = function(o){
 
     this.eventsAdded = [];
 
+
 	if(typeof o.events !='undefined'){
 
 		sb.objects.forEach.call(o.events, function(func,event,obj){
-			el.event(event, func);
+			el.evt(event, func);
 		});
 
 		delete o.events;
@@ -2210,7 +2211,6 @@ sb.element = function(o){
 
 		//remove attributes for ie's sake
 		el.removeAttribute('tag');
-
 	}
 
 	return el;
@@ -2438,7 +2438,7 @@ Element.prototype.replace = function(node){
 };
 
 /**
-@Name: Element.prototype.event
+@Name: Element.prototype.evt
 @Type: function
 @Description: Used to set event cross-browser event handlers.  For more information see sb.events.
 @Param: String evt The event to handle e.g. mouseover, mouseout, mousedown, mouseup, click, dblclick, focus, blurr, scroll, contextmenu, keydown, keyup, keypress
@@ -2447,7 +2447,7 @@ Element.prototype.replace = function(node){
 @Example:
 
 //sets the backgroundColor peroperty to red
-myElement.event('click', function(e){
+myElement.evt('click', function(e){
 	//alerts the x value of the click
 	alert(e.clientX);
 	//alerts the innerHTML of myElement
@@ -2455,7 +2455,7 @@ myElement.event('click', function(e){
 });
 
 */
-Element.prototype.event = function (evt, func){
+Element.prototype.evt = function (evt, func){
 
 	var event = sb.events.add(this, evt, func);
 
@@ -2491,7 +2491,7 @@ myDiv.events({
 Element.prototype.events = function(events){
 	for(var event in events){
 		if(typeof events[event] =='function'){
-			this.event(event, events[event]);
+			this.evt(event, events[event]);
 		}
 	}
 
@@ -2505,7 +2505,7 @@ Element.prototype.events = function(events){
 @Param: String evt An event reference returned from the sb.element instances event method above.
 @Example:
 //sets the backgroundColor property to red
-var myEvt = myElement.event('click', function(e){
+var myEvt = myElement.evt('click', function(e){
 	alert(this.innerHTML);
 });
 
@@ -2519,7 +2519,7 @@ Element.prototype.eventRemove = function (evt){
 /**
 @Name: Element.prototype.eventsRemoveAll
 @Type: function
-@Description: Removes all event observers for the sb.element that were added using this.event() or this.events()
+@Description: Removes all event observers for the sb.element that were added using this.evt() or this.events()
 @Example:
 myElement.eventsRemoveAll();
 */

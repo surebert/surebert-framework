@@ -8,7 +8,7 @@
 sb.include('widget.colorPalette');
 
 var table = new sb.widget.colorPalette('jimmy');
-table.event('click', function(e){
+table.evt('click', function(e){
 	
 	var td = e.target;
 	if(td.nodeName =='TD'){
