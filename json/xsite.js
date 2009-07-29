@@ -17,6 +17,11 @@ var xsite = new sb.json.xsite({
        alert(json.uname);
     }
 });
+
+xsite.fetch();
+
+//to test with test data
+xsite.fetch({uname: 'paul'});
 */
 sb.json.xsite = function(o){
 
@@ -62,48 +67,34 @@ sb.json.xsite.prototype = {
     },
 
     /**
-     *@Name: sb.json.xsite.prototype.load
+     *@Name: sb.json.xsite.prototype.fetch
      *@Description: Loads the json data from the url
      */
-    load : function(json){
+    fetch : function(json){
 
         if(json){
             this.callback(json);
         } else {
 
             var data = sb.objects.serialize(this.data);
-            var script = document.createElement('script');
-            script.autoGC = this.autoGC;
-            script.setAttribute('type', 'text/javascript');
-            script.setAttribute('charset', 'utf-8');
-            script.setAttribute('src', this.url+'?sb_callback=sbjxs["'+this.id+'"].callback&'+data);
-            script.setAttribute('xsite', 1);
-            
-            script.onload = script.onreadystatechange = function(){
-                //IE does not fire regular onloaded
-                if (this.readyState && this.readyState !== "loaded") { return; }
 
+            var script = new sb.script({
+                src : this.url+'?sb_callback=sbjxs["'+this.id+'"].callback&'+data
+            });
+            script.setAttribute('xsite', 1);
+            script.autoGC = this.autoGC;
+          
+            script.onload = function(){
+              
                 if(this.autoGC){
-                    this.cleanup();
+                    this.remove();
                 }
             };
-            
-            //remove script tag
-            script.cleanup = function(){
-                
-                if(this.clearAttributes){
-                    this.clearAttributes();
-                }
-                
-                this.parentNode.removeChild(this);
-                //this.onload = this.onreadystatechange = null;
-                //this.cleanup = null;
-            };
-            
-            document.getElementsByTagName('head')[0].appendChild(script);
-            
+
             sb.json.xsite.instances[this.id] = this;
 
+            script.load();
+            
         }
     }
 };

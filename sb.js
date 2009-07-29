@@ -137,6 +137,63 @@ var sb = {
 
 		return evaled;
 	},
+    /**
+    @Name: sb.script
+	@Description: creates a script tag for loading
+	@Return: DOM node A script tag
+    @Exmaple:
+	var script = new sb.script({
+        src : 'http://webservicesdev.roswellpark.org/test/script',
+        onload : function(){
+            alert($('head').innerHTML);
+            this.remove();
+            alert($('head').innerHTML);
+
+        }
+    });
+
+    script.load();
+     *
+     *<code>
+     *
+
+    </code>
+     */
+    script : function(o){
+        
+        var script = new sb.element({
+            tag : 'script',
+            htmlAttributes : {
+                type : o.type || 'text/javascript',
+                charset : o.charset || 'utf-8',
+                src : o.src
+            }, 
+            load : function(){
+                document.getElementsByTagName('head')[0].appendChild(this);
+            },
+            onload : o.onload || function(){}
+        });
+
+        script.remove = function(){
+            
+            if(this.clearAttributes){
+                this.clearAttributes();
+            }
+
+            this.parentNode.removeChild(this);
+            this.onload = this.onreadystatechange = null;
+            this.remove = null;
+        };
+
+        script.onreadystatechange = function(){
+            //IE does not fire regular onloaded
+            if (this.readyState && this.readyState !== "loaded") { return; }
+            this.onload();
+        };
+
+        return script;
+            
+    },
 
 	/**
 	@Name: sb.math
