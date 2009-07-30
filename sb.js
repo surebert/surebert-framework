@@ -156,21 +156,16 @@ var sb = {
     */
     script : function(o){
         
-        var script = new sb.element({
-            tag : 'script',
-            htmlAttributes : {
-                type : o.type || 'text/javascript',
-                charset : o.charset || 'utf-8',
-                src : o.src
-            }, 
-            load : function(){
-                document.getElementsByTagName('head')[0].appendChild(this);
-            },
-            onload : o.onload || function(){}
-        });
+        var script = document.createElement("script");
+        script.type = o.type || 'text/javascript';
+        script.charset = o.charset || 'utf-8';
+        script.src = o.src;
+        script.load = function(){
+            document.getElementsByTagName('head')[0].appendChild(this);
+        };
 
         script.remove = function(){
-            
+
             if(this.clearAttributes){
                 this.clearAttributes();
             }
@@ -179,12 +174,14 @@ var sb = {
             this.onload = this.onreadystatechange = null;
             this.remove = null;
         };
-
-        script.onreadystatechange = function(){
-            //IE does not fire regular onloaded
-            if (this.readyState && this.readyState !== "loaded") { return; }
-            this.onload();
-        };
+        
+        if(script.readyState){
+            script.onreadystatechange = function(){
+                //IE does not fire regular onloaded
+                if (this.readyState && this.readyState !== "loaded") { return; }
+                this.onload();
+            };
+        }
 
         return script;
             
