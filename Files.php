@@ -69,6 +69,7 @@ class sb_Files{
 				case 'js':
 				case 'json':
 				case 'xml':
+                case 'rtf':
 					$m = 'application/'.$ext;
 					break;
 					
@@ -98,7 +99,16 @@ class sb_Files{
                 case 'zip':
                     $m = 'application/x-zip-compressed';
                     break;
-					
+
+                case 'xls':
+                    $m = 'application/msexcel';
+                    break;
+                
+                case 'doc':
+                    $m = 'application/msword';
+                    break;
+
+                    break;
 				default:
 					$m = false;
 				
@@ -120,8 +130,7 @@ class sb_Files{
 
             if($finfo){
                 /* get mime-type for a specific file */
-                $filename = ROOT.'/private/resources/.gnupg';
-                return $finfo->file($filename);
+                return $finfo->file($file);
             } else {
                 $ext = strtolower(end(explode(".", basename($file))));
                 return self::extension_to_mime($file);
