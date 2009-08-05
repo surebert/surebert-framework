@@ -1978,7 +1978,7 @@ sb.styles = {
 	@Description: Used Internally. These properties get 'px' added to their value if no measurement is specified
 	*/
 
-	pxProps : ['fontSize', 'width', 'height', 'padding', 'border', 'margin', 'left', 'top']
+	pxProps : ['fontSize', 'width', 'height', 'padding', 'border', 'margin', 'left', 'top', 'right', 'bottom']
 
 };
 
