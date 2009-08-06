@@ -68,8 +68,9 @@ class sb_Files{
 				
 				case 'js':
 				case 'json':
-				case 'xml':
                 case 'rtf':
+                case 'pdf':
+				case 'xml':
 					$m = 'application/'.$ext;
 					break;
 					
@@ -99,15 +100,21 @@ class sb_Files{
                 case 'zip':
                     $m = 'application/x-zip-compressed';
                     break;
-
-                case 'xls':
-                    $m = 'application/msexcel';
-                    break;
                 
                 case 'doc':
-                    $m = 'application/msword';
+                    $m = 'application/vnd.ms-word';
                     break;
 
+                case 'xls':
+                    $m = 'application/vnd.ms-excel';
+                    break;
+
+                case 'ppt':
+                    $m = 'application/vnd.ms-powerpoint';
+                    break;
+                
+                case 'docx':
+                    $m = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
                     break;
 				default:
 					$m = false;
