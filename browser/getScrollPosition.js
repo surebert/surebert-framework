@@ -7,25 +7,25 @@ var pos = sb.browser.getScrollPosition();
 //pos = [400, 300]
 */
 sb.browser.getScrollPosition = function(){
-	var x=0,y=0;
+	var x=0,y=0;;
 
-	if(window.pageYOffset){
-		y = window.pageYOffset;
-	} else if (document.documentElement && document.documentElement.scrollTop){
-		y= document.documentElement.scrollTop;
-	} 
-	sb.browser.scrollY = y;
 
-	if(window.pageXSOffset){
-		x = window.pageXOffset;
-	} else if (document.documentElement && document.documentElement.scrollLeft){
-		x = document.documentElement.scrollLeft;
-	} 
-	
-	sb.browser.scrollX = x;
-    
-	return [sb.browser.scrollX, sb.browser.scrollY];
+    if (typeof window.pageYOffset != 'undefined'){
+        x = window.pageXOffset;
+        y = window.pageYOffset;
+    } else if (typeof document.documentElement.scrollTop
+    != 'undefined' && document.documentElement.scrollTop > 0){
+        x = document.documentElement.scrollLeft;
+        y = document.documentElement.scrollTop;
+    } else if (typeof document.body.scrollTop != 'undefined'){
+        x = document.body.scrollLeft;
+        y = document.body.scrollTop;
+    }
 
+    sb.browser.x = x;
+    sb.browser.y = y;
+
+    return [x,y];
 };
 
 sb.events.add(window, 'scroll', sb.browser.getScrollPosition);
