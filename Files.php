@@ -3,7 +3,7 @@
  * Various functions for working with files
  * @author Paul Visco
  * @package files
- * @version 1.25 11-19-07 06-16-09
+ * @version 1.3 11-19-07 08-18-09
  *
  */
 class sb_Files{
@@ -102,7 +102,7 @@ class sb_Files{
                     break;
                 
                 case 'doc':
-                    $m = 'application/ms-word';
+                    $m = 'application/msword';
                     break;
 
                 case 'xls':
@@ -131,18 +131,28 @@ class sb_Files{
      * @return string The mime type from finfo
      */
     public static function file_to_mime($file){
-
-        if(class_exists('finfo')){
+        
+        $mime = self::filename_to_mime($file);
+        if($mime){
+            return $mime;
+        } else if(class_exists('finfo') && is_file($file)){
             $finfo = @new finfo(FILEINFO_MIME, "/usr/share/misc/magic");
 
             if($finfo){
                 /* get mime-type for a specific file */
                 return $finfo->file($file);
-            } else {
-                $ext = strtolower(end(explode(".", basename($file))));
-                return self::extension_to_mime($file);
             }
         }
+    }
+    /**
+     * Convert a filename to a mime type
+     * @param string $filename
+     * @return string The mime type of the file
+     */
+    public static function filename_to_mime($filename){
+        $arr = explode(".", basename($filename));
+        $ext = strtolower(end($arr));
+        return self::extension_to_mime($ext);
     }
 	
 	/**
