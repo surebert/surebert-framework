@@ -102,7 +102,7 @@ class sb_Files{
                     break;
                 
                 case 'doc':
-                    $m = 'application/vnd.ms-word';
+                    $m = 'application/ms-word';
                     break;
 
                 case 'xls':
