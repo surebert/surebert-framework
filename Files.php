@@ -162,8 +162,12 @@ class sb_Files{
 	 * @param boolean $del Should directory itself be deleted upon completion
 	 * @return boolean
 	 */
-	public static function recursive_delete($dir, $del =0){
-		
+	public static function recursive_delete($dir, $del=0){
+
+        if(substr($dir, 0, 1) == '/'){
+            die("You cannot delete root directories");
+        }
+        
 		$iterator = new RecursiveDirectoryIterator($dir);
 		foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file)
 		{
