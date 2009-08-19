@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /**
  * This script is used to backup all mysql databases on a server via mysqldump.
@@ -204,14 +203,15 @@ class sb_PDO_BackupMysql{
         }
 
 		$iterator = new RecursiveDirectoryIterator($dir);
-		foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file)
-		{
-		  if ($file->isDir()) {
+		foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file){
+		  $name = $file->getFilename();
+          if ($file->isDir() && $name != '.' && $name != '..') {
 		     rmdir($file->getPathname());
-		  } else {
+		  } else if($file->isFile()){
 		     unlink($file->getPathname());
 		  }
 		}
+
 		if($del ==1){
 			rmdir($dir);
 		}
