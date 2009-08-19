@@ -120,30 +120,26 @@ class sb_PDO_BackupMysql{
             mkdir($this->dump_dir, true);
         }
 
-        //create the first dump directory if it doesn't exist
-        if(!is_dir($this->dump_dir.'1')){
-            mkdir($this->dump_dir.'1', true);
+        foreach(range($this->max_version, 1) as $version){
+            $dir = $this->dump_dir.$version;
 
-        //otherwise move each directory up and remove any dir that = the max_version
-        } else {
+            if(is_dir($dir)){
 
-            foreach(range($this->max_version, 1) as $version){
-                $dir = $this->dump_dir.$version;
-
-                if(is_dir($dir)){
-
-                    if($version == $this->max_version){
-                        $this->recursive_delete($dir, 1);
-                        $this->log('Deleting oldest backup');
-                    } else{
-                        $new_version = $version+1;
-                        rename($dir, $this->dump_dir.$new_version);
-                        $this->log('Moving backup '.$version.' to version '.$new_version);
-                    }
+                if($version == $this->max_version){
+                    $this->recursive_delete($dir, 1);
+                    $this->log('Deleting backup '.$this->max_version);
+                } else{
+                    $new_version = $version+1;
+                    rename($dir, $this->dump_dir.$new_version);
+                    $this->log('Moving backup '.$version.' to version '.$new_version);
                 }
             }
         }
 
+        if(!is_dir($this->dump_dir.'1')){
+            mkdir($this->dump_dir.'1', true);
+
+        }
     }
 
 
@@ -190,7 +186,7 @@ class sb_PDO_BackupMysql{
             file_put_contents("php://stdout", $message."\n");
         }
         
-        file_put_contents($this->dump_dir.'1/dump.log', $message."\n", FILE_APPEND);
+        file_put_contents($this->dump_dir.'/dump.log', $message."\n", FILE_APPEND);
        
     }
 
@@ -221,9 +217,13 @@ class sb_PDO_BackupMysql{
 		}
 	}
 
+    /**
+     * Stamp the final time and move the dump file into the newest version directory
+     */
     public function  __destruct() {
         $ms = round(microtime(true)-$this->start, 2);
         $this->log($ms.'ms elapsed');
+        rename($this->dump_dir.'dump.log', $this->dump_dir.'1/dump.log');
     }
 
 }
