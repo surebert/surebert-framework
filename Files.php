@@ -164,19 +164,20 @@ class sb_Files{
 	 */
 	public static function recursive_delete($dir, $del=0){
 
-        if(substr($dir, 0, 1) == '/'){
+         if(substr($dir, 0, 1) == '/'){
             die("You cannot delete root directories");
         }
-        
+
 		$iterator = new RecursiveDirectoryIterator($dir);
-		foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file)
-		{
-		  if ($file->isDir()) {
+		foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file){
+		  $name = $file->getFilename();
+          if ($file->isDir() && $name != '.' && $name != '..') {
 		     rmdir($file->getPathname());
-		  } else {
+		  } else if($file->isFile()){
 		     unlink($file->getPathname());
 		  }
 		}
+
 		if($del ==1){
 			rmdir($dir);
 		}
