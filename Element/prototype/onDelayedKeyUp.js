@@ -45,6 +45,7 @@ Element.prototype.onDelayedKeyup = function(o){
     var ret = {
         onAfterDelay : o.onAfterDelay,
         onKeyUp : o.onKeyUp,
+        onKeyDown : o.onKeyDown,
         delay : Math.round(o.delay/10) || 50,
         timer : false,
         debug : o.debug,
@@ -88,6 +89,13 @@ Element.prototype.onDelayedKeyup = function(o){
                              ret.count = 0;
                         }
                     }, ret.delay);
+                }
+            });
+
+            this.keydown = el.evt('keydown', function(e){
+               
+                if(typeof ret.onKeyDown == 'function'){
+                    ret.onKeyDown.call(el, e);
                 }
             });
         }
