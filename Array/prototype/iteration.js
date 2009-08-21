@@ -3,7 +3,7 @@
 @Description: Can be used to iterate arrays with next, rewind, forward, 
 */
 Array.prototype.iteration = function(){
-	if(this.pointer == -1){
+	if(this.pointer === null){
 		this.point = 0;
 	}
 };
@@ -13,7 +13,7 @@ Array.prototype.iteration = function(){
 @Description: Used to keep track of the array key we are referenceing with next, prev, end, current, rewind
 
 */
-Array.prototype.pointer = -1;
+Array.prototype.pointer = 0;
 
 /**
 @Name: Array.prototype.current
@@ -126,7 +126,7 @@ Array.prototype.prev = function(){
 /**
 @Name: Array.prototype.cycle
 @Author: Paul Visco
-@Version: 1.1 11/19/07
+@Version: 1.2 08/21/09
 @Description: Cycles through an array by incrememtning its pointer and reseting it back to the beginng (0) when it gets to the end.
 @Param: Number direction Accepts either 1 for ascending order or -1 for decending order. If not specified that ascending order is the default. 
 @Return: Array Returns The array sorted naturally.
@@ -137,17 +137,33 @@ var answer = myArray.cycle();
 alert(myArray.cycle());
 
 */
-Array.prototype.cycle = function(){
+Array.prototype.cycle = function(backwards){
+    
+    var val, b=backwards;
 	this.iteration();
 	if(!this.sb_beginCycle){
 		this.sb_beginCycle =1;
-		var val = this.first();
+        if(b){
+            val = this.last();
+        } else {
+            val = this.first();
+        }
 	} else {
-		var val = this.next();
+        if(b){
+            val = this.prev();
+        } else {
+            val = this.next();
+        }
+
 	}
 	
 	if(typeof val == 'undefined'){
-		return this.rewind();
+		
+         if(b){
+            return this.end();
+        } else {
+            return this.rewind();
+        }
 	} else {
 		return val;
 	}
