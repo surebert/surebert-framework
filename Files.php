@@ -7,44 +7,44 @@
  *
  */
 class sb_Files{
-	
+
 	/**
 	 * read a file into chunks for faster force download and better memory management
 	 *
 	 */
-	public static function read_chunked($file_name,$return_bytes=true) { 
-		
-		 // how many bytes per chunk 
+	public static function read_chunked($file_name,$return_bytes=true) {
+
+		 // how many bytes per chunk
 		$chunk_size = 1*(1024*1024);
-		$buffer = ''; 
-		$cnt =0; 
-		
-		$handle = fopen($file_name, 'rb'); 
-		if ($handle === false) { 
-			return false; 
-		} 
-		
-		while (!feof($handle)) { 
-			
-			$buffer = fread($handle, $chunk_size); 
-			echo $buffer; 
-			ob_flush(); 
-			flush(); 
-			
-			if ($return_bytes) { 
-				$cnt += strlen($buffer); 
-			} 
-		} 
-		
-		$status = fclose($handle);
-		
-		if ($return_bytes && $status) { 
-			return $cnt; 
+		$buffer = '';
+		$cnt =0;
+
+		$handle = fopen($file_name, 'rb');
+		if ($handle === false) {
+			return false;
 		}
-		
+
+		while (!feof($handle)) {
+
+			$buffer = fread($handle, $chunk_size);
+			echo $buffer;
+			ob_flush();
+			flush();
+
+			if ($return_bytes) {
+				$cnt += strlen($buffer);
+			}
+		}
+
+		$status = fclose($handle);
+
+		if ($return_bytes && $status) {
+			return $cnt;
+		}
+
 		return $status;
 	}
-	 
+
 	/**
 	 * Used to convert file extensions to the appropriate mime-type
  	 * http://www.ltsw.se/knbase/internet/mime.htp
@@ -53,9 +53,9 @@ class sb_Files{
 	 * @return boolean returns false if not found
 	 */
 	public static function extension_to_mime($ext){
-		
+
 			switch($ext){
-				
+
 				case 'bmp':
 				case 'gif':
 				case 'jpg':
@@ -65,7 +65,7 @@ class sb_Files{
 					$ext = ($ext=='jpg') ? 'jpeg' : $ext;
 					$m = 'image/'.$ext;
 					break;
-				
+
 				case 'js':
 				case 'json':
                 case 'rtf':
@@ -73,54 +73,55 @@ class sb_Files{
 				case 'xml':
 					$m = 'application/'.$ext;
 					break;
-					
+
 				case 'html':
 				case 'txt':
 				case 'css':
                 case 'csv':
 					$m = 'text/'.$ext;
 					break;
-				
+
+                case 'doc':
+                    $m = 'application/msword';
+                    break;
+
+                case 'docx':
+                    $m = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                    break;
+
 				case 'flv':
 					$m = 'video/x-flv';
 					break;
-					
+
 				case 'mp3':
 					$m = 'audio/mpeg';
 					break;
-					
+
 				case 'mid':
 					$m = 'audio/x-midi';
 					break;
+
+                case 'ppt':
+                    $m = 'application/vnd.ms-powerpoint';
+                    break;
 
 				case 'wav':
 					$m = 'audio/x-wav';
 					break;
 
-                case 'zip':
-                    $m = 'application/x-zip-compressed';
-                    break;
-                
-                case 'doc':
-                    $m = 'application/msword';
-                    break;
-
                 case 'xls':
                     $m = 'application/vnd.ms-excel';
                     break;
 
-                case 'ppt':
-                    $m = 'application/vnd.ms-powerpoint';
+                case 'zip':
+                    $m = 'application/x-zip-compressed';
                     break;
-                
-                case 'docx':
-                    $m = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-                    break;
+
 				default:
 					$m = false;
-				
+
 			}
-			
+
 			return $m;
 	}
 
@@ -131,7 +132,7 @@ class sb_Files{
      * @return string The mime type from finfo
      */
     public static function file_to_mime($file){
-        
+
         $mime = self::filename_to_mime($file);
         if($mime){
             return $mime;
@@ -154,7 +155,7 @@ class sb_Files{
         $ext = strtolower(end($arr));
         return self::extension_to_mime($ext);
     }
-	
+
 	/**
 	 * Recursively deletes the files in a diretory
 	 *
@@ -182,7 +183,7 @@ class sb_Files{
 			rmdir($dir);
 		}
 	}
-	
+
 }
 
 ?>
