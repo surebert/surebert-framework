@@ -267,7 +267,7 @@ class sb_Text_Bling{
 		$str = preg_replace( "~\[link=(.*?)\](.*?)\[\/link\]~", "<a class=\"blank\" href=\"\\1\">\\2</a>", $str);
 		
 		### url links ###\\2://\\3
-		$str = preg_replace("#(\s|\n)([a-z]+?)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", ' <a href="\\2://\\3" title="\\2://\\3">(VISIT LINK)</a>', $str); 
+		$str = preg_replace("#(\s|\n)([a-z]+?)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", ' <a href="\\2://\\3" title="\\2://\\3">(LINK)</a>', $str); 
 		
 		return $str;
 	}
@@ -298,7 +298,7 @@ class sb_Text_Bling{
 		$str = preg_replace( "~\[wikipedia\](.*?)\[\/wikipedia\]~s", '<a class="blank"  href="http://en.wikipedia.org/wiki/Special:Search?search='.str_replace(" ", "_", "\\1").'&amp;go=Go"  title="click to search wikipedia for \\1" >(WIKIPEDIA - \\1)</a>', $str );
 		
 		### make wiktionary searches ###
-		$str = preg_replace( "~\[dict\](.*?)\[\/dict\]~s", '<a class="blank"  href="http://en.wiktionary.org/wiki/Special:Search?search='.str_replace(" ", "_", "\\1").'&amp;go=Go"  title="click to search wiktionary for \\1">(WIKTIONARY - \\1)</a>', $str );
+		$str = preg_replace( "~\[wiktionary\](.*?)\[\/wiktionary\]~s", '<a class="blank"  href="http://en.wiktionary.org/wiki/Special:Search?search='.str_replace(" ", "_", "\\1").'&amp;go=Go"  title="click to search wiktionary for \\1">(WIKTIONARY - \\1)</a>', $str );
 		
 		return $str;
 	}
