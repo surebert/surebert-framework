@@ -61,28 +61,38 @@ Element.prototype.onDelayedKeyup = function(o){
 
             this.keyup = el.evt('keyup', function(e){
 
-                if(typeof ret.onKeyUp == 'function'){
+                ret.count = 0;
+
+               if(typeof ret.onKeyUp == 'function'){
                     ret.onKeyUp.call(el, e);
                 }
 
-                ret.count = 0;
+                if(sb.browser.agent == 'ie'){
+                    var e = {
+                       keyCode : e.keyCode,
+                       clientX : e.clientX,
+                       clientY : e.clientY,
+                       target : e.target,
+                       relatedTarget : e.relatedTarget
+                    };
+                }
 
                 if(!ret.timer){
-
+                   
                      ret.timer = window.setInterval(function(){
                         ret.count++;
-
+                        
                         if(ret.debug && console){
                             console.log(ret.count);
                         }
-
+                        
                         if(ret.count > 10){
 
                              window.clearTimeout(ret.timer);
 
                              if(typeof ret.onAfterDelay == 'function'){
-
-                                 ret.onAfterDelay.call(el, e);
+                                ret.onAfterDelay.call(el, e);
+                                
                              }
 
                              ret.timer = null;
@@ -90,6 +100,8 @@ Element.prototype.onDelayedKeyup = function(o){
                         }
                     }, ret.delay);
                 }
+
+                
             });
 
             this.keydown = el.evt('keydown', function(e){
