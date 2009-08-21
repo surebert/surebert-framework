@@ -116,7 +116,7 @@ class sb_PDO_BackupMysql{
     protected function check_dump_dir(){
 
         if(!is_dir($this->dump_dir)){
-            mkdir($this->dump_dir, true);
+            mkdir($this->dump_dir, 0700, true);
         }
 
         foreach(range($this->max_version, 1) as $version){
@@ -136,7 +136,7 @@ class sb_PDO_BackupMysql{
         }
 
         if(!is_dir($this->dump_dir.'1')){
-            mkdir($this->dump_dir.'1', true);
+            mkdir($this->dump_dir.'1', 0700, true);
 
         }
     }
@@ -185,7 +185,7 @@ class sb_PDO_BackupMysql{
             file_put_contents("php://stdout", $message."\n");
         }
         
-        file_put_contents($this->dump_dir.'/dump.log', $message."\n", FILE_APPEND);
+        file_put_contents($this->dump_dir.'dump.log', $message."\n", FILE_APPEND);
        
     }
 
