@@ -57,7 +57,7 @@ class sb_Validate{
 		$result->value = $email;
 		
 		if(preg_match("/^[\w-!\+]+(\.[\w-!\+]+)*@[\w-]+(\.[\w-]+)*(\.[\w]{2,4})$/", $email)){
-			list($name,$domain)=split('@',$email);
+			list($name,$domain)=explode('@',$email);
 			
 			if(!checkdnsrr($domain,'MX')) {
 				$result->is_valid = false;
