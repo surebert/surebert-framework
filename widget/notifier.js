@@ -127,6 +127,8 @@ sb.widget.notifier = {
         el.clearing = window.setTimeout(function(){
             t.clearMethod.call(el);
         }, 4000);
+
+
     },
 
     /**
@@ -181,6 +183,8 @@ sb.widget.notifier = {
         if(!this.box){
             this.createBox();
         }
+
+        this.box.style.zIndex = 999;
 
         var t = this;
         sb.events.add(window, 'scroll', function(e){
