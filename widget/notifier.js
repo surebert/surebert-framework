@@ -67,7 +67,6 @@ sb.widget.notifier = {
                 tween : el.effect.opacityTween || 'inCubic'
             }
         ], el.effect.duration || 48).start();
-        document.title = this.style.zIndex;
     },
 
     createBox : function(){
