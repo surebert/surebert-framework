@@ -6,6 +6,13 @@ sb.include('Element.prototype.cssTransition');
 @Version: 1.0 08-06-2009
 @Example:
 //add this css
+#sb_notifications{
+    position:absolute;
+    right:10px;
+    top:10px;
+    z-index:999;
+}
+
 .sb_notify{
     width:500px;
     border:1px solid #ACACAC;
@@ -29,7 +36,10 @@ sb.widget.notifier = {
     clearMethod : function(){
 
         var el = this;
-
+        if(this.clearing){
+            window.clearTimeout(this.clearing);
+        }
+        
         el.style.zIndex = 999;
         var height = el.offsetHeight;
         height = height-(parseInt(el.getStyle('padding'), 10));
@@ -72,14 +82,7 @@ sb.widget.notifier = {
     createBox : function(){
         this.box = new sb.element({
            tag : 'div',
-           id : 'sb_notifications',
-           styles : {
-               position : 'absolute',
-               zIndex : 999,
-               top : '0px',
-               right : '0px',
-               minWidth : '500px'
-           }
+           id : 'sb_notifications'
         });
 
         this.box.appendToTop('body');
@@ -114,7 +117,8 @@ sb.widget.notifier = {
     notify : function(message, className, effect){
 
         className = ' '+className || '';
-
+        var t = this;
+        
         var el = new sb.element({
             tag : 'div',
             className : 'sb_notify'+className,
@@ -122,12 +126,16 @@ sb.widget.notifier = {
             effect : effect || {}
         });
 
-        el.appendToTop(this.box);
-        var t = this;
-        el.clearing = window.setTimeout(function(){
-            t.clearMethod.call(el);
-        }, 4000);
 
+        el.clear = function(){
+            t.clearMethod.call(el);
+        };
+
+        el.appendToTop(this.box);
+     
+        el.clearing = window.setTimeout(el.clear, 4000);
+
+        return el;
 
     },
 
@@ -177,14 +185,16 @@ sb.widget.notifier = {
 	@Name: sb.widget.notifier.init
 	@Description: Looks for sb_notifications box, if not found, creates and appends to the top of body tag
 	*/
-    init : function(){
+    init : function(o){
         this.box = $('#sb_notifications');
-
+        this.events = o.events || {};
         if(!this.box){
             this.createBox();
         }
 
         this.box.style.zIndex = 999;
+        var t = this;
+        this.box.events(this.events);
 
         var t = this;
         sb.events.add(window, 'scroll', function(e){
