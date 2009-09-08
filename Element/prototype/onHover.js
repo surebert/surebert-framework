@@ -1,21 +1,29 @@
 /**
 @Name: Element.prototype.onHover
 @Author: Paul Visco
-@Version: 0.11 5-21-09 07-29-09
+@Version: 0.11 5-21-09 09-08-09
 @Description: Fires an event when the user hovers over and element
-@Param: Function func The function to fire onhover, the this is the element itself
+@Param: o Object
+o.start Function The function to fire when you start hovering
+o.stop Function The function to fire when you stop hovering
 @Param: integer interval The number of millseconds between firing
 @Return: returns A hovering object with properties interval, timer, events, and methods unobserve, observe, and hover
 @Example:
 var hovering = myElement.onHover(function(){this.innerHTML = new Date();}, 200);
 //OR
-var hovering = $('#my_node').onHover(app.colorPicker.updatePalette, 100);
+var hovering = $('#my_node').onHover({
+    onStart : app.colorPicker.updatePalette,
+    onStop : function(){
+        document.title = new Date();
+    },
+    interval : 100
+});
 
 //force hover - takes optional interval argument
 hovering.hover();
 
 //force hover stop
-hovering.mouseout();
+hovering.hoverstop();
 
 //stop observing hover
 hovering.unobserve();
@@ -24,20 +32,20 @@ hovering.unobserve();
 hovering.overserve();
 */
 
-Element.prototype.onHover = function(func, interval){
-
+Element.prototype.onHover = function(o){
 
     var el = this;
     var hovering = function(){
-        this.interval = interval || 500;
+        this.interval = o.interval || 500;
         this.events = [];
         this.observe();
-
+        this.onStart = o.onStart;
+        this.onStop = o.onStop;
     };
 
     hovering.prototype = {
         unobserve : function(){
-            this.mouseout();
+            this.hoverstop();
             for(var x=0;x<this.events.length;x++){
                 sb.events.remove(this.events[x]);
             }
@@ -47,22 +55,29 @@ Element.prototype.onHover = function(func, interval){
             var self = this;
             this.unobserve();
             this.events.push(el.evt('mouseover', function(){self.hover();}));
-            this.events.push(el.evt('mouseout', function(){self.mouseout();}));
+            this.events.push(el.evt('mouseout', function(){self.hoverstop();}));
         },
 
         hover : function(interval){
-            this.interval = interval || this.interval;
-            this.mouseout();
-            this.timer = window.setInterval(function(){
-                if(typeof func == 'function'){
-                    func.call(el);
+            var t = this;
+            t.interval = interval || t.interval;
+            t.hoverstop();
+            
+            t.timer = window.setInterval(function(){
+                if(typeof t.onStart == 'function'){
+                    t.onStart.call(el);
                 }
-            }, this.interval);
+            }, t.interval);
         },
 
-        mouseout : function(){
-            if(this.timer){
-                window.clearInterval(this.timer);
+        hoverstop : function(){
+            var t=this;
+            if(t.timer){
+                window.clearInterval(t.timer);
+                if(typeof t.onStop == 'function'){
+                    t.onStop.call(el);
+                }
+                
             }
         }
     };
