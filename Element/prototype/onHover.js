@@ -59,10 +59,13 @@ Element.prototype.onHover = function(o){
         },
 
         hover : function(interval){
+        
             var t = this;
+           
             t.interval = interval || t.interval;
-            t.hoverstop();
-            
+            //stop but don't fire
+            t.hoverstop(true);
+
             t.timer = window.setInterval(function(){
                 if(typeof t.onStart == 'function'){
                     t.onStart.call(el);
@@ -70,11 +73,12 @@ Element.prototype.onHover = function(o){
             }, t.interval);
         },
 
-        hoverstop : function(){
+        hoverstop : function(suppressHandler){
             var t=this;
             if(t.timer){
                 window.clearInterval(t.timer);
-                if(typeof t.onStop == 'function'){
+                t.timer = null;
+                if(!suppressHandler && typeof t.onStop == 'function'){
                     t.onStop.call(el);
                 }
                 
