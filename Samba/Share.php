@@ -8,17 +8,17 @@
  * <code>
  * $win = new sb_Samba_Share('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
  * print_r($win->ls());
- * 
+ *
  * </code>
  */
 	class sb_Samba_Share{
-				
+
 		/**
 		 * The domain of the connecting windows account
 		 * @var string
 		 */
 		private $domain;
-				
+
 		/**
 		 * The host machine that this share is on
 		 * @var string
@@ -30,7 +30,7 @@
 		 * @var unknown_type
 		 */
 		private static $fileregex = "/[-?|\/?]?(\w+\.\w{1,3})/";
-		
+
 		/**
 		 * The path to a log file for this object
 		 * @var unknown_type
@@ -40,34 +40,34 @@
 		 * The password that to the windows account
 		 * @var string
 		 */
-		
+
 		/**
-		 * Weather to log the ls transactions 
+		 * Weather to log the ls transactions
 		 * @var boolean
 		 */
 		public static $logls = 0;
-		
+
         /**
          * The password to the samba share
          * @var string
          */
 		private $password;
-		
+
 		/**
 		 * The name of the share on the host machine
 		 * @var string
 		 */
 		private $share;
-		
+
 		/**
 		 * The user name of the windows account
 		 * @var string
 		 */
 		private $username;
-		
-		
+
+
 		/**
-		 * Class constructor for the rp_WindowsShare class.  
+		 * Class constructor for the rp_WindowsShare class.
 		 * @param $uname
 		 * @param $pass
 		 * @param $path
@@ -80,7 +80,7 @@
 			$this->host = $host;
 			$this->share = $share;
 		}
-		
+
 		/**
 		 * Copies files from the windows machine to the linux machine
 		 * @var $getpath the file path at the windows machine
@@ -90,10 +90,10 @@
 		public function copy($getpath, $putpath = '.', &$output = null){
 			//get file string massage
 			$prefile = trim(str_replace('\\', '-', $getpath));
-			
-			if(preg_match(self::$fileregex, $prefile, $matches)){	
+
+			if(preg_match(self::$fileregex, $prefile, $matches)){
 				$filename = $matches[1];
-				
+
 				//putfile data massage
 				if(preg_match(self::$fileregex, $putpath, $matches)){
 					$putpath = str_replace($matches[0], '', $putpath);
@@ -102,53 +102,63 @@
 				}else{
 					$putpath = rtrim($putpath, "/ \\");
 				}
-				
+
 				$getpath = self::winslashes($getpath);
 				$command = "get $getpath $putpath/$filename";
-				$this->execute($command, $output);	
-	
+				$this->execute($command, $output);
+
 				return ($output)?0:1;
 			}else{
 				print_raw($matches);
 			}
-			
+
 			$output['error'] = "File $getpath cannot be found";
 			return 0;
-			
+
 		}
-	
-		
+
+
 		/**
 		 * Executes the command line function that completes the remote windows operations
 		 * @param $command string the command to issue to the smbclient
 		 * @param $output array what the command line returns
 		 * @param $log boolean weather to log this transaction
 		 */
-		private function execute($command, &$output = null, $log = 1){			
+		private function execute($command, &$output = null, $log = 1){
 			$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command'";
 			exec($cmd, $output, $return);
-			
+
 			//log transaction
 			if($log && (self::$logpath !== '')){
 				$data = date('F jS Y h:i a', mktime()) . "\n Command: $cmd \n Output:" . print_r($output, 1) . "\n Return: " . print_r($return, 1) . "\n\n\n";
-				file_put_contents(self::$logpath, $data, FILE_APPEND);				
+				file_put_contents(self::$logpath, $data, FILE_APPEND);
 			}
-		}		
-		
+		}
+
 		/**
 		 * Returns a list of the contents of the root of the share, or what ever directory is requested in $subdir
 		 * @param $subdir
 		 * @return unknown_type
 		 */
-		public function ls($subdir = '', &$raw = NULL){	
-			
+		public function ls($subdir = '', &$raw = NULL){
+
 			$teststr  = str_replace('\\', '-', $subdir);
 			$nub =  (preg_match('/[-?|\/?]*(\w+\.\w{1,3})/', $teststr))?'':'\*';
-			
-		 	$this->execute("ls $subdir".$nub, $raw_ls, 0);	
+
+		 	$this->execute("ls $subdir".$nub, $raw_ls, 0);
 		 	$raw = $raw_ls;
 			$ret = ($raw_ls)? $this->processLS($raw_ls, $subdir):0;
-		 	return$ret;
+		 	return $ret;
+		}
+
+        /**
+		 * Returns a list of the contents of the root of the share, or what ever directory is requested in $subdir
+		 * @param $subdir
+		 * @return unknown_type
+		 */
+		public function dir($subdir = '', &$raw = NULL){
+
+			return $this->ls($subdir, $raw);
 		}
 
 		/**
@@ -160,11 +170,11 @@
 		 * @return boolean success
 		 */
 		public function paste($localfile, $remotefile = "." , &$output = null){
-			
+
 			preg_match(self::$fileregex, $localfile, $matches);
-			
-			$filename  = $matches[1];	
-			
+
+			$filename  = $matches[1];
+
 			if(preg_match(self::$fileregex, $remotefile, $matches)){
 				$remotefile = str_replace($matches[0], '', $remotefile);
 				$filename = $matches[1];
@@ -173,34 +183,34 @@
 				//zap the last slash
 				$remotefile = rtrim($remotefile, "/ \\");
 			}
-			
+
 			$putfile = self::winslashes("$remotefile/$filename");
-			$command = "put $localfile $putfile";		
-			
+			$command = "put $localfile $putfile";
+
 			//echo $command; exit;
-			
+
 			$this->execute($command, $output);
 			return ($output)?0:1;
 		}
-		
+
 		/**
-		 * Internal operation: converts raw commanline ls returns into an array of samba share listing objects 
+		 * Internal operation: converts raw commanline ls returns into an array of samba share listing objects
 		 * @private
 		 */
 		private function processLS($raw_ls, $subdir = ''){
 			$ret = array();
-			
+
 			foreach($raw_ls as $listing){
 				$temp = $this->parseListing($listing, $subdir);
 				if($temp){
 					$ret[] = $temp;
 				}
 			}
-			
+
 			return $ret;
 		}
-	
-		
+
+
 		/**
 		 * Converts a line of returned output into a sb_Samba_Share_Listing object
 		 * @param $listing
@@ -210,23 +220,23 @@
 		private	function parseListing($listing, $subdir = ''){
 			$ret = new sb_Samba_Share_Listing();
 			$exp = '/^\s*(\w+\.?\w{3})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
-			
-			
+
+
 			preg_match_all($exp, $listing, $matches);
-			
+
 			if($matches[0]){
 				$ret->name = $matches[1][0];
 				$ret->type = $matches[2][0];
 				$ret->size = $matches[3][0];
 				$ret->path = $subdir;
 				$ret->datemodified =  $matches[4][0];
-				
+
 				return $ret;
 			}
-			
+
 			return 0;
 		}
-		
+
 		/**
 		 * Converts all slashes in a string to be windows readable slashes
 		 * @param $str
@@ -235,9 +245,9 @@
 		public static function winslashes($str){
 			return str_replace("/", "\\", $str);
 		}
-		
+
 	}
-	
+
 
 
 ?>
