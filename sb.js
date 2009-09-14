@@ -1054,7 +1054,6 @@ sb.objects = {
 
 		sb.objects.forEach.call(o, function(value, prop, object){
 
-			
 			if(sb.typeOf(value) == 'array'){
 				
 				value.forEach(function(v, k){
@@ -1086,7 +1085,6 @@ sb.objects = {
 					}
 				});
 			} else {
-
 
 				a.push(prop+'='+encodeURIComponent(value));
 			}
@@ -1172,7 +1170,6 @@ sb.objects = {
 	forEach : function(func){
 		for(var prop in this){
 			if(this.hasOwnProperty(prop) && !sb.objects[prop] || prop =='infuse'){
-			
 				func(this[prop], prop, this);
 			}
 		}
