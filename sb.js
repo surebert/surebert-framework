@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.83 04/24/04 - 08/06/09
+@Version: 4.84 04/24/04 - 09/14/09
 @Package: surebert 
 */
 
@@ -1054,14 +1054,19 @@ sb.objects = {
 
 		sb.objects.forEach.call(o, function(value, prop, object){
 
+			
 			if(sb.typeOf(value) == 'array'){
-
+				
 				value.forEach(function(v, k){
 					a.push(prop+'[]='+encodeURIComponent(v));
 				});
-
-			} else if(typeof value =='object'){
-
+				
+			} else if(typeof value == 'object'){
+				
+				if(value == null){
+					return null;
+				}
+				
 				sb.objects.forEach.call(value, function(v2, k2, o2){
 
 					if(typeof v2 == 'object' || sb.typeOf(v2) == 'array'){
@@ -1081,6 +1086,8 @@ sb.objects = {
 					}
 				});
 			} else {
+
+
 				a.push(prop+'='+encodeURIComponent(value));
 			}
 		});
@@ -1165,6 +1172,7 @@ sb.objects = {
 	forEach : function(func){
 		for(var prop in this){
 			if(this.hasOwnProperty(prop) && !sb.objects[prop] || prop =='infuse'){
+			
 				func(this[prop], prop, this);
 			}
 		}
