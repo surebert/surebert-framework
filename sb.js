@@ -399,6 +399,10 @@ $ = function(selector, root) {
 
 	root = root || document;
 
+	if(selector === ''){
+		return new sb.nodeList();
+	}
+	
 	//return items that are already objects
 	if(typeof selector != 'string'){
 
@@ -423,7 +427,7 @@ $ = function(selector, root) {
 
 	nodeList.setSelector(selector);
 
-	if(document.querySelectorAll){
+	if(document.querySelectorAllX){
 		nodeList.add(root.querySelectorAll(selector));
 
 	} else {
@@ -604,17 +608,20 @@ $.getElementsByClassName = function(selector, root){
     var nodes = root.getElementsByTagName(parts[0] || '*');
     var className = parts[1], node, cur_class_name,len = nodes.length,x=0;
     var rg = RegExp("\\b"+className+"\\b");
+	
+	if(nodes.length > 0){
+		do{
+			node = nodes[x];
+			cur_class_name = node.className;
+			if (cur_class_name.length && (cur_class_name == className || rg.test(cur_class_name))){
 
-	do{
-		node = nodes[x];
-		cur_class_name = node.className;
-		if (cur_class_name.length && (cur_class_name == className || rg.test(cur_class_name))){
+				elements.push(node);
+			}
+			x++;
 
-			elements.push(node);
-        }
-		x++;
-	} while(x<len);
 
+		} while(x<len);
+	}
 	return elements;
 };
 
@@ -1257,8 +1264,15 @@ sb.nodeList.prototype = {
 
 	*/
 	add : function(nodes){
-		//nodes = (nodes instanceof Array || (typeof NodeList !='undefined' && nodes instanceof NodeList)) ? nodes : [nodes];
-		nodes = nodes instanceof Array || (nodes instanceof NodeList || nodes instanceof StaticNodeList) ? nodes : [nodes];
+
+		if(nodes == null  || nodes.length === 0){
+			return false;
+		}
+
+		if(!nodes.length){
+			nodes = [nodes];
+		}
+
 		var len = nodes.length;
 
 		var prop,x=0,node;
