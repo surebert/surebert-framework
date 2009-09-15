@@ -14,6 +14,9 @@ var transitions = body.cssTransition([
 		end : '00FF00',
 		onEnd : function(){
 			//alert('done');
+		},
+		onTween : function(effect){
+			//do something on each tween, this is optional
 		}
 		
 	},
@@ -41,6 +44,7 @@ Element.prototype.cssTransition = function(changes, duration){
 @Description: Used Internally
 */
 sb.effect.cssTransition = function(el, changes, duration){
+	
 	this.el = el;
 	this.effects = [];
 	var self = this;
@@ -49,7 +53,7 @@ sb.effect.cssTransition = function(el, changes, duration){
 		var effect =  new sb.effect({
 			el : el
 		});
-		
+		effect.onTween = change.onTween;
 		effect.prop = change.prop;
 		effect.unit = change.unit ||'';
 		
@@ -91,7 +95,11 @@ sb.effect.cssTransition = function(el, changes, duration){
 					try{
 						this.el.setStyle(change.prop, String(this.value.toFixed(2))+this.unit);
 					} catch(e){}
-				} 
+				}
+
+				if(typeof effect.onTween == 'function'){
+					change.onTween.call(effect);
+				}
 			};
 			
 		}
