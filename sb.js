@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.85 04/24/04 - 09/15/09
+@Version: 4.86 04/24/04 - 09/16/09
 @Package: surebert 
 */
 
@@ -1434,7 +1434,9 @@ sb.ajax = function (params){
 			throw('This browser does not support surebert');
 		}
 	}
-
+	
+	this.async = true;
+	
 	sb.objects.infuse(params, this);
 
 	if(sb.typeOf(params.data) == 'object'){
@@ -1491,12 +1493,21 @@ sb.ajax.prototype = {
     @Type: integer
 	@Description: The amount of time in milliseconds the ajax request will wait before it aborts.  This is optional
 	@Example:
-	var myAjax.timeout = 1000;
+	myAjax.timeout = 1000;
 
 	//fetches the data from the url specified
 	myAjax.fetch();
 	*/
 	timeout : 0,
+
+	/**
+	@Name: sb.ajax.prototype.async
+    @Type: boolean
+	@Description: USe an asynchronous connection or not.  This is optional
+	@Example:
+	myAjax.async = false;
+	*/
+	async : true,
 
 	/**
 	@Name: sb.ajax.prototype.onreadystatechange
@@ -1670,7 +1681,9 @@ sb.ajax.prototype = {
 		this.data = sb.typeOf(this.data) == 'object' ? sb.objects.serialize(this.data) : this.data;
 
 		//This must be set to tru or false as IE 8 does not understand 0 or 1
-		this.async = !this.async ? false : true;
+		if(this.async === 0){
+			this.async = false;
+		}
 
 		this.format = this.format || '';
 		this.method = this.method.toUpperCase();
