@@ -598,11 +598,12 @@ $.getElementById = function(selector){
 */
 $.getElementsByClassName = function(selector, root){
 
-    var elements = [];
+    var nodes,elements = [];
 
     if(root.getElementsByClassName && selector.charAt(0) == '.'){
 
-        var x, nodes = root.getElementsByClassName(selector.replace(/\./, ''));
+        var x;
+		nodes = root.getElementsByClassName(selector.replace(/\./, ''));
 
         for(x=0;x<nodes.length;x++){
             elements.push(nodes[x]);
@@ -611,7 +612,7 @@ $.getElementsByClassName = function(selector, root){
     }
 
 	var parts = selector.split('.');
-    var nodes = root.getElementsByTagName(parts[0] || '*');
+    nodes = root.getElementsByTagName(parts[0] || '*');
     var className = parts[1], node, cur_class_name,len = nodes.length,x=0;
     var rg = RegExp("\\b"+className+"\\b");
 	
@@ -1277,7 +1278,7 @@ sb.nodeList.prototype = {
 
 	add : function(nodes){
 
-		if(nodes == null  || nodes.length === 0){
+		if(nodes === null  || nodes.length === 0){
 			return false;
 		}
 
@@ -2775,29 +2776,4 @@ sb.browser.getHash = function(){
 
 sb.browser.getLinkTarget = function(link){
   return link.href.substring(link.href.indexOf('#')+1);
-};
-
-/**
-@Name: String.prototype.toElement
-@Description: Converts a string of HTML code to a sb.element for dom manipulation
-@Param: String parentNodeType The nodetype of the parent element returned if there is not already a single parent element for all elements contained in the html string - see example two - defaults to span if it is not given
-@Example:
-//would return div as the element with all its children
-sb.dom.HTMLToElement('<div id="joe"><p class="test">hey there</p></div>');
-//would return all elements grouped under a span because they have no comment parent
-sb.dom.HTMLToElement('<p class="test">hey there</p><p class="test2">hey there2</p>');
-*/
-String.prototype.toElement = function(parentNodeType){
-	parentNodeType = parentNodeType || 'span';
-
-	var temp = new sb.element({
-		nodeName : parentNodeType,
-		innerHTML : this
-	});
-
-	if(temp.childNodes.length > 1){
-		return $(temp);
-	} else {
-		return $(temp.firstChild);
-	}
 };
