@@ -1,6 +1,6 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.84 04/24/04 - 09/14/09
+@Version: 4.85 04/24/04 - 09/15/09
 @Package: surebert 
 */
 
@@ -406,16 +406,13 @@ $ = function(selector, root) {
 	//return items that are already objects
 	if(typeof selector != 'string'){
 
-		if(typeof selector == 'object' && selector !== null){
-			if(Element.emulated === true && selector.nodeType && selector.nodeType == 1){
-
-				var ep = Element.prototype;
-				for(var prop in ep){
-					if(ep.hasOwnProperty(prop)){
-						selector[prop] = ep[prop];
-					}
-				}
-			} else if (typeof selector.typeOf == 'function' && selector.typeOf() == 'sb.nodeList'){
+		if(Element.emulated === true && typeof selector == 'object' && selector !== null){
+			
+			if(selector.nodeType && selector.nodeType == 1){
+				$.copyElementPrototypes(selector);
+				
+			} else if (typeof selector.getElementPrototypes == 'function'){
+				
 				selector.getElementPrototypes();
 			}
 		}
@@ -443,6 +440,15 @@ $ = function(selector, root) {
 		return nodeList;
 	}
 
+};
+
+$.copyElementPrototypes = function(node){
+	var ep = Element.prototype;
+	for(var prop in ep){
+		if(ep.hasOwnProperty(prop)){
+			node[prop] = ep[prop];
+		}
+	}
 };
 
 /**
@@ -1208,6 +1214,13 @@ sb.nodeList = function(params){
 
 };
 
+sb.nodeList.copyFunc = function(prop, node){
+	return function(){
+		
+		return Element.prototype[prop].apply(node, sb.toArray(arguments));
+	};
+};
+
 sb.nodeList.prototype = {
 
 	/**
@@ -1222,16 +1235,14 @@ sb.nodeList.prototype = {
 	*/
 	getElementPrototypes : function(){
 
-		if(Element.emulated){
-			var x,prop,ep = Element.prototype,len = this.nodes.length;
+		var x,prop,ep = Element.prototype,len = this.nodes.length;
 
-			for(x=0;x<len;x++){
-				for(prop in ep){
-					this.nodes[x][prop] = ep[prop];
-				}
+		for(x=0;x<len;x++){
+			for(prop in ep){
+				this.nodes[x][prop] = ep[prop];
 			}
-
 		}
+
 	},
 
 	/**
@@ -1263,6 +1274,7 @@ sb.nodeList.prototype = {
 	nodes.add($('#wrapper'));
 
 	*/
+
 	add : function(nodes){
 
 		if(nodes == null  || nodes.length === 0){
@@ -1278,7 +1290,6 @@ sb.nodeList.prototype = {
 		var prop,x=0,node;
 
 		var emulated = Element.emulated;
-
 		var ep = Element.prototype;
 
 		for(x=0;x<len;x++){
@@ -1291,16 +1302,17 @@ sb.nodeList.prototype = {
 			if(!this.sb_ids[node.sb_id]){
 
 				if(emulated){
-
 					for(prop in ep){
 						node[prop] = ep[prop];
 					}
 				}
+
 				this.nodes.push(node);
 				this.sb_ids[node.sb_id] = true;
 			}
 		}
 	},
+	
 	/**
 	@Name: sb.nodeList.prototype.drop
 	@Description: drop dom nodes, either array o single node from a sb.nodeList
@@ -1325,38 +1337,6 @@ sb.nodeList.prototype = {
 
 		});
 		this.length = this.nodes.length;
-
-		return this;
-	},
-
-	/**
-	@Name: sb.nodeList.prototype.firePerNode
-	@Description: fires a function once for each node
-	@Param: func function The function to fire on a per node basis.  The node is the this of the function.
-	@Param: * any additional paramaters get passed to the func as arguments
-	@Example:
-	var nodes = $('ol li');
-	//hide all the nodes from view
-	nodes.firePerNode(Element.prototype.hide);
-
-	//inline function - alert the innerHTML of each
-	nodes.firePerNode(function(){alert(this.innerHTML);});
-
-	//assuming you has a function that changed background color, this would pass the argument 'blue' as the first argument to that function
-	nodes.firePerNode(changeBackgroundColor, 'blue');
-	*/
-	firePerNode : function(func){
-
-		if(typeof func == 'function'){
-			var args = [];
-			var len = arguments.length;
-			for(var x=1;x<len;x++){
-				args.push(arguments[x]);
-			}
-			this.nodes.forEach(function(node){
-				func.apply(node, args);
-			});
-		}
 
 		return this;
 	},
