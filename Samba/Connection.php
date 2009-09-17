@@ -32,10 +32,10 @@ class sb_Samba_Connection {
 	private static $fileregex = "/[-?|\/?]?(\w+\.\w{1,3})/";
 
 	/**
-	 * The path to a log file for this object
-	 * @var unknown_type
+	 * Object to log with
+	 * @var sb_Logger_Base
 	 */
-	public static $logpath;
+	public static $log;
 	/**
 	 * The password that to the windows account
 	 * @var string
@@ -124,15 +124,12 @@ class sb_Samba_Connection {
 	 * @param $output array what the command line returns
 	 * @param $log boolean weather to log this transaction
 	 */
-	private function execute($command, &$output = null, $log = 1) {
+	private function execute($command, &$output = null) {
 		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command'";
 		exec($cmd, $output, $return);
-
-		//log transaction
-		if($log && (self::$logpath !== '')) {
-			$data = date('F jS Y h:i a', mktime()) . "\n Command: $cmd \n Output:" . print_r($output, 1) . "\n Return: " . print_r($return, 1) . "\n\n\n";
-			file_put_contents(self::$logpath, $data, FILE_APPEND);
-		}
+                
+		//LOG: Transaction
+		if(self::$log)self::$log->samba("Command: $cmd \n Output:" . print_r($output, 1) . "\n Return: " . print_r($return, 1) . "\n\n\n");			
 	}
 
 	/**
@@ -145,7 +142,7 @@ class sb_Samba_Connection {
 		$teststr  = str_replace('\\', '-', $subdir);
 		$nub =  (preg_match('/[-?|\/?]*(\w+\.\w{1,3})/', $teststr))?'':'\*';
 
-		$this->execute("ls $subdir".$nub, $raw_ls, 0);
+		$this->execute("ls $subdir".$nub, $raw_ls);
 		$raw = $raw_ls;
 		$ret = ($raw_ls)? $this->processLS($raw_ls, $subdir):0;
 		return $ret;
