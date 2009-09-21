@@ -125,11 +125,15 @@ class sb_Samba_Connection {
 	 * @param $log boolean weather to log this transaction
 	 */
 	private function execute($command, &$output = null) {
-		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command'";
+		
+		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
 		exec($cmd, $output, $return);
-                
+
 		//LOG: Transaction
-		if(self::$log)self::$log->samba("Command: $cmd \n Output:" . print_r($output, 1) . "\n Return: " . print_r($return, 1) . "\n\n\n");			
+		if(self::$log) {
+			self::$log->samba("Command: $cmd \n Output:" . print_r($output, 1) . "\n Return: " . print_r($return, 1) . "\n\n\n");
+		}
+
 	}
 
 	/**
@@ -143,6 +147,7 @@ class sb_Samba_Connection {
 		$nub =  (preg_match('/[-?|\/?]*(\w+\.\w{1,3})/', $teststr))?'':'\*';
 
 		$this->execute("ls $subdir".$nub, $raw_ls);
+
 		$raw = $raw_ls;
 		$ret = ($raw_ls)? $this->processLS($raw_ls, $subdir):0;
 		return $ret;
@@ -196,7 +201,7 @@ class sb_Samba_Connection {
 	 */
 	private function processLS($raw_ls, $subdir = '') {
 		$ret = array();
-
+		
 		foreach($raw_ls as $listing) {
 			$temp = $this->parseListing($listing, $subdir);
 			if($temp) {
@@ -217,7 +222,6 @@ class sb_Samba_Connection {
 	private	function parseListing($listing, $subdir = '') {
 		$ret = new sb_Samba_Listing();
 		$exp = '/^\s*(\w+\.?\w{3})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
-
 
 		preg_match_all($exp, $listing, $matches);
 
