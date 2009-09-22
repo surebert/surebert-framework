@@ -2,8 +2,8 @@
 /**
  * Used to connect to and interact with windows machines from php code on a linux machine
  *	maps the smbclient application to a local PHP object.
- * @author: Anthony Cashaw
- * @version: 1.0 09/09/09
+ * @author: Anthony Cashaw, Paul Visco
+ * @version: 1.0 09/09/09 09/22/09
  * @required: smbclient command line program
  * <code>
  * $win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
@@ -24,13 +24,6 @@ class sb_Samba_Connection {
 	 * @var string
 	 */
 	private $host;
-
-	/**
-	 * A regex patern to find the filename of files
-	 * @var unknown_type
-	 */
-	private static $fileregex = "/[-?|\/?]?(\w+\.\w{1,3})/";
-
 	/**
 	 * Object to log with
 	 * @var sb_Logger_Base
@@ -87,33 +80,11 @@ class sb_Samba_Connection {
 	 * @var $putpath the file path on the local linux box where the file will be placed
 	 * @var $output the raw command line output for smbclient
 	 */
-	public function copy($getpath, $putpath = '.', &$output = null) {
-	//get file string massage
-		$prefile = trim(str_replace('\\', '-', $getpath));
-
-		if(preg_match(self::$fileregex, $prefile, $matches)) {
-			$filename = $matches[1];
-
-			//putfile data massage
-			if(preg_match(self::$fileregex, $putpath, $matches)) {
-				$putpath = str_replace($matches[0], '', $putpath);
-				$filename = $matches[1];
-				$putpath = ($putpath == $matches[0])?'.':$putpath;
-			}else {
-				$putpath = rtrim($putpath, "/ \\");
-			}
-
-			$getpath = self::winslashes($getpath);
-			$command = "get $getpath $putpath/$filename";
-			$this->execute($command, $output);
-
-			return ($output)?0:1;
-		}else {
-			print_raw($matches);
-		}
-
-		$output['error'] = "File $getpath cannot be found";
-		return 0;
+	public function copy($remotepath, $localfile = '.', &$output = null) {
+		//get file string massage
+		$remotepath = self::winslashes($remotepath);
+		$this->execute("get $remotepath $localfile", $output);
+		return $output ? 0 : 1;
 
 	}
 
@@ -125,7 +96,7 @@ class sb_Samba_Connection {
 	 * @param $log boolean weather to log this transaction
 	 */
 	private function execute($command, &$output = null) {
-		
+
 		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
 		exec($cmd, $output, $return);
 
@@ -144,7 +115,7 @@ class sb_Samba_Connection {
 	public function ls($subdir = '', &$raw = NULL) {
 
 		$teststr  = str_replace('\\', '-', $subdir);
-		$nub =  (preg_match('/[-?|\/?]*(\w+\.\w{1,3})/', $teststr))?'':'\*';
+		$nub =  (preg_match('/[-?|\/?]*(\w+\.\w{1,4})/', $teststr))?'':'\*';
 
 		$this->execute("ls $subdir".$nub, $raw_ls);
 
@@ -173,26 +144,13 @@ class sb_Samba_Connection {
 	 */
 	public function paste($localfile, $remotefile = "." , &$output = null) {
 
-		preg_match(self::$fileregex, $localfile, $matches);
+		$remotefile = rtrim($remotefile, "/ \\");
 
-		$filename  = $matches[1];
-
-		if(preg_match(self::$fileregex, $remotefile, $matches)) {
-			$remotefile = str_replace($matches[0], '', $remotefile);
-			$filename = $matches[1];
-			$remotefile = ($remotefile == '')?'.':$remotefile;
-		}else {
-		//zap the last slash
-			$remotefile = rtrim($remotefile, "/ \\");
-		}
-
-		$putfile = self::winslashes("$remotefile/$filename");
-		$command = "put $localfile $putfile";
-
-		//echo $command; exit;
+		$remotefile = self::winslashes("$remotefile");
+		$command = "put $localfile $remotefile";
 
 		$this->execute($command, $output);
-		return ($output)?0:1;
+		return $output ? 0 : 1;
 	}
 
 	/**
@@ -201,7 +159,7 @@ class sb_Samba_Connection {
 	 */
 	private function processLS($raw_ls, $subdir = '') {
 		$ret = array();
-		
+
 		foreach($raw_ls as $listing) {
 			$temp = $this->parseListing($listing, $subdir);
 			if($temp) {
@@ -248,7 +206,5 @@ class sb_Samba_Connection {
 	}
 
 }
-
-
 
 ?>
