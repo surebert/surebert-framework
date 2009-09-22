@@ -20,7 +20,7 @@ class sb_Logger_BlackHole extends sb_Logger_Base{
 	 * @return boolean If the data was written or not
 	 */
 	protected function __write($data, $log_type){
-		return true
+		return true;
 	}
 
 }
