@@ -56,7 +56,7 @@ class sb_Cache_Hash implements sb_Cache_Base{
 	    	$this->catalog_key_add($key, $lifetime);
 	    }
 
-	    return $store;
+	    return true;
 	}
 
 	/**
