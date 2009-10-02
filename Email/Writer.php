@@ -116,9 +116,11 @@ class sb_Email_Writer {
             } else {
                 $this->log_error($email, false);
             }
+
         }
 
         if($sent_emails == count($this->emails)) {
+			$this->emails = Array();
             return true;
         } else {
             return false;
