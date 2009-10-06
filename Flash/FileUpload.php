@@ -96,9 +96,8 @@ class sb_Flash_FileUpload{
 			}
 		}
 		
-		$file = new stdClass();
-		//$this->name = sb_Strings::clean_file_name($this->upload['name']);
-		$this->name = $this->uploaded_file['name'];
+		$this->name = sb_Strings::clean_file_name($this->uploaded_file['name']);
+		
 		$this->path = $destination_directory.'/'.$this->name;
         $arr = explode('.', $this->name);
         $ext = array_pop($arr);
@@ -116,7 +115,7 @@ class sb_Flash_FileUpload{
 		}
 		
 		if(method_exists($this, 'on_save')){
-			return $this->on_save($file);
+			return $this->on_save();
 		} else {
 			return true;
 		}
