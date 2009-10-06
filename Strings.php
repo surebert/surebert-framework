@@ -41,11 +41,11 @@ class sb_Strings{
 	 * @return string
 	 */
 	public static function clean_file_name($str){
-		preg_match('~\.\w{2,3}$~', $str, $ext);
+		preg_match('~\.\w{1,4}$~', $str, $ext);
 		
-		$str = preg_replace('~\.\w{1,3}$~', '', $str);
+		$str = preg_replace('~\.\w{1,4}$~', '', $str);
 		
-		return self::to_camel($str).$ext[0];
+		return str_replace(Array(' ', '.', '-'), "_", $str).$ext[0];
 	}
 	
 	/**
