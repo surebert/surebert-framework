@@ -227,10 +227,18 @@ class sb_JSON_RPC2_Client {
 
 		//check if response body is serialized json_response object and just unserialize and return if it is
 		if($this->php_serialize_response && !empty($body)) {
-			
-			$serialized = @unserialize($body);
-			if($serialized !== false){
-				$response = $serialized;
+
+			try{
+				$serialized = @unserialize($body);
+				if($serialized !== false){
+					$response = $serialized;
+				}
+			} catch(Exception $e){
+
+				if($this->debug){
+					echo $body;
+				}
+				
 			}
 		}
 
@@ -255,6 +263,10 @@ class sb_JSON_RPC2_Client {
 		$request->params = isset($args) ? $args : Array();
 
 		$request->id = uniqid();
+
+		if(isset($args['debug'])){
+			$this->debug = true;
+		}
 
 		$response = $this->dispatch($request);
 

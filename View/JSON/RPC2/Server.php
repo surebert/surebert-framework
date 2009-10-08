@@ -26,7 +26,7 @@ class sb_View_JSON_RPC2_Server extends sb_View{
 	 * Handles the requests by passing them to the JSON server when a .view view template is not found
 	 * @see sb_View#template_not_found()
 	 */
-	protected function template_not_found(){
+	protected function template_not_found($template=''){
 		
 		echo $this->server->handle();
 	}

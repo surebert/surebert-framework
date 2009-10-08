@@ -52,7 +52,10 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
      * tcp://xmpp.my.org or ssl://xmpp.my.org
      * @param integer $port The port the user
      * @param integer $timeout The number of seconds to wait for the initial connection
-     */
+	 * <code>
+	 * $client = new sb_XMPP_Client('chat.blah.org', 5223);
+	 * </code>
+	 */
     public function __construct($host, $port=null, $timeout=10){
 
         $this->host = $host;
