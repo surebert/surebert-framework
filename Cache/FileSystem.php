@@ -3,7 +3,7 @@
  * Stores cached data in the file system
  * 
  * @author visco
- * @version 1.0 01/23/2009 05/14/2009
+ * @version 1.0 01/23/2009 10/09/2009
  * 
 <code>
 $mycache = new sb_Cache_FileSystem();
@@ -31,7 +31,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 * The key to store the catalog in
 	 * @var string
 	 */
-	private $catalog_key = '/sb_Cache_Catalog';
+	protected $catalog_key = '/sb_Cache_Catalog';
 	
 	/**
 	 * Stores the cached data in /private/cache filesystem
@@ -141,7 +141,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 */
 	public function clear_all(){
 		
-		$this->clear_dir(ROOT.'/private/cache/sb_Cache');
+		$this->clear_dir($this->get_cache_dir().'/sb_Cache');
 	}
 	
 	/**
@@ -149,7 +149,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 * @param $dir
 	 * @return boolean
 	 */
-	private function clear_dir($dir){
+	protected function clear_dir($dir){
         
 		$iterator = new DirectoryIterator($dir);
         foreach ($iterator as $file){
@@ -174,18 +174,18 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 * @param $key
 	 * @return string The path of the cache file
 	 */
-	private function get_file_path($key){
-		return ROOT.'/private/cache/sb_Cache'.$key;
+	protected function get_file_path($key){
+		return $this->get_cache_dir().'/sb_Cache'.$key;
 	}
 	
-	private function catalog_key_add($key, $lifetime){
+	protected function catalog_key_add($key, $lifetime){
 		$catalog = $this->fetch($this->catalog_key);
 		$catalog = is_array($catalog) ? $catalog : Array();
 		$catalog[$key] = ($lifetime == 0) ? $lifetime : $lifetime+time();
 		return $this->store($this->catalog_key, $catalog);
 	}
 	
-	private function cataglog_key_delete(){
+	protected function cataglog_key_delete(){
 		$catalog = $this->fetch($this->catalog_key);
 		$catalog = is_array($catalog) ? $catalog : Array();
 		if(isset($catalog[$key])){
@@ -193,6 +193,33 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 		};
 		
 		return $this->store('/sb_Cache_Catalog', $catalog);
+	}
+
+	/**
+	 * Sets the file path to cache in
+	 * @return string
+	 */
+	public function set_cache_dir($file_path){
+		$this->file_path = $file_path;
+	}
+
+	/**
+	 * The file path that the cache is stored in
+	 * @var string
+	 */
+	protected $file_path = '';
+
+	/**
+	 * The file path to cache in, defaults to projects private/cache dir
+	 * @return string
+	 */
+	protected function get_cache_dir(){
+
+		if($this->file_path){
+			return $this->file_path;
+		} else {
+			return ROOT.'/private/cache/';
+		}
 	}
 
 	/**
