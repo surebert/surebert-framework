@@ -32,7 +32,27 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 * @var string
 	 */
 	protected $catalog_key = '/sb_Cache_Catalog';
-	
+
+
+	/**
+	 * The file path that the cache is stored in
+	 * @var string
+	 */
+	protected $file_path = '';
+
+
+	/**
+	 * Sets the filepath of the file system cache, defaults to ROOT/private/cache/
+	 * @param string $file_path Optional The filepath to store the cache in, must be writable
+	 */
+	public function __construct($file_path =''){
+
+		if(empty($file_path)){
+			$file_path = ROOT.'/private/cache/';
+		}
+
+		$this->set_cache_dir($file_path);
+	}
 	/**
 	 * Stores the cached data in /private/cache filesystem
 	 * (non-PHPdoc)
@@ -141,7 +161,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 */
 	public function clear_all(){
 		
-		$this->clear_dir($this->get_cache_dir().'/sb_Cache');
+		$this->clear_dir($this->file_path.'/sb_Cache');
 	}
 	
 	/**
@@ -175,7 +195,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 * @return string The path of the cache file
 	 */
 	protected function get_file_path($key){
-		return $this->get_cache_dir().'/sb_Cache'.$key;
+		return $this->file_path.'/sb_Cache'.$key;
 	}
 	
 	protected function catalog_key_add($key, $lifetime){
@@ -200,26 +220,11 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	 * @return string
 	 */
 	public function set_cache_dir($file_path){
-		$this->file_path = $file_path;
-	}
-
-	/**
-	 * The file path that the cache is stored in
-	 * @var string
-	 */
-	protected $file_path = '';
-
-	/**
-	 * The file path to cache in, defaults to projects private/cache dir
-	 * @return string
-	 */
-	protected function get_cache_dir(){
-
-		if($this->file_path){
-			return $this->file_path;
-		} else {
-			return ROOT.'/private/cache/';
+		if(substr($file_path, -1, 1) != '/'){
+			$file_path .= '/';
 		}
+
+		$this->file_path = $file_path;
 	}
 
 	/**
