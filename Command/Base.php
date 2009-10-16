@@ -69,14 +69,19 @@ class sb_Command_Base {
 
 		$type = strtoupper($type);
 
-		$message = "\n".$type.': '.$message;
-		if($type == 'ERROR'){
-			$this->number_of_errors++;
+		switch($type){
+
+			case 'RAW':
+				break;
+
+			case 'ERROR':
+				$this->number_of_errors++;
+
+			default:
+				$message = "\n".$type.': '.$message;
 		}
 
-		if(Gateway::$command_line){
-			file_put_contents("php://stdout", $message);
-		}
+		file_put_contents("php://stdout", $message);
 	}
 
 	/**
