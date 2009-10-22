@@ -102,7 +102,7 @@ class sb_Socket_Client {
 	 * @return boolean
 	 */
 	public function write($data) {
-		$this->log('write to socket');
+		
 		return fwrite($this->socket, $data);
 	}
 
@@ -140,7 +140,7 @@ class sb_Socket_Client {
 
 	/**
 	 * Logs what is doing
-	 * @param <type> $message
+	 * @param string $message
 	 * @todo convert to sb_Logger
 	 */
 	protected function log($message) {
