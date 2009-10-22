@@ -319,7 +319,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
      * this class
      * @param string $error
      */
-    protected function on_error($error){}
+    protected function on_error($error_code, $error_str){}
 
     /**
      * Increments the packet id
@@ -354,7 +354,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
      *
      * @return string The buffer data read from the socket
      */
-    public function read(){
+    public function read($byte_count=null){
 
         $buffer = '';
         $read = array($this->socket);
