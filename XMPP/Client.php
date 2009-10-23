@@ -2,7 +2,6 @@
 /**
  * Connects to XMPP servers, tested with openfire/ichat
  * @author Paul Visco
- * @version 1.0 05-12-2009 05-12-2009
  */
 
 class sb_XMPP_Client extends sb_Socket_StreamingClient{
@@ -44,6 +43,10 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
      */
     protected $packet_id = 0;
 
+	/**
+	 * The status to display to other users
+	 * @var string
+	 */
     protected $status = 'available';
 
     /**
@@ -186,7 +189,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
      */
     public function send_presence($status = null, $show = null, $type=null, $to = null) {
 
-       $xml = new sb_XMPP_Presence('<presence></presence>');
+       $xml = new sb_XMPP_Presence();
 
        if($to){
            $xml->set_to($to);
@@ -210,14 +213,9 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
     }
 
-    public function make_unavailable(){
-
-    }
-
-    public function make_available(){
-
-    }
-
+	/**
+	 * Listens for incoming chat on the socket
+	 */
     public function listen(){
 
         $this->log("Listening...");
@@ -230,7 +228,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             if(substr($xml, 0, 8 ) == '<message'){
                 $this->on_message(new sb_XMPP_Message($xml));
             } else if(substr($xml, 0, 9 ) == '<presence'){
-                $this->on_presence(new sb_XMPP_Presence('<packet>'.$xml.'</packet>'));
+                $this->on_presence(new sb_XMPP_Presence($xml));
             }
 
             if($x % 10 == 0){
@@ -244,74 +242,38 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
            usleep(100000);
         }
     }
-     
-    public function send_message($to, $body, $type='chat'){
-       return $this->process_message($to, $body, $type);
-    }
 
-    public function send_composing($to){
+	/**
+	 * Sends a sb_XMPP_Message via the socket
+	 * @param sb_XMPP_Message $message
+	 * @return boolean
+	 */
+	public function send_message(sb_XMPP_Message $message){
+		return $this->write($message);
+	}
 
-        $xml = new sb_XMPP_Packet('<message></message>');
-        $xml->addAttribute('to', htmlspecialchars($to));
-        $xml->addAttribute('from', $this->jid);
-        $xml->addAttribute('type', 'chat');
-
-        $c = $xml->addChild('composing');
-        $c->addAttribute('xmlns', 'http://jabber.org/protocol/chatstates');
-
-        return $this->write($xml);
-      
-    }
-
-    public function send_composing_stop($to){
-        $xml = new sb_XMPP_Packet('<message></message>');
-        $xml->addAttribute('to', htmlspecialchars($to));
-        $xml->addAttribute('from', $this->jid);
-        $xml->addAttribute('type', 'chat');
-
-        $a = $xml->addChild('active');
-        $a->addAttribute('xmlns', 'http://jabber.org/protocol/chatstates');
-        
-        return $this->write($xml);
-    }
-
-    public function process_message($to, $body, $type = 'chat',  $subject = null){
-
-        $xml = new sb_XMPP_Packet('<message></message>');
-        $xml->addAttribute('to', htmlspecialchars($to));
-        $xml->addAttribute('from', $this->jid);
-        $xml->addAttribute('type', $type);
-
-        //add subject if it exists
-        if($subject) {
-            $xml->addChild('subject', htmlspecialchars($subject));
-        }
-
-        //add body if it exists
-        if($body) {
-             $xml->addChild('body', htmlspecialchars($body));
-        }
-
-        return $this->write($xml);
-
-    }
-
-    public function __destruct(){
-        $this->close();
-    }
-
+	/**
+	 * Writes XML to the socket client
+	 * @param mixed $xml Can be DOMDocument, SimpleXMLElement or string of XML
+	 * @return <type>
+	 */
     public function write($xml){
-        //squeeze the xml out of parent and unset to save memory
-        if($xml instanceof sb_XMPP_Packet){
-            $data = $xml->to_string();
-            unset($xml);
-        } else {
-            $data = $xml;
-        }
 
-        return parent::write($data);
+		if($xml instanceof SimpleXMLElement){
+			$xml = $xml->asXML();
+		} else if($xml instanceof DOMDocument){
+			$xml = $xml->saveXML();
+		}
+
+		$this->log("SENT: ".$xml);
+		
+        return parent::write($xml);
     }
-	
+
+	/**
+	 * An event handler that fires when a message is received with $this->listen
+	 * @param sb_XMPP_Message $message
+	 */
     protected function on_message(sb_XMPP_Message $message){}
 
     /**
@@ -329,9 +291,49 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         return $this->packet_id++;
     }
 
+	/**
+	 * Send an indication that the bot is composing text.
+	 * @param string $to The jid to send to
+	 */
+	protected function composing_start($to){
+		$message = new sb_XMPP_Message();
+
+		$message->set_to($to);
+		$message->set_from($this->jid);
+		$message->set_type('chat');
+		$node = $message->createElement('composing');
+		$attr = $message->createAttribute('xmlns');
+		$node->appendChild($attr);
+		$attr->appendChild($message->createTextNode('http://jabber.org/protocol/chatstates'));
+		
+		$message->doc->appendChild($node);
+
+		$this->send_message($message);
+	}
+
+	/**
+	 * Sends message to indicating that the bot is no longer composing
+	 * @param string $to The jid to send to
+	 */
+	protected function composing_stop($to){
+		$message = new sb_XMPP_Message();
+
+		$message->set_to($to);
+		$message->set_from($this->jid);
+		$message->set_type('chat');
+		$node = $message->createElement('active');
+		$attr = $message->createAttribute('xmlns');
+		$node->appendChild($attr);
+		$attr->appendChild($message->createTextNode('http://jabber.org/protocol/chatstates'));
+
+		$message->doc->appendChild($node);
+
+		$this->send_message($message);
+	}
+
     /**
      * Logs what is doing
-     * @param <type> $message
+     * @param string $message The message being received
      * @todo convert to sb_Logger
      */
     protected function log($message){
@@ -374,6 +376,13 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         }
 
         return $buffer;
+    }
+
+	/**
+	 * Closes the socket connection
+	 */
+    public function __destruct(){
+        $this->close();
     }
     
     
