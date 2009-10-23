@@ -86,5 +86,13 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 		$this->doc->appendChild($next_elem);
 	}
 
+	public function reply($str){
+		$message = new sb_XMPP_Message();
+		$message->set_to($this->get_from());
+		$message->set_from($this->get_to());
+		$message->set_body($str);
+		$this->client->send_message($message);
+	}
+
 }
 ?>

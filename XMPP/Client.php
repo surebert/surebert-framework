@@ -232,7 +232,9 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             $xml = $this->read(1024);
 
             if(substr($xml, 0, 8 ) == '<message'){
-                $this->on_message(new sb_XMPP_Message($xml));
+				$message = new sb_XMPP_Message($xml);
+				$message->client = $this;
+                $this->on_message($message);
             } else if(substr($xml, 0, 9 ) == '<presence'){
 
 				$presence = new sb_XMPP_Presence($xml);
