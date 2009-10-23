@@ -15,9 +15,9 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @param string $xml Optional XML string to base the Document on
 	 */
 	public function __construct($xml = ''){
+		
 		if(!empty($xml)){
-			$this->loadXML(trim($xml));
-			$this->xml = simplexml_import_dom($this);
+			$this->xml = simplexml_load_string($xml);
 		} else {
 			parent::__construct('1.0', 'UTF-8');
 			$this->doc = $this->appendChild($this->createElement('message'));
@@ -30,7 +30,7 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 */
 	public function get_body(){
 		if($this->xml instanceof SimpleXMLElement){
-			return $this->xml->body;
+			return (String)$this->xml->body;
 		} else {
 			return '';
 		}
@@ -42,7 +42,7 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 */
 	public function get_subject($subject){
 		if($this->xml instanceof SimpleXMLElement && $this->xml->subject){
-			return $this->xml->subject;
+			return (String) $this->xml->subject;
 		} else {
 			return '';
 		}
@@ -53,7 +53,7 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @return string
 	 */
 	public function get_html(){
-		return $this->xml->html;
+		return (String) $this->xml->html;
 	}
 
 	/**

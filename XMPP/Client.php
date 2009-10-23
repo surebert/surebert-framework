@@ -49,6 +49,12 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
 	 */
     protected $status = 'available';
 
+	/**
+	 * The buddies that are online
+	 * @var array
+	 */
+	protected $buddies_online = Array();
+
     /**
      * Create a new connection to a XMPP server
      * @param string $host The host to connect to with transport e.g.
@@ -228,7 +234,25 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             if(substr($xml, 0, 8 ) == '<message'){
                 $this->on_message(new sb_XMPP_Message($xml));
             } else if(substr($xml, 0, 9 ) == '<presence'){
-                $this->on_presence(new sb_XMPP_Presence($xml));
+
+				$presence = new sb_XMPP_Presence($xml);
+				if(is_array($this->buddies_online)){
+
+					$from = $presence->get_from();
+					$type = $presence->get_type();
+					$status = $presence->get_status();
+
+					if($from && $type == 'unavailable'){
+						unset($this->buddies_online[$from]);
+						$this->log('NOTICE: '.$from.' is unavailable');
+					} else if($from){
+
+						$this->buddies_online[$from] = $status;
+						$this->log('NOTICE: '.$from.' is '.$status);
+					}
+				}
+				
+                $this->on_presence($presence);
             }
 
             if($x % 10 == 0){
@@ -377,6 +401,30 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
         return $buffer;
     }
+
+	/**
+	 * Determines the peak memory usage
+	 * @return string The value in b, KB, or MB depending on size
+	 */
+	protected function get_memory_usage($peak=false) {
+
+		if($peak){
+			$mem_usage = memory_get_peak_usage(true);
+		} else {
+			$mem_usage = memory_get_usage(true);
+		}
+
+		$str = '';
+		if ($mem_usage < 1024) {
+			$str = $mem_usage." b";
+		} elseif ($mem_usage < 1048576) {
+			$str = round($mem_usage/1024,2)." KB";
+		} else {
+			$str = round($mem_usage/1048576,2)." MB";
+		}
+		return $str;
+	}
+
 
 	/**
 	 * Closes the socket connection

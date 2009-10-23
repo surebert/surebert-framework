@@ -17,8 +17,16 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 */
 	public function __construct($xml = ''){
 		if(!empty($xml)){
-			$this->loadXML(trim($xml));
-			$this->xml = simplexml_import_dom($this);
+			
+			$xml = preg_replace("~</presence>.*$~", "</presence>", $xml);
+			
+			try{
+				$xml = '<root>'.$xml.'</root>';
+			$sxml = simplexml_load_string($xml);
+			$this->xml = $sxml->presence[0];
+			} catch(Exception $e){
+				file_put_contents("php://stdout", "\n\n|||".print_r($xml, 1).'|||'."\n\n");
+			}
 		} else {
 			parent::__construct('1.0', 'UTF-8');
 			$this->doc = $this->appendChild($this->createElement('presence'));
@@ -31,9 +39,9 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 */
     public function get_status(){
         if(isset($this->xml->status[0])){
-            return $this->xml->status[0];
+            return (String) $this->xml->status[0];
         } else {
-            return '';
+            return 'available';
         }
     }
 
@@ -43,7 +51,7 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 */
     public function get_show(){
         if(isset($this->xml->show[0])){
-            return $this->xml->show[0];
+            return (String) $this->xml->show[0];
         } else {
             return '';
         }
@@ -55,7 +63,7 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 */
     public function get_priority(){
         if(isset($this->xml->priority[0])){
-            return $this->xml->priority[0];
+            return (String)$this->xml->priority[0];
         } else {
             return '';
         }

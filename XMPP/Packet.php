@@ -11,7 +11,7 @@ class sb_XMPP_Packet extends DOMDocument {
 	 * @return string e.g. paul.visco@chat.server.com
 	 */
     public function get_from(){
-       return $this->xml['from'];
+       return (String) $this->xml['from'];
     }
 
 	/**
@@ -19,7 +19,7 @@ class sb_XMPP_Packet extends DOMDocument {
 	 * @return string e.g. paul.visco@chat.server.com
 	 */
 	public function get_to(){
-       return $this->xml['to'];
+       return (String) $this->xml['to'];
     }
 
 	/**
@@ -27,7 +27,7 @@ class sb_XMPP_Packet extends DOMDocument {
 	 * @return string
 	 */
     public function get_type(){
-       return $this->xml['type'];
+       return (String) $this->xml['type'];
     }
 
 	/**
