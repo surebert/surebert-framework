@@ -37,12 +37,6 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
 	 */
 	protected $buddies_online = Array();
 
-	/**
-	 * If this is true then the bot will auto accept subscription requests
-	 * @var boolean
-	 */
-	protected $auto_accept_subscription_requests = true;
-
     /**
      * Set to true when the connection is connected
      * @var boolean
