@@ -4,25 +4,13 @@
  * A Base Bot based on the XMPP Client
  * @author paul.visco@roswellpark.org, gregary.dean@roswellpark.org
  */
-class sb_XMPP_Bot_Base extends sb_XMPP_Client{
-
-	/**
-	 * The methods that can be served.
-	 * @var array
-	 */
-	protected $methods = Array();
+class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 
 	/**
 	 * The status to display for the bot
 	 * @var string
 	 */
     protected $status = 'helping';
-
-	/**
-	 * The buddies that are online
-	 * @var array
-	 */
-	protected $buddies_online = Array();
 
 	/**
 	 * Display a list of commands the bot can understand.
@@ -165,7 +153,7 @@ class sb_XMPP_Bot_Base extends sb_XMPP_Client{
 		if($body == '?'){
 			return $this->serve_help($message);
 		}
-		return 'You said: '.$message->get_body().'. Want to know what I can do, type: help';
+		return 'Want to know what I can do, type: help';
 	}
 
 	/**
