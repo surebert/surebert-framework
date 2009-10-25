@@ -8,7 +8,7 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
 
     /**
      * The host XMPP server to connect to.  You also specifiy the transport as tcp
-     * or ssl e.g. tcp://obi.roswellpark.org or ssl://obi.roswellpark.org
+     * or ssl e.g. tcp://chat.roswellpark.org or ssl://chat.roswellpark.org
      * @var string
      */
     protected $host;
@@ -19,11 +19,23 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
      */
     protected $port;
 
+	/**
+	 * The amount of itme to wait for connection before aborting in secs
+	 * @var integer
+	 */
+	protected $timeout = 10;
+
     /**
      * The uname currently logged in as
      * @var string
      */
     protected $uname;
+
+	/**
+	 * The password to login in with
+	 * @var string
+	 */
+	protected $pass;
 
 	/**
 	 * The status to display to other users
@@ -56,43 +68,23 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
     protected $packet_id = 0;
 
     /**
-     * Create a new connection to a XMPP server
-     * @param string $host The host to connect to with transport e.g.
-     * tcp://xmpp.my.org or ssl://xmpp.my.org
-     * @param integer $port The port the user
-     * @param integer $timeout The number of seconds to wait for the initial connection
-	 * <code>
-	 * $client = new sb_XMPP_Client('chat.blah.org', 5223);
-	 * </code>
-	 */
-    public function __construct($host, $port=null, $timeout=10){
+     * Connects to the XMPP server
+     */
+    public function connect(){
 
-        $this->host = $host;
-        $this->port = $port;
-        $this->timeout = $timeout;
-
-        //if port is not set, try and determine based on transport
+		  //if port is not set, try and determine based on transport
         if(!is_numeric($this->port)){
             if(substr($this->host, 0, 3) == 'ssl'){
                 $this->port = 5223;
                 $this->log("Connecting with SSL");
-                
+
             } else {
                 $this->port = 5222;
             }
         }
 
-        parent::__construct($this->host.':'.$this->port, $timeout);
-       
-        $this->connect();
-
-    }
-
-    /**
-     * Connects to the XMPP server
-     */
-    public function connect(){
-
+		parent::__construct($this->host.':'.$this->port, $this->timeout);
+		
         $this->open();
        
         //begin stream
@@ -118,25 +110,21 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
     /**
      * Login to the XMPP server as a user and set their precence to avaiable
-     * @param string $uname The uname to login as
-     * @param string $pass The password to login with
-     * @param string/boolean $status A status string to a string to display for presence
-     * or empty string for simply available set to false for unavailable
      * @return boolean
      */
-    public function login($uname, $pass=null, $status=null){
+    public function login(){
 
         //connect if not connected
         if(!$this->connected){
+
             $this->reconnect();
         }
         //calc the jid from uname+host
-        $this->jid = $uname.'@'.substr($this->host, strpos($this->host, '//')+2);
-        $this->uname = $uname;
-  
-        if($pass){
+        $this->jid = $this->uname.'@'.substr($this->host, strpos($this->host, '//')+2);
+     
+        if($this->pass){
             
-            $this->write("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='PLAIN'>" . base64_encode("\x00" . $this->uname . "\x00" . $pass) . "</auth>");
+            $this->write("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='PLAIN'>" . base64_encode("\x00" . $this->uname . "\x00" . $this->pass) . "</auth>");
         } else {
             $this->write("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='ANONYMOUS' />");
 	}
@@ -154,10 +142,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             return false;
         }
 
-		$presence = new sb_XMPP_Presence();
-		$presence->set_status(is_string($status) ? $status : $this->status);
-
-        $this->send_presence($presence);
+		$this->send_status($this->status);
 
 		if(method_exists($this, 'on_after_login')){
 			$this->on_after_login();
@@ -165,20 +150,6 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 		
 		return true;
         
-    }
-
-
-    /**
-     * Ends the stream and closes the connection
-     */
-    public function close(){
-
-        if($this->socket){
-            $this->write("</stream:stream>");
-            parent::close();
-            $this->connected = false;
-        }
-
     }
 
 	/**
@@ -193,14 +164,236 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	}
 
 	/**
+	 * Sends status message
+	 * @param string $status The status message to send
+	 */
+	public function send_status($status=null){
+
+		$presence = new sb_XMPP_Presence();
+		$presence->set_status(is_string($status) ? $status : $this->status);
+
+        $this->send_presence($presence);
+	}
+
+	/**
+	 * Sends simple text message
+	 *
+	 * @param string $to The jid to send the message to
+	 * @param string $body The text to send
+	 */
+	public function send_simple_message($to, $body){
+
+		$message = new sb_XMPP_Message();
+
+		$message->set_to($to);
+		$message->set_body($body);
+        $this->send_message($message);
+	}
+
+	/**
+	 * Send a presence message accepting subscription request to a jid
+	 * @param string $to The jid of the person to send the acceptance request to
+	 * @return boolean
+	 */
+	public function send_accept_subscription_request($to){
+		$presence = new sb_XMPP_Presence();
+		$presence->set_type('subscribed');
+		$presence->set_to($to);
+		return $this->send_presence($presence);
+	}
+
+	/**
+	 * Sends a subscription request to a jid
+	 * @param string $to The hid to send the subscription request to
+	 * @return boolean
+	 */
+	public function send_subscription_request($to){
+
+		$presence = new sb_XMPP_Presence();
+		$presence->set_to($to);
+		$presence->set_type('subscribe');
+		$presence->set_from($this->jid);
+		return $this->send_presence($presence);
+
+	}
+
+	/**
+	 * Sends a sb_XMPP_Message via the socket
+	 * @param sb_XMPP_Message $message
+	 * @return boolean
+	 */
+	public function send_message(sb_XMPP_Message $message){
+		return $this->write($message);
+	}
+
+	/**
+	 * Sends a xml string
+	 * @param string $xml
+	 * @return boolean
+	 */
+	public function send_xml($xml){
+		return $this->write($xml);
+	}
+
+	/**
+	 * An event handler that fires when a message is received with $this->listen
+	 * @param sb_XMPP_Message $message
+	 */
+    protected function on_message(sb_XMPP_Message $message){}
+
+    /**
+     * This is an event handler for errors, you would extend it in your class that extends
+     * this class
+     * @param string $error
+     */
+    protected function on_error($error_code, $error_str){}
+
+    /**
+     * Logs what is doing
+     * @param string $message The message being received
+     * @todo convert to sb_Logger
+     */
+    protected function log($message){
+
+        file_put_contents("php://stdout", "\n\n" . $message);
+    }
+
+    /**
+     * Increments the packet id
+     * @return integer
+     */
+    final protected function next_id(){
+        return $this->packet_id++;
+    }
+
+	/**
+	 * Send an indication that the bot is composing text.
+	 * @param string $to The jid to send to
+	 */
+	final protected function composing_start($to){
+		$message = new sb_XMPP_Message();
+
+		$message->set_to($to);
+		$message->set_from($this->jid);
+		$message->set_type('chat');
+		$node = $message->createElement('composing');
+		$attr = $message->createAttribute('xmlns');
+		$node->appendChild($attr);
+		$attr->appendChild($message->createTextNode('http://jabber.org/protocol/chatstates'));
+		
+		$message->doc->appendChild($node);
+
+		$this->send_message($message);
+	}
+
+	/**
+	 * Sends message to indicating that the bot is no longer composing
+	 * @param string $to The jid to send to
+	 */
+	final protected function composing_stop($to){
+		$message = new sb_XMPP_Message();
+
+		$message->set_to($to);
+		$message->set_from($this->jid);
+		$message->set_type('chat');
+		$node = $message->createElement('active');
+		$attr = $message->createAttribute('xmlns');
+		$node->appendChild($attr);
+		$attr->appendChild($message->createTextNode('http://jabber.org/protocol/chatstates'));
+
+		$message->doc->appendChild($node);
+
+		$this->send_message($message);
+	}
+
+    /**
+     * Sends the client name to the XMPP server
+     * @return string The server response
+     */
+    final protected function send_client_name(){
+
+        $this->write('<iq xmlns="jabber:client" type="set" id="'.$this->next_id().'"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><resource>'.$this->client_name.'</resource></bind></iq>');
+        return $this->read();
+    }
+
+    /**
+     * Reads from the socket, should be protected but can't because this is inherited as public
+     *
+     * @return string The buffer data read from the socket
+     */
+    final public function read($byte_count=null){
+
+        $buffer = '';
+        $read = array($this->socket);
+        
+        $updated = @stream_select($read, $write, $except, 1);
+
+        if ($updated > 0) {
+            $data = fread($this->socket, 4096);
+            if($data) {
+                   $buffer = $data;
+            }
+
+        }
+
+        if(!empty($buffer)){
+            $this->log('RECEIVED: '.$buffer);
+        }
+
+        return $buffer;
+    }
+
+	/**
+	 * Writes XML to the socket client
+	 * @param mixed $xml Can be DOMDocument, SimpleXMLElement or string of XML
+	 * @return <type>
+	 */
+    final public function write($xml){
+
+		if($xml instanceof SimpleXMLElement){
+			$xml = $xml->asXML();
+		} else if($xml instanceof DOMDocument){
+			$xml = $xml->saveXML();
+		}
+
+		$this->log("SENT: ".$xml);
+
+        return parent::write($xml);
+    }
+
+
+	/**
+	 * Determines the peak memory usage
+	 * @return string The value in b, KB, or MB depending on size
+	 */
+	final protected function get_memory_usage($peak=false) {
+
+		if($peak){
+			$mem_usage = memory_get_peak_usage(true);
+		} else {
+			$mem_usage = memory_get_usage(true);
+		}
+
+		$str = '';
+		if ($mem_usage < 1024) {
+			$str = $mem_usage." b";
+		} elseif ($mem_usage < 1048576) {
+			$str = round($mem_usage/1024,2)." KB";
+		} else {
+			$str = round($mem_usage/1048576,2)." MB";
+		}
+		return $str;
+	}
+
+	/**
 	 * Listens for incoming chat on the socket
 	 */
-    public function listen(){
+    final public function listen(){
 
         $this->log("Listening...");
         $x = 1;
         while($x){
-           
+
             $x++;
             $xml = $this->read(1024);
 
@@ -227,23 +420,21 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 						$this->log('NOTICE: '.$from.' is '.$status);
 					}
 				}
-				
-				if($type == 'subscribe' && $this->on_subscription_request($presence)){
-					$presence = new sb_XMPP_Presence();
-					$presence->set_type('subscribed');
-					$presence->set_to($from);
-					$this->send_presence($presence);
-					$this->log('NOTICE: Accepted subscribe request from '.$from);
+
+				if(strstr($type, 'subscribe') && $this->on_subscription_request($presence)){
+
+					$this->send_accept_subscription_request($from);
+					$this->log('NOTICE: Auto accepting subscription request from '.$from);
 				}
-				
+
                 $this->on_presence($presence);
             }
 
-            if($x % 10 == 0){
-				
+            if($x % 100 == 0){
+
 				$presence = new sb_XMPP_Presence();
 				$presence->set_status($this->status);
-				
+
 
                 $this->send_presence($presence);
                 $x = 1;
@@ -255,173 +446,20 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         }
     }
 
-	public function send_subscription_request($to){
-
-		$presence = new sb_XMPP_Presence();
-		$presence->set_to($to);
-		$presence->set_type('subscribe');
-		$presence->set_from($this->jid);
-		$this->send_presence($presence);
-
-	}
-
-	/**
-	 * Sends a sb_XMPP_Message via the socket
-	 * @param sb_XMPP_Message $message
-	 * @return boolean
-	 */
-	public function send_message(sb_XMPP_Message $message){
-		return $this->write($message);
-	}
-
-	/**
-	 * Writes XML to the socket client
-	 * @param mixed $xml Can be DOMDocument, SimpleXMLElement or string of XML
-	 * @return <type>
-	 */
-    public function write($xml){
-
-		if($xml instanceof SimpleXMLElement){
-			$xml = $xml->asXML();
-		} else if($xml instanceof DOMDocument){
-			$xml = $xml->saveXML();
+    /**
+     * Ends the stream and closes the connection
+     */
+    final public function close(){
+		if(method_exists($this, 'on_close_connection')){
+			$this->on_close_connection();
 		}
-
-		$this->log("SENT: ".$xml);
-		
-        return parent::write($xml);
-    }
-
-	/**
-	 * An event handler that fires when a message is received with $this->listen
-	 * @param sb_XMPP_Message $message
-	 */
-    protected function on_message(sb_XMPP_Message $message){}
-
-    /**
-     * This is an event handler for errors, you would extend it in your class that extends
-     * this class
-     * @param string $error
-     */
-    protected function on_error($error_code, $error_str){}
-
-    /**
-     * Increments the packet id
-     * @return integer
-     */
-    protected function next_id(){
-        return $this->packet_id++;
-    }
-
-	/**
-	 * Send an indication that the bot is composing text.
-	 * @param string $to The jid to send to
-	 */
-	protected function composing_start($to){
-		$message = new sb_XMPP_Message();
-
-		$message->set_to($to);
-		$message->set_from($this->jid);
-		$message->set_type('chat');
-		$node = $message->createElement('composing');
-		$attr = $message->createAttribute('xmlns');
-		$node->appendChild($attr);
-		$attr->appendChild($message->createTextNode('http://jabber.org/protocol/chatstates'));
-		
-		$message->doc->appendChild($node);
-
-		$this->send_message($message);
-	}
-
-	/**
-	 * Sends message to indicating that the bot is no longer composing
-	 * @param string $to The jid to send to
-	 */
-	protected function composing_stop($to){
-		$message = new sb_XMPP_Message();
-
-		$message->set_to($to);
-		$message->set_from($this->jid);
-		$message->set_type('chat');
-		$node = $message->createElement('active');
-		$attr = $message->createAttribute('xmlns');
-		$node->appendChild($attr);
-		$attr->appendChild($message->createTextNode('http://jabber.org/protocol/chatstates'));
-
-		$message->doc->appendChild($node);
-
-		$this->send_message($message);
-	}
-
-    /**
-     * Logs what is doing
-     * @param string $message The message being received
-     * @todo convert to sb_Logger
-     */
-    protected function log($message){
-
-        file_put_contents("php://stdout", "\n\n" . $message);
-    }
-
-    /**
-     * Sends the client name to the XMPP server
-     * @return string The server response
-     */
-    protected function send_client_name(){
-
-        $this->write('<iq xmlns="jabber:client" type="set" id="'.$this->next_id().'"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><resource>'.$this->client_name.'</resource></bind></iq>');
-        return $this->read();
-    }
-
-    /**
-     * Reads from the socket, should be protected but can't because this is inherited as public
-     *
-     * @return string The buffer data read from the socket
-     */
-    public function read($byte_count=null){
-
-        $buffer = '';
-        $read = array($this->socket);
-        
-        $updated = @stream_select($read, $write, $except, 1);
-
-        if ($updated > 0) {
-            $data = fread($this->socket, 4096);
-            if($data) {
-                   $buffer = $data;
-            }
-
+        if($this->socket){
+            $this->write("</stream:stream>");
+            parent::close();
+            $this->connected = false;
         }
 
-        if(!empty($buffer)){
-            $this->log('RECEIVED: '.$buffer);
-        }
-
-        return $buffer;
     }
-
-	/**
-	 * Determines the peak memory usage
-	 * @return string The value in b, KB, or MB depending on size
-	 */
-	protected function get_memory_usage($peak=false) {
-
-		if($peak){
-			$mem_usage = memory_get_peak_usage(true);
-		} else {
-			$mem_usage = memory_get_usage(true);
-		}
-
-		$str = '';
-		if ($mem_usage < 1024) {
-			$str = $mem_usage." b";
-		} elseif ($mem_usage < 1048576) {
-			$str = round($mem_usage/1024,2)." KB";
-		} else {
-			$str = round($mem_usage/1048576,2)." MB";
-		}
-		return $str;
-	}
 
 
 	/**

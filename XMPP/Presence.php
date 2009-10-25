@@ -133,8 +133,6 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 		$attr->appendChild($this->createTextNode($type));
 	}
 
-	
-
 }
 
 ?>
