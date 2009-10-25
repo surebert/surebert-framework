@@ -142,7 +142,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             return false;
         }
 
-		$this->send_status($this->status);
+		$this->set_status($this->status);
 
 		if(method_exists($this, 'on_after_login')){
 			$this->on_after_login();
@@ -164,10 +164,10 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	}
 
 	/**
-	 * Sends status message
+	 * Sets/sends status message
 	 * @param string $status The status message to send
 	 */
-	public function send_status($status=null){
+	public function set_status($status=null){
 
 		$presence = new sb_XMPP_Presence();
 		$presence->set_status(is_string($status) ? $status : $this->status);
@@ -236,6 +236,28 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	}
 
 	/**
+	 * Broadcasts message to all online buddies not in except array
+	 * @param mixed $message String/sb_XMPP_Message The message to send
+	 * @param string $except An array of jids to not send to
+	 */
+	public function broadcast($message, $except=array()) {
+
+		if(!$message instanceOf sb_XMPP_Message){
+			$body = $message;
+			$message = new sb_XMPP_Message();
+			$message->set_body($body);
+		}
+
+
+		foreach($this->buddies_online as $buddy=>$status){
+			if(!in_array($buddy, $except)){
+				$message->set_to($buddy);
+				$this->send_message($message);
+			}
+		}
+	}
+
+	/**
 	 * An event handler that fires when a message is received with $this->listen
 	 * @param sb_XMPP_Message $message
 	 */
@@ -257,6 +279,18 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
         file_put_contents("php://stdout", "\n\n" . $message);
     }
+
+	/**
+	 * Puts the bot to sleep for a while
+	 * @param integer $secs
+	 */
+	protected function sleep($secs){
+		$str = 'Going to sleep for '.$secs.'secs';
+		$this->log('NOTICE: '.$str);
+		$this->set_status($str);
+		sleep($secs);
+		$this->set_status($this->status ? $this->status : 'awake');
+	}
 
     /**
      * Increments the packet id
@@ -391,11 +425,18 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
     final public function listen(){
 
         $this->log("Listening...");
+
         $x = 1;
         while($x){
 
             $x++;
             $xml = $this->read(1024);
+
+			if(!empty($xml) && method_exists($this, 'on_read')){
+				if($this->on_read($xml) === false){
+					return false;
+				}
+			}
 
             if(substr($xml, 0, 8 ) == '<message'){
 				$message = new sb_XMPP_Message($xml);
