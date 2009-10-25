@@ -25,24 +25,6 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
      */
     protected $uname;
 
-    /**
-     * The full jid of the user
-     * @var string
-     */
-    protected $jid;
-
-    /**
-     * Set to true when the connection is connected
-     * @var boolean
-     */
-    protected $connected = false;
-
-    /**
-     * The current packet id, increments after each packet is sent
-     * @var integer
-     */
-    protected $packet_id = 0;
-
 	/**
 	 * The status to display to other users
 	 * @var string
@@ -54,6 +36,30 @@ class sb_XMPP_Client extends sb_Socket_StreamingClient{
 	 * @var array
 	 */
 	protected $buddies_online = Array();
+
+	/**
+	 * If this is true then the bot will auto accept subscription requests
+	 * @var boolean
+	 */
+	protected $auto_accept_subscription_requests = true;
+
+    /**
+     * Set to true when the connection is connected
+     * @var boolean
+     */
+    protected $connected = false;
+
+    /**
+     * The full jid of the user
+     * @var string
+     */
+    protected $jid;
+
+    /**
+     * The current packet id, increments after each packet is sent
+     * @var integer
+     */
+    protected $packet_id = 0;
 
     /**
      * Create a new connection to a XMPP server
@@ -154,7 +160,16 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             return false;
         }
 
-        return $this->send_presence(is_string($status) ? $status : $this->status);
+		$presence = new sb_XMPP_Presence();
+		$presence->set_status(is_string($status) ? $status : $this->status);
+
+        $this->send_presence($presence);
+
+		if(method_exists($this, 'on_after_login')){
+			$this->on_after_login();
+		}
+		
+		return true;
         
     }
 
@@ -172,52 +187,16 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
     }
 
-    /**
-     * Sends a presence notification
-     *
-     * @param string $status The status message to display in human readible format
-     * @param string $to The jid of the user to send to
-     * @param string $show A code to describe the state. see http://xmpp.org/rfcs/rfc3921.html
-     * away - The entity or resource is temporarily away.
-     * chat - The entity or resource is actively interested in chatting.
-     * dnd - The entity or resource is busy (dnd = "Do Not Disturb").
-     * xa - The entity or resource is away for an extended period (xa = "eXtended Away").
-     
-     * @param string $type see http://xmpp.org/rfcs/rfc3921.html for more info
-     * unavailable -- Signals that the entity is no longer available for communication.
-     * subscribe -- The sender wishes to subscribe to the recipient's presence.
-     * subscribed -- The sender has allowed the recipient to receive their presence.
-     * unsubscribe -- The sender is unsubscribing from another entity's presence.
-     * unsubscribed -- The subscription request has been denied or a previously-granted subscription has been cancelled.
-     * probe -- A request for an entity's current presence; SHOULD be generated only by a server on behalf of a user.
-     * error -- An error has occurred regarding processing or delivery of a previously-sent presence stanza.
-     * @return boolean If it is written or not
-     */
-    public function send_presence($status = null, $show = null, $type=null, $to = null) {
+	/**
+	 * Sends a presence request
+	 * @param sb_XMPP_Presence $presence The presence instance to send
+	 * @return boolean
+	 */
+	public function send_presence(sb_XMPP_Presence $presence){
 
-       $xml = new sb_XMPP_Presence();
-
-       if($to){
-           $xml->set_to($to);
-       }
-
-       $xml->set_from($this->jid);
-
-       if($type){
-           $xml->set_type($type);
-       }
-
-       if(!is_null($show)){
-           $xml->set_show($show);
-       }
-
-       if($status){
-           $xml->set_status($status);
-       }
-
-       return $this->write($xml);
-
-    }
+		$presence->set_from($this->jid);
+		return $this->write($presence);
+	}
 
 	/**
 	 * Listens for incoming chat on the socket
@@ -238,10 +217,11 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             } else if(substr($xml, 0, 9 ) == '<presence'){
 
 				$presence = new sb_XMPP_Presence($xml);
+				$from = $presence->get_from();
+				$type = $presence->get_type();
+
 				if(is_array($this->buddies_online)){
 
-					$from = $presence->get_from();
-					$type = $presence->get_type();
 					$status = $presence->get_status();
 
 					if($from && $type == 'unavailable'){
@@ -254,12 +234,24 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 					}
 				}
 				
+				if($type == 'subscribe' && $this->on_subscription_request($presence)){
+					$presence = new sb_XMPP_Presence();
+					$presence->set_type('subscribed');
+					$presence->set_to($from);
+					$this->send_presence($presence);
+					$this->log('NOTICE: Accepted subscribe request from '.$from);
+				}
+				
                 $this->on_presence($presence);
             }
 
             if($x % 10 == 0){
+				
+				$presence = new sb_XMPP_Presence();
+				$presence->set_status($this->status);
+				
 
-                $this->send_presence($this->status);
+                $this->send_presence($presence);
                 $x = 1;
 
             }
@@ -268,6 +260,16 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
            usleep(100000);
         }
     }
+
+	public function send_subscription_request($to){
+
+		$presence = new sb_XMPP_Presence();
+		$presence->set_to($to);
+		$presence->set_type('subscribe');
+		$presence->set_from($this->jid);
+		$this->send_presence($presence);
+
+	}
 
 	/**
 	 * Sends a sb_XMPP_Message via the socket
