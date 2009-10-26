@@ -2,6 +2,7 @@
 /**
  * Describe the most basic user in any sb framework system.  All users should extend this user
  * @author visco
+ * @package sb_User
  *
  */
 class sb_User{

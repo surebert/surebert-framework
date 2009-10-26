@@ -3,8 +3,8 @@
  * Object to represent an email used by sb_EmailReader and sb_EmailWriter
  * 
  * @author Paul Visco
- * @package: email
- * @Version 2.21 10-15-07 - 06-21-09 added cc and bcc support
+ * @version 2.21 10-15-07 - 06-21-09 added cc and bcc support
+ * @package: sb_Email
  *
 <code>
  //create an email to send $to, $subject, $message, $from

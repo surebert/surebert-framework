@@ -2,8 +2,8 @@
 /**
  * Various functions for working with files
  * @author Paul Visco
- * @package files
  * @version 1.3 11-19-07 08-18-09
+ * @package sb_Files
  *
  */
 class sb_Files{

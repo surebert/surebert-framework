@@ -4,7 +4,7 @@
  * 
  * @author Paul Visco
  * @version 1.02 09/17/2007
- *
+ * @package sb_Strings
  */
 class sb_Strings{
 	

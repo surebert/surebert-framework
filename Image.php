@@ -5,7 +5,7 @@
  * 
  * @author Paul Visco 10/26/2005
  * @version 2.0 07/08/2007
- * @package image
+ * @package sb_Image
  * 
  * @example
  * <code>

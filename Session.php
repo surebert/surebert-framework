@@ -3,7 +3,7 @@
  * Base class for custom sessions
  * @author visco
  * @version 0.4 01/24/2009 01/24/2009
- *
+ * @package sb_Session
  */
 
 class sb_Session{
