@@ -387,7 +387,9 @@ class sb_Text_Bling{
 	 * @param the text to be cleaned $str
 	 * @return string
 	 * 
-	 * @example textBling::typo_fix('Teh bird cant fly'); returns 'The bird can't fly'
+	 <code>
+	 textBling::typo_fix('Teh bird cant fly'); returns 'The bird can't fly'
+	 </code>
 	 */
 	public static function typo_fix($str){
 		

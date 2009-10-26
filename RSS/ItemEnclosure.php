@@ -6,11 +6,7 @@
  * This can be used when creating podcasts, each item would get an MP3
  * @author Paul Visco
  * @package sb_RSS
- * @example 
- * <code>
-	$myItem = new sb_RSS_Item();
-	$myItem->enclosure = new sb_RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
-	<code>
+ *
  */
 class sb_RSS_ItemEnclosure{
 	
@@ -43,6 +39,11 @@ class sb_RSS_ItemEnclosure{
 	 * @param integer $length The length of the file in bytes
 	 * @param string $type The mime type of the enclose
 	 * @return unknown
+	 *
+	<code>
+	$myItem = new sb_RSS_Item();
+	$myItem->enclosure = new sb_RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
+	<code>
 	 */
 	public function __construct($url, $length, $type){
 		

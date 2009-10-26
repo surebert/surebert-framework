@@ -3,23 +3,19 @@
 /**
  * This class is used to drive a talkbox chat block on a site
  *
- * @author Paul Visco 06/05/2004
- * @version 2.1 11/21/2007
- * @package sb_Chat
- * 
  * Creates one table called sb_TalkBox_master and a table name sb_TalkBox_{ROOMNAME} for each room
- * 
+ *
 	BEFORE USING
-	
+
 	//Create a mysql database
 	CREATE database @myDataBase
-	
+
 	//Grant privileges to your user
 	GRANT ALL on @myDataBase.* To '@myUserName'@'@myHost' identified by '@myPassword';
-	
+
 	//flush the privilege cache to pick up new permissions
 	FLUSH PRIVILEGES;
-	
+
 	//create the master table
 	CREATE TABLE IF NOT EXISTS sb_TalkBox_master (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -29,33 +25,10 @@
 			last_post DATETIME,
 			PRIMARY KEY (id)
 	)
-	
- * @example 
 
-	$db = new sb_PDO("mysql:dbname=sb_talkbox;host=localhost", 'talker', 'rt3');
-	
-	$talkbox = new sb_TalkBox($db);
-	
-	//live filter the return rows
-	function sb_TalkBoxOnParse($str){
-		
-		//in this case replace swear word
-		return str_replace('fuck', 'f***', $str);
-	}
-		
-	//run this only the first time
-	$talkbox->create_room('paul');
-	
-	//create a new line to insert, this would normally come from ajax or form
-	$line = new sb_Chat_Line();
-	$line->uname ='paul';
-	$line->ip=$_SERVER['REMOTE_ADDR'];
-	$line->message="hello there fuckhead";
-	$talkbox->insert($line);
-	
-	//echo the json of the latest chat starting with the newest line and going back 10 lines which can be used to build dom display
-	echo json_encode($talkbox->display(0, 10));
-
+ * @author Paul Visco 06/05/2004
+ * @version 2.1 11/21/2007
+ * @package sb_Chat
  * 
  * 
  */
@@ -108,7 +81,36 @@ class sb_Chat_TalkBox{
 	public $db;
 	
 	public $lines =Array();
-	
+
+	/**
+	 *
+	 * @param sb_PDO $pdo_connection
+	 * @param string $room
+	 *
+	 * $db = new sb_PDO("mysql:dbname=sb_talkbox;host=localhost", 'talker', 'rt3');
+
+		$talkbox = new sb_TalkBox($db);
+
+		//live filter the return rows
+		function sb_TalkBoxOnParse($str){
+
+			//in this case replace swear word
+			return str_replace('fuck', 'f***', $str);
+		}
+
+		//run this only the first time
+		$talkbox->create_room('paul');
+
+		//create a new line to insert, this would normally come from ajax or form
+		$line = new sb_Chat_Line();
+		$line->uname ='paul';
+		$line->ip=$_SERVER['REMOTE_ADDR'];
+		$line->message="hello there fuckhead";
+		$talkbox->insert($line);
+
+		//echo the json of the latest chat starting with the newest line and going back 10 lines which can be used to build dom display
+		echo json_encode($talkbox->display(0, 10));
+		 */
 	function __construct($pdo_connection, $room){
 		
 		$this->db = $pdo_connection;

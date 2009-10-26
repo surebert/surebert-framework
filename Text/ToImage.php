@@ -4,20 +4,6 @@
  * @author Paul Visco
  * @version 1.01 09/05/07 12/08/2008
  * @package sb_Text
- * @example
- * <code>
- * error_reporting(E_ALL);
-ini_set('Display_Errors', 'On');
-$textImage = new sb_Text_ToImage(800, 600, '255,0,0', '0,9,0');
-$textImage->font = '../media/fonts/Eurostile-ExtendedTwo.ttf';
-$textImage->rotation = 0;
-$word = (isset($_GET['word'])) ? $_GET['word'] : 'hello world';
-
-$im = $textImage->draw($word, 20, 10, 30);
-
-header('Content-Type:image/gif');
-imagegif($im);
- *</code>
  */
 class sb_Text_ToImage{
 
@@ -49,6 +35,20 @@ class sb_Text_ToImage{
 	 * @param integer $height  The total image height
 	 * @param string $background_color  The background color as an rgb comma delimited list, e.g. (255,255,0) is red
 	 * @param string $text_color The background color as an rgb comma delimited list, e.g. (255,255,0) is red
+	 *
+	<code>
+	error_reporting(E_ALL);
+	ini_set('Display_Errors', 'On');
+	$textImage = new sb_Text_ToImage(800, 600, '255,0,0', '0,9,0');
+	$textImage->font = '../media/fonts/Eurostile-ExtendedTwo.ttf';
+	$textImage->rotation = 0;
+	$word = (isset($_GET['word'])) ? $_GET['word'] : 'hello world';
+
+	$im = $textImage->draw($word, 20, 10, 30);
+
+	header('Content-Type:image/gif');
+	imagegif($im);
+	</code>
 	 */
 	public function __construct($width, $height, $background_color = '', $text_color = ''){
 		$this->image = imagecreate($width, $height);

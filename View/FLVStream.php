@@ -5,11 +5,6 @@
  * @author Paul Visco 06/05/2007
  * @version 1.0 07/07/2007 12/08/2008
  * @package sb_View
- * @example 
- * 
- * <code>
- * sb_Streaming::flv('../content/love.flv', 20154);
- * </code>
  */
 
 class sb_View_FLVStream extends sb_View{

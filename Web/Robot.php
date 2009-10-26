@@ -5,20 +5,6 @@
  * @author Paul Visco
  * @version 1.01 11/05/07 12/08/08
  * @package sb_Web
- * @example 
- * <code>
-$loader = new sb_Web_Robot();
-$loader->set_user_agent("Mozilla/4.0 (compatible;MSIE 6.0; Windows NT 5.1)"); 
-$loader->set_post_data($_POST); //here I am forwarding the current pages $_POST data, could be any array
-$loader->set_get_data(Array("friend"=>"tim"));
-$loader->set_cookies(Array("name"=> "Paul"));
-$loader->set_additional_headers(Array('Accept-Language' => 'en-us,en;q=0.5'));
-$page = $loader->dispatch('http://200xx51/zhangyo/asp/ajax.validate.name.email.asp');
-
-//wanna turn xml into json? try this
-$xml = simplexml_load_string($page);
-echo json_encode($xml);
- * </code>
  * 
  */
 
@@ -65,7 +51,24 @@ class sb_Web_Robot{
 	 * @var string
 	 */
 	private $query_string ='';
-	
+
+	/**
+	 * Creates a sb_Web_Robot instance
+	 * @param string $user_agent The user agent to use
+	<code>
+	$loader = new sb_Web_Robot();
+	$loader->set_user_agent("Mozilla/4.0 (compatible;MSIE 6.0; Windows NT 5.1)");
+	$loader->set_post_data($_POST); //here I am forwarding the current pages $_POST data, could be any array
+	$loader->set_get_data(Array("friend"=>"tim"));
+	$loader->set_cookies(Array("name"=> "Paul"));
+	$loader->set_additional_headers(Array('Accept-Language' => 'en-us,en;q=0.5'));
+	$page = $loader->dispatch('http://200xx51/zhangyo/asp/ajax.validate.name.email.asp');
+
+	//wanna turn xml into json? try this
+	$xml = simplexml_load_string($page);
+	echo json_encode($xml);
+	</code>
+	 */
 	public function __construct($user_agent = ''){
 		$user_agent = !empty($user_agent) ? $user_agent : $this->user_agent;
 		$this->set_user_agent($user_agent);

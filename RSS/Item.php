@@ -24,50 +24,44 @@ class sb_RSS_Item{
 	}
 	
 	/**
-	 * The title of the item.
+	 * The title of the item.  e.g. Venice Film Festival Tries to Quit Sinking
 	 *
 	 * @var string
-	 * @example Venice Film Festival Tries to Quit Sinking
 	 */
 	public $title='';
 	
 	/**
-	 * The URL of the item.
+	 * The URL of the item. e.g. http://nytimes.com/2004/12/07FEST.html
 	 *
 	 * @var string
-	 * @example http://nytimes.com/2004/12/07FEST.html
 	 */
 	public $link='';
 	
 	/**
-	 * The item synopsis
+	 * The item synopsis e.g.  Some of the most heated chatter at the Venice...
 	 *
 	 * @var string
-	 * @example Some of the most heated chatter at the Venice Film Festival this week was about the way that the arrival of the stars at the Palazzo del Cinema was being staged.
 	 */
 	public $description='';
 	
 	/**
-	 * Indicates when the item was published
+	 * Indicates when the item was published e.g. Sun, 19 May 2002 15:21:36 GMT
 	 *
 	 * @var string
-	 * @example Sun, 19 May 2002 15:21:36 GMT
 	 */
 	public $pubDate='';
 	
 	/**
-	 * A string that uniquely identifies the item
+	 * A string that uniquely identifies the item e.g. http://inessential.com/2002/09/01.php#a2
 	 *
 	 * @var string
-	 * @example http://inessential.com/2002/09/01.php#a2
 	 */
 	public $guid='';
 	
 	/**
-	 * {optional} Email address of the author of the item
+	 * {optional} Email address of the author of the item e.g. test@test.com
 	 *
 	 * @var string
-	 * @example test@test.com
 	 */
 	public $author='';
 	

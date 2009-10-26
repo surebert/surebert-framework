@@ -48,7 +48,6 @@ class sb_PDO extends PDO{
 	 * @param Object params An object whose properties match with properties inside prepared statement.
 	 * @param Array class_name Here you can specify a class_name, so that rows returned are instances of that class_name instead of standard objects
 	 * @return array An array of objects representing rows returned
-	 * @example
 	 * <code>
 	 * 
 	 * //without prepared statements
@@ -137,7 +136,6 @@ class sb_PDO extends PDO{
 	 * @return array The input data as an array designed for passing to pdo's execute or bindParams
 	 * @Author Paul Visco
 	 * @version 1.0
-	 * @example
 	 * <code>
 	 * $question = new Question();
 	 * $question->qid = 1;

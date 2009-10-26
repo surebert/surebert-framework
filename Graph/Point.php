@@ -1,52 +1,10 @@
 <?php
 /**
  * Used to plot simple point and line graphs.  Requires sb_Math_RangeMapper
- * @Author Paul Visco
+ * @author Paul Visco
  * @version 1.6  11/19/07
  * @package sb_Graph
  * 
- * <code>
- //set the graph width and height plus values and labels
-//set the graph width and height plus values and labels
-$chart = new sb_Graph_Point(600, 300,  Array(
-    'A' => 1.27,
-    'B' => 1.45,
-    'C' => 1.20,
-    'D' => 1.55,
-    'E' => null, //graphs nothing for that column but still adds the column
-    'F' => 2.55,
-    'G' => 1.45,
-    'H' => 1.35,
-    'I' => 1.33,
-    'J' => 0.98
-));
-
-//these all have defaults, optional
-$chart->set_y_axis_label_increment(0.5);
-$chart->connect_points = 1;
-$chart->x_axis_hints = 1;
-$chart->y_axis_hints = 1;
-
-//setting the colors, optional
-$chart->set_background_color(25, 45, 65);
-$chart->set_text_color(255, 255, 255);
-$chart->set_axis_color(95, 95, 95);
-$chart->set_point_color(223, 65, 15);
-$chart->set_line_color(145, 45, 45);
-
-//add additional horizontal lines, optional
-$chart->add_horizontal_line(1.54, 'red', 'average');
-$chart->add_horizontal_line(2.0, 'purple', 'otherLine');
-
-//draw the chart
-$chart->draw();
-
-header("Content-type: image/gif");
-
-// return the image using imagepng or imagejpeg.
-imagegif($chart->output());
- * </code>
- *
  */
 
 class sb_Graph_Point{
@@ -105,7 +63,47 @@ class sb_Graph_Point{
 	 * @param integer $width  The total width of the graph in pixels
 	 * @param integer $height The total height of the graph in pixels
 	 * @param string $values A line resturn delimted, comma-delimited value pair decribing the label and value for each point plotted. 
-	 * @example $chart = new sb_SimpleLine(600, 300, "mon,4\ntue,5\nwed,6");
+	 * <code>
+	//set the graph width and height plus values and labels
+	//set the graph width and height plus values and labels
+	$chart = new sb_Graph_Point(600, 300,  Array(
+		'A' => 1.27,
+		'B' => 1.45,
+		'C' => 1.20,
+		'D' => 1.55,
+		'E' => null, //graphs nothing for that column but still adds the column
+		'F' => 2.55,
+		'G' => 1.45,
+		'H' => 1.35,
+		'I' => 1.33,
+		'J' => 0.98
+	));
+
+	//these all have defaults, optional
+	$chart->set_y_axis_label_increment(0.5);
+	$chart->connect_points = 1;
+	$chart->x_axis_hints = 1;
+	$chart->y_axis_hints = 1;
+
+	//setting the colors, optional
+	$chart->set_background_color(25, 45, 65);
+	$chart->set_text_color(255, 255, 255);
+	$chart->set_axis_color(95, 95, 95);
+	$chart->set_point_color(223, 65, 15);
+	$chart->set_line_color(145, 45, 45);
+
+	//add additional horizontal lines, optional
+	$chart->add_horizontal_line(1.54, 'red', 'average');
+	$chart->add_horizontal_line(2.0, 'purple', 'otherLine');
+
+	//draw the chart
+	$chart->draw();
+
+	header("Content-type: image/gif");
+
+	// return the image using imagepng or imagejpeg.
+	imagegif($chart->output());
+	</code>
 	 */
 	public function __construct($width, $height, $values){
 		

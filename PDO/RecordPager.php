@@ -66,21 +66,21 @@ class sb_PDO_RecordPager{
 	   *
 	   * @param integer $pagenum
 	   * @return sb_PDORecordPage
-	   * @example 
-			 <code>
-			 	
-			 	//get the current requested page from an internet user
-			 	$pnum = (isset($_REQUEST['page']))?$_REQUEST['page']:1;
-			 	
-			 	$pager = new sb_PDO_RecordPager($mysqlconn);
-			 	$pager->sql = "SELECT * FROM user ORDER BY lname DESC;";
-			 	$pager->pagesize = 20 //optional default is set to 10
-			 	$res = $pager->get_page($punm);
-			 	
-			 	echo '<pre>' . print_r($res->rows) . '</pre>';
-			 
-			 
-			 </code>
+	   *
+	   <code>
+
+		//get the current requested page from an internet user
+		$pnum = (isset($_REQUEST['page']))?$_REQUEST['page']:1;
+
+		$pager = new sb_PDO_RecordPager($mysqlconn);
+		$pager->sql = "SELECT * FROM user ORDER BY lname DESC;";
+		$pager->pagesize = 20 //optional default is set to 10
+		$res = $pager->get_page($punm);
+
+		echo '<pre>' . print_r($res->rows) . '</pre>';
+
+
+	   </code>
  	   * 
 	   */
 	  public function get_page($pagenum = 1, sb_PDO_RecordPage $ret = null){
@@ -153,21 +153,20 @@ class sb_PDO_RecordPager{
 		 * @param string $value
 		 * @return object sb_PDORecordPage or 0 if the value is not found
 		 * 
-		 * @example 
-			 <code>
-			 		//... continued from above
-			 		
-			 		if($flipped = $pager->flipto('lname', 'cashaw')){
-			 			
-			 			//prints the contents of the first page that contained a row with the column 
-			 			//'lname' set to the value of 'cashaw'
-			 			
-			 			echo '<pre>' . print_r($res->rows) . '</pre>';
-			 		}else{
-			 			
-			 		}
-			 					 		
-			 </code>
+		 <code>
+		 //... continued from above
+
+		 if($flipped = $pager->flipto('lname', 'cashaw')){
+
+			 //prints the contents of the first page that contained a row with the column
+			 //'lname' set to the value of 'cashaw'
+
+			 echo '<pre>' . print_r($res->rows) . '</pre>';
+		 }else{
+
+		 }
+
+		 </code>
 		 * 
 		 */
 		public function flipto($field, $value){
