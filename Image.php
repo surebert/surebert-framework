@@ -68,20 +68,17 @@ class sb_Image{
 	 *
 	 * @param string $orig the file path to the image being edited
 	 * @param string $dest optional, the file path to name the edited file should be saved as, without this the original file gets saved over with the edited version
-	 *<code>
-	$sb_Image = new sb_Image('orig.jpg', 'orig3.jpg');
-
-	//$sb_Image->to_grayscale();
-	$sb_Image->resize(200, -1);
-	$sb_Image->display();
-	$sb_Image->force_download();
-	//$sb_Image->rotate(90);
-	//$sb_Image->to_jpg();
-	$sb_Image->to_png();
-	$sb_Image->to_gif();
-	</code>
+	 * <code>
+	 * $sb_Image = new sb_Image('orig.jpg', 'orig3.jpg');
+	 *
+	 * //$sb_Image->to_grayscale();
+	 * $sb_Image->resize(200, -1);
+	 * $sb_Image->display();
+	 * $sb_Image->force_download();
+	 * //$sb_Image->rotate(90);
+	 * //$sb_Image->to_jpg();
+	 *</code>
 	 */
-	
 	public function __construct($orig='', $dest=''){
 		if(!empty($orig)){
 			$this->set($orig, $dest='');

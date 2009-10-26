@@ -2,20 +2,22 @@
 /**
  * 
  * Used to store cache data in a mysql table
+ *
+ * <code>
+ * CREATE TABLE sb_cache_mysql
+ * (
+ *     cache_key varchar(200) NOT NULL,
+ *     expires_by INT,
+ *     data TEXT,
+ *     PRIMARY KEY (cache_key)
+ * )
+ * </code>
+ *
  * @author visco
  * @version 1.0 01/23/2009 05/14/2009
  * @package sb_Cache
  *
  *
-<code>
-CREATE TABLE sb_cache_mysql
-(
-    cache_key varchar(200) NOT NULL,
-    expires_by INT,
-    data TEXT,
-    PRIMARY KEY (cache_key)
-)
-</code>
  */
 
 class sb_Cache_Mysql implements sb_Cache_Base{

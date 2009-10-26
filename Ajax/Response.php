@@ -32,13 +32,14 @@ class sb_Ajax_Response{
 	
 	/**
 	 * Sets up a ajax repsonse for dispatch
-	<code>
-	$response = new sb_Ajax_Response(new person());
-	$response->dispatch();
-
-	</code>
+	 * 
 	 *
-	 * @param object/xml/string/boolean $content
+	 * <code>
+	 * $response = new sb_Ajax_Response(new person());
+	 * $response->dispatch();
+	 * </code>
+	 *
+	 * @param mixed object/xml/string/boolean $content
 	 */
 	public function __construct($content = null){
 		
@@ -63,7 +64,7 @@ class sb_Ajax_Response{
 	/**
 	 * Sets the content to send back to the browser and sets the content type based on the type of content passed
 	 *
-	 * @param object/bool/xml/string $content
+	 * @param mixed object/bool/xml/string $content
 	 * 
 	 * @todo if someone wants to bother with xml add it, and if so what determines if it is xml, an xml object, a string detected, etc
 	 */

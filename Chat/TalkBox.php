@@ -84,33 +84,37 @@ class sb_Chat_TalkBox{
 
 	/**
 	 *
+	 * Instanitates a new talkbox
+	 * <code>
+	 * $db = new sb_PDO("mysql:dbname=sb_talkbox;host=localhost", 'talker', 'rt3');
+	 * $talkbox = new sb_TalkBox($db);
+	 *
+	 * //live filter the return rows
+	 * function sb_TalkBoxOnParse($str){
+	 *
+	 * 	//in this case replace swear word
+	 * 	return str_replace('fuck', 'f***', $str);
+	 * }
+	 *
+	 * //run this only the first time
+	 * $talkbox->create_room('paul');
+	 *
+	 * //create a new line to insert, this would normally come from ajax or form
+	 * $line = new sb_Chat_Line();
+	 * $line->uname ='paul';
+	 * $line->ip=$_SERVER['REMOTE_ADDR'];
+	 * $line->message="hello there fuckhead";
+	 * $talkbox->insert($line);
+	 *
+	 * //echo the json of the latest chat starting with the newest line and going back 10 lines which can be used to build dom display
+	 * echo json_encode($talkbox->display(0, 10));
+	 *
+	 * </code>
+	 *
 	 * @param sb_PDO $pdo_connection
 	 * @param string $room
 	 *
-	 * $db = new sb_PDO("mysql:dbname=sb_talkbox;host=localhost", 'talker', 'rt3');
-
-		$talkbox = new sb_TalkBox($db);
-
-		//live filter the return rows
-		function sb_TalkBoxOnParse($str){
-
-			//in this case replace swear word
-			return str_replace('fuck', 'f***', $str);
-		}
-
-		//run this only the first time
-		$talkbox->create_room('paul');
-
-		//create a new line to insert, this would normally come from ajax or form
-		$line = new sb_Chat_Line();
-		$line->uname ='paul';
-		$line->ip=$_SERVER['REMOTE_ADDR'];
-		$line->message="hello there fuckhead";
-		$talkbox->insert($line);
-
-		//echo the json of the latest chat starting with the newest line and going back 10 lines which can be used to build dom display
-		echo json_encode($talkbox->display(0, 10));
-		 */
+	 */
 	function __construct($pdo_connection, $room){
 		
 		$this->db = $pdo_connection;

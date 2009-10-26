@@ -4,27 +4,6 @@
  * @version 1.21 02/06/09 05/12/09
  * @author visco
  * @package sb_JSON_RPC2
- * <code>
- *
- //a function to serve
- function add($x, $y){
- return $x+$y;
- }
-
- //create the server
- $server = new sb_JSON_RPC2_Server();
-
- //methods you are allowing the server to serve
- $server->serve_methods(Array(
- 'add' => 'add'
- ));
-
- //debug one of the methods
- //echo $server->handle('{"method":"/","params":[1,2],"id":"abc123"}');
-
- //serve the methods requested in Gateway::$request->post[]; which is sent by a sb_JSON_RPC2_Request's dispatch method
- echo $server->handle();
- * </code>
  *
  */
 
@@ -79,6 +58,28 @@ class sb_JSON_RPC2_Server {
 
 	/**
 	 * Create an instance
+	 *
+	 * <code>
+	 *
+	 * //a function to serve
+	 * function add($x, $y){
+	 * 	return $x+$y;
+	 * }
+	 * 
+	 * //create the server
+	 * $server = new sb_JSON_RPC2_Server();
+	 * 
+	 * //methods you are allowing the server to serve
+	 * $server->serve_methods(Array(
+	 * 	'add' => 'add'
+	 * ));
+	 * 
+	 * //debug one of the methods
+	 * //echo $server->handle('{"method":"/","params":[1,2],"id":"abc123"}');
+	 * 
+	 * //serve the methods requested in Gateway::$request->post[]; which is sent by a sb_JSON_RPC2_Request's dispatch method
+	 * echo $server->handle();
+	 * </code>
 	 */
 	public function __construct($methods=Array()) {
 		if(isset($_SERVER) && isset($_SERVER['HTTP_PHP_SERIALIZE_RESPONSE'])) {

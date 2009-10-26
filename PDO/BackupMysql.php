@@ -10,19 +10,6 @@
  * The db credetials should be for root or a user that has SELECT access to every database
  * @author Paul Visco paul.visco@roswellpark.org
  * @package sb_PDO
- * <code>
-$backup = new sb_PDO_BackupMysql('127.0.0.1', 'root', 'abc123');
-
-//optional
-$back->max_version = 3;
-
-$backup->backup();
- * </code>
- */
-
-/**
- * This class handles backups of mysql databases on a box.
- * It stores 5 versions of each dtabase before starting again at 1.
  */
 class sb_PDO_BackupMysql{
 
@@ -58,6 +45,14 @@ class sb_PDO_BackupMysql{
 
      /**
       * Connects to the database for SELECT and mysqldump
+	  *
+	  * <code>
+	  * $backup = new sb_PDO_BackupMysql('127.0.0.1', 'root', 'abc123');
+	  * //optional
+	  * $back->max_version = 3;
+	  * $backup->backup();
+	  * </code>
+	  *
       * @param string $db_host The mysql database host
       * @param string $db_user The mysql database user
       * @param string $db_pass The mysql database pass

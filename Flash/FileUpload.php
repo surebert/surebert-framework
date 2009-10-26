@@ -64,17 +64,17 @@ class sb_Flash_FileUpload{
 	 * Instatiates a new file upload, if the file data is stored in any key besides Filedata pass that
 	 * @param $key
 	 *
-	<code>
-	$file = new sb_Flash_FileUpload();
-	$uploaded = $file->save(ROOT.'/public/content/users/paul/'.date('my'));
-
-	if($uploaded){
-		echo json_encode($file);
-	} else {
-		echo '0';
-	}
-
-	</code>
+	 * <code>
+	 * $file = new sb_Flash_FileUpload();
+	 * $uploaded = $file->save(ROOT.'/public/content/users/paul/'.date('my'));
+	 * 
+	 * if($uploaded){
+	 *	echo json_encode($file);
+	 * } else {
+	 *	echo '0';
+	 * }
+	 *
+	 * </code>
 	 */
 	public function __construct($key='Filedata'){
        

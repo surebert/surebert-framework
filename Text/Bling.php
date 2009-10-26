@@ -2,15 +2,18 @@
 
 /**
  * Used to parse output text created with surebert textBling editor
+ *
+ * <code>
+ * //returns the "cleaned" text as a string
+ * echo sb_Text_Bling::clean"[b]here is a map[/b]\n[map]24 linwood avenue, buffalo, ny, 14209[/map]"); 	//return the javascript for the bling string
  * 
+ * echo sb_Text_Bling::get_javascript();
+ * </code>
+ *
  * @author Paul Visco  12/26/2004
  * @version 2.71 11/04/2007
  * @package sb_Text
- * <code>
- * //returns the "cleaned" text as a string
-echo sb_Text_Bling::clean"[b]here is a map[/b]\n[map]24 linwood avenue, buffalo, ny, 14209[/map]"); 	//return the javascript for the bling string
-	echo sb_Text_Bling::get_javascript();
-	</code>
+ * 
 */
 class sb_Text_Bling{
 	/*
@@ -384,12 +387,14 @@ class sb_Text_Bling{
 	/**
 	 * Fixed common typos, can be used directly as it is a static property
 	 *
+	 * <code>
+	 * textBling::typo_fix('Teh bird cant fly');
+	 * //returns 'The bird can't fly'
+	 * </code>
+	 *
 	 * @param the text to be cleaned $str
 	 * @return string
 	 * 
-	 <code>
-	 textBling::typo_fix('Teh bird cant fly'); returns 'The bird can't fly'
-	 </code>
 	 */
 	public static function typo_fix($str){
 		

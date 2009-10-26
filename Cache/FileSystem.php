@@ -5,25 +5,6 @@
  * @author visco
  * @version 1.0 01/23/2009 10/09/2009
  * @package sb_Cache
- * 
-<code>
-$mycache = new sb_Cache_FileSystem();
-//store a string in /private/cache/dog/food for 10 seconds 
-$mycache->store('/dog/food', 'Kibbles and Bits', 10);
-
-//load the data from the cache
-echo $mycache->fetch('/dog/food');
-
-//create an object to store in the cache
-$person = new stdClass();
-$person->dname = 'Visco, Paul';
-
-//store the person in the cache for 100 seconds
-$mycache->store('/dog/owner', $person, 100);
-
-//load the person from the cache
-print_r($mycache->fetch('/dog/owner'));
-</code>
  *
  */
 class sb_Cache_FileSystem implements sb_Cache_Base{
@@ -44,7 +25,28 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 
 	/**
 	 * Sets the filepath of the file system cache, defaults to ROOT/private/cache/
+	 * 
+	 * <code>
+	 * $mycache = new sb_Cache_FileSystem();
+	 * //store a string in /private/cache/dog/food for 10 seconds
+	 * $mycache->store('/dog/food', 'Kibbles and Bits', 10);
+	 *
+	 * //load the data from the cache
+	 * echo $mycache->fetch('/dog/food');
+	 *
+	 * //create an object to store in the cache
+	 * $person = new stdClass();
+	 * $person->dname = 'Visco, Paul';
+	 *
+	 * //store the person in the cache for 100 seconds
+	 * $mycache->store('/dog/owner', $person, 100);
+	 *
+	 * //load the person from the cache
+	 * print_r($mycache->fetch('/dog/owner'));
+	 * </code>
+	 *
 	 * @param string $file_path Optional The filepath to store the cache in, must be writable
+	 *
 	 */
 	public function __construct($file_path =''){
 

@@ -9,41 +9,41 @@
  * 
  * <code>
  * DROP TABLE IF EXISTS `storage`;
-CREATE TABLE `storage` (
-  `sid` int(11) NOT NULL auto_increment,
-  `id` varchar(100) default NULL,
-  `user_name` varchar(100) default NULL,
-  `ip` varchar(15) default NULL,
-  `time_stamp` datetime default NULL,
-  `path` text,
-  `width` smallint(5) unsigned default NULL,
-  `height` smallint(5) unsigned default NULL,
-  `app_id` smallint(5) unsigned default NULL,
-  `deleted` char(1) default 0,
-  PRIMARY KEY  (`sid`)
-) 
-
-//using Flash_Signature
-$db = new PDO("mysql:host=HOST;dbname=DBNAME", "USERNAME", "PASSWORD");
-
-//saving a Flash_Signature
-$Flash_Signature = new sb_Flash_Signature();
-$Flash_Signature->app_id = 999;
-$Flash_Signature->width=600;
-$Flash_Signature->height=150;
-$Flash_Signature->user_name = $_SERVER['AUTH_USER'];
-
-//set the path for the Flash_Signature object
-$Flash_Signature->path = $path_data_from_flash_file
-
-$Flash_Signature->save($db);
-echo 'transaction='.$Flash_Signature->id;
-
-//loading a Flash_Signature
-$Flash_Signature = new sb_Flash_Signature($db, '08fb669424c5dcbf6e73a943df2bc2a8');
-
-$Flash_Signature->to_img('gif', null, 100, null, null, 2, Array(255,235,0), Array(255,255,255), null);
-<//code>
+ * CREATE TABLE `storage` (
+ *   `sid` int(11) NOT NULL auto_increment,
+ *   `id` varchar(100) default NULL,
+ *   `user_name` varchar(100) default NULL,
+ *   `ip` varchar(15) default NULL,
+ *   `time_stamp` datetime default NULL,
+ *   `path` text,
+ *   `width` smallint(5) unsigned default NULL,
+ *   `height` smallint(5) unsigned default NULL,
+ *   `app_id` smallint(5) unsigned default NULL,
+ *   `deleted` char(1) default 0,
+ *   PRIMARY KEY  (`sid`)
+ * )
+ * 
+ * //using Flash_Signature
+ * $db = new PDO("mysql:host=HOST;dbname=DBNAME", "USERNAME", "PASSWORD");
+ * 
+ * //saving a Flash_Signature
+ * $Flash_Signature = new sb_Flash_Signature();
+ * $Flash_Signature->app_id = 999;
+ * $Flash_Signature->width=600;
+ * $Flash_Signature->height=150;
+ * $Flash_Signature->user_name = $_SERVER['AUTH_USER'];
+ * 
+ * //set the path for the Flash_Signature object
+ * $Flash_Signature->path = $path_data_from_flash_file
+ * 
+ * $Flash_Signature->save($db);
+ * echo 'transaction='.$Flash_Signature->id;
+ * 
+ * //loading a Flash_Signature
+ * $Flash_Signature = new sb_Flash_Signature($db, '08fb669424c5dcbf6e73a943df2bc2a8');
+ * 
+ * $Flash_Signature->to_img('gif', null, 100, null, null, 2, Array(255,235,0), Array(255,255,255), null);
+ * </code>
  */
 class sb_Flash_Signature{
 	

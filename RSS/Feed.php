@@ -132,8 +132,8 @@ class sb_RSS_Feed extends DomDocument{
 	
 	/**
 	 * An XML element that contains up to seven <day> sub-elements whose value is Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday. Aggregators may not read the channel during days listed in the skipDays element.
-	 *<code>
-	 $feed->skipDays = Array('Sunday', 'Tuesday');
+	 * <code>
+	 * $feed->skipDays = Array('Sunday', 'Tuesday');
 	 * </code>
 	 *
 	 * @var array
@@ -179,44 +179,43 @@ class sb_RSS_Feed extends DomDocument{
 	 * Creates a new sb_RSSFeed, youc an either pass the required paramters to the contructor or add them afterwards to the result of the constructor
 	 *
 	 *  <code>
-//set content type as xml//set content type as xml
-header("Content-Type: application/xml");
-
-//create a new feed
-$feed = new sb_RSS_Feed("My Test Feed", "http://www.test.com", "A test feed for test.com");
-
-//add optional image
-$feed->image= new sb_RSS_Image("Test's Feed", "http://test.com/test.gif");
-
-//optional RSS cloud
-$feed->cloud= new sb_RSS_Cloud("rpc.sys.com",80, "/RPC2", "myCloud.rssPleaseNotify", "xml-rpc");
-
-//add some optional categories
-$feed->categories[] = 'dancing';
-$feed->categories[] = 'swimming';
-
-//add optional skipHours and skipDays
-$feed->skipHours = Array(0,3,5,7);
-$feed->skipDays = Array('Monday', 'Tuesday');
-
-//add an item to the rss feed - the constructor takes the required properties, they can also be added afterwards, as with author below
-$item_one = $feed->add_item(new sb_RSS_Item("Test's First Article", "http://test.com?a=1", "<h1>Here is a simple HTML feed</h1><p>With a list</p><ol><li>one</li><li>two</li><li>three</li></ol>", date('r')));
-
-//properties can also be added to the item afterwards, here are some optional ones
-$item_one->author='paul@test.com';
-$item_one->categories[] = 'swimming';
-
-//for podcasts add an enclose, remember file size is required
-$item_one->enclosure = new sb_RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
-
-//add second item to the feed
-$item_two = $feed->add_item(new sb_RSS_Item("Test's Second Article", "http://test.com?a=2", "This is just a plain text feed.  Hello World"), date('r'));
-
-//echo out the RSS feed
-echo $feed->display();
-
-	 * </code>
+	 * //set content type as xml//set content type as xml
+	 * header("Content-Type: application/xml");
+	 *
+	 * //create a new feed
+	 * $feed = new sb_RSS_Feed("My Test Feed", "http://www.test.com", "A test feed for test.com");
+	 *
+	 * //add optional image
+	 * $feed->image= new sb_RSS_Image("Test's Feed", "http://test.com/test.gif");
+	 *
+	 * //optional RSS cloud
+	 * $feed->cloud= new sb_RSS_Cloud("rpc.sys.com",80, "/RPC2", "myCloud.rssPleaseNotify", "xml-rpc");
+	 *
+	 * //add some optional categories
+	 * $feed->categories[] = 'dancing';
+	 * $feed->categories[] = 'swimming';
 	 * 
+	 * //add optional skipHours and skipDays
+	 * $feed->skipHours = Array(0,3,5,7);
+	 * $feed->skipDays = Array('Monday', 'Tuesday');
+	 *
+	 * //add an item to the rss feed - the constructor takes the required properties, they can also be added afterwards, as with author below
+	 * $item_one = $feed->add_item(new sb_RSS_Item("Test's First Article", "http://test.com?a=1", "<h1>Here is a simple HTML feed</h1><p>With a list</p><ol><li>one</li><li>two</li><li>three</li></ol>", date('r')));
+	 *
+	 * //properties can also be added to the item afterwards, here are some optional ones
+	 * $item_one->author='paul@test.com';
+	 * $item_one->categories[] = 'swimming';
+	 * 
+	 * //for podcasts add an enclose, remember file size is required
+	 * $item_one->enclosure = new sb_RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
+	 * 
+	 * //add second item to the feed
+	 * $item_two = $feed->add_item(new sb_RSS_Item("Test's Second Article", "http://test.com?a=2", "This is just a plain text feed.  Hello World"), date('r'));
+	 * 
+	 * //echo out the RSS feed
+	 * echo $feed->display();
+	 * </code>
+	 *
 	 * @param string $title The title of the feed
 	 * @param string $link The link to the feed
 	 * @param string $description A description of the feed
@@ -249,7 +248,7 @@ echo $feed->display();
 	/**
 	 * Converts the sb_RSSFeed instance into XML for display
 	 * <code>
-	  echo $myFeed->display();
+	 * echo $myFeed->display();
 	 * </code>
 	 *
 	 * @return string

@@ -57,15 +57,16 @@ class sb_Samba_Connection {
 
 	/**
 	 * Class constructor for the rp_WindowsShare class.
+	 *
+	 * <code>
+	 * $win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
+	 * print_r($win->ls());
+	 * </code>
+	 *
 	 * @param $uname
 	 * @param $pass
 	 * @param $path
 	 *
-	<code>
-	$win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
-	print_r($win->ls());
-
-	</code>
 	 */
 	public function __construct($host, $share, $uname, $pass, $domain = '') {
 		$this->username = $uname;

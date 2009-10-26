@@ -11,8 +11,8 @@ class sb_Session_Memcache extends sb_Session{
 	/**
 	 * Instantiates a memcache session
 	 * <code>
-	#in /private/config/definitions.php
-	new sb_Session_Memcache('localhost', 11211);
+	 * #in /private/config/definitions.php
+	 * new sb_Session_Memcache('localhost', 11211);
 	 * </code>
 	 *
 	 * @param integer $host The memcache host to connect to

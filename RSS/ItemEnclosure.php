@@ -34,15 +34,16 @@ class sb_RSS_ItemEnclosure{
 	/**
 	 * Used to create an sb_RSSEnclosure suitable for adding to an sb_RSS_Item in an sb_RSSFeed
 	 *
+	 * <code>
+	 * $myItem = new sb_RSS_Item();
+	 * $myItem->enclosure = new sb_RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
+	 * </code>
+	 *
 	 * @param string $url The URL of the media file
 	 * @param integer $length The length of the file in bytes
 	 * @param string $type The mime type of the enclose
 	 * @return unknown
 	 *
-	<code>
-	$myItem = new sb_RSS_Item();
-	$myItem->enclosure = new sb_RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
-	<code>
 	 */
 	public function __construct($url, $length, $type){
 		

@@ -45,15 +45,14 @@ abstract class sb_Logger_Base{
 	* @param $log_types Array Sets the type of logging accepting, each one can be called as a method
 	* @param $agent String The agent string
 	*
-	*
-	<code>
-	//LOGGER_TYPE replace with FileSystem() etc
-	App::$logger = new sb_Logger_LOGGER_TYPE(Array('audit','files','debug'));
-	App::$logger->set_agent_string("\t".App::$user->uname."\t".App::$user->roswell_id."\t".Gateway::$remote_addr);
-	App::$logger->debug('Here is a message');
-	//If the argument is anything other than a string it is converted to json for logging as string
-	App::$logger->files($obj);
-	</code>
+	* <code>
+	* //LOGGER_TYPE replace with FileSystem() etc
+	* App::$logger = new sb_Logger_LOGGER_TYPE(Array('audit','files','debug'));
+	* App::$logger->set_agent_string("\t".App::$user->uname."\t".App::$user->roswell_id."\t".Gateway::$remote_addr);
+	* App::$logger->debug('Here is a message');
+	* //If the argument is anything other than a string it is converted to json for logging as string
+	* App::$logger->files($obj);
+	* </code>
 	*/
 	public function __construct($log_types = Array(), $agent = ''){
 	

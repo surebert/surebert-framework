@@ -1,15 +1,11 @@
 <?php
 /**
  * Manages a streaming socket connection
+ *
  * @author Paul Visco
  * @version 0.1 05-05-2009 05-05-2009
  * @package sb_Socket
- * <code>
- //load data from google homepage
- $conn = new sb_Socket_StreamingConnection('tcp://www.google.com:80');
- $conn->write("GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: Close\r\n\r\n");
- echo $conn->read();
- </code>
+ *
  */
 class sb_Socket_StreamingClient extends sb_Socket_Client {
 
@@ -21,6 +17,13 @@ class sb_Socket_StreamingClient extends sb_Socket_Client {
 
 	/**
 	 * Sets up the connection
+	 *
+	 *  <code>
+	 *   $conn = new sb_Socket_StreamingConnection('tcp://www.google.com:80');
+	 *   $conn->write("GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: Close\r\n\r\n");
+	 *   echo $conn->read();
+	 *   </code>
+	 *
 	 * @param string $remote_socket The remote socket to connect to 'tcp://www.example.com:80'
 	 * @param integer $timeout The timeout to wait before dropping connection e.g. 10
 	 */

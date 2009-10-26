@@ -2,9 +2,7 @@
 
 /**
  * sb_SMS
- * @author Paul Visco
- * @version 1.1 04/25/04 08/23/07
- * @package sb_Mobile
+ * 
  * <code>
  * $sms = new sb_Mobile_SMS();
  * $sms->send_to['num'] ='716-228-7445';
@@ -12,9 +10,13 @@
  * $sms->send_from['num'] ='x@t.com';
  * $sms->send_from['carrier'] = '';
  * if($sms->send('Once upon a time there was a limited amount of characters')){
-	echo 'sent';
-}
+ *	echo 'sent';
+ * }
  * </code>
+ *
+ * @author Paul Visco
+ * @version 1.1 04/25/04 08/23/07
+ * @package sb_Mobile
  * 
  */
 

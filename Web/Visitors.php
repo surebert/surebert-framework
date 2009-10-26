@@ -3,37 +3,33 @@
  *
  * Keeps track of online users with an in memory mysql table
  *
+ * <code>
+ * //Requires the following SQL change myDatabase database to a database you want to use, if you already have one, skip the create step and just use it.  replace @myDatabase, @myUser, @myPass and @myHost with the appropriate data for your project
+ * //Make sure to change the length of uname VARCHAR to the longest uname you will store
+ * CREATE DATABASE @myDatabase;
+ *   USE @myDatabase;
+ *   CREATE TABLE online_visitors(
+ *  	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+ *  	mobl CHAR(1) DEFAULT 0,
+ *  	ip INT,
+ *  	tstamp INT(10) UNSIGNED,
+ *  	uname VARCHAR(15),
+ *      dname VARCHAR(50),
+ *  	agent VARCHAR(50),
+ *  	agent_str VARCHAR(500),
+ *  	PRIMARY KEY (id)
+ *  ) ENGINE = MEMORY;
+ *  
+ *  GRANT ALL ON @myDatabase.* TO '@myUser'@'@myHost' IDENTIFIED BY '@myPass';
+ *
+ * $visitors = sb_Web_Visitors::get_visitor_data();
+ * echo '<b title="'.implode(",", sb_Web_Visitors::list_users()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
+ *
+ * </code>
+ * 
  * @author Paul Visco
  * @version 2.22 10-02-2004 06-25-2009
  * @package sb_Web
- * Requires the following SQL change myDatabase database to a database you want to use, if you already have one, skip the create step and just use it.  replace @myDatabase, @myUser, @myPass and @myHost with the appropriate data for your project
- *
- *
- * Make sure to change the length of uname VARCHAR to the longest uname you will store
- CREATE DATABASE @myDatabase;
- USE @myDatabase;
- CREATE TABLE online_visitors(
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	mobl CHAR(1) DEFAULT 0,
-	ip INT,
-	tstamp INT(10) UNSIGNED,
-	uname VARCHAR(15),
-    dname VARCHAR(50),
-	agent VARCHAR(50),
-	agent_str VARCHAR(500),
-	PRIMARY KEY (id)
-) ENGINE = MEMORY;
-
-GRANT ALL ON @myDatabase.* TO '@myUser'@'@myHost' IDENTIFIED BY '@myPass';
-
- * <code>
-	$visitor = new sb_Web_Visitor(App::$user->uname, App::$user->dname);
-    $visitor->log(App::$db);
-
-	$visitors = sb_Web_Visitors::get_visitor_data();
-	echo '<b title="'.implode(",", sb_Web_Visitors::list_users()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
- * </code>
- *
  */
 class sb_Web_Visitors{
 

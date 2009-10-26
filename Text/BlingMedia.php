@@ -2,20 +2,17 @@
 
 /**
  * Used to parse output text created with surebert textBling editor
- * 
+ *
+ * <code>
+ * //returns the "cleaned" text as a string
+ * echo sb_Text_Bling::parse"[b]here is a map[/b]"); 	//return the javascript for the bling string
+ * echo sb_Text_Bling::get_javascript();
+ * </code>
+ *
  * @author Paul Visco  03/10/2008
  * @version 1.0 03/10/2008
  * @package sb_Text
- * <code>
- * //returns the "cleaned" text as a string
-echo sb_Text_Bling::parse"[b]here is a map[/b]"); 	//return the javascript for the bling string
-	echo sb_Text_Bling::get_javascript();
-	</code>
-	
-	Notes: v3.0
-	moved all media functions into sb_Text_BlingMedia which extends sb_Text_Bling
-	removed self::add_searches() wasnt going to use it anywhere
-*/
+ */
 
 class sb_Text_BlingMedia extends sb_Text_Bling{
 	/**

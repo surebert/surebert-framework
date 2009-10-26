@@ -2,15 +2,18 @@
 
 /**
  * Manages a socket connection
+ *
+ *  <code>
+ * //load data from google homepage
+ * $conn = new sb_Socket_Client('www.google.com', 80);
+ * $conn->write("GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: Close\r\n\r\n");
+ * echo $conn->read();
+ * </code>
+ *
  * @author Paul Visco
  * @version 0.1 05-05-2009 05-05-2009
  * @package sb_Socket
- * <code>
- //load data from google homepage
- $conn = new sb_Socket_Client('www.google.com', 80);
- $conn->write("GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: Close\r\n\r\n");
- echo $conn->read();
- </code>
+ *
  */
 class sb_Socket_Client {
 /**

@@ -6,27 +6,26 @@
  * @package sb_Search
  * Make sure you have the following table
  * <code>
-create TABLE search_history(
-	id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    query VARCHAR(100),
-    num_results INT UNSIGNED,
-    uid INT UNSIGNED,
-    ip INT UNSIGNED,
-    tstamp TIMESTAMP DEFAULT NOW()
-);
-
-
-$search_history = new sb_Search_History();
-$search_history->uid = isset(App::$user->uid) ? App::$user->uid :0;
-$search_history->record("Hello world", $num_results);
-$search_history->record("Help", $num_results);
-$search_history->record("Hell", $num_results);
-
-$hints = $search_history->get_hints("he");
-
-foreach($hints as $hint){
-	echo '<li>'.$hint->query.' '.$hint->num.'</li>';
-}
+ * create TABLE search_history(
+ * 	id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+ *     query VARCHAR(100),
+ *     num_results INT UNSIGNED,
+ *     uid INT UNSIGNED,
+ *     ip INT UNSIGNED,
+ *     tstamp TIMESTAMP DEFAULT NOW()
+ * );
+ * 
+ * $search_history = new sb_Search_History();
+ * $search_history->uid = isset(App::$user->uid) ? App::$user->uid :0;
+ * $search_history->record("Hello world", $num_results);
+ * $search_history->record("Help", $num_results);
+ * $search_history->record("Hell", $num_results);
+ * 
+ * $hints = $search_history->get_hints("he");
+ *
+ * foreach($hints as $hint){
+ * 	echo '<li>'.$hint->query.' '.$hint->num.'</li>';
+ * }
  *</code>
  */
 class sb_Search_History{

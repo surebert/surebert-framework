@@ -1,19 +1,10 @@
 <?php
 /**
  * Models a JSONRPC 2 request as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
+ *
  * @version 1.0 02/06/09
  * @author visco
  * @package sb_JSON_RPC2
- * <code>
-$request = new sb_JSON_RPC2_Request();
-$request->id = 'abc123';
-$request->method = '+';
-$request->params = Array(1,2);
-$response = $request->dispatch('http://mysite.com/json/server', false);
-print_r($response);
- * </code>
- * 
- *
  */
 class sb_JSON_RPC2_Request{
 	
@@ -37,6 +28,16 @@ class sb_JSON_RPC2_Request{
 	
 	/**
 	 * Popultes the properties from json recieved
+	 * 
+	 * <code>
+	 * $request = new sb_JSON_RPC2_Request();
+	 * $request->id = 'abc123';
+	 * $request->method = '+';
+	 * $request->params = Array(1,2);
+	 * $response = $request->dispatch('http://mysite.com/json/server', false);
+	 * print_r($response);
+	 * </code>
+	 *
 	 * @param $json JSON encoded sb_JSON_RPC2_Response
 	 * OR
 	 * @param $method String The method to call

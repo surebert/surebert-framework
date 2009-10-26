@@ -1,17 +1,10 @@
 <?php
 /**
  * The JSON_RPC2_Client used to send the request
+ *
  * @version 1.21 02/06/09 05/12/09
  * @author visco
  * @package sb_JSON_RPC2
- <code>
- $client = new sb_JSON_RPC2_Client('http://service.roswellpark.org/my/service');
- //add optional logger
- //$client->set_logger(new sb_Logger_FileSystem());
- $x = $client->add(1,2);
-
- var_dump($response);
- </code>
  */
 
 class sb_JSON_RPC2_Client {
@@ -61,6 +54,16 @@ class sb_JSON_RPC2_Client {
 
 	/**
 	 * Creates an instance of sb_JSON_RPC2_Client
+	 *
+	 * <code>
+	 * $client = new sb_JSON_RPC2_Client('http://service.roswellpark.org/my/service');
+	 * //add optional logger
+	 * //$client->set_logger(new sb_Logger_FileSystem());
+	 * $x = $client->add(1,2);
+	 *
+	 * var_dump($response);
+	 * </code>
+	 * 
 	 * @param $host String The host anme or IP to dispatch the request to
 	 * @param $uri String the path to the request e.g. /server/json
 	 * @param $timeout The time to wait for a response in seconds

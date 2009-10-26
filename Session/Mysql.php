@@ -3,15 +3,15 @@
  * Used to put sessions in mysql instead of using file based ones
  *
  *<code>
-#table required
-CREATE TABLE surebert_sessions
-(
-    session_id CHAR(32) NOT NULL,
-    access TIMESTAMP,
-    token CHAR(32),
-    data TEXT,
-    PRIMARY KEY (session_id)
-)
+ * #table required
+ * CREATE TABLE surebert_sessions
+ * (
+ * session_id CHAR(32) NOT NULL,
+ * access TIMESTAMP,
+ * token CHAR(32),
+ * data TEXT,
+ * PRIMARY KEY (session_id)
+ * )
  * </code>
  *
  * @author visco

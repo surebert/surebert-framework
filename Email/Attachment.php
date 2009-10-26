@@ -78,27 +78,29 @@ class sb_Email_Attachment{
 	public $mime_type;
 
     /**
-     *
-     * @param String $filepath Optional The path to the file to attach
-     * @param String $mime_type Optional The mime type of the file
+     * Creates an email attachment
 	 *
-	 <code>
-	$attachment = new sb_Email_Attachment($filepath, $mime_type);
-	//an instance of sb_Email
-	$email->add_attachment($attachment);
-
-
-	//OR from string/blob data
-	$attachment = new sb_Email_Attachment();
-	$attachment->contents = $data_from_db;
-	$attachment->mime_type = "image/jpeg";
-	$attachment->name = "picture.jpg";
-	$email->add_attachment($attachment);
-
-	//if you wish to zip
-	$attachment->zip();
-	</code>
-     */
+	 * <code>
+	 * $attachment = new sb_Email_Attachment($filepath, $mime_type);
+	 * //an instance of sb_Email
+	 * $email->add_attachment($attachment);
+	 *
+	 *
+	 * //OR from string/blob data
+	 * $attachment = new sb_Email_Attachment();
+	 * $attachment->contents = $data_from_db;
+	 * $attachment->mime_type = "image/jpeg";
+	 * $attachment->name = "picture.jpg";
+	 * $email->add_attachment($attachment);
+	 *
+	 * //if you wish to zip
+	 * $attachment->zip();
+	 * </code>
+	 *
+     * @param String $filepath Optional The path to the file to attach
+	 * @param String $mime_type Optional The mime type of the file
+	 *
+	 */
     public function __construct($filepath=null, $mime_type=null){
 
         if($mime_type){

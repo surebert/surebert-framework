@@ -1,14 +1,11 @@
 <?php
 /**
  * Stores data in Memcache, requires memcache server be installed and running on the host and port specified
+ *
  * @author visco
  * @version 1.0 01/23/2009 05/14/2009
  * @package sb_Cache
- * 
-<code>
-App::$cache = new sb_Cache_Memcache('localhost', 11211, 'myapp');
-App::$cache->store(
-</code>
+ *
  */
 class sb_Cache_Memcache implements sb_Cache_Base{
 	
@@ -32,6 +29,12 @@ class sb_Cache_Memcache implements sb_Cache_Base{
 	
 	/**
 	 * Constructs the mysql cache, pass the db connection to the constructor
+	 * 
+	 * <code>
+	 * App::$cache = new sb_Cache_Memcache('localhost', 11211, 'myapp');
+	 * App::$cache->store(
+	 * </code>
+	 *
 	 * @param $host The hostname the memcache server is stored on
 	 * @param $port The port to access the memcache server on
 	 * @param $namespace The namespace required when sharing memcache server.  Must be totall unique, e.g. the name of your app?

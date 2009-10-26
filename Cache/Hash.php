@@ -3,14 +3,17 @@
  * Stores data in a hash.  Data is only alive until the end of script, then
  * all data is gone.  You can still set lifetime, etc in case you script uses sleep has
  * a long timeout
+ *
+ *
+ * <code>
+ * App::$cache = new sb_Cache_Hash(');
+ * App::$cache->store('/users/paul', $user);
+ * </code>
+ *
  * @author visco
  * @version 1.0 05/14/2009 05/14/2009
  * @package sb_Cache
  *
-<code>
-App::$cache = new sb_Cache_Hash(');
-App::$cache->store('/users/paul', $user);
-</code>
  */
 
 require_once('Base.php');

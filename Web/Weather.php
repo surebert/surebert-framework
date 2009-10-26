@@ -14,12 +14,12 @@ class sb_Web_Weather{
 	 * 
 	 * Looks up the weather feed from the given feed url, There are other properties which can be accessed from the feed to see them uncomment print_r($xml) line. I would suggest always storing the json_encoded data in a session so that you only need to access the weather server once per visit as it can be slow and there is no need to check the weather more than once per visit.
 	 *
-	 * @param string $feed The url to the weather feed from NOAA e.g. 
+	 * @param string $feed The url to the weather feed from NOAA e.g.
 	 * @return object weather_feed
-	 <code>
-	$weather = sb_Web_Weather::fetch('http://www.nws.noaa.gov/data/current_obs/KBUF.xml');
-		print_r($weather);
-	 </code>
+	 * <code>
+	 * $weather = sb_Web_Weather::fetch('http://www.nws.noaa.gov/data/current_obs/KBUF.xml');
+	 * print_r($weather);
+	 * </code>
 	 */
 	public static function fetch($feed){
 
