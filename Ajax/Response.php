@@ -2,9 +2,8 @@
 
 /**
  * Used to model and standardize an Ajax Response
- * 
+ *
  * @author Paul Visco
- * @version 1.2 08/02/08 7/28/09
  * @package sb_Ajax
  */
 class sb_Ajax_Response{
