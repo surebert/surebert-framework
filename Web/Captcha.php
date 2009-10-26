@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to create captcha images for form submission
- * @Author: Paul Visco
+ * @author Paul Visco
  * @Version 1.0 08/31/07
  * @Package: surebert
  * @Requires: php GD extension

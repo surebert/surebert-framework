@@ -2,7 +2,7 @@
 /**
  * Abstract class base for logging
  *
- * @Author: Paul Visco
+ * @author Paul Visco
  * @Version: 1.35 4/17/2008 05/12/2009
  *
  */

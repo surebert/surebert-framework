@@ -2,7 +2,7 @@
 /**
  * Describes an email attachment, when found they are attached to sb_Email objects
  *
- * @author: Paul Visco and James Buczkowski
+ * @author Paul Visco and James Buczkowski
  * @package: email
  * @version 2.2 07/09/2007 06/17/09
 <code>

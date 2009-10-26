@@ -2,7 +2,7 @@
 /**
  * Used to log application state to the log files.
  *
- * @Author: Paul Visco
+ * @author Paul Visco
  * @Version: 1.0 05/12/2009 05/12/2009
  *<code>
 App::$logger = new sb_Logger_FileSystem(Array('audit','files','debug'));

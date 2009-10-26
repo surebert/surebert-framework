@@ -2,7 +2,7 @@
 /**
  * Logs to blackHole - nothing - so that you can estimate logging performance hit
  *
- * @Author: Paul Visco
+ * @author Paul Visco
  * @Version: 1.0 05/12/2009 05/12/2009
  *<code>
 App::$logger = new sb_Logger_BlackHole(Array('audit','files','debug'));

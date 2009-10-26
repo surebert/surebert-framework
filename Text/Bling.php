@@ -3,7 +3,7 @@
 /**
  * Used to parse output text created with surebert textBling editor
  * 
- * @author: Paul Visco  12/26/2004
+ * @author Paul Visco  12/26/2004
  * @version: 2.71 11/04/2007
  * 
  * <code>

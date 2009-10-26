@@ -2,7 +2,7 @@
 /**
  * Loads a URL and allows you to pass post, cookie, get, user agent, and other header information through a simple OOP interface
  *
- * @Author: Paul Visco
+ * @author Paul Visco
  * @Version 1.01 11/05/07 12/08/08
  * @Example: 
  * <code>

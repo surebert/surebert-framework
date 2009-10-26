@@ -2,7 +2,7 @@
 
 /**
  * 
- * @author: Paul Visco
+ * @author Paul Visco
  * @package: email
  * @version 2.01 07/09/2007
  * 

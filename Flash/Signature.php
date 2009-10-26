@@ -3,7 +3,7 @@
 /**
  * A secure Flash_Signature object which holds the data for each Flash_Signature
  *
- * @author: Paul Visco
+ * @author Paul Visco
  * @version 1.21 05/10/06 02/02/09
  * 
  * 

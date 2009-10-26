@@ -2,7 +2,7 @@
 
 /**
  * Used to draw bar graphs
- * @Author: Paul Visco
+ * @author Paul Visco
  * @Version 1.0 07/06/05
  *
  */

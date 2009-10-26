@@ -14,7 +14,7 @@ class sb_Validate_ContactInfo{
 	/**
 	 * Validates an email address format and checks DNS record.  Does not include the whole spec for vlid emails, only accepts one @ symbol, letters, numbers, and . _ - + ! as special characters
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @version 1.2 13/18/2008
 	 * @param string $email
 	 * @param string $check_mx_records Check the MX record at the dns to make sure the mail host exists
@@ -46,7 +46,7 @@ class sb_Validate_ContactInfo{
 	/**
 	 * Validates a zip code
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @version 1.2 13/18/2008
 	 * @param string $zip The zip code to validate in xxxxx or xxxxx-xxxx format
 	 * @param boolean check_usps Check the usps sie look for validation
@@ -96,7 +96,7 @@ class sb_Validate_ContactInfo{
 
 	/**
 	 * Validates a phone number.  Without a modem we can only validate format ;(
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @version 1.2 13/18/2008
 	 * @param string $phone The phone number to validate shoudl be in  xxx-xxx-xxxx format
 
@@ -121,7 +121,7 @@ class sb_Validate_ContactInfo{
 
 	/**
 	 * Validates a url.  Also checks to make sure the page is reachable and has HTML Tag
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @version 1.2 13/18/2008
 	 *
 	 * @param string $phone The phone number to validate shoudl be in  xxx-xxx-xxxx format
@@ -171,7 +171,7 @@ class sb_Validate_ContactInfo{
 
 	/**
 	 * Validates state two character abbr
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @version 1.2 13/18/2008
 	 *
 	 * @param string $state
@@ -199,7 +199,7 @@ class sb_Validate_ContactInfo{
 
 	/**
 	 * Validates canadian province two character abbr
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @version 1.2 13/18/2008
 	 *
 	 * @param string $province

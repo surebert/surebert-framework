@@ -2,7 +2,7 @@
 /**
  * Used to parse strings
  * 
- * @Author: Paul Visco
+ * @author Paul Visco
  * @Version: 1.02 09/17/2007
  *
  */
@@ -11,7 +11,7 @@ class sb_Strings{
 	/**
 	 * Strips punctuation from a string
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param string $str  The string to strip punctuation from.  Allows space, underscore, numbers and letters both lowercase and capital
 	 * @return string
 	 * @version 2.1
@@ -25,7 +25,7 @@ class sb_Strings{
 	/**
 	 * Converts underscore separated word strings into camel style e.g. to_camel becomes toCamel
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param string $str
 	 * @return string
 	 */
@@ -36,7 +36,7 @@ class sb_Strings{
 	/**
 	 * Cleans up file names and removes extraneous spaces, symbols, etc
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param string $str
 	 * @return string
 	 */
@@ -51,7 +51,7 @@ class sb_Strings{
 	/**
 	 * Escapes html tags to make them safe to print to screen
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param string $str
 	 * @return string
 	 */
@@ -62,7 +62,7 @@ class sb_Strings{
 	/**
 	 * Removes microsoft characters and replace them with their ascii counterparts
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param string $str
 	 * @return string
 	 */
@@ -97,7 +97,7 @@ class sb_Strings{
 	/**
 	 * replaces unicode characters with ascii in unicode encoded urls e.g.from ajax calls
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param string $str
 	 * @return string
 	 */
@@ -114,7 +114,7 @@ class sb_Strings{
 	/**
 	 * Add an s to a work if there is only one of them
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param integer $quanitity
 	 * @param string $noun
 	 * @return string

@@ -2,7 +2,7 @@
 
 /**
  * used to work with youtube data
- * @author: Paul Visco
+ * @author Paul Visco
  * @package: sb_Web
  * @version 1.01 08/21/2007 12/08/2008
  *
@@ -12,7 +12,7 @@ class sb_Web_YoutubeScrape{
 	/**
 	 * Used to scrape flv content from youtube videos
 	 *
-	 * @author: Paul Visco
+	 * @author Paul Visco
 	 * @param string $video_id The youtube video id.  This can be seen in the URL when viewing a youtube video e.g. http://youtube.com/watch?v=dLfIv049oi8 - "dLfIv049oi8" is the video id
 	 * @return string flv binary content for the video referenced
 	 * @example 
