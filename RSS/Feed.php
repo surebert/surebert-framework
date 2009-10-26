@@ -9,26 +9,24 @@
 class sb_RSS_Feed extends DomDocument{
 	
 	/**
-	 * The title of the feed
+	 * The title of the feed e.g. GoUpstate.com News Headlines
 	 *
 	 * @var string
-	 * @example GoUpstate.com News Headlines
 	 */
 	public $title;
 	
 	/**
 	 * The URL to the HTML website corresponding to the channel
+	 * e.g. http://www.goupstate.com/
 	 *
 	 * @var string
-	 * @example http://www.goupstate.com/
 	 */
 	public $link;
 	
 	/**
-	 * Phrase or sentence describing the channel
+	 * Phrase or sentence describing the channel e.g. The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.
 	 *
 	 * @var string
-	 * @example The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.
 	 */
 	public $description;
 	
@@ -53,41 +51,41 @@ class sb_RSS_Feed extends DomDocument{
 	/**
 	 * Copyright notice for content in the channel.
 	 *
+	 * e.g. Copyright 2002, Spartanburg Herald-Journal
+	 *
 	 * @var string
-	 * @example Copyright 2002, Spartanburg Herald-Journal
 	 */
 	public $copyright;
 	
 	/**
 	 * Email address for person responsible for editorial content.
 	 *
+	 * e.g. geo@herald.com (George Matesky)
+	 *
 	 * @var string
-	 * @example geo@herald.com (George Matesky)
 	 */
 	public $managingEditor;
 	
 	/**
 	 * Email address for person responsible for technical issues relating to channel.
 	 *
+	 * e.g. betty@herald.com (Betty Guernsey)
 	 * @var string
-	 * @example betty@herald.com (Betty Guernsey)
 	 */
 	public $webMaster;
 	
 	/**
 	 * The publication date for the content in the channel. For example, the New York Times publishes on a daily basis, the publication date flips once every 24 hours.
 	 * 
-	 *
+	 * e.g. Sat, 07 Sep 2002 00:00:01 GMT
 	 * @var string Defaults to date('r') which is now in rss time format
-	 * @example Sat, 07 Sep 2002 00:00:01 GMT
 	 */
 	public $pubDate;
 	
 	/**
-	 * 	The last time the content of the channel changed.
-	 *
+	 * The last time the content of the channel changed.
+	 * e.g. Sat, 07 Sep 2002 09:42:31 GMT
 	 * @var string
-	 * @example Sat, 07 Sep 2002 09:42:31 GMT
 	 */
 	public $lastBuildDate;
 	
@@ -102,15 +100,14 @@ class sb_RSS_Feed extends DomDocument{
 	/**
 	 * Allows processes to register with a cloud to be notified of updates to the channel, implementing a lightweight publish-subscribe protocol for RSS feeds.
 	 *
-	 * @var unknown_type
+	 * @var rp_RSS_Cloud
 	 */
 	public $cloud;
 	
 	/**
-	 * ttl stands for time to live. It's a number of minutes that indicates how long a channel can be cached before refreshing from the source.
+	 * ttl stands for time to live. e.g. 60 It's a number of minutes that indicates how long a channel can be cached before refreshing from the source.
 	 *
 	 * @var integer
-	 * @example 60
 	 */
 	public $ttl;
 	
@@ -124,16 +121,22 @@ class sb_RSS_Feed extends DomDocument{
 	/**
 	 * A hint for aggregators telling them which hours they can skip. In 24 hour time.
 	 *
+	 <code>
+	$feed->skipHours = Array(0,5,6,9,12,15);
+	 </code>
+	 *
 	 * @var array
-	 * @example $feed->skipHours = Array(0,5,6,9,12,15);
+	 *
 	 */
 	public $skipHours = array();
 	
 	/**
 	 * An XML element that contains up to seven <day> sub-elements whose value is Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday. Aggregators may not read the channel during days listed in the skipDays element.
 	 *
+	 * <code>
+	 $feed->skipDays = Array('Sunday', 'Tuesday');
+	 </code>
 	 * @var array
-	 * @example $feed->skipDays = Array('Sunday', 'Tuesday');
 	 */
 	public $skipDays = array();
 	
@@ -243,9 +246,11 @@ echo $feed->display();
 	
 	/**
 	 * Converts the sb_RSSFeed instance into XML for display
+	 *<code>
+	  echo $myFeed->display();
+	 </code>
 	 *
 	 * @return string
-	 * @example echo $myFeed->display();
 	 */
 	public function display(){
     	

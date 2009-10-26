@@ -25,10 +25,9 @@ class sb_RSS_ItemEnclosure{
 	public $length;
 	
 	/**
-	 * The mime type of the enclosure
+	 * The mime type of the enclosure e.g. audio/mpeg
 	 *
 	 * @var string
-	 * @example audio/mpeg
 	 */
 	public $type;
 	

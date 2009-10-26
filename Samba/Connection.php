@@ -1,16 +1,11 @@
 <?php
 /**
  * Used to connect to and interact with windows machines from php code on a linux machine
- *	maps the smbclient application to a local PHP object.
+ *	maps the smbclient command line executable to a local PHP object.
+ *
  * @author Anthony Cashaw, Paul Visco
  * @version 1.0 09/09/09 09/22/09
  * @package sb_Samba
- * @required: smbclient command line program
- * <code>
- * $win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
- * print_r($win->ls());
- *
- * </code>
  */
 class sb_Samba_Connection {
 
@@ -65,7 +60,12 @@ class sb_Samba_Connection {
 	 * @param $uname
 	 * @param $pass
 	 * @param $path
-	 * @return unknown_type
+	 *
+	<code>
+	$win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
+	print_r($win->ls());
+
+	</code>
 	 */
 	public function __construct($host, $share, $uname, $pass, $domain = '') {
 		$this->username = $uname;

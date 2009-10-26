@@ -5,6 +5,7 @@
  * @author Paul Visco
  * @package sb_RSS
  */
+
 class sb_RSS_Item{
 	
 	/**
