@@ -2,7 +2,7 @@
 
 /*
  * Describes and creates RSS 2.0 feeds. Remember to validate http://feedvalidator.org/check.cgi
- * @author Paul Visco 07/07/2007
+ * @author Paul Visco
  * @version 1.0 07/07/2007
  * @package sb_RSS
 */
@@ -178,10 +178,7 @@ class sb_RSS_Feed extends DomDocument{
 	/**
 	 * Creates a new sb_RSSFeed, youc an either pass the required paramters to the contructor or add them afterwards to the result of the constructor
 	 *
-	 * @param string $title The title of the feed
-	 * @param string $link The link to the feed
-	 * @param string $description A description of the feed
-	 <code>
+	 *  <code>
 //set content type as xml//set content type as xml
 header("Content-Type: application/xml");
 
@@ -218,6 +215,10 @@ $item_two = $feed->add_item(new sb_RSS_Item("Test's Second Article", "http://tes
 //echo out the RSS feed
 echo $feed->display();
 </code>
+	 * 
+	 * @param string $title The title of the feed
+	 * @param string $link The link to the feed
+	 * @param string $description A description of the feed
 	 */
 	public function __construct($title='', $link='', $description=''){
 		

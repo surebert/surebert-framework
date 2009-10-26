@@ -4,7 +4,7 @@
  * 
  * @author Paul Visco
  * @version 2.21 10-15-07 - 06-21-09 added cc and bcc support
- * @package: sb_Email
+ * @package sb_Email
  *
 <code>
  //create an email to send $to, $subject, $message, $from
