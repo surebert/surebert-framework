@@ -3,7 +3,7 @@
  * Used to connect to and interact with windows machines from php code on a linux machine
  *	maps the smbclient application to a local PHP object.
  * @author Anthony Cashaw, Paul Visco
- * @version: 1.0 09/09/09 09/22/09
+ * @version 1.0 09/09/09 09/22/09
  * @required: smbclient command line program
  * <code>
  * $win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');

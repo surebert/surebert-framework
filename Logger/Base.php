@@ -3,7 +3,7 @@
  * Abstract class base for logging
  *
  * @author Paul Visco
- * @Version: 1.35 4/17/2008 05/12/2009
+ * @version 1.35 4/17/2008 05/12/2009
  *
  */
 abstract class sb_Logger_Base{

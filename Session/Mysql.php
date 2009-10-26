@@ -2,7 +2,7 @@
 /**
  * Used to put sessions in mysql instead of using file based ones
  * @author visco
- * @version: 1.0 01/24/2009 01/24/2009
+ * @version 1.0 01/24/2009 01/24/2009
  *
 <code>
 	new sb_Session_Mysql(App::$db);

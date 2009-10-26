@@ -2,7 +2,7 @@
 /**
  *
  * @author Anthony Cashaw
- * @version: 1.0 09/09/09
+ * @version 1.0 09/09/09
  *
  *Data object that  holds listing information for Windows share lisitngs
  */

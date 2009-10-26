@@ -3,7 +3,7 @@
  * Used to log application state to the log files.
  *
  * @author Paul Visco
- * @Version: 1.0 05/12/2009 05/12/2009
+ * @version 1.0 05/12/2009 05/12/2009
  *<code>
 App::$logger = new sb_Logger_FileSystem(Array('audit','files','debug'));
 App::$logger->set_agent_string("\t".App::$user->uname."\t".App::$user->roswell_id."\t".Gateway::$remote_addr);

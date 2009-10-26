@@ -2,7 +2,7 @@
 /**
  * Interface for building custom sessions
  * @author visco
- * @version: 1.0 01/24/2009 01/24/2009
+ * @version 1.0 01/24/2009 01/24/2009
  *
  */
 

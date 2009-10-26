@@ -2,8 +2,8 @@
 /**
  * This class is used to convert text strings into true type font based png images
  * @author Paul Visco
- * @Version: 1.01 09/05/07 12/08/2008
- * @example:
+ * @version 1.01 09/05/07 12/08/2008
+ * @example
  * <code>
  * error_reporting(E_ALL);
 ini_set('Display_Errors', 'On');

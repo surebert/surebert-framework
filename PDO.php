@@ -48,7 +48,7 @@ class sb_PDO extends PDO{
 	 * @param Object params An object whose properties match with properties inside prepared statement.
 	 * @param Array class_name Here you can specify a class_name, so that rows returned are instances of that class_name instead of standard objects
 	 * @return array An array of objects representing rows returned
-	 * @example:
+	 * @example
 	 * <code>
 	 * 
 	 * //without prepared statements

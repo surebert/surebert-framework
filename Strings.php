@@ -3,7 +3,7 @@
  * Used to parse strings
  * 
  * @author Paul Visco
- * @Version: 1.02 09/17/2007
+ * @version 1.02 09/17/2007
  *
  */
 class sb_Strings{

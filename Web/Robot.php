@@ -4,7 +4,7 @@
  *
  * @author Paul Visco
  * @Version 1.01 11/05/07 12/08/08
- * @Example: 
+ * @example 
  * <code>
 $loader = new sb_Web_Robot();
 $loader->set_user_agent("Mozilla/4.0 (compatible;MSIE 6.0; Windows NT 5.1)"); 

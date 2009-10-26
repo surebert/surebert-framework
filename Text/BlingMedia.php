@@ -4,7 +4,7 @@
  * Used to parse output text created with surebert textBling editor
  * 
  * @author Paul Visco  03/10/2008
- * @version: 1.0 03/10/2008
+ * @version 1.0 03/10/2008
  * 
  * <code>
  * //returns the "cleaned" text as a string
