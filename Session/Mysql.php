@@ -1,12 +1,6 @@
 <?php
 /**
  * Used to put sessions in mysql instead of using file based ones
- * @author visco
- * @version 1.0 01/24/2009 01/24/2009
- * @package sb_Session
-<code>
-	new sb_Session_Mysql(App::$db);
-</code>
  *
  *<code>
 #table required
@@ -18,7 +12,12 @@ CREATE TABLE surebert_sessions
     data TEXT,
     PRIMARY KEY (session_id)
 )
-</code>
+ * </code>
+ *
+ * @author visco
+ * @version 1.0 01/24/2009 01/24/2009
+ * @package sb_Session
+ *
  */
 
 class sb_Session_Mysql extends sb_Session_Abstract{
@@ -48,7 +47,12 @@ class sb_Session_Mysql extends sb_Session_Abstract{
 	private $stmts = Array();
 	
 	/**
-	 * 
+	 * Connects to the mysql server for session storage
+	 * <code>
+	#in /private/config/definitions.php
+	new sb_Session_Mysql(App::$db);
+	 * </code>
+	 *
 	 * @param $db PDO the database conection to store the sessions in
 	 * @param $session_life_time integer
 	 * @return unknown_type

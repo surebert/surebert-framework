@@ -46,7 +46,7 @@ class sb_Web_Captcha{
 	 * @param string $background The path to the background 8 bit png, make sure it is 128 color or less.  If left out, the image has a black background.
 	 *
 	 * <code>
-	 * <?php
+	 <?php
 	//start the session
 	session_start();
 
@@ -75,7 +75,8 @@ class sb_Web_Captcha{
 	//destroy the png
 	imagedestroy($png);
 	?>
-	</code>
+
+	 * </code>
 	 */
 	public function __construct($background='', $color=''){
 		

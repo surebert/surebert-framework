@@ -77,9 +77,9 @@ class sb_Samba_Connection {
 
 	/**
 	 * Copies files from the windows machine to the linux machine
-	 * @var $getpath the file path at the windows machine
-	 * @var $putpath the file path on the local linux box where the file will be placed
-	 * @var $output the raw command line output for smbclient
+	 * @param $getpath the file path at the windows machine
+	 * @param $putpath the file path on the local linux box where the file will be placed
+	 * @param $output the raw command line output for smbclient
 	 */
 	public function copy($remotepath, $localfile = '.', &$output = null) {
 		//get file string massage

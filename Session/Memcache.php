@@ -4,14 +4,20 @@
  * @author visco
  * @version 0.3 01/25/2009 01/25/2009
  * @package sb_Session
-<code>
-#in /private/config/definitions.php
-new sb_Session_Memcache('localhost', 11211);
-</code>
  */
 
 class sb_Session_Memcache extends sb_Session{
-	
+
+	/**
+	 * Instantiates a memcache session
+	 * <code>
+	#in /private/config/definitions.php
+	new sb_Session_Memcache('localhost', 11211);
+	 * </code>
+	 *
+	 * @param integer $host The memcache host to connect to
+	 * @param integer $port  The port to connect on
+	 */
 	public function __construct($host, $port){
 		
 		$session_save_path = "tcp://$host:$port?persistent=1&weight=2&timeout=2&retry_interval=10,  ,tcp://$host:$port  ";

@@ -1,18 +1,12 @@
 <?php
+
 /**
  * Used to model and standardize an Ajax Response
+ * 
  * @author Paul Visco
  * @version 1.2 08/02/08 7/28/09
  * @package sb_Ajax
- *
- * <code>
- * $response = new sb_Ajax_Response(new person());
- * $response->dispatch();
- * 
- * </code>
  */
-
-
 class sb_Ajax_Response{
 	
 	/**
@@ -39,6 +33,11 @@ class sb_Ajax_Response{
 	
 	/**
 	 * Sets up a ajax repsonse for dispatch
+	<code>
+	$response = new sb_Ajax_Response(new person());
+	$response->dispatch();
+
+	</code>
 	 *
 	 * @param object/xml/string/boolean $content
 	 */

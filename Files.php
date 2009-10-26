@@ -49,8 +49,7 @@ class sb_Files{
 	 * Used to convert file extensions to the appropriate mime-type
  	 * http://www.ltsw.se/knbase/internet/mime.htp
 	 * @param string $ext e.g. mp3
-	 * @return string e.g. audio/mpeg
-	 * @return boolean returns false if not found
+	 * @return mixed boolean/string e.g. audio/mpeg, false if not found
 	 */
 	public static function extension_to_mime($ext){
 

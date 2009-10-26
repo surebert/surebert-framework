@@ -1,9 +1,9 @@
 <?php
 
-/*
+/**
  * Describes and creates RSS 2.0 feeds. Remember to validate http://feedvalidator.org/check.cgi
+ * 
  * @author Paul Visco
- * @version 1.0 07/07/2007
  * @package sb_RSS
 */
 class sb_RSS_Feed extends DomDocument{
@@ -132,10 +132,10 @@ class sb_RSS_Feed extends DomDocument{
 	
 	/**
 	 * An XML element that contains up to seven <day> sub-elements whose value is Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday. Aggregators may not read the channel during days listed in the skipDays element.
-	 *
-	 * <code>
+	 *<code>
 	 $feed->skipDays = Array('Sunday', 'Tuesday');
-	 </code>
+	 * </code>
+	 *
 	 * @var array
 	 */
 	public $skipDays = array();
@@ -214,7 +214,8 @@ $item_two = $feed->add_item(new sb_RSS_Item("Test's Second Article", "http://tes
 
 //echo out the RSS feed
 echo $feed->display();
-</code>
+
+	 * </code>
 	 * 
 	 * @param string $title The title of the feed
 	 * @param string $link The link to the feed
@@ -247,9 +248,9 @@ echo $feed->display();
 	
 	/**
 	 * Converts the sb_RSSFeed instance into XML for display
-	 *<code>
+	 * <code>
 	  echo $myFeed->display();
-	 </code>
+	 * </code>
 	 *
 	 * @return string
 	 */
