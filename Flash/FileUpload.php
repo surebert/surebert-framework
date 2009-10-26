@@ -6,6 +6,7 @@
  * @author visco
  * @version 1.0 02/19/09
  * @package sb_Flash
+ * 
  *<code>
 $file = new sb_Flash_FileUpload();
 $uploaded = $file->save(ROOT.'/public/content/users/paul/'.date('my'));

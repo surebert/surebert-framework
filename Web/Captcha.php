@@ -1,14 +1,14 @@
 <?php
 /**
  * Used to create captcha images for form submission
+ *
  * @author Paul Visco
  * @version 1.0 08/31/07
  * @package: sb_Web
- * @Requires: php GD extension
- * 
- * If you want the php code to run from a png use the following in your htaccess file for that directory
- * @example
+ *
+ *
  * <code>
+ * #If you want the php code to run from a png use the following in your htaccess file for that directory
  * #parse rss as php
  * AddType application/x-httpd-php .png
  * </code>
@@ -19,9 +19,6 @@
  * <?php
 //start the session
 session_start();
-
-//include the captcha file or your _config file with __autoload()
-include('../_surebert/sb_Web_Captcha.php');
 
 //You can pass it an optional 200px x 200px background image as a path to the first argument, you can also pass a text color as a 3 integer rgb array e.g. Array(255,255,45) as teh second argument
 $cap = new sb_Web_Captcha();

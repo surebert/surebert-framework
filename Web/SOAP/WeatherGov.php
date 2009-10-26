@@ -1,4 +1,9 @@
 <?php
+/**
+ * Describes the parameters returned from the govt weather SOAP service
+ * @author visco
+ * @package sb_Web_SOAP_WeatherGov
+ */
 class sb_Web_SOAP_WeatherGovParametersType {
   public $maxt; // boolean
   public $mint; // boolean
@@ -56,10 +61,9 @@ class sb_Web_SOAP_WeatherGovParametersType {
 /**
  * sb_Web_SOAP_WeatherGov class  This is used to lookup weather information
  *
- * @author    {author}
- * @copyright {copyright}
- * @package   {package}
- *
+ * @author visco
+ * @package sb_Web_SOAP_WeatherGov
+ * 
  * <code>
  * $weather = new sb_Web_SOAP_WeatherGov();
  * $result = $weather->LatLonListZipCode(14209);

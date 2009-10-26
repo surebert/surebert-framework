@@ -7,7 +7,6 @@
  * @version 1.21 05/10/06 02/02/09
  * @package sb_Flash
  * 
- * 
  * <code>
  * DROP TABLE IF EXISTS `storage`;
 CREATE TABLE `storage` (
