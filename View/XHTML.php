@@ -4,7 +4,7 @@
  * An ViewClass that all HTML views could/should extend
  * @author visco
  * @version 1.15 12/05/08 01/25/08
- *
+ * @package sb_View
  */
 class sb_View_XHTML extends sb_View{
 

@@ -5,7 +5,7 @@
  * 
  * @author Paul Visco  12/26/2004
  * @version 2.71 11/04/2007
- * 
+ * @package sb_Text
  * <code>
  * //returns the "cleaned" text as a string
 echo sb_Text_Bling::clean"[b]here is a map[/b]\n[map]24 linwood avenue, buffalo, ny, 14209[/map]"); 	//return the javascript for the bling string

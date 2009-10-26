@@ -4,7 +4,7 @@
  * Manages a socket connection
  * @author Paul Visco
  * @version 0.1 05-05-2009 05-05-2009
- *
+ * @package sb_Socket
  * <code>
  //load data from google homepage
  $conn = new sb_Socket_Client('www.google.com', 80);

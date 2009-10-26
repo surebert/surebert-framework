@@ -3,6 +3,7 @@
  * This view serves all the public methods of the view as a JSON service
  * @author visco
  * @version 1.0 02/24/09 02/24/09
+ * @package sb_View
  *
  */
 class sb_View_JSON_RPC2_Server extends sb_View{

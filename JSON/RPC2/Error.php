@@ -3,7 +3,7 @@
  * Models a JSONRPC 2 response error as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  * @version 1.0 02/06/09
  * @author visco
- *
+ * @package sb_JSON_RPC2
  */
 class sb_JSON_RPC2_Error{
 	

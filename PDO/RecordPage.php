@@ -1,20 +1,10 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of RecordPage
- *
- * @author Tony
- */
-
 /**
  * A data object with the details and records of a paged MySQL query
  *
  * @author Tony Cashaw
  * @version 1.0 2008-02-01
+ * @package sb_PDO
  */
 class sb_PDO_RecordPage {
 

@@ -3,6 +3,7 @@
  * The JSON_RPC2_Client used to send the request
  * @version 1.21 02/06/09 05/12/09
  * @author visco
+ * @package sb_JSON_RPC2
  <code>
  $client = new sb_JSON_RPC2_Client('http://service.roswellpark.org/my/service');
  //add optional logger

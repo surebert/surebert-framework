@@ -4,7 +4,7 @@
  *
  * @author Paul 05/21/2005
  * @version 2.11  12/08/2008
- * @package Web
+ * @package sb_Web
  * 
  */
 

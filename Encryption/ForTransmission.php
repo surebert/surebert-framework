@@ -2,7 +2,8 @@
 /**
  * Interface for encrypting and decrypting data for network transmission
  * @author visco
- * version 1.1 02/12/09 02/24/09
+ * @version 1.1 02/12/09 02/24/09
+ * @package sb_Encrytion
 <code>
 
 $encryptor = new sb_Encryption_ForTransmission('My very secret key');

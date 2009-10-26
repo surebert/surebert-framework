@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Validates numbers
+ * @author Paul Visco
+ * @package sb_Validate
+ */
 class sb_Validate_Numbers{
 
     /**

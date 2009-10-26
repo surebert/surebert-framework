@@ -5,7 +5,7 @@
  *
  * @author Paul Visco
  * @version 2.22 10-02-2004 06-25-2009
- *
+ * @package sb_Web
  * Requires the following SQL change myDatabase database to a database you want to use, if you already have one, skip the create step and just use it.  replace @myDatabase, @myUser, @myPass and @myHost with the appropriate data for your project
  *
  *

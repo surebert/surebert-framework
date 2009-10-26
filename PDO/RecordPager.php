@@ -2,7 +2,7 @@
 /**
  * @author Tony Cashaw
  * @version 1.2 02-14-2008 12-08-2008
- *
+ * @package sb_PDO
  */
 
 class sb_PDO_RecordPager{

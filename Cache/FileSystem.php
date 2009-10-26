@@ -4,6 +4,7 @@
  * 
  * @author visco
  * @version 1.0 01/23/2009 10/09/2009
+ * @package sb_Cache
  * 
 <code>
 $mycache = new sb_Cache_FileSystem();

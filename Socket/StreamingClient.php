@@ -3,7 +3,7 @@
  * Manages a streaming socket connection
  * @author Paul Visco
  * @version 0.1 05-05-2009 05-05-2009
- *
+ * @package sb_Socket
  * <code>
  //load data from google homepage
  $conn = new sb_Socket_StreamingConnection('tcp://www.google.com:80');

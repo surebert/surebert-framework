@@ -1,6 +1,7 @@
 <?php
 /**
  * Represents a XMPP Message for sending and receiving
+ * @package sb_XMPP
  */
 class sb_XMPP_Message extends sb_XMPP_Packet{
 

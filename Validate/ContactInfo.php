@@ -6,6 +6,7 @@
  * Used to validate various strings
  * @author Paul Visco
  * @version 1.2 03/18/2008
+ * @package sb_Validate
  *
  */
 class sb_Validate_ContactInfo{

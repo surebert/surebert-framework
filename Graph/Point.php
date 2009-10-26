@@ -2,7 +2,8 @@
 /**
  * Used to plot simple point and line graphs.  Requires sb_Math_RangeMapper
  * @Author Paul Visco
- * @Version 1.6  11/19/07
+ * @version 1.6  11/19/07
+ * @package sb_Graph
  * 
  * <code>
  //set the graph width and height plus values and labels

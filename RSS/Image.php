@@ -1,7 +1,8 @@
 <?php
 /**
  * Used to create an sb_RSSFeed image for the channel
- *
+ * @author Paul Visco
+ * @package sb_RSS
  */
 class sb_RSS_Image{
 	

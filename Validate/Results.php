@@ -2,8 +2,9 @@
 /**
  * Validation results object returned from sb_Validate methods
  *
- * @Author Paul Visco
- * @Version 1.2 03/17/2008
+ * @author Paul Visco
+ * @version 1.2 03/17/2008
+ * @package sb_Validate
  *
  */
 class sb_Validate_Results{

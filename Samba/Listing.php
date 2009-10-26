@@ -3,7 +3,7 @@
  *
  * @author Anthony Cashaw
  * @version 1.0 09/09/09
- *
+ * @package sb_Samba
  *Data object that  holds listing information for Windows share lisitngs
  */
 class sb_Samba_Listing {

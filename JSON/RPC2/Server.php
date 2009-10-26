@@ -3,6 +3,7 @@
  * Used to response to JSON_RPC2 requests as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  * @version 1.21 02/06/09 05/12/09
  * @author visco
+ * @package sb_JSON_RPC2
  * <code>
  *
  //a function to serve

@@ -3,7 +3,7 @@
  * Save the sessions on a memcache server, requires memcache server be installed and running on the host and port specified
  * @author visco
  * @version 0.3 01/25/2009 01/25/2009
- * 
+ * @package sb_Session
 <code>
 #in /private/config/definitions.php
 new sb_Session_Memcache('localhost', 11211);

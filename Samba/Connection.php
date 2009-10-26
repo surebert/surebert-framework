@@ -4,6 +4,7 @@
  *	maps the smbclient application to a local PHP object.
  * @author Anthony Cashaw, Paul Visco
  * @version 1.0 09/09/09 09/22/09
+ * @package sb_Samba
  * @required: smbclient command line program
  * <code>
  * $win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');

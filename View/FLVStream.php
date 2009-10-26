@@ -4,6 +4,7 @@
  * 
  * @author Paul Visco 06/05/2007
  * @version 1.0 07/07/2007 12/08/2008
+ * @package sb_View
  * @example 
  * 
  * <code>

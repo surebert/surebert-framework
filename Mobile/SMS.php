@@ -4,7 +4,7 @@
  * sb_SMS
  * @author Paul Visco
  * @version 1.1 04/25/04 08/23/07
- *
+ * @package sb_Mobile
  * <code>
  * $sms = new sb_Mobile_SMS();
  * $sms->send_to['num'] ='716-228-7445';

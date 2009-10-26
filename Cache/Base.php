@@ -3,7 +3,7 @@
  * Used to cache data in various formats
  * @author visco
  * @version 1.0 01/24/2009 05/14/2009
- *
+ * @package sb_Cache
  */
 interface sb_Cache_Base{
 	

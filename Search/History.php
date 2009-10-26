@@ -3,7 +3,7 @@
 /**
  * Used to create search history
  * @author visco
- * 
+ * @package sb_Search
  * Make sure you have the following table
  * <code>
 create TABLE search_history(

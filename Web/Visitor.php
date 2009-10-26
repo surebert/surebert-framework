@@ -5,7 +5,7 @@
  * 
  * @author Paul Visco 
  * @version 2.2 10-02-2004 06-25-2009
- * 
+ * @package sb_Web
  *
  */
 class sb_Web_Visitor{

@@ -5,6 +5,7 @@
  *
  * @author Paul Visco
  * @version 1.21 05/10/06 02/02/09
+ * @package sb_Flash
  * 
  * 
  * <code>

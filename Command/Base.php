@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Used as the basis for a command line script
+ * @author visco
+ * @package sb_Command
+ */
 class sb_Command_Base {
 
 	/**

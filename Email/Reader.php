@@ -1,14 +1,12 @@
 <?php
 
 /**
- * 
- * @author Paul Visco
- * @package: email
- * @version 2.01 07/09/2007
- * 
- * 
  * This class is used to read an email inbox.  It required sb_Strings from the surebert framework REQUIRES sb_Email_Reader.php
  *
+ * @author Paul Visco
+ * @version 2.01 07/09/2007
+ * @package sb_Email
+ * 
  * <code>
 	$email_box = new sb_Email_Reader('paul@test.org', 'myPass', 'mail.test.org', 'imap');
 	$email_box->log_file = '../_cache/sb_Email_Reader.log';

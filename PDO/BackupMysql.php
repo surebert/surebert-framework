@@ -9,7 +9,7 @@
  *
  * The db credetials should be for root or a user that has SELECT access to every database
  * @author Paul Visco paul.visco@roswellpark.org
- *
+ * @package sb_PDO
  * <code>
 $backup = new sb_PDO_BackupMysql('127.0.0.1', 'root', 'abc123');
 

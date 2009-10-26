@@ -3,6 +3,7 @@
 /**
  * A Base Bot based on the XMPP Client
  * @author paul.visco@roswellpark.org, gregary.dean@roswellpark.org
+ * @package sb_XMPP
  */
 class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 

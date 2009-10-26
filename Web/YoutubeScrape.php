@@ -3,9 +3,8 @@
 /**
  * used to work with youtube data
  * @author Paul Visco
- * @package: sb_Web
  * @version 1.01 08/21/2007 12/08/2008
- *
+ * @package sb_Web
  */
 class sb_Web_YoutubeScrape{
 	

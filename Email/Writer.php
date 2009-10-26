@@ -6,8 +6,8 @@
  * If DEBUG_EMAIL constant is defined, then all email goes to that address.
  *
  * @Author Paul Visco
- * @package: sb_Email
  * @Version 2.25 06/08/03 06/16/09
+ * @package sb_Email
  *
  * @example
  * <code>

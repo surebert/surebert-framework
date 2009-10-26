@@ -5,6 +5,7 @@
  * a long timeout
  * @author visco
  * @version 1.0 05/14/2009 05/14/2009
+ * @package sb_Cache
  *
 <code>
 App::$cache = new sb_Cache_Hash(');

@@ -3,7 +3,7 @@
  * Describes and creates RSS 2.0 feeds. Remember to validate http://feedvalidator.org/check.cgi
  * @author Paul Visco 07/07/2007
  * @version 1.0 07/07/2007
- * 
+ * @package sb_RSS
  * @example
  * <code>
 //set content type as xml//set content type as xml

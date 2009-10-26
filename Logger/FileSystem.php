@@ -4,6 +4,7 @@
  *
  * @author Paul Visco
  * @version 1.35 4/17/2008 05/12/2009
+ * @package sb_Logger
  *<code>
 App::$logger = new sb_Logger_FileSystem(Array('audit','files','debug'), "\tApp::$user->uname."\t".App::$user->roswell_id."\t".Gateway::$remote_addr);
 App::$logger->debug('Here is a message');

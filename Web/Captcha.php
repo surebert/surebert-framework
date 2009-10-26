@@ -2,12 +2,12 @@
 /**
  * Used to create captcha images for form submission
  * @author Paul Visco
- * @Version 1.0 08/31/07
- * @Package: surebert
+ * @version 1.0 08/31/07
+ * @package: sb_Web
  * @Requires: php GD extension
  * 
  * If you want the php code to run from a png use the following in your htaccess file for that directory
- * @Example
+ * @example
  * <code>
  * #parse rss as php
  * AddType application/x-httpd-php .png

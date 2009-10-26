@@ -3,6 +3,7 @@
  * Used to easily convert XMPP_Packets from simpleXML to string - doctype
  * @author Paul Visco
  * @version 1.0 05-12-2009 05-12-2009
+ * @package sb_XMPP
  */
 class sb_XMPP_Packet extends DOMDocument {
 

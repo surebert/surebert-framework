@@ -2,6 +2,7 @@
 /**
  * Models a presence packet for sending and receiving
  * @author Paul Visco
+ * @package sb_XMPP
  */
 class sb_XMPP_Presence extends sb_XMPP_Packet{
 

@@ -4,6 +4,7 @@
  *
  * @author Paul Visco
  * @version 1.35 4/17/2008 05/12/2009
+ * @package sb_Logger
  *
  */
 abstract class sb_Logger_Base{

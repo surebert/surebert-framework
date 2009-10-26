@@ -2,7 +2,8 @@
 
 /**
  * Based on the description of an RSS 2.0 item at http://cyber.law.harvard.edu/rss/rss.html
- *
+ * @author Paul Visco
+ * @package sb_RSS
  */
 class sb_RSS_Item{
 	

@@ -4,6 +4,8 @@
  * 
  * 
  * This can be used when creating podcasts, each item would get an MP3
+ * @author Paul Visco
+ * @package sb_RSS
  * @example 
  * <code>
 	$myItem = new sb_RSS_Item();

@@ -3,7 +3,7 @@
  * Interface for building custom sessions
  * @author visco
  * @version 1.0 01/24/2009 01/24/2009
- *
+ * @package sb_Session
  */
 
 abstract class sb_Session_Abstract extends sb_Session{

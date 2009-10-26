@@ -5,6 +5,7 @@
  *
  * @author Paul Visco 06/05/2004
  * @version 2.1 11/21/2007
+ * @package sb_Chat
  * 
  * Creates one table called sb_TalkBox_master and a table name sb_TalkBox_{ROOMNAME} for each room
  * 
@@ -46,7 +47,7 @@
 	$talkbox->create_room('paul');
 	
 	//create a new line to insert, this would normally come from ajax or form
-	$line = new chat_line();
+	$line = new sb_Chat_Line();
 	$line->uname ='paul';
 	$line->ip=$_SERVER['REMOTE_ADDR'];
 	$line->message="hello there fuckhead";
@@ -58,14 +59,6 @@
  * 
  * 
  */
-
-class chat_line{
-	public $id;
-	public $uname;	
-	public $message;
-	public $time;
-	public $ip;
-}
 
 class sb_Chat_TalkBox{
 	
@@ -195,7 +188,7 @@ class sb_Chat_TalkBox{
 	
 			$result = $this->db->query($sql);
 			
-			$line = new chat_line();
+			$line = new sb_Chat_Line();
 			$line->uname = 'paul';
 			$line->message = 'Welcome to p:chat a PHP/Surebert chat solution by Paul Visco';
 			$this->insert($line);
@@ -206,7 +199,7 @@ class sb_Chat_TalkBox{
 			
 	}
 	
-	public function insert(chat_line $line){
+	public function insert(sb_Chat_Line $line){
 		
 		if(empty($line->message)){return 0;}
 		

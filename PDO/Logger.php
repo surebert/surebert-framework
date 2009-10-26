@@ -5,7 +5,7 @@
  * 
  * @Author Paul Visco
  * @Version 1.9 09/27/2007 04/01/2009
- * 
+ * @package sb_PDO
  */
 
 class sb_PDO_Statement_Logger extends PDOStatement {

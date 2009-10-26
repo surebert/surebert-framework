@@ -3,6 +3,7 @@
  * Stores data in APC - requires the apc extension is installed
  * @author visco
  * @version 1.0 01/23/2009 05/14/2009
+ * @package sb_Cache
  */
 class sb_Cache_APC implements sb_Cache_Base{
 	

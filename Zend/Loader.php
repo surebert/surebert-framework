@@ -2,6 +2,7 @@
 /**
  * Used to load the Zend framework and enable autoload
  * @version 1.0 04-28-2009 04-28-2009
+ * @package sb_Zend
  */
 
 class sb_Zend_Loader{

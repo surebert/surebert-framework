@@ -3,7 +3,8 @@
 /**
  * Used to draw bar graphs
  * @author Paul Visco
- * @Version 1.0 07/06/05
+ * @version 1.0 07/06/05
+ * @package sb_Graph
  *
  */
 

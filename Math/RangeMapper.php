@@ -5,7 +5,7 @@
  *
  * @author Paul Visco 06/05/2007
  * @version 1.1 12/08/2008
- * @package math
+ * @package sb_Math
  * 
  * $rangeMapper =new sb_Math_RangeMapper(Array(8,20), Array(10,100));
  * $rangeMapper->convert(50); //return 13.3 repeating

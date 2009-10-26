@@ -3,7 +3,7 @@
  * Used to put sessions in mysql instead of using file based ones
  * @author visco
  * @version 1.0 01/24/2009 01/24/2009
- *
+ * @package sb_Session
 <code>
 	new sb_Session_Mysql(App::$db);
 </code>

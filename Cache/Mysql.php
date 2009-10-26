@@ -4,6 +4,7 @@
  * Used to store cache data in a mysql table
  * @author visco
  * @version 1.0 01/23/2009 05/14/2009
+ * @package sb_Cache
  *
  *
 <code>

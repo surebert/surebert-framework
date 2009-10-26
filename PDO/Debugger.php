@@ -4,8 +4,8 @@
  * Extends native PDO class for logging and debugging
  *
  * @Author Paul Visco
- * @Version 1.1 03/31/2009 04/01/2009
- *
+ * @version 1.1 03/31/2009 04/01/2009
+ * @package sb_PDO
  */
 class sb_PDO_Debugger extends sb_PDO{
 	

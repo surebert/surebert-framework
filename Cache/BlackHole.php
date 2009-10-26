@@ -4,6 +4,7 @@
  * removed caching without changing application code
  * @author visco
  * @version 1.0 01-23-2009 05-12-2009
+ * @package sb_Cache
  * 
 <code>
 $cache = new sb_Cache_BlackHole();

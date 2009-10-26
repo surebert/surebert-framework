@@ -2,6 +2,7 @@
 /**
  * Connects to XMPP servers, tested with openfire/ichat
  * @author Paul Visco
+ * @package sb_XMPP
  */
 
 class sb_XMPP_Client extends sb_Socket_StreamingClient{

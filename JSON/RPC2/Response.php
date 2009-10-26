@@ -3,7 +3,7 @@
  * Models a JSON RPC2 Response from the sb_JSON_RPC2_Server
  * @version 1.0 02/06/09
  * @author visco
- *
+ * @package sb_JSON_RPC2
  */
 class sb_JSON_RPC2_Response{
 	

@@ -5,7 +5,7 @@
  * 
  * @author Paul Visco  03/10/2008
  * @version 1.0 03/10/2008
- * 
+ * @package sb_Text
  * <code>
  * //returns the "cleaned" text as a string
 echo sb_Text_Bling::parse"[b]here is a map[/b]"); 	//return the javascript for the bling string
