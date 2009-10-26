@@ -9,19 +9,6 @@
  * @Version 2.25 06/08/03 06/16/09
  * @package sb_Email
  *
- * @example
- * <code>
- *
- //instanciate the email writer
- $myEmailWriter = new sb_Email_Writer();
-
- //add an instance of sb_Email to the outbox, you can add as many as you want
- $myEmailWriter->add_email_to_outbox($myMail);
-
- //then send, you could add more emails before sending
- var_dump($myEmailWriter->send());
-
- * </code>
  */
 
 class sb_Email_Writer {
@@ -62,6 +49,18 @@ class sb_Email_Writer {
      * Creates a new outbox to send from
      *
      * @param sb_Logger $logger optional
+	 *
+	 * <code>
+	 //instanciate the email writer
+	 $myEmailWriter = new sb_Email_Writer();
+
+	 //add an instance of sb_Email to the outbox, you can add as many as you want
+	 $myEmailWriter->add_email_to_outbox($myMail);
+
+	 //then send, you could add more emails before sending
+	 var_dump($myEmailWriter->send());
+
+	 </code>
      */
     public function __construct($logger=null, $remote_addr='', $http_host='') {
 

@@ -4,20 +4,9 @@
  * 
  * You can laos extend this class and add a on_save method which can handle different file upload types by extension, etc
  * @author visco
- * @version 1.0 02/19/09
  * @package sb_Flash
+ * @version 1.0 02/19/09
  * 
- *<code>
-$file = new sb_Flash_FileUpload();
-$uploaded = $file->save(ROOT.'/public/content/users/paul/'.date('my'));
-
-if($uploaded){
-	echo json_encode($file);
-} else {
-	echo '0';
-}
-
- *</code>
  */
 class sb_Flash_FileUpload{
 	
@@ -74,6 +63,18 @@ class sb_Flash_FileUpload{
 	/**
 	 * Instatiates a new file upload, if the file data is stored in any key besides Filedata pass that
 	 * @param $key
+	 *
+	<code>
+	$file = new sb_Flash_FileUpload();
+	$uploaded = $file->save(ROOT.'/public/content/users/paul/'.date('my'));
+
+	if($uploaded){
+		echo json_encode($file);
+	} else {
+		echo '0';
+	}
+
+	</code>
 	 */
 	public function __construct($key='Filedata'){
        

@@ -5,22 +5,6 @@
  * @author Paul Visco and James Buczkowski
  * @package sb_Email
  * @version 2.2 07/09/2007 06/17/09
-<code>
-$attachment = new sb_Email_Attachment($filepath, $mime_type);
-//an instance of sb_Email
-$email->add_attachment($attachment);
-
-
-//OR from string/blob data
-$attachment = new sb_Email_Attachment();
-$attachment->contents = $data_from_db;
-$attachment->mime_type = "image/jpeg";
-$attachment->name = "picture.jpg";
-$email->add_attachment($attachment);
-
-//if you wish to zip
-$attachment->zip();
-</code>
  */
 class sb_Email_Attachment{
 
@@ -97,6 +81,23 @@ class sb_Email_Attachment{
      *
      * @param String $filepath Optional The path to the file to attach
      * @param String $mime_type Optional The mime type of the file
+	 *
+	 <code>
+	$attachment = new sb_Email_Attachment($filepath, $mime_type);
+	//an instance of sb_Email
+	$email->add_attachment($attachment);
+
+
+	//OR from string/blob data
+	$attachment = new sb_Email_Attachment();
+	$attachment->contents = $data_from_db;
+	$attachment->mime_type = "image/jpeg";
+	$attachment->name = "picture.jpg";
+	$email->add_attachment($attachment);
+
+	//if you wish to zip
+	$attachment->zip();
+	</code>
      */
     public function __construct($filepath=null, $mime_type=null){
 

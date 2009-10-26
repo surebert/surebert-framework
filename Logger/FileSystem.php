@@ -3,16 +3,9 @@
  * Used to log application state to the log files.
  *
  * @author Paul Visco
- * @version 1.35 4/17/2008 05/12/2009
  * @package sb_Logger
+ * @version 1.35 4/17/2008 05/12/2009
  * 
- *<code>
-App::$logger = new sb_Logger_FileSystem(Array('audit','files','debug'), "\tApp::$user->uname."\t".App::$user->roswell_id."\t".Gateway::$remote_addr);
-App::$logger->debug('Here is a message');
-//If the argument is anything other than a string it is converted to json for logging as string
-App::$logger->files($obj);
- *</code>
- *
  */
 class sb_Logger_FileSystem extends sb_Logger_Base{
 	

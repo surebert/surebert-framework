@@ -7,34 +7,6 @@
  * @version 2.01 07/09/2007
  * @package sb_Email
  * 
- * <code>
-	$email_box = new sb_Email_Reader('paul@test.org', 'myPass', 'mail.test.org', 'imap');
-	$email_box->log_file = '../_cache/sb_Email_Reader.log';
-	
-	//$email_box->capture_body_html =0;
-	
-	if($email_box->open()){
-	
-		$email_box->fetch_messages();
-		
-		foreach($email_box->emails as $email){
-			//print_raw($email);
-			foreach($email->attachments as $attachment){
-				
-				if($attachment->extension =='gif'){
-					$cached = '../_cache/'.$attachment->name;
-					
-					file_put_contents($cached, $attachment->contents);
-					echo '<img src="'.$cached.'">';
-				}
-			}
-			$email_box->delete_message($email->index);
-		}
-	}
-	
-	$email_box->close('expunge');
- * </code>
-
  */
 class sb_Email_Reader{
 
@@ -123,6 +95,34 @@ class sb_Email_Reader{
 	 * @param string $host e.g. mail.example.com
 	 * @param string $protocol imap or pop
 	 * @param integer $port
+	 *
+	 <code>
+	$email_box = new sb_Email_Reader('paul@test.org', 'myPass', 'mail.test.org', 'imap');
+	$email_box->log_file = '../_cache/sb_Email_Reader.log';
+
+	//$email_box->capture_body_html =0;
+
+	if($email_box->open()){
+
+		$email_box->fetch_messages();
+
+		foreach($email_box->emails as $email){
+			//print_raw($email);
+			foreach($email->attachments as $attachment){
+
+				if($attachment->extension =='gif'){
+					$cached = '../_cache/'.$attachment->name;
+
+					file_put_contents($cached, $attachment->contents);
+					echo '<img src="'.$cached.'">';
+				}
+			}
+			$email_box->delete_message($email->index);
+		}
+	}
+
+	$email_box->close('expunge');
+	</code>
 	 */
 	public function __construct($address, $pass, $host, $protocol, $port=''){
 		

@@ -2,50 +2,13 @@
 /**
  * Used to create captcha images for form submission
  *
+ * If you want the php code to run from a png
+ * use the following in your htaccess file for that directory: 
+ * AddType application/x-httpd-php .png
+ *
  * @author Paul Visco
  * @version 1.0 08/31/07
  * @package: sb_Web
- *
- *
- * <code>
- * #If you want the php code to run from a png use the following in your htaccess file for that directory
- * #parse rss as php
- * AddType application/x-httpd-php .png
- * </code>
- *
- * Then put this in your png or php file that will be the src for the image in your form
- * 
- * <code>
- * <?php
-//start the session
-session_start();
-
-//You can pass it an optional 200px x 200px background image as a path to the first argument, you can also pass a text color as a 3 integer rgb array e.g. Array(255,255,45) as teh second argument
-$cap = new sb_Web_Captcha();
-
-//set the ttf font you want to use.  Otherwise uses default font which is ugly and not as scalable
-$cap->font = '../media/fonts/cherokee.ttf';
-$cap->allowed_characters = 'ascdgi';
-
-//optional filters argument Array(IMG_FILTER_EMBOSS)
-$png = $cap->draw();
-
-//add background interference to make it more difficult for the computer to guess the word
-$cap->add_interference();
-
-//set teh session with the word printed in the image, you then check when the user entered against this session variable on your form submission processing page
-$_SESSION['sb_Web_Captcha']= $cap->word;
-
-//set the content type to display a png
-header("Content-Type: image/png");
-
-//display the png
-imagepng($png);
-
-//destroy the png
-imagedestroy($png);
-?>
-</code>
  * 
  */
 class sb_Web_Captcha{
@@ -81,6 +44,38 @@ class sb_Web_Captcha{
 	 * The constructor
 	 *
 	 * @param string $background The path to the background 8 bit png, make sure it is 128 color or less.  If left out, the image has a black background.
+	 *
+	 * <code>
+	 * <?php
+	//start the session
+	session_start();
+
+	//You can pass it an optional 200px x 200px background image as a path to the first argument, you can also pass a text color as a 3 integer rgb array e.g. Array(255,255,45) as teh second argument
+	$cap = new sb_Web_Captcha();
+
+	//set the ttf font you want to use.  Otherwise uses default font which is ugly and not as scalable
+	$cap->font = '../media/fonts/cherokee.ttf';
+	$cap->allowed_characters = 'ascdgi';
+
+	//optional filters argument Array(IMG_FILTER_EMBOSS)
+	$png = $cap->draw();
+
+	//add background interference to make it more difficult for the computer to guess the word
+	$cap->add_interference();
+
+	//set teh session with the word printed in the image, you then check when the user entered against this session variable on your form submission processing page
+	$_SESSION['sb_Web_Captcha']= $cap->word;
+
+	//set the content type to display a png
+	header("Content-Type: image/png");
+
+	//display the png
+	imagepng($png);
+
+	//destroy the png
+	imagedestroy($png);
+	?>
+	</code>
 	 */
 	public function __construct($background='', $color=''){
 		
