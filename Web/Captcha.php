@@ -8,7 +8,7 @@
  *
  * @author Paul Visco
  * @version 1.0 08/31/07
- * @package: sb_Web
+ * @package sb_Web
  * 
  */
 class sb_Web_Captcha{
