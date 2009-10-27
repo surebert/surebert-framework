@@ -2,7 +2,7 @@
 /**
  * The JSON_RPC2_Client used to send the request
  *
- * @version 1.21 02/06/09 05/12/09
+ * @version 1.22
  * @author visco
  * @package sb_JSON_RPC2
  */
