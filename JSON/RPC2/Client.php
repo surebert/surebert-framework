@@ -64,16 +64,21 @@ class sb_JSON_RPC2_Client {
 	 * var_dump($response);
 	 * </code>
 	 * 
-	 * @param $host String The host anme or IP to dispatch the request to
-	 * @param $uri String the path to the request e.g. /server/json
+	 * @param $url String The url of the server
 	 * @param $timeout The time to wait for a response in seconds
 	 * @param $port Integer The port to make the request on
 	 * @return sb_JSON_RPC2_Response
 	 */
-	public function __construct($url, $timeout=10) {
+	public function __construct($url, $timeout=10, $port=null) {
 
 		$data = parse_url($url);
-		$this->port = $data['scheme'] == 'https' ? 443 : 80;
+
+		if(!is_null($port)){
+			$this->port = $port;
+		} else {
+			$this->port = $data['scheme'] == 'https' ? 443 : 80;
+		}
+		
 		$this->host = $data['host'];
 		$this->uri = $data['path'];
 
