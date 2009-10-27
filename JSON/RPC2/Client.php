@@ -32,7 +32,7 @@ class sb_JSON_RPC2_Client {
 	 * e.g. hashes stay hashes and are not converted to objects
 	 * @var boolean
 	 */
-	public $php_serialize_response = false;
+	public $php_serialize_response = true;
 
 	/**
 	 * The user agent to send with the request
