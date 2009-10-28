@@ -2,8 +2,7 @@
 /**
  * Represents a XMPP Message for sending and receiving
  *
- * Currently you can only use the get_* properties on xml passed to the constructor
- * and the set_* properties on new instances that you create without passing xml
+ * @author Paul Visco
  * @package sb_XMPP
  */
 class sb_XMPP_Message extends sb_XMPP_Packet{
