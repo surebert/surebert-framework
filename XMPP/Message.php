@@ -31,14 +31,21 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 
 	/**
 	 * Gets the body of the message
+	 *
+	 * @param boolean $as_string Determines if node is returned as xml node or string, true by default
 	 * @return string
 	 */
-	public function get_body(){
+	public function get_body($as_string=true){
 
 		$nodes = $this->doc->getElementsByTagName('body');
 		$node =$nodes->item(0);
 		if($node){
-			return $node->nodeValue;
+			if($as_string){
+				return $node->nodeValue;
+			} else {
+				return $node;
+			}
+			
 		} else {
 			return '';
 		}
@@ -46,14 +53,19 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 
 	/**
 	 * Gets the subject of the message
-	 * @param string $subject
+	 *
+	 * @param boolean $as_string Determines if node is returned as xml node or string, true by default
 	 */
-	public function get_subject(){
+	public function get_subject($as_string=true){
 
 		$nodes = $this->doc->getElementsByTagName('subject');
 		$node =$nodes->item(0);
 		if($node){
-			return $node->nodeValue;
+			if($as_string){
+				return $node->nodeValue;
+			} else {
+				return $node;
+			}
 		} else {
 			return '';
 		}
@@ -61,13 +73,19 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 
 	/**
 	 * Returns the HTML string if there is one, this is expiremental
+	 * 
+	 * @param boolean $as_string Determines if node is returned as xml node or string, true by default
 	 * @return string
 	 */
-	public function get_html(){
+	public function get_html($as_string=true){
 		$nodes = $this->doc->getElementsByTagName('html');
 		$node =$nodes->item(0);
 		if($node){
-			return $node->nodeValue;
+			if($as_string){
+				return $node->nodeValue;
+			} else {
+				return $node;
+			}
 		} else {
 			return '';
 		}
@@ -78,9 +96,12 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @param string $body
 	 */
 	public function set_body($body){
-		$node = $this->createElement('body');
+		$node = $this->get_body(false);
+		if(!$node){
+			$node = $this->createElement('body');
+			$this->doc->appendChild($node);
+		}
 		$node->nodeValue = htmlspecialchars($body);
-		$this->doc->appendChild($node);
 	}
 
 	/**
@@ -88,9 +109,12 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @param string $subject
 	 */
 	public function set_subject($subject){
-		$node = $this->createElement('subject');
+		$node = $this->get_subject(false);
+		if(!$node){
+			$node = $this->createElement('subject');
+			$this->doc->appendChild($node);
+		}
 		$node->nodeValue = htmlspecialchars($subject);
-		$this->doc->appendChild($node);
 	}
 
 	/**
@@ -98,9 +122,9 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @param string $html
 	 */
 	public function set_html($html){
-		$next_elem = $this->createDocumentFragment();
-		$next_elem->appendXML('<html xmlns="http://www.w3.org/1999/xhtml">'.$html.'</html>');
-		$this->doc->appendChild($next_elem);
+		$node = $this->createDocumentFragment();
+		$node->appendXML('<html xmlns="http://www.w3.org/1999/xhtml">'.$html.'</html>');
+		$this->doc->appendChild($node);
 	}
 
 	/**

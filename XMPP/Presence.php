@@ -47,13 +47,19 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 
 	/**
 	 * Gets the status of a presence packet
+	 *
+	 * @param boolean $as_string Determines if node is returned as xml node or string, true by default
 	 * @return string
 	 */
-    public function get_status(){
+    public function get_status($as_string=true){
 		$nodes = $this->doc->getElementsByTagName('status');
 		$node =$nodes->item(0);
 		if($node){
-			return $node->nodeValue;
+			if($as_string){
+				return $node->nodeValue;
+			} else {
+				return $node;
+			}
 		} else {
 			return '';
 		}
@@ -61,13 +67,19 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 
 	/**
 	 * Gets the show value of a presence packet
+	 *
+	 * @param boolean $as_string Determines if node is returned as xml node or string, true by default
 	 * @return string
 	 */
-    public function get_show(){
+    public function get_show($as_string=true){
 		$nodes = $this->doc->getElementsByTagName('show');
 		$node =$nodes->item(0);
 		if($node){
-			return $node->nodeValue;
+			if($as_string){
+				return $node->nodeValue;
+			} else {
+				return $node;
+			}
 		} else {
 			return '';
 		}
@@ -75,32 +87,38 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 
 	/**
 	 * Gets the priority value of a presence packet
+	 *
+	 * @param boolean $as_string Determines if node is returned as xml node or string, true by default
 	 * @return string
 	 */
-    public function get_priority(){
+    public function get_priority($as_string=true){
 		$nodes = $this->doc->getElementsByTagName('priority');
 		$node =$nodes->item(0);
 		if($node){
-			return $node->nodeValue;
+			if($as_string){
+				return $node->nodeValue;
+			} else {
+				return $node;
+			}
 		} else {
 			return '';
 		}
     }
 
 	/**
-	 * Set the status of the presence packet
-	 * @param string $status
-	 */
-
-	/**
-     * Sends a presence notification
+     * Set the status of the presence packet
      *
      * @param string $status The status message to display in human readible format
      */
 	public function set_status($status){
-		$node = $this->createElement('status');
+
+		$node = $this->get_status(false);
+		if(!$node){
+			$node = $this->createElement('status');
+			$this->doc->appendChild($node);
+		}
 		$node->nodeValue = htmlspecialchars($status);
-		$this->doc->appendChild($node);
+		
 	}
 
 	/**
@@ -117,9 +135,13 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
             $this->set_type($show);
         }
 
-		$node = $this->createElement('show');
+		$node = $this->get_show(false);
+		if(!$node){
+			$node = $this->createElement('show');
+			$this->doc->appendChild($node);
+		}
+
 		$node->nodeValue = htmlspecialchars($show);
-		$this->doc->appendChild($node);
 
     }
 
@@ -128,9 +150,14 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 * @param integer $priority
 	 */
     public function set_priority($priority=1){
-		$node = $this->createElement('priority');
+
+		$node = $this->get_priority(false);
+		if(!$node){
+			$node = $this->createElement('priority');
+			$this->doc->appendChild($node);
+		}
 		$node->nodeValue = htmlspecialchars($priority);
-		$this->doc->appendChild($node);
+		
     }
 
 	/**
