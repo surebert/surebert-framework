@@ -1,6 +1,9 @@
 <?php
 /**
  * Represents a XMPP Message for sending and receiving
+ *
+ * Currently you can only use the get_* properties on xml passed to the constructor
+ * and the set_* properties on new instances that you create without passing xml
  * @package sb_XMPP
  */
 class sb_XMPP_Message extends sb_XMPP_Packet{
@@ -12,7 +15,7 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	public $xml;
 
 	/**
-	 * Creates a new DOMDocument
+	 * Creates a new sb_XMPP_Message instance
 	 * @param string $xml Optional XML string to base the Document on
 	 */
 	public function __construct($xml = ''){
@@ -30,6 +33,7 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @return string
 	 */
 	public function get_body(){
+
 		if($this->xml instanceof SimpleXMLElement){
 			return (String)$this->xml->body;
 		} else {
@@ -87,6 +91,12 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 		$this->doc->appendChild($next_elem);
 	}
 
+	/**
+	 * Creates a reply message and sends it to the user that sent the
+	 * original message.  This can be used only on sb_XMPP_Message instances
+	 * that came over the socket and were passed to the on_message method.
+	 * @param string $str
+	 */
 	public function reply($str){
 		$message = new sb_XMPP_Message();
 		$message->set_to($this->get_from());

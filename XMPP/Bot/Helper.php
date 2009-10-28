@@ -2,6 +2,26 @@
 
 /**
  * A Base Bot based on the XMPP Client
+ *
+ * All methods that start with serve_ are served as commands and show up
+ * in the list of commands when the user types help.  methods with @secret in their
+ * phpdocs, still are executable but do not show up in the list of help
+ * commands.
+ *
+ * <code>
+ * class BotDemo extends sb_Bot_Helper{
+ *	public $status = 'thinking';
+ *	public $uname = 'you bot name';
+ *	public $pass = 'your bot pass';
+ *
+ *	public serve_hello(sb_XMPP_Message $message, $str){
+ *		return 'hello '.$message->get_from().' you said '.$message->get_body();
+ *
+ *	}
+ *
+ * $bot = new Bot_Demo();
+ * </code>
+ * 
  * @author paul.visco@roswellpark.org, gregary.dean@roswellpark.org
  * @package sb_XMPP
  */

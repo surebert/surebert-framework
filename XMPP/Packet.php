@@ -1,11 +1,10 @@
 <?php
 /**
- * Used to easily convert XMPP_Packets from simpleXML to string - doctype
+ * Used to easily convert XMPP_Packets from simpleXML to string and back
  * @author Paul Visco
- * @version 1.0 05-12-2009 05-12-2009
  * @package sb_XMPP
  */
-class sb_XMPP_Packet extends DOMDocument {
+abstract class sb_XMPP_Packet extends DOMDocument {
 
 	/**
 	 * gets the jid of the user that send the packet

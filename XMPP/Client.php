@@ -1,6 +1,26 @@
 <?php
 /**
  * Connects to XMPP servers, tested with openfire/ichat
+ *
+ * <code>
+ * class ClientDemo extends sb_XMPP_Client{
+ *	public $status = 'thinking';
+ *	public $uname = 'your uname';
+ *	public $pass = 'your pass';
+ *
+ *	public on_message(sb_XMPP_Message $message){
+ *		//do something
+ *
+ *	}
+ *
+ * public on_presence(sb_XMPP_Message $message){
+ *		//do something
+ *
+ *	}
+ *
+ * $client = new ClientDemo();
+ * </code>
+ *
  * @author Paul Visco
  * @package sb_XMPP
  */
@@ -145,16 +165,16 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
 		$this->set_status($this->status);
 
-		if(method_exists($this, 'on_after_login')){
-			$this->on_after_login();
-		}
+		$this->on_after_login();
 		
 		return true;
         
     }
 
 	/**
-	 * Sends a presence request
+	 * Converts a presense request instance to XML and sends it.  It sets the from
+	 * to the bots jid for you
+	 *
 	 * @param sb_XMPP_Presence $presence The presence instance to send
 	 * @return boolean
 	 */
@@ -165,7 +185,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	}
 
 	/**
-	 * Sets/sends status message
+	 * Sets status message
 	 * @param string $status The status message to send
 	 */
 	public function set_status($status=null){
@@ -177,7 +197,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	}
 
 	/**
-	 * Sends simple text message
+	 * Sends simple string based text message
 	 *
 	 * @param string $to The jid to send the message to
 	 * @param string $body The text to send
@@ -258,25 +278,12 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 		}
 	}
 
-	/**
-	 * An event handler that fires when a message is received with $this->listen
-	 * @param sb_XMPP_Message $message
-	 */
-    protected function on_message(sb_XMPP_Message $message){}
-
-    /**
-     * This is an event handler for errors, you would extend it in your class that extends
-     * this class
-     * @param string $error
-     */
-    protected function on_error($error_code, $error_str){}
-
     /**
      * Logs what is doing
      * @param string $message The message being received
      * @todo convert to sb_Logger
      */
-    protected function log($message){
+    public function log($message){
 
         file_put_contents("php://stdout", "\n\n" . $message);
     }
@@ -285,7 +292,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 * Puts the bot to sleep for a while
 	 * @param integer $secs
 	 */
-	protected function sleep($secs){
+	public function sleep($secs){
 		$str = 'Going to sleep for '.$secs.'secs';
 		$this->log('NOTICE: '.$str);
 		$this->set_status($str);
@@ -293,19 +300,11 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 		$this->set_status($this->status ? $this->status : 'awake');
 	}
 
-    /**
-     * Increments the packet id
-     * @return integer
-     */
-    final protected function next_id(){
-        return $this->packet_id++;
-    }
-
 	/**
 	 * Send an indication that the bot is composing text.
 	 * @param string $to The jid to send to
 	 */
-	final protected function composing_start($to){
+	public function composing_start($to){
 		$message = new sb_XMPP_Message();
 
 		$message->set_to($to);
@@ -325,7 +324,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 * Sends message to indicating that the bot is no longer composing
 	 * @param string $to The jid to send to
 	 */
-	final protected function composing_stop($to){
+	public function composing_stop($to){
 		$message = new sb_XMPP_Message();
 
 		$message->set_to($to);
@@ -340,16 +339,6 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
 		$this->send_message($message);
 	}
-
-    /**
-     * Sends the client name to the XMPP server
-     * @return string The server response
-     */
-    final protected function send_client_name(){
-
-        $this->write('<iq xmlns="jabber:client" type="set" id="'.$this->next_id().'"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><resource>'.$this->client_name.'</resource></bind></iq>');
-        return $this->read();
-    }
 
     /**
      * Reads from the socket, should be protected but can't because this is inherited as public
@@ -379,48 +368,6 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
     }
 
 	/**
-	 * Writes XML to the socket client
-	 * @param mixed $xml Can be DOMDocument, SimpleXMLElement or string of XML
-	 * @return <type>
-	 */
-    final public function write($xml){
-
-		if($xml instanceof SimpleXMLElement){
-			$xml = $xml->asXML();
-		} else if($xml instanceof DOMDocument){
-			$xml = $xml->saveXML();
-		}
-
-		$this->log("SENT: ".$xml);
-
-        return parent::write($xml);
-    }
-
-
-	/**
-	 * Determines the peak memory usage
-	 * @return string The value in b, KB, or MB depending on size
-	 */
-	final protected function get_memory_usage($peak=false) {
-
-		if($peak){
-			$mem_usage = memory_get_peak_usage(true);
-		} else {
-			$mem_usage = memory_get_usage(true);
-		}
-
-		$str = '';
-		if ($mem_usage < 1024) {
-			$str = $mem_usage." b";
-		} elseif ($mem_usage < 1048576) {
-			$str = round($mem_usage/1024,2)." KB";
-		} else {
-			$str = round($mem_usage/1048576,2)." MB";
-		}
-		return $str;
-	}
-
-	/**
 	 * Listens for incoming chat on the socket
 	 */
     final public function listen(){
@@ -433,7 +380,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
             $x++;
             $xml = $this->read(1024);
 
-			if(!empty($xml) && method_exists($this, 'on_read')){
+			if(!empty($xml)){
 				if($this->on_read($xml) === false){
 					return false;
 				}
@@ -488,13 +435,55 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         }
     }
 
-    /**
+	/**
+	 * Writes XML to the socket client
+	 * @param mixed $xml Can be DOMDocument, SimpleXMLElement or string of XML
+	 * @return <type>
+	 */
+    final public function write($xml){
+
+		if($xml instanceof SimpleXMLElement){
+			$xml = $xml->asXML();
+		} else if($xml instanceof DOMDocument){
+			$xml = $xml->saveXML();
+		}
+
+		$this->log("SENT: ".$xml);
+
+        return parent::write($xml);
+    }
+
+
+	/**
+	 * Determines the peak memory usage
+	 * @return string The value in b, KB, or MB depending on size
+	 */
+	final public function get_memory_usage($peak=false) {
+
+		if($peak){
+			$mem_usage = memory_get_peak_usage(true);
+		} else {
+			$mem_usage = memory_get_usage(true);
+		}
+
+		$str = '';
+		if ($mem_usage < 1024) {
+			$str = $mem_usage." b";
+		} elseif ($mem_usage < 1048576) {
+			$str = round($mem_usage/1024,2)." KB";
+		} else {
+			$str = round($mem_usage/1048576,2)." MB";
+		}
+		return $str;
+	}
+	
+	 /**
      * Ends the stream and closes the connection
      */
     final public function close(){
-		if(method_exists($this, 'on_close_connection')){
-			$this->on_close_connection();
-		}
+		
+		$this->on_close_connection();
+
         if($this->socket){
             $this->write("</stream:stream>");
             parent::close();
@@ -503,6 +492,75 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
     }
 
+	/**
+     * Sends the client name to the XMPP server
+     * @return string The server response
+     */
+    final protected function send_client_name(){
+
+        $this->write('<iq xmlns="jabber:client" type="set" id="'.$this->next_id().'"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><resource>'.$this->client_name.'</resource></bind></iq>');
+        return $this->read();
+    }
+
+    /**
+     * Increments the packet id
+     * @return integer
+     */
+    final protected function next_id(){
+        return $this->packet_id++;
+    }
+
+	/**
+	 * An event handler that fires when a message is received with $this->listen
+	 * @param sb_XMPP_Message $message
+	 */
+    protected function on_message(sb_XMPP_Message $message){}
+
+    /**
+     * This is an event handler for errors, you would extend it in your class that extends
+     * this class
+     * @param string $error
+     */
+    protected function on_error($error_code, $error_str){}
+
+	/**
+	 * Determines if a subscription request is accepted or not
+	 * 
+	 * By default it automatically accepts all requests
+	 * 
+	 * @param sb_XMPP_Presence $presence You can use this to determine who it is and if you want to accept
+	 * @return boolean If returns true it automatically accepts the subscription, false it does not
+	 */
+	protected function on_subscription_request(sb_XMPP_Presence $presence){
+		return true;
+	}
+
+	/**
+	 * Fires just before closing connection to give you one last chance
+	 * to cleanup, send out goodbye messages, etc
+	 */
+	protected function on_close_connection(){}
+
+	/**
+	 * Fires after login to allow you to do things, like blast out
+	 * messages to your buddies, check presence, etc
+	 *
+	 */
+	protected function on_after_login(){}
+
+	/**
+	 * Generic on_read function that passes raw xml packet as string
+	 * so that you can do custom stuff with custom kinds of packets
+	 *
+	 * If you return false, processing of the packet stops there, meaning
+	 * it will not be passed onto the on_message and on_presense methods
+	 *
+	 * @param string $xml
+	 * @return boolean
+	 */
+	protected function on_read($xml){
+		return true;
+	}
 
 	/**
 	 * Closes the socket connection
