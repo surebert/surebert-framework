@@ -11,7 +11,14 @@ abstract class sb_XMPP_Packet extends DOMDocument {
 	 * @return string e.g. paul.visco@chat.server.com
 	 */
     public function get_from(){
-       return (String) $this->xml['from'];
+
+		$attr = $this->doc->getAttribute('from');
+
+		if($attr){
+			return $attr;
+		} else {
+			return '';
+		}
     }
 
 	/**
@@ -19,7 +26,14 @@ abstract class sb_XMPP_Packet extends DOMDocument {
 	 * @return string e.g. paul.visco@chat.server.com
 	 */
 	public function get_to(){
-       return (String) $this->xml['to'];
+
+		$attr = $this->doc->getAttribute('to');
+
+		if($attr){
+			return $attr;
+		} else {
+			return '';
+		}
     }
 
 	/**
@@ -27,7 +41,12 @@ abstract class sb_XMPP_Packet extends DOMDocument {
 	 * @return string
 	 */
     public function get_type(){
-       return (String) $this->xml['type'];
+		$attr = $this->doc->getAttribute('type');
+		if($attr){
+			return $attr;
+		} else {
+			return '';
+		}
     }
 
 	/**

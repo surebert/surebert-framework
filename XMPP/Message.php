@@ -19,11 +19,13 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @param string $xml Optional XML string to base the Document on
 	 */
 	public function __construct($xml = ''){
-		
+		parent::__construct('1.0', 'UTF-8');
 		if(!empty($xml)){
-			$this->xml = simplexml_load_string($xml);
+			$xml = simplexml_load_string($xml);
+			$this->doc = dom_import_simplexml($xml);
+			
+			$xml = null;
 		} else {
-			parent::__construct('1.0', 'UTF-8');
 			$this->doc = $this->appendChild($this->createElement('message'));
 		}
 	}
@@ -34,8 +36,10 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 */
 	public function get_body(){
 
-		if($this->xml instanceof SimpleXMLElement){
-			return (String)$this->xml->body;
+		$nodes = $this->doc->getElementsByTagName('body');
+		$node =$nodes->item(0);
+		if($node){
+			return $node->nodeValue;
 		} else {
 			return '';
 		}
@@ -45,9 +49,12 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * Gets the subject of the message
 	 * @param string $subject
 	 */
-	public function get_subject($subject){
-		if($this->xml instanceof SimpleXMLElement && $this->xml->subject){
-			return (String) $this->xml->subject;
+	public function get_subject(){
+
+		$nodes = $this->doc->getElementsByTagName('subject');
+		$node =$nodes->item(0);
+		if($node){
+			return $node->nodeValue;
 		} else {
 			return '';
 		}
@@ -58,7 +65,13 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	 * @return string
 	 */
 	public function get_html(){
-		return (String) $this->xml->html;
+		$nodes = $this->doc->getElementsByTagName('html');
+		$node =$nodes->item(0);
+		if($node){
+			return $node->nodeValue;
+		} else {
+			return '';
+		}
 	}
 
 	/**

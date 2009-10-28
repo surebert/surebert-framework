@@ -17,19 +17,29 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 * @param string $xml Optional XML string to base the Document on
 	 */
 	public function __construct($xml = ''){
+		parent::__construct('1.0', 'UTF-8');
+		
 		if(!empty($xml)){
 			
 			$xml = preg_replace("~</presence>.*$~", "</presence>", $xml);
 			
 			try{
 				$xml = '<root>'.$xml.'</root>';
-			$sxml = simplexml_load_string($xml);
-			$this->xml = $sxml->presence[0];
+				$packet = simplexml_load_string($xml);
+				$xml = $packet->presence[0];
+				$this->doc = dom_import_simplexml($xml);
+				
+				$xml = null;
+				$packet = null;
+			
 			} catch(Exception $e){
 				file_put_contents("php://stdout", "\n\n|||".print_r($xml, 1).'|||'."\n\n");
 			}
+
+
+
 		} else {
-			parent::__construct('1.0', 'UTF-8');
+			
 			$this->doc = $this->appendChild($this->createElement('presence'));
 		}
 	}
@@ -39,11 +49,13 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 * @return string
 	 */
     public function get_status(){
-        if(isset($this->xml->status[0])){
-            return (String) $this->xml->status[0];
-        } else {
-            return 'available';
-        }
+		$nodes = $this->doc->getElementsByTagName('status');
+		$node =$nodes->item(0);
+		if($node){
+			return $node->nodeValue;
+		} else {
+			return '';
+		}
     }
 
 	/**
@@ -51,11 +63,13 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 * @return string
 	 */
     public function get_show(){
-        if(isset($this->xml->show[0])){
-            return (String) $this->xml->show[0];
-        } else {
-            return '';
-        }
+		$nodes = $this->doc->getElementsByTagName('show');
+		$node =$nodes->item(0);
+		if($node){
+			return $node->nodeValue;
+		} else {
+			return '';
+		}
     }
 
 	/**
@@ -63,11 +77,13 @@ class sb_XMPP_Presence extends sb_XMPP_Packet{
 	 * @return string
 	 */
     public function get_priority(){
-        if(isset($this->xml->priority[0])){
-            return (String)$this->xml->priority[0];
-        } else {
-            return '';
-        }
+		$nodes = $this->doc->getElementsByTagName('priority');
+		$node =$nodes->item(0);
+		if($node){
+			return $node->nodeValue;
+		} else {
+			return '';
+		}
     }
 
 	/**
