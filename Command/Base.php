@@ -29,7 +29,9 @@ class sb_Command_Base {
 		$this->set_memory_limit();
 		$this->set_max_execution_time();
 
-
+		if(method_exists($this, 'on_start')){
+			$this->on_start();
+		}
 	}
 
 	/**
