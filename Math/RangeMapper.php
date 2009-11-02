@@ -4,7 +4,6 @@
  * Maps ranges from one set of numbers to another
  *
  * @author Paul Visco 06/05/2007
- * @version 1.1 12/08/2008
  * @package sb_Math
  * 
  * $rangeMapper =new sb_Math_RangeMapper(Array(8,20), Array(10,100));
@@ -18,8 +17,13 @@ class sb_Math_RangeMapper{
 		$this->fromRange = $fromRange;
 		$toRangeDifference = $toRange[1]-$toRange[0];
 		$fromRangeDifference = $fromRange[1]-$fromRange[0];
-		
-		$this->ratio = $toRangeDifference/$fromRangeDifference;
+
+		if($fromRangeDifference == 0){
+			$this->ratio = 1;
+		} else {
+			$this->ratio = $toRangeDifference/$fromRangeDifference;
+		}
+
 	}
 	
 	public function convert($fromRangeNumber){
