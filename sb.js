@@ -1595,7 +1595,7 @@ sb.ajax.prototype = {
 				break;
 
 			case 'boolean':
-				this.response = (this.ajax.responseText === 0) ? 0 : 1;
+				this.response = (this.ajax.responseText == 0) ? false : true;
 				break;
 
 			default:
