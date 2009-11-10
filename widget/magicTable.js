@@ -23,7 +23,7 @@ o.sortTypes Array - An array of sort types from sb.widget.magicTable.compare tha
 var myTable = new sb.widget.magicTable({
 	table : '#jimmy',
 	sortable : 1,
-	defaultSortBy : 2,
+	defaultSortedBy : 2,
 	onCellClick : function(td){
 		td.style.backgroundColor = 'pink';
 		if(td.innerHTML == 'delete'){
@@ -134,12 +134,12 @@ sb.widget.magicTable.prototype = {
 	var myTable = new sb.widget.magicTable({
 		table : '#jimmy',
 		sortable : 1,
-		defaultSortBy : 2,
+		defaultSortedBy : 2,
 	});
 	var myTable = new sb.widget.magicTable({
 		table : '#jimmy',
 		sortable : 1,
-		defaultSortBy : 'age',
+		defaultSortedBy : 'age',
 	});
 	*/
 	defaultSortedBy : 0,
@@ -819,7 +819,7 @@ sb.widget.magicTable.compare = {
 	date : function(a, b) {
 		return Date.parse(a) - Date.parse(b);
 	},
-
+	
 	/**
 	@Name: sb.widget.magicTable.compare.date
 	@Description: Sort by US date
