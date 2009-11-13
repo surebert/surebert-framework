@@ -1611,8 +1611,9 @@ sb.ajax.prototype = {
 				this.log('Could not eval javascript from server');
 			}
 		}
-
-   		this.onResponse(this.response);
+		if(typeof this.onResponse == 'function'){
+			this.onResponse(this.response);
+		}
 
 		if(typeof this.node !='undefined'){
 
