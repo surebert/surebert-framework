@@ -486,11 +486,11 @@ class Gateway {
 				$model = implode("_", $arr);
 				unset($arr);
 			} else {
-				$model = $p[0];
+				$model = ucwords($p[0]);
 			}
 
             $action = $p[1];
-
+			
             if(class_exists($model)){
 
                 if(method_exists($model, $action) && in_array('sb_Magic_Model', class_implements($model, true))){
