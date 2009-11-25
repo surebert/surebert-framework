@@ -125,7 +125,7 @@ class sb_Validate_ContactInfo{
 	 * @author Paul Visco
 	 * @version 1.2 13/18/2008
 	 *
-	 * @param string $phone The phone number to validate shoudl be in  xxx-xxx-xxxx format
+	 * @param string $url The url to validate should
 
 	 * @return sb_Validate_Results
 	 */
