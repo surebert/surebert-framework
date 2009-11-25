@@ -1,7 +1,7 @@
 <?php
 /**
  * Represents and Calendar meeting request attendee or organizer
- *
+ * @package sb_ICalendar
  * @author paul.visco@roswellpark.org
  */
 class sb_ICalendar_Attendee{

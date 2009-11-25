@@ -7,7 +7,7 @@
  * It keeps the description and access and outputs the code for you to copy
  *
  * @todo get to work with oracle, mssql
- *
+ * @package sb_Application
  * @author paul.visco@roswellpark.org
  */
 class sb_Application_TableToModel {

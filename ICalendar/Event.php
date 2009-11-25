@@ -3,7 +3,7 @@
  * Used to create an .ics doc for an ICalendar event
  *
  * Tested with entouage, outlook, mail.app, owa, android, iphone, and blackbery
- *
+ * @package sb_ICalendar
  * @author paul.visco@roswellpark.org
  * <code>
  * $event = new sb_ICalendar_Event('Discussing the new development plan for the intranet', '901 Room #3');

@@ -3,8 +3,8 @@
 /**
  * Extends native PDOStatement class for logging and debugging, when the logging is set on an sb_PDO instance.  You would never access this directly
  * 
- * @Author Paul Visco
- * @Version 1.9 09/27/2007 04/01/2009
+ * @author paul.visco@roswellpark.org
+ * @version 1.9 09/27/2007 04/01/2009
  * @package sb_PDO
  */
 
@@ -79,8 +79,9 @@ class sb_PDO_Statement_Logger extends PDOStatement {
 /**
  * Extends native PDO class for logging and debugging
  * 
- * @Author Paul Visco
- * @Version 1.9 09/27/2007 04/01/2009
+ * @author paul.visco@roswellpark.org
+ * @version 1.9 09/27/2007 04/01/2009
+ * @package sb_PDO
  * 
  */
 class sb_PDO_Logger extends sb_PDO_Debugger{

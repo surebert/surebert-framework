@@ -1,7 +1,7 @@
 <?php
 /**
  * Represents and event organizer
- *
+ * @package sb_ICalendar
  * @author paul.visco@roswellpark.org
  */
 class sb_ICalendar_Organizer extends sb_ICalendar_Attendee{
