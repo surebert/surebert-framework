@@ -78,7 +78,7 @@ class sb_PDO extends PDO{
 		if(is_array($params) || is_object($params)){
 
             //convert object parameters
-			$param = is_array($params) ? $params : $this->o2p($params);
+			$param = is_array($params) ? $params : self::paramify($params);
 			
 			$stmt = $this->prepare($sql);
 			$result = $stmt->execute($params);
@@ -114,27 +114,13 @@ class sb_PDO extends PDO{
 		
 	}
 
-	/**
-	 * Converts an object into a bound params hash, use sb_PDO::paramify
-	 *
-	 * @param object $obj The object to convert to a bindParams hash with the colon in front of each key so that it can be used as a bid param array
-	 * @param array $omit An simple array of key names to omit from the array
-	 * @return array The object as an array desigend for passing to pdo's exec or bindParams
-     * @Depreciated
-	 * 
-	 */
-	public function o2p($obj, $omit=Array()){
-		
-		return self::paramify($obj, $omit);
-	}
-
     /**
 	 * Converts an array into a bound params hash
 	 *
 	 * @param array/object $data The object/hash to convert to a bindParams compatible hash with the colon in front of each key so that it can be used as a bid param array
 	 * @param array $omit An simple array of key names to omit from the array
 	 * @return array The input data as an array designed for passing to pdo's execute or bindParams
-	 * @Author Paul Visco
+	 * @author Paul Visco
 	 * @version 1.0
 	 * <code>
 	 * $question = new Question();
