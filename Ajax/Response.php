@@ -3,7 +3,7 @@
 /**
  * Used to model and standardize an Ajax Response
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package sb_Ajax
  */
 class sb_Ajax_Response{
