@@ -32,11 +32,11 @@ class sb_Email_Attachment{
 	/**
 	 * The encoding type of the attchment
 	 *
-	 * 0 = 7bit, 1= 8bit, 2=binary, 3=base64, 4=quoted prinatble, 5=other
-	 *
-	 * @var integer
+	 * //when read from sb_Email_Reader 0 = 7bit, 1= 8bit, 2=binary, 3=base64, 4=quoted prinatble, 5=other
+	 * //otherwise use full name
+	 * @var mixed string/integer
 	 */
-	public $encoding;
+	public $encoding = 'base64';
 
 	/**
 	 * The subtype of the attachment
@@ -54,7 +54,7 @@ class sb_Email_Attachment{
 	 *
 	 * @var interger
 	 */
-	public $type;
+	public $type = 5;
 
 	/**
 	 * The file size in K
@@ -186,6 +186,18 @@ class sb_Email_Attachment{
         $this->mime_type = 'application/pgp';
         $this->name .= '.pgp';
     }
+
+	/**
+	 * Sets the encoding type of the attachment
+	 * 
+	 * @param string $encoding  either 0-5 or the actual strings
+	 * 7bit, 8bit, binary, base64, quoted prinatble
+	 */
+	public function set_encoding($encoding){
+
+		$this->encoding = $encoding;
+
+	}
 
 
 }

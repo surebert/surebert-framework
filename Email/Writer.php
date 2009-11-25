@@ -303,10 +303,11 @@ class sb_Email_Writer {
                 $attachment->mime_type = sb_Files::extension_to_mime($attachment->extension);
             }
 
-            $attachment->encoding =3;
-            $attachment->type = 5;
-            $attachment->contents = chunk_split(base64_encode($attachment->contents));
+			if($attachment->encoding == 'base64'){
+				$attachment->contents = chunk_split(base64_encode($attachment->contents));
 
+			}
+           
             // Add file attachment to the message
 
             if($email->attachments_in_HTML == 1) {
@@ -314,16 +315,16 @@ class sb_Email_Writer {
             } else {
                 $message .= "--".$mixed_boundary."\r\n";
             }
-
+			$message .= "Content-class: urn:content-classes:calendarmessage;\r\n";
             $message .= "Content-Type: ".$attachment->mime_type.";\r\n";
             $message .= " name=".$attachment->name."\r\n";
 
-            $message .= "Content-Transfer-Encoding: base64\r\n";
+            $message .= "Content-Transfer-Encoding: ".$attachment->encoding."\r\n";
             //$message .= "Content-ID: ".$attachment->name."\r\n\r\n";
             $message .= "Content-ID: <".$attachment->name.">\r\n\r\n";
 
             $message .=  $attachment->contents."\r\n";
-
+echo '<pre>'.$message.'</pre>';
         }
 
         //end related if using body_HTML

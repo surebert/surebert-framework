@@ -209,6 +209,22 @@ class sb_Email{
 		$this->attachments[] = $attachment;
 	}
 
+	/**
+	 * Add ics calendar request
+	 * @param string $ics
+	 */
+	public function add_ics($ics){
+		
+		$a = new sb_Email_Attachment();
+		$a->mime_type = 'text/calendar;';
+		$a->set_encoding('8bit');
+		$a->name = 'event.ics';
+		$ics = str_replace("SB_EMAIL_TO", $this->to, $ics);
+		$a->contents = $ics;
+
+		$this->add_attachment($a);
+	}
+
     /**
      * An instance of sb_Email_Writer used to send
      * @var sb_Email_Writer
