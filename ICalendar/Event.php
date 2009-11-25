@@ -2,7 +2,7 @@
 /**
  * Used to create an .ics doc for an ICalendar event
  *
- * Tested with entouage, outlook, mail.app, owa
+ * Tested with entouage, outlook, mail.app, owa, android, iphone, and blackbery
  *
  * @author paul.visco@roswellpark.org
  * <code>
