@@ -34,7 +34,7 @@ interface sb_Magic_Model{
 /**
  * Loads the .view file that corresponds to the request
  * @author paul.visco@roswellpark.org
- * @package
+ * @package sb_View
  */
 class sb_View {
 
