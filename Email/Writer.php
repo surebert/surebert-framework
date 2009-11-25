@@ -96,11 +96,21 @@ class sb_Email_Writer {
 
             //all email goes to DEBUG_EMAIL if specified
             if(defined("DEBUG_EMAIL")) {
-                $email->body = "DEBUG MODE: Should be sent to: ".$email->to." when not in debug mode!\n\n".$email->body;
-                $email->body = "DEBUG MODE: Should be sent from: ".$email->from." when not in debug mode!\n\n".$email->body;
+                $email->body .= "\n\nDEBUG MODE: Should be sent to: ".$email->to." when not in debug mode!";
+                $email->body .= "\nDEBUG MODE: Should be sent from: ".$email->from." when not in debug mode!";
 
                 $email->to = DEBUG_EMAIL;
                 $email->from = DEBUG_EMAIL;
+
+				if(!empty($email->cc)){
+					$email->body .= "\nDEBUG MODE: Should be be CCed to: ".implode(", ", $email->cc)." when not in debug mode!";
+					$email->cc = Array();
+				}
+
+				if(!empty($email->bcc)){
+					$email->body .= "\nDEBUG MODE: Should be be BCCed to: ".implode(", ", $email->cc)." when not in debug mode!";
+					$email->bcc = Array();
+				}
             }
 
             $this->construct_multipart_message($email);
