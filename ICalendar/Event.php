@@ -6,7 +6,7 @@
  *
  * @author paul.visco@roswellpark.org
  * <code>
- * $event = new sb_ICalendar_Event('dancing', 'roswell');
+ * $event = new sb_ICalendar_Event('Discussing the new development plan for the intranet', '901 Room #3');
  * $event->set_time('11/26/2009 13:30', '11/26/2009 14:30');
  * $event->add_attendee(new sb_ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
  * $event->add_attendee(new sb_ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
@@ -20,7 +20,7 @@
  * echo $event->__toString();
  *
  * //send via email
- * $event->send('paul.visco@roswellpark.org', 'your event', 'I planned for your', 'paul.visco@roswellpark.org');
+ * $event->send();
  * </code>
  *
  */
@@ -118,18 +118,25 @@ class sb_ICalendar_Event{
 	}
 
 	/**
-	 * Send via email
-	 * @param <type> $to
-	 * @param <type> $subject
-	 * @param <type> $message
-	 * @param <type> $from
-	 * @return <type>
+	 * Send via email the subject is the first 20 chars of the summary,
+	 * the message is the summary.  The email is sent to the organizer's email,
+	 * The attendees all cc'd
+	 * 
+	 * @return boolean
 	 */
-	public function send($to, $subject, $message, $from){
+	public function send(){
 
-		$mail = new sb_Email($to, $subject, $message, $from);
+		$to = '"'.$this->organizer->dname.'" <'.$this->organizer->email.'>';
+		$mail = new sb_Email($to, "EVENT: ".substr($this->summary, 0, 20).'...', $this->summary, $to);
+		$attendee_emails = Array();
+		foreach($this->attendees as $attendee){
+			$attendee_emails[] = '"'.$attendee->dname.'" <'.$attendee->email.'>';
+		}
+
+		$mail->cc = $attendee_emails;
 		$mail->add_ICalendar_Event($this);
 		return $mail->send();
+		
 	}
 
 	/**
@@ -137,6 +144,10 @@ class sb_ICalendar_Event{
 	 * @return string
 	 */
 	public function  __toString() {
+
+		if(empty($this->organizer)){
+			throw(new Exception('You must add an event organizer'));
+		}
 
 		if(empty($this->attendees)){
 			throw(new Exception('You must add at least one attendee'));
@@ -152,7 +163,7 @@ class sb_ICalendar_Event{
 		$ics[] = "METHOD:REQUEST";
 		$ics[] = "PRODID:-//surebert/ics//NONSGML v1.0//EN";
 		$ics[] = "BEGIN:VEVENT";
-
+		
 		if(!empty($this->location)){
 			$ics[] = "LOCATION:".$this->location;
 		}
@@ -164,12 +175,13 @@ class sb_ICalendar_Event{
 		foreach($this->attendees as $attendee){
 			$ics[] = $attendee->__toString();
 		}
-
+		
 		$ics[] = "UID:" . md5($dtstart.$dtend.$this->summary);
 		$ics[] = "DTSTAMP:" . gmdate('Ymd').'T'. gmdate('His') . "Z";
 		$ics[] = "DTSTART:" . gmdate('Ymd', $dtstart).'T'. gmdate('His', $dtstart) . "Z";
 		$ics[] = "DTEND:" . gmdate('Ymd', $dtend).'T'. gmdate('His', $dtend) . "Z";
 		$ics[] = "SUMMARY:".$this->summary;
+		
 		$ics[] = "END:VEVENT";
 		$ics[] = "END:VCALENDAR";
 
