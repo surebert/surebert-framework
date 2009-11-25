@@ -5,6 +5,24 @@
  * Tested with entouage, outlook, mail.app, owa
  *
  * @author paul.visco@roswellpark.org
+ * <code>
+ * $event = new sb_ICalendar_Event('dancing', 'roswell');
+ * $event->set_time('11/26/2009 13:30', '11/26/2009 14:30');
+ * $event->add_attendee(new sb_ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
+ * $event->add_attendee(new sb_ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
+ * $event->set_organizer(new sb_ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
+ *
+ * //view contents
+ * echo $event->__toString();
+ *
+ * //force download ics file
+ * $event->send_html_headers();
+ * echo $event->__toString();
+ *
+ * //send via email
+ * $event->send('paul.visco@roswellpark.org', 'your event', 'I planned for your', 'paul.visco@roswellpark.org');
+ * </code>
+ *
  */
 class sb_ICalendar_Event{
 
@@ -45,14 +63,17 @@ class sb_ICalendar_Event{
 	 * @param string $dtend The endtime of the event in any format strtotime can handle
 	 * @param string $location Optional The location of the event
 	 */
-	public function __construct($summary, $dtstart, $dtend, $location=''){
+	public function __construct($summary, $location=''){
 		$this->summary = $summary;
-		$this->dstart = $dtstart;
-		$this->dtend = $dtend;
 		$this->location = $location;
 
 	}
 
+	/**
+	 * Set up thetime of the event
+	 * @param string $dtstart The begin time of the event in any format strtotime can handle
+	 * @param string $dtend The endtime of the event in any format strtotime can handle
+	 */
 	public function set_time($dtstart, $dtend){
 		$this->dtstart = $dtstart;
 		$this->dtend = $dtend;
@@ -97,6 +118,21 @@ class sb_ICalendar_Event{
 	}
 
 	/**
+	 * Send via email
+	 * @param <type> $to
+	 * @param <type> $subject
+	 * @param <type> $message
+	 * @param <type> $from
+	 * @return <type>
+	 */
+	public function send($to, $subject, $message, $from){
+
+		$mail = new sb_Email($to, $subject, $message, $from);
+		$mail->add_ICalendar_Event($this);
+		return $mail->send();
+	}
+
+	/**
 	 * Converts the Event object into a string in ICalendar .ics format
 	 * @return string
 	 */
@@ -117,7 +153,7 @@ class sb_ICalendar_Event{
 		$ics[] = "PRODID:-//surebert/ics//NONSGML v1.0//EN";
 		$ics[] = "BEGIN:VEVENT";
 
-		if(!empty($location)){
+		if(!empty($this->location)){
 			$ics[] = "LOCATION:".$this->location;
 		}
 

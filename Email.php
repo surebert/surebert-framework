@@ -210,17 +210,17 @@ class sb_Email{
 	}
 
 	/**
-	 * Add ics calendar request
-	 * @param string $ics
+	 * Add an sb_ICalendar_Event request
+	 * 
+	 * @param sb_ICalendar_Event $event
 	 */
-	public function add_ics($ics){
-		
+	public function add_ICalendar_Event(sb_ICalendar_Event $event){
+
 		$a = new sb_Email_Attachment();
 		$a->mime_type = 'text/calendar;';
 		$a->set_encoding('8bit');
 		$a->name = 'event.ics';
-		$ics = str_replace("SB_EMAIL_TO", $this->to, $ics);
-		$a->contents = $ics;
+		$a->contents = $event->__toString();
 
 		$this->add_attachment($a);
 	}

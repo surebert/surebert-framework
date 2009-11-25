@@ -324,7 +324,7 @@ class sb_Email_Writer {
             $message .= "Content-ID: <".$attachment->name.">\r\n\r\n";
 
             $message .=  $attachment->contents."\r\n";
-echo '<pre>'.$message.'</pre>';
+
         }
 
         //end related if using body_HTML
