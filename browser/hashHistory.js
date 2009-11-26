@@ -1,15 +1,24 @@
 /**
 @Name: sb.browser.hashHistory
-@Description: Used to allow for back and forward, bookmarkable navagation with ajax
+@Description: Used to allow for back and forward, bookmarkable navigation with ajax
+
+It tries to load the data from the url after the # whenever the hash changes
+
+e.g. http://example.com/testing#/rest/test would load /rest/test.
+
+First it would fire onloading.
+Then it would fire either onLoaded or onPageNotFound
+and pass the data loaded from /rest/test to it so that you could do what you would like
+
 @Example:
 sb.browser.hashHistory.init({
     onLoaded : function(r){
 		//do something with the data
     },
-    onLoading : function(){
+    onLoading : function(response){
        //show the user they are loading data
     },
-	onPageNotFound : function(){
+	onPageNotFound : function(response){
 
 	}
 });
@@ -44,7 +53,7 @@ sb.browser.hashHistory = {
         window.location.hash = hash;
     },
 
-	onHashChange : function(){
+	processHashChange : function(){
 		var hash = window.location.hash.substring(1);
 		var self = this;
 		self.refreshing = false;
@@ -54,7 +63,7 @@ sb.browser.hashHistory = {
 
 		if(self.currentHash == ''){
 
-			self.loading = 0;
+			self.loading = false;
 			return false;
 		}
 
@@ -62,16 +71,21 @@ sb.browser.hashHistory = {
 			self.onLoading();
 		}
 
-		//check to make sure there were no &
-		var m = self.currentHash.match(/(.*)\?(.*)$/);
+		//IE crap to make history work
+		if(sb.browser.agent == 'ie'){
+			self.saveHistoryToIframeForIE(self.currentHash);
+		}
 
-		var url;
-		
-		url = self.currentHash;
+		self.onHashChange(self.currentHash);
+
+	},
+
+	onHashChange : function(hash){
+		var self = this;
 		var aj = new sb.ajax({
-			url : url,
+			url : hash,
 			onHeaders : function(status){
-				
+
 				if(status != 200){
 					self.loading = false;
 					self.onPageNotFound();
@@ -83,14 +97,9 @@ sb.browser.hashHistory = {
 					self.onLoaded(r);
 				}
 
-				if(sb.browser.agent == 'ie'){
-					//IE crap to make history work
-					self.saveHistoryToIframeForIE(self.currentHash);
-				}
 				sb.browser.hashHistory.loading = false;
 			}
 		}).fetch();
-
 	},
 
     startTimer : function(){
@@ -98,7 +107,7 @@ sb.browser.hashHistory = {
         window.setInterval(function(){
 			var hash = window.location.hash.substring(1);
             if(!self.loading  && self.refreshing || (hash != self.currentHash) ){
-				self.onHashChange();
+				self.processHashChange();
             }
         }, 100);
     },
@@ -114,7 +123,7 @@ sb.browser.hashHistory = {
 		this.onPageNotFound = o.onPageNotFound || function(){};
 
 		if(window.onhashchange){
-			sb.events.add(window, 'hashchange', function(){self.onHashChange});
+			sb.events.add(window, 'hashchange', function(){self.processHashChange});
 		} else {
 			this.startTimer();
 		}
