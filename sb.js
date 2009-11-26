@@ -337,6 +337,12 @@ var sb = {
 	widget : {},
 
 	/**
+	@Name: sb.ui
+	@Description: Used Internally. A placeholder for sb.ui elements
+	*/
+	ui : {},
+
+	/**
 	@Name: sb.forms
 	@Description: Used Internally. A placeholder for sb.forms
 	*/
@@ -2781,13 +2787,3 @@ sb.events.add(window, 'unload', function(e){
 	});
 	sb.events.removeAll();
 });
-
-
-sb.browser.getHash = function(){
-  var hash = window.location.hash;
-  return hash.substring(1);
-};
-
-sb.browser.getLinkTarget = function(link){
-  return link.href.substring(link.href.indexOf('#')+1);
-};
