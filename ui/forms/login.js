@@ -9,6 +9,18 @@ params.onFailure function The callback that fires when the url return 0 or false
 params.onUrlNotFound function The callback that fires if the URL returns 404
 
 @Example:
+sb.include('ui.forms.login');
+
+board.login = new sb.ui.forms.login({
+	parentNode : '#login',
+	url : '/user/login',
+	onSuccess : function(){
+		//do something
+	},
+	onFailure : function(){
+		//do something
+	}
+});
 
 */
 sb.ui.forms.login = function(params){
