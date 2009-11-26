@@ -3,8 +3,7 @@
  * Used to create an .ics doc for an ICalendar event
  *
  * Tested with entouage, outlook, mail.app, owa, android, iphone, and blackbery
- * @package sb_ICalendar
- * @author paul.visco@roswellpark.org
+ * 
  * <code>
  * $event = new sb_ICalendar_Event('Discussing the new development plan for the intranet', '901 Room #3');
  * $event->set_time('11/26/2009 13:30', '11/26/2009 14:30');
@@ -23,6 +22,8 @@
  * $event->send();
  * </code>
  *
+ * @package sb_ICalendar
+ * @author paul.visco@roswellpark.org
  */
 class sb_ICalendar_Event{
 
@@ -70,7 +71,7 @@ class sb_ICalendar_Event{
 	}
 
 	/**
-	 * Set up thetime of the event
+	 * Set up the start/end time of the event
 	 * @param string $dtstart The begin time of the event in any format strtotime can handle
 	 * @param string $dtend The endtime of the event in any format strtotime can handle
 	 */

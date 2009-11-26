@@ -20,6 +20,11 @@ class sb_ICalendar_Attendee{
 
 	/**
 	 * Creates a new construct
+	 *
+	 * <code>
+	 * new sb_ICalendar_Attendee('Visco, Paul', 'paul.visco@roswellpark.org')
+	 * </code>
+	 *
 	 * @param string $dname The display name
 	 * @param string $email The email
 	 */
