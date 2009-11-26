@@ -1,6 +1,6 @@
-
-/*
+/**
 @Name: sb.browser.hashHistory
+@Description: Used to allow for back and forward, bookmarkable navagation with ajax
 @Example:
 sb.browser.hashHistory.init({
     onLoaded : function(r){
