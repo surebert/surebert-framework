@@ -107,6 +107,4 @@ class sb_Password_Random {
 	}
 }
 
-
-echo new sb_Password_Random(6);
 ?>
