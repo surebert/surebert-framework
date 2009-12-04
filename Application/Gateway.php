@@ -4,7 +4,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 3.11 10-01-2008 11-25-2009
+ * @version 3.12 10-01-2008 12-03-2009
  * @package sb_Application
  *
  */
@@ -406,6 +406,12 @@ class Gateway {
      */
     public static $magic_model = false;
 
+	/**
+	 * Should errors be formatted as HTML
+	 * @var boolean
+	 */
+	public static $html_errors = true;
+
     /**
      * An instance of a logger used to log all gateway requests during debugging
      * @var sb_Logger_Base
@@ -465,10 +471,6 @@ class Gateway {
 
     }
 
-    private static function render_magic_model(){
-
-    }
-
     /**
      * Loads the main request
      * @author visco
@@ -494,7 +496,7 @@ class Gateway {
 			}
 
             $action = $p[1];
-			
+
             if(class_exists($model)){
 
                 if(method_exists($model, $action) && in_array('sb_Magic_Model', class_implements($model, true))){
@@ -733,23 +735,26 @@ class Gateway {
      */
     public static function exception_handler(Exception $e){
 
-        $s = Gateway::$command_line ? "\n" : '<br />';
+        $s = Gateway::$html_errors ? '<br />' : "\n";
         $m = 'Code: '.$e->getCode()."\n".
             'Message: '.$e->getMessage()."\n".
             'Location: '.$e->getFile()."\n".
             'Line: '.$e->getLine()."\n".
             "Trace: \n\t".str_replace("\n", "\n\t",$e->getTraceAsString());
 
-        if(Gateway::$command_line){
+        if(Gateway::$html_errors){
+			echo '<div style="background-color:red;padding:10px;color:#FFF;">'.nl2br(str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;", $m)).'</div>';
+        } else if(Gateway::$command_line){
             file_put_contents('php://stderr', "\n".$m."\n");
         } else {
-            echo '<div style="background-color:red;padding:10px;color:#FFF;">'.nl2br(str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;", $m)).'</div>';
-        }
+			echo "\n".$m."\n";
+		}
     }
 }
 
 if(isset($argv)) {
     Gateway::$command_line = true;
+	Gateway::$html_errors = false;
 }
 
 /**
