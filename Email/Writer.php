@@ -325,8 +325,12 @@ class sb_Email_Writer {
             } else {
                 $message .= "--".$mixed_boundary."\r\n";
             }
-			$message .= "Content-class: urn:content-classes:calendarmessage;\r\n";
-            $message .= "Content-Type: ".$attachment->mime_type.";\r\n";
+
+			if($attachment->mime_type == 'text/calendar'){
+				$message .= "Content-class: urn:content-classes:calendarmessage;\r\n";
+			}
+			
+			$message .= "Content-Type: ".$attachment->mime_type.";\r\n";
             $message .= " name=".$attachment->name."\r\n";
 
             $message .= "Content-Transfer-Encoding: ".$attachment->encoding."\r\n";
