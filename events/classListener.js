@@ -39,7 +39,7 @@ sb.events.classListener.prototype = {
 	observe : function(){
 		var self = this;
 		this.events = {};
-		['click', 'dbclick', 'submit', 'keydown', 'keyup', 'keypress', 'mousemove', 'mouseover', 'mouseout'].forEach(function(evt){
+		['click', 'dblclick', 'submit', 'keydown', 'keyup', 'keypress', 'mousemove', 'mouseover', 'mouseout'].forEach(function(evt){
 
 			if(self[evt]){
 				self.events[evt] = function(e){
