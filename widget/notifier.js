@@ -33,6 +33,8 @@ sb.widget.notifier = {
 
     moveCounter : 0,
 
+	timeout : 4000,
+
     clearMethod : function(){
 
         var el = this;
@@ -133,7 +135,7 @@ sb.widget.notifier = {
 
         el.appendToTop(this.box);
      
-        el.clearing = window.setTimeout(el.clear, 4000);
+        el.clearing = window.setTimeout(el.clear, sb.widget.notifier.timeout);
 
         return el;
 
