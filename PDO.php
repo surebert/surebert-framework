@@ -158,7 +158,7 @@ class sb_PDO extends PDO{
 	 * Used to prepare and store sql statements for value binding
 	 *
 	 * @param string $sql
-	 * @return PDO_Statement A PDO_statment instance
+	 * @return PDOStatement A PDO_statment instance
 	 */
 	public function prepare($sql, $driver_options=array()){
 		
