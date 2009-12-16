@@ -163,9 +163,9 @@ class sb_Files{
 	 * @return boolean
 	 */
 	public static function recursive_delete($dir, $del=0){
-
-         if(substr($dir, 0, 1) == '/'){
-            die("You cannot delete root directories");
+	
+         if($dir == '/'){
+            die("You cannot delete the root directory");
         }
 
 		$iterator = new RecursiveDirectoryIterator($dir);
