@@ -66,6 +66,25 @@ class sb_Linux_Process{
     }
 
 	/**
+	 * Gets the process CPU and memory usage
+	 * @return <type>
+	 */
+	public function get_usage(){
+		$command = 'ps u -p '.$this->pid;
+        exec($command, $op);
+        if (isset($op[1])){
+			$data = explode(" ", $op[1]);
+			$usage = Array(
+				'%CPU' => $data[5],
+				'%MEM' => $data[7]
+			);
+			return $usage;
+		}
+
+        return false;
+	}
+
+	/**
 	 * Gets the status of the process, running or not
 	 * @return boolean
 	 */
