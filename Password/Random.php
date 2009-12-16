@@ -6,6 +6,7 @@
  * Makes sure at least one
  *
  * @author paul.visco@roswellpark.org
+ * @package sb_Password
  */
 class sb_Password_Random {
 	/**
