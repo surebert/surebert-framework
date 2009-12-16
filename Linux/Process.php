@@ -3,6 +3,7 @@
  *
  * Adapted from http://us.php.net/manual/en/function.exec.php
  * @author paul.visco@roswellpark.org
+ * @package sb_Linux
  */
 class sb_Linux_Process{
 
