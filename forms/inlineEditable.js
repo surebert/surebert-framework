@@ -10,46 +10,46 @@ className string the classname for the widget, defaults to
 
 @Example:
 //use this in a doubleclick event for the text you want to make editable
+//I assign it to the target so, you don't make extra editors
 
 var target = e.target;
 
 //var document_id = 'something from target';
 
 if(!target.editor){
-	target.editor = new sb.forms.inlineEditable.textarea({
-		target : target,
-		onBeforeEdit : function(){
-			var self = this;
-			this.textarea.value = 'loading...';
+target.editor = new sb.forms.inlineEditable.textarea({
+	onBeforeEdit : function(){
+		var self = this;
+		this.setValue('loading...');
+		var aj = new sb.ajax({
+			url : '/url/rawtext',
+			data : {
+				document_id : document_id
+			},
+			onResponse : function(raw_desc){
+				self.setValue(raw_desc);
+			}
+		}).fetch();
+	},
+	onSave : function(value){
+		if(value != 'loading...'){
 			var aj = new sb.ajax({
-				url : '/admin/document_description_get_raw',
-				data : {
-					document_id : document_id
-				},
-				onResponse : function(raw_desc){
-					self.textarea.value = raw_desc;
-					self.focus();
-				}
-			}).fetch();
-		},
-		onSave : function(value){
-			var self = this;
-			var aj = new sb.ajax({
-				url : '/admin/document_description_update',
+				url : '/url/save',
 				data : {
 					document_id : document_id,
 					desc : value
 				},
 				onResponse : function(r){
 					target.innerHTML = r;
-
 				}
 			}).fetch();
 		}
+	}
 
-	});
+});
 }
-target.editor.edit();
+
+target.editor.edit(target);
 
 .sb_inlineEditable textarea{
 	cursor:text;
