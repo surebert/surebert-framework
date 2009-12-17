@@ -30,6 +30,7 @@ if(!target.editor){
 				},
 				onResponse : function(raw_desc){
 					self.textarea.value = raw_desc;
+					self.focus();
 				}
 			}).fetch();
 		},
@@ -112,19 +113,13 @@ sb.forms.inlineEditable.textarea.prototype = {
 	edit : function(){
 
 		this.editor.title = 'shortcuts: esc to cancel, ctrl+s to save';
-		if(typeof this.onBeforeEdit == 'function'){
-			this.onBeforeEdit.call(this);
-		}
+		
 		this.editor.target = this.target;
 
 		this.editor.replace(this.target);
-		var textarea = this.textarea;
-
-
-		this._origValue = textarea.value;
-		window.setTimeout(function(){
-			textarea.focus();
-		}, 100);
+		if(typeof this.onBeforeEdit == 'function'){
+			this.onBeforeEdit.call(this);
+		}
 	},
 
 	/**
@@ -133,6 +128,20 @@ sb.forms.inlineEditable.textarea.prototype = {
 	*/
 	editStop : function(){
 		this.target.replace(this.editor);
+		this._origValue = '';
+	},
+
+	/**
+	@Name: sb.forms.inlineEditable.focus
+	@Description: Focuses on text area
+	*/
+	focus : function(){
+		var ta = this.textarea;
+		window.setTimeout(function(){
+			ta.focus();
+			ta.focus();
+		}, 100);
+
 	},
 
 	/**
@@ -153,7 +162,10 @@ sb.forms.inlineEditable.textarea.prototype = {
 				className : this.className,
 				events : {
 					keydown : function(e){
-
+						if(!self._origValue){
+							self._origValue = self.textarea.value;
+						}
+						
 						if(e.keyCode == 27){
 							self.editStop();
 						} else if((e.ctrlKey || e.metaKey) && e.keyCode == 83){
@@ -165,7 +177,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 						}
 					},
 					blur : function(){
-						if(self.textarea.value == self._origValue){
+						if(!self._origValue || self._origValue == self.textarea.value){
 							self.editStop();
 
 						}
