@@ -1,5 +1,7 @@
+sb.forms.inlineEditable = {};
+
 /**
-@Name: sb.widget.textarea
+@Name: sb.forms.inlineEditable.textarea
 @Description: Creates a click to edit text block
 @Param: Object
 onBeforeEdit function Fires before editing begins,  Can be used to load raw text wihtout HTML from server
@@ -10,16 +12,17 @@ value string The default value to fill the textarea with
 
 @Example:
 //use this in a doubleclick event for the text you want to make editable
+
 var target = e.target;
 
 //var document_id = 'something from target';
 
 if(!target.editor){
-	target.editor = new sb.widget.textarea.editable({
-		value : 'loading...',
+	target.editor = new sb.forms.inlineEditable.textarea({
 		target : target,
 		onBeforeEdit : function(){
 			var self = this;
+			this.textarea.value = 'loading...';
 			var aj = new sb.ajax({
 				url : '/admin/document_description_get_raw',
 				data : {
@@ -47,11 +50,9 @@ if(!target.editor){
 
 	});
 }
-
 target.editor.edit();
 
-
-.sb_widget_textarea textarea{
+.sb_inlineEditable textarea{
 	cursor:text;
 	display:block;
 	width:97%;
@@ -61,40 +62,56 @@ target.editor.edit();
 	font-size:1.1em;
 }
 
-.sb_widget_textarea editbar{
+.sb_inlineEditable editbar{
 	text-align:right;
 }
 
-.sb_widget_textarea button{
+.sb_inlineEditable button{
 	background-color:#d88713;
 	color:#7c4e0d;
 }
 
-.sb_widget_textarea button:hover{
+.sb_inlineEditable button:hover{
 	background-color:#e2b370;
 }
 
 */
-sb.widget.textarea = function(params){
+sb.forms.inlineEditable.textarea = function(params){
 
 	this.onBeforeEdit = params.onBeforeEdit || this.onBeforeEdit;
 	this.onSave = params.onSave || this.onSave;
-	this.className = params.className || 'sb_widget_textarea_editable';
+	this.className = params.className || 'sb_inlineEditable';
 	this.target = $(params.target) || '';
-	this.value = params.value || '';
-
+	
 	this.create();
 	this.textarea.title = params.title || '';
 
 };
 
-sb.widget.textarea.prototype = {
-	onBeforeEdit : function(){},
-	onSave : function(){},
+sb.forms.inlineEditable.textarea.prototype = {
 
+	/**
+	@Name: sb.forms.inlineEditable.onBeforeEdit
+	@Description: Fires before editing begins.  Can be used to load raw data with ajax
+	to fill the textarea with.  Reference the textarea with this.textarea
+	*/
+	onBeforeEdit : function(){
+		this.textarea.value = this.target.innerHTML;
+	},
+	/**
+	@Name: sb.forms.inlineEditable.onBeforeEdit
+	@Description: Passes the value of the textarea for you to save back with ajax
+	@param string save The value of the textarea when save if fired
+	*/
+	onSave : function(value){},
+
+	/**
+	@Name: sb.forms.inlineEditable.edit
+	@Description: Put the editor in edit mode
+	*/
 	edit : function(){
 
-		this.editor.title = 'esc to exit';
+		this.editor.title = 'shortcuts: esc to cancel, ctrl+s to save';
 		if(typeof this.onBeforeEdit == 'function'){
 			this.onBeforeEdit.call(this);
 		}
@@ -102,15 +119,26 @@ sb.widget.textarea.prototype = {
 
 		this.editor.replace(this.target);
 		var textarea = this.textarea;
+
+
+		this._origValue = textarea.value;
 		window.setTimeout(function(){
 			textarea.focus();
 		}, 100);
-
 	},
 
-	edit_stop : function(){
+	/**
+	@Name: sb.forms.inlineEditable.editStop
+	@Description: Exit edit mode
+	*/
+	editStop : function(){
 		this.target.replace(this.editor);
 	},
+
+	/**
+	@Name: sb.forms.inlineEditable.editStop
+	@Description: Used internally Creates editor
+	*/
 	create : function(){
 		var self = this;
 		if(!this.editor){
@@ -124,14 +152,24 @@ sb.widget.textarea.prototype = {
 				value : this.value,
 				className : this.className,
 				events : {
-					keypress : function(e){
+					keydown : function(e){
+
 						if(e.keyCode == 27){
-							self.edit_stop();
+							self.editStop();
+						} else if((e.ctrlKey || e.metaKey) && e.keyCode == 83){
+
+							e.stopPropagation();
+							e.preventDefault();
+							self.onSave.call(self, self.textarea.value);
+							self.editStop();
 						}
 					},
 					blur : function(){
-						self.onSave.call(self, self.textarea.value);
-						self.edit_stop();
+						if(self.textarea.value == self._origValue){
+							self.editStop();
+
+						}
+
 					}
 				}
 			});
@@ -150,7 +188,7 @@ sb.widget.textarea.prototype = {
 						if(target.innerHTML == 'save'){
 							self.onSave.call(self, self.textarea.value);
 						}
-						self.edit_stop();
+						self.editStop();
 
 					}
 				}
@@ -158,7 +196,5 @@ sb.widget.textarea.prototype = {
 
 			this.editBar.appendTo(this.editor);
 		}
-
-
 	}
 };
