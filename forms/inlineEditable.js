@@ -7,8 +7,6 @@ sb.forms.inlineEditable = {};
 onBeforeEdit function Fires before editing begins,  Can be used to load raw text wihtout HTML from server
 onSave function Fires after save, send back to server, stop editing
 className string the classname for the widget, defaults to
-target node The node to replace with a textarea
-value string The default value to fill the textarea with
 
 @Example:
 //use this in a doubleclick event for the text you want to make editable
@@ -82,7 +80,6 @@ sb.forms.inlineEditable.textarea = function(params){
 	this.onBeforeEdit = params.onBeforeEdit || this.onBeforeEdit;
 	this.onSave = params.onSave || this.onSave;
 	this.className = params.className || 'sb_inlineEditable';
-	this.target = $(params.target) || '';
 	
 	this.create();
 	this.textarea.title = params.title || '';
@@ -97,7 +94,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	to fill the textarea with.  Reference the textarea with this.textarea
 	*/
 	onBeforeEdit : function(){
-		this.textarea.value = this.target.innerHTML;
+		this.setValue(this.node.innerHTML);
 	},
 	/**
 	@Name: sb.forms.inlineEditable.onBeforeEdit
@@ -109,14 +106,15 @@ sb.forms.inlineEditable.textarea.prototype = {
 	/**
 	@Name: sb.forms.inlineEditable.edit
 	@Description: Put the editor in edit mode
+	@param: element el the element to edit
 	*/
-	edit : function(){
+	edit : function(el){
 
 		this.editor.title = 'shortcuts: esc to cancel, ctrl+s to save';
 		
-		this.editor.target = this.target;
+		this.element = $(el);
 
-		this.editor.replace(this.target);
+		this.editor.replace(this.element);
 		if(typeof this.onBeforeEdit == 'function'){
 			this.onBeforeEdit.call(this);
 		}
@@ -127,20 +125,37 @@ sb.forms.inlineEditable.textarea.prototype = {
 	@Description: Exit edit mode
 	*/
 	editStop : function(){
-		this.target.replace(this.editor);
+		this.element.replace(this.editor);
 		this._origValue = '';
 	},
 
 	/**
+	@Name: sb.forms.inlineEditable.setValue
+	@Description: Sets the value of the textarea, can be used in onBeforeEdit
+	*/
+	setValue : function(value){
+		this.textarea.value = value;
+		this.focus();
+	},
+
+	/**
 	@Name: sb.forms.inlineEditable.focus
-	@Description: Focuses on text area
+	@Description: Focuses on text area and puts cursor at top left. automatically fires after setValue
 	*/
 	focus : function(){
 		var ta = this.textarea;
-		window.setTimeout(function(){
-			ta.focus();
-			ta.focus();
-		}, 100);
+
+		var range;
+		if (this.textarea.setSelectionRange) {
+			this.textarea.setSelectionRange(0, 0);
+		} else {
+			range = this.textarea.createTextRange();
+			range.collapse(true);
+			range.moveStart("character", 0);
+			range.moveEnd("character", 0 - 0);
+			range.select();
+		}
+		this.textarea.focus();
 
 	},
 
