@@ -160,7 +160,7 @@ sb.forms.textarea = {
 		field = sb.$(field);
 		if (field.setSelectionRange) {
 			field.setSelectionRange(pos, pos);
-		} else {
+		} else if(field.createTextRange){
 			range = field.createTextRange();
 			range.collapse(true);
 			range.moveStart("character", pos);
