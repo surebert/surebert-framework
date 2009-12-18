@@ -112,6 +112,24 @@ sb.forms.inlineEditable.textarea.prototype = {
 	onButtonPress : function(e){},
 
 	/**
+	@Name: sb.forms.inlineEditable.setValue
+	@Description: Sets the value of the textarea, use in onBeforeEdit
+	*/
+	setValue : function(value){
+		this.textarea.value = value;
+		this.focus();
+	},
+
+	/**
+	@Name: sb.forms.inlineEditable.setHTML
+	@Description: Sets the html of the element being edited, use in onSave
+	*/
+	setHTML : function(html){
+		this.element.innerHTML = html;
+		this.editStop();
+	},
+
+	/**
 	@Name: sb.forms.inlineEditable.edit
 	@Description: Put the editor in edit mode
 	@param: element el the element to edit
@@ -136,24 +154,6 @@ sb.forms.inlineEditable.textarea.prototype = {
 		this.element.replace(this.editor);
 		
 		this._origValue = '';
-	},
-
-	/**
-	@Name: sb.forms.inlineEditable.setValue
-	@Description: Sets the value of the textarea, use in onBeforeEdit
-	*/
-	setValue : function(value){
-		this.textarea.value = value;
-		this.focus();
-	},
-
-	/**
-	@Name: sb.forms.inlineEditable.setHTML
-	@Description: Sets the html of the element being edited, use in onSave
-	*/
-	setHTML : function(html){
-		this.element.innerHTML = html;
-		this.editStop();
 	},
 
 	/**
