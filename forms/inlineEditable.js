@@ -1,4 +1,5 @@
 sb.forms.inlineEditable = {};
+sb.include('Element.prototype.isWithin');
 
 /**
 @Name: sb.forms.inlineEditable.textarea
@@ -19,28 +20,31 @@ var target = e.target;
 if(!target.editor){
 target.editor = new sb.forms.inlineEditable.textarea({
 	onBeforeEdit : function(){
-		var self = this;
+		
 		this.setValue('loading...');
+		var editor = this;
+
 		var aj = new sb.ajax({
 			url : '/url/rawtext',
 			data : {
-				document_id : document_id
+				doc_id : doc_id
 			},
 			onResponse : function(raw_desc){
-				self.setValue(raw_desc);
+				editor.setValue(raw_desc);
 			}
 		}).fetch();
 	},
 	onSave : function(value){
 		if(value != 'loading...'){
+			var editor = this;
 			var aj = new sb.ajax({
 				url : '/url/save',
 				data : {
-					document_id : document_id,
-					desc : value
+					doc_id : doc_id,
+					value : value
 				},
-				onResponse : function(r){
-					target.innerHTML = r;
+				onResponse : function(html){
+					editor.setHTML(html);
 				}
 			}).fetch();
 		}
@@ -76,13 +80,9 @@ target.editor.edit(target);
 
 */
 sb.forms.inlineEditable.textarea = function(params){
-
-	this.onBeforeEdit = params.onBeforeEdit || this.onBeforeEdit;
-	this.onSave = params.onSave || this.onSave;
+	sb.objects.infuse(params, this);
 	this.className = params.className || 'sb_inlineEditable';
-	
 	this.create();
-	this.textarea.title = params.title || '';
 
 };
 
@@ -96,12 +96,20 @@ sb.forms.inlineEditable.textarea.prototype = {
 	onBeforeEdit : function(){
 		this.setValue(this.node.innerHTML);
 	},
+
 	/**
 	@Name: sb.forms.inlineEditable.onBeforeEdit
 	@Description: Passes the value of the textarea for you to save back with ajax
 	@param string save The value of the textarea when save if fired
 	*/
 	onSave : function(value){},
+	
+	/**
+	@Name: sb.forms.inlineEditable.onButtonPress
+	@Description: Used Internally Fires when a button is pressed other than save or cancel
+	@param event e The press event
+	*/
+	onButtonPress : function(e){},
 
 	/**
 	@Name: sb.forms.inlineEditable.edit
@@ -113,8 +121,8 @@ sb.forms.inlineEditable.textarea.prototype = {
 		this.editor.title = 'shortcuts: esc to cancel, ctrl+s to save';
 		
 		this.element = $(el);
-
 		this.editor.replace(this.element);
+		
 		if(typeof this.onBeforeEdit == 'function'){
 			this.onBeforeEdit.call(this);
 		}
@@ -126,16 +134,26 @@ sb.forms.inlineEditable.textarea.prototype = {
 	*/
 	editStop : function(){
 		this.element.replace(this.editor);
+		
 		this._origValue = '';
 	},
 
 	/**
 	@Name: sb.forms.inlineEditable.setValue
-	@Description: Sets the value of the textarea, can be used in onBeforeEdit
+	@Description: Sets the value of the textarea, use in onBeforeEdit
 	*/
 	setValue : function(value){
 		this.textarea.value = value;
 		this.focus();
+	},
+
+	/**
+	@Name: sb.forms.inlineEditable.setHTML
+	@Description: Sets the html of the element being edited, use in onSave
+	*/
+	setHTML : function(html){
+		this.element.innerHTML = html;
+		this.editStop();
 	},
 
 	/**
@@ -144,11 +162,10 @@ sb.forms.inlineEditable.textarea.prototype = {
 	*/
 	focus : function(){
 		var ta = this.textarea;
-
 		var range;
 		if (this.textarea.setSelectionRange) {
 			this.textarea.setSelectionRange(0, 0);
-		} else {
+		} else if(this.textarea.createTextRange){
 			range = this.textarea.createTextRange();
 			range.collapse(true);
 			range.moveStart("character", 0);
@@ -157,6 +174,23 @@ sb.forms.inlineEditable.textarea.prototype = {
 		}
 		this.textarea.focus();
 
+	},
+
+	/**
+	@Name: sb.forms.inlineEditable.addButton
+	@Description: Adds a button to the editBar
+	*/
+	addButton : function(str){
+		this.editBar.innerHTML = '<button>'+str+'</button>'+this.editBar.innerHTML;
+
+	},
+
+	/**
+	@Name: sb.forms.inlineEditable.addButton
+	@Description: Determines if field is edited or not
+	*/
+	isNotEdited : function(){
+		return !this._origValue || this._origValue == this.textarea.value;
 	},
 
 	/**
@@ -177,24 +211,25 @@ sb.forms.inlineEditable.textarea.prototype = {
 				className : this.className,
 				events : {
 					keydown : function(e){
+
 						if(!self._origValue){
 							self._origValue = self.textarea.value;
 						}
-						
-						if(e.keyCode == 27){
+
+						if(e.keyCode == 9 && self.isNotEdited()){
+							self.editStop();
+						} else if(e.keyCode == 27){
 							self.editStop();
 						} else if((e.ctrlKey || e.metaKey) && e.keyCode == 83){
-
 							e.stopPropagation();
 							e.preventDefault();
 							self.onSave.call(self, self.textarea.value);
 							self.editStop();
 						}
 					},
-					blur : function(){
-						if(!self._origValue || self._origValue == self.textarea.value){
+					blur : function(e){
+						if(self.isNotEdited()){
 							self.editStop();
-
 						}
 
 					}
@@ -208,14 +243,29 @@ sb.forms.inlineEditable.textarea.prototype = {
 				styles : {
 					display : 'block'
 				},
-				innerHTML : '<button>cancel</button> <button>save</button>',
+				innerHTML : '<button>cancel</button><button>save</button>',
 				events : {
 					mousedown : function(e){
 						var target = e.target;
-						if(target.innerHTML == 'save'){
-							self.onSave.call(self, self.textarea.value);
+						e.preventDefault();
+						e.stopPropagation();
+						if(target.nodeName == 'BUTTON'){
+							
+							switch(target.innerHTML){
+								case 'save':
+									self.onSave(self.textarea.value);
+									break;
+
+								case 'cancel':
+									self.editStop();
+									break;
+
+								default:
+									self.onButtonPress(e);
+							}
 						}
-						self.editStop();
+						
+						return true;
 
 					}
 				}
