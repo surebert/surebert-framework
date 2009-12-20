@@ -39,7 +39,7 @@ class sb_Web_Robot{
 	private $cookies = '';
 	
 	/**
-	 * Additional headers converted from an array in add_additional_headers
+	 * Additional headers converted from an array in set_additional_headers
 	 *
 	 * @var string
 	 */
@@ -131,12 +131,12 @@ class sb_Web_Robot{
 	}
 	
 	/**
-	 * Add other additional headers
+	 * Sets other additional headers
 	 *
 	 * @param array $data
 	 * @return string
 	 */
-	public function add_additional_headers($data){
+	public function set_additional_headers($data){
 		
 		$additional_headers = '';
 		
