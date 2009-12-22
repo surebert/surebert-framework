@@ -169,8 +169,8 @@ sb.forms.inlineEditable.textarea.prototype = {
 	editor.editStop();
 	*/
 	editStop : function(){
+	
 		this.element.replace(this.editor);
-		
 		this._origValue = '';
 	},
 
@@ -249,7 +249,6 @@ sb.forms.inlineEditable.textarea.prototype = {
 							e.stopPropagation();
 							e.preventDefault();
 							self.onSave.call(self, self.textarea.value);
-							self.editStop();
 						}
 					},
 					blur : function(e){
