@@ -14,6 +14,7 @@ className string the classname for the widget, defaults to
 
 var editor = sb.forms.editable.text({
 	element : e.target,
+	type : 'textarea',
 	onBeforeEdit : function(){},
 	onSave : function(value){}
 });
@@ -31,7 +32,14 @@ editor.edit();
 	font-size:1.1em;
 }
 
-.sb_forms_editable editbar{
+//if its an editbar for an input
+.sb_forms_editable editbar.input{
+	margin-left:5px;
+}
+
+//if its an editbar for a textarea
+.sb_forms_editable editbar.input{
+	display:block;
 	text-align:right;
 }
 
