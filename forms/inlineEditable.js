@@ -10,17 +10,14 @@ className string the classname for the widget, defaults to
 
 @Example:
 //use the following in a dblclick event for the text you want to make editable
-//I assign it to the target so it only makes an editor the first time its clicked
 
-if(!e.target.editor){
-	e.target.editor = new sb.forms.inlineEditable.textarea({
-		onBeforeEdit : someFunction,
-		onSave : someOtherFunction
+var editor = new sb.forms.inlineEditable.textarea({
+	element : e.target,
+	onBeforeEdit : function(){},
+	onSave : function(value){}
+});
 
-	});
-}
-
-target.editor.edit(target);
+editor.edit();
 
 //example CSS
 .sb_inlineEditable textarea{
@@ -48,9 +45,18 @@ target.editor.edit(target);
 
 */
 sb.forms.inlineEditable.textarea = function(params){
+	if(!params.element){
+		throw('You must define the element with sb.forms.inlineEditable.textarea');
+	}
+	this.element = $(params.element);
+	if(this.element.sb_editor){
+		return this.element.editor;
+	}
+	
 	sb.objects.infuse(params, this);
-	this.className = params.className || 'sb_inlineEditable';
+	this.element.sb_editor = this;
 
+	this.className = params.className || 'sb_inlineEditable';
 };
 
 sb.forms.inlineEditable.textarea.prototype = {
@@ -77,7 +83,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	};
 	*/
 	onBeforeEdit : function(){
-		this.setValue(this.node.innerHTML);
+		this.setValue(this.element.innerHTML);
 	},
 
 	/**
@@ -143,13 +149,12 @@ sb.forms.inlineEditable.textarea.prototype = {
 	@Example:
 	editor.edit(target);
 	*/
-	edit : function(el){
+	edit : function(){
 		if(!this.editor){
 			this.create();
 		}
 		this.editor.title = 'shortcuts: esc to cancel, ctrl+s to save';
 		
-		this.element = $(el);
 		this.editor.replace(this.element);
 		
 		if(typeof this.onBeforeEdit == 'function'){
