@@ -1,9 +1,10 @@
-sb.forms.inlineEditable = {};
+sb.forms.editable = {};
 sb.include('Element.prototype.isWithin');
 /**
-@Name: sb.forms.inlineEditable.textarea
+@Name: sb.forms.editable.text
 @Description: Creates a click to edit text block
 @Param: Object
+type string input or textarea
 onBeforeEdit function Fires before editing begins,  Can be used to load raw text wihtout HTML from server
 onSave function Fires after save, send back to server, stop editing
 className string the classname for the widget, defaults to
@@ -11,7 +12,7 @@ className string the classname for the widget, defaults to
 @Example:
 //use the following in a dblclick event for the text you want to make editable
 
-var editor = new sb.forms.inlineEditable.textarea({
+var editor = sb.forms.editable.text({
 	element : e.target,
 	onBeforeEdit : function(){},
 	onSave : function(value){}
@@ -20,7 +21,7 @@ var editor = new sb.forms.inlineEditable.textarea({
 editor.edit();
 
 //example CSS
-.sb_inlineEditable textarea{
+.sb_forms_editable textarea{
 	cursor:text;
 	display:block;
 	width:97%;
@@ -30,23 +31,23 @@ editor.edit();
 	font-size:1.1em;
 }
 
-.sb_inlineEditable editbar{
+.sb_forms_editable editbar{
 	text-align:right;
 }
 
-.sb_inlineEditable button{
+.sb_forms_editable button{
 	background-color:#d88713;
 	color:#7c4e0d;
 }
 
-.sb_inlineEditable button:hover{
+.sb_forms_editable button:hover{
 	background-color:#e2b370;
 }
 
 */
-sb.forms.inlineEditable.textarea = function(params){
+sb.forms.editable.text = function(params){
 	if(!params.element){
-		throw('You must define the element with sb.forms.inlineEditable.textarea');
+		throw('You must define the element with sb.forms.editable.text');
 	}
 	this.element = $(params.element);
 	if(this.element.sb_editor){
@@ -56,13 +57,13 @@ sb.forms.inlineEditable.textarea = function(params){
 	sb.objects.infuse(params, this);
 	this.element.sb_editor = this;
 
-	this.className = params.className || 'sb_inlineEditable';
+	this.className = params.className || 'sb_forms_editable';
 };
 
-sb.forms.inlineEditable.textarea.prototype = {
+sb.forms.editable.text.prototype = {
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.onBeforeEdit
+	@Name: sb.forms.editable.text.onBeforeEdit
 	@Description: Fires before editing begins.  Can be used to load raw data with ajax
 	to fill the textarea with.  Reference the textarea with this.textarea.  The default is
 	to use the innerHTML of the area being edited
@@ -87,7 +88,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.onSave
+	@Name: sb.forms.editable.text.onSave
 	@Description: Passes the value of the textarea for you to save back with ajax
 	@Param string save The value of the textarea when save if fired
 	editor.onSave = function(){
@@ -110,7 +111,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	onSave : function(value){},
 	
 	/**
-	@Name: sb.forms.inlineEditable.textarea.onButtonPress
+	@Name: sb.forms.editable.text.onButtonPress
 	@Description: Fires when a button is pressed other than save or cancel
 	@Param event e The press event
 	@Example:
@@ -121,7 +122,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	onButtonPress : function(e){},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.setValue
+	@Name: sb.forms.editable.text.setValue
 	@Description: Sets the value of the textarea, use in onBeforeEdit after loading raw text from ajax
 	@Example:
 	editor.setValue('text to edit');
@@ -132,7 +133,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.setHTML
+	@Name: sb.forms.editable.text.setHTML
 	@Description: Sets the html of the element being edited, use in onSave after saving
 	@Example:
 	editor.setHTML('<p>text that was edited</p>');
@@ -143,9 +144,8 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.edit
+	@Name: sb.forms.editable.text.edit
 	@Description: Put the editor in edit mode
-	@Param: element el the element to edit, generally the target from the dblclick
 	@Example:
 	editor.edit(target);
 	*/
@@ -163,7 +163,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.editStop
+	@Name: sb.forms.editable.text.editStop
 	@Description: Exit edit mode
 	@Example:
 	editor.editStop();
@@ -175,7 +175,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.focus
+	@Name: sb.forms.editable.text.focus
 	@Description: Focuses on text area and puts cursor at top left. automatically fires after setValue
 	@Example:
 	editor.focus();
@@ -197,7 +197,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.addButton
+	@Name: sb.forms.editable.text.addButton
 	@Description: Adds a button to the editBar
 	@Param string str The name of the button to add
 	@Example:
@@ -209,7 +209,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.isNotEdited
+	@Name: sb.forms.editable.text.isNotEdited
 	@Description: Determines if field is edited or not
 	@Example:
 	if(editor.isNotEdited()){}
@@ -219,7 +219,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.inlineEditable.textarea.editStop
+	@Name: sb.forms.editable.text.editStop
 	@Description: Used internally Creates editor
 	*/
 	create : function(){
@@ -231,7 +231,7 @@ sb.forms.inlineEditable.textarea.prototype = {
 			});
 
 			this.textarea = new sb.element({
-				tag : 'textarea',
+				tag : this.type,
 				value : this.value,
 				className : this.className,
 				events : {
@@ -264,10 +264,8 @@ sb.forms.inlineEditable.textarea.prototype = {
 
 			this.editBar = new sb.element({
 				tag : 'editbar',
-				styles : {
-					display : 'block'
-				},
 				innerHTML : '<button>cancel</button><button>save</button>',
+				className : this.type,
 				events : {
 					mousedown : function(e){
 						var target = e.target;
