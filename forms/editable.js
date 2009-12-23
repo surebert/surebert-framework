@@ -73,7 +73,7 @@ sb.forms.editable.text.prototype = {
 	/**
 	@Name: sb.forms.editable.text.onBeforeEdit
 	@Description: Fires before editing begins.  Can be used to load raw data with ajax
-	to fill the textarea with.  Reference the textarea with this.textarea.  The default is
+	to fill the textField with.  Reference the textField with this.textField.  The default is
 	to use the innerHTML of the area being edited
 	@Example:
 	editor.onBeforeEdit = function(){
@@ -97,8 +97,8 @@ sb.forms.editable.text.prototype = {
 
 	/**
 	@Name: sb.forms.editable.text.onSave
-	@Description: Passes the value of the textarea for you to save back with ajax
-	@Param string save The value of the textarea when save if fired
+	@Description: Passes the value of the textField for you to save back with ajax
+	@Param string save The value of the textField when save if fired
 	editor.onSave = function(){
 		if(value != 'loading...'){
 			var editor = this;
@@ -130,13 +130,43 @@ sb.forms.editable.text.prototype = {
 	onButtonPress : function(e){},
 
 	/**
+	@Name: sb.forms.editable.text.onMaxLength
+	@Description: Fires when user exceeds textField maxlength if set.
+	@Param event e The press event
+	@Example:
+	editor.onMaxLength = function(e){};
+	*/
+	onMaxLength : function(e){},
+
+	/**
+	@Name: sb.forms.editable.text.onKeyDown
+	@Description: Fires when a key is pressed, lets you do something with it
+	@Param event e The press event
+	@Example:
+	editor.onKeyDown = function(e){};
+	*/
+	onKeyDown : function(e){},
+
+	/**
+	@Name: sb.forms.editable.text.onKeyUp
+	@Description: Fires when a key is released, lets you do something with it
+	@Param event e The press event
+	@Example:
+	editor.onKeyDown = function(e){
+		//get rid of digits
+		e.target.value = e.target.value.replace(/\d/, '');
+	};
+	*/
+	onKeyUp : function(e){},
+
+	/**
 	@Name: sb.forms.editable.text.setValue
-	@Description: Sets the value of the textarea, use in onBeforeEdit after loading raw text from ajax
+	@Description: Sets the value of the textField, use in onBeforeEdit after loading raw text from ajax
 	@Example:
 	editor.setValue('text to edit');
 	*/
 	setValue : function(value){
-		this.textarea.value = value;
+		this.textField.value = value;
 		this.focus();
 	},
 
@@ -189,18 +219,18 @@ sb.forms.editable.text.prototype = {
 	editor.focus();
 	*/
 	focus : function(){
-		var ta = this.textarea;
+		var ta = this.textField;
 		var range;
-		if (this.textarea.setSelectionRange) {
-			this.textarea.setSelectionRange(0, 0);
-		} else if(this.textarea.createTextRange){
-			range = this.textarea.createTextRange();
+		if (this.textField.setSelectionRange) {
+			this.textField.setSelectionRange(0, 0);
+		} else if(this.textField.createTextRange){
+			range = this.textField.createTextRange();
 			range.collapse(true);
 			range.moveStart("character", 0);
 			range.moveEnd("character", 0 - 0);
 			range.select();
 		}
-		this.textarea.focus();
+		this.textField.focus();
 
 	},
 
@@ -223,7 +253,7 @@ sb.forms.editable.text.prototype = {
 	if(editor.isNotEdited()){}
 	*/
 	isNotEdited : function(){
-		return !this._origValue || this._origValue == this.textarea.value;
+		return !this._origValue || this._origValue == this.textField.value;
 	},
 
 	/**
@@ -238,7 +268,7 @@ sb.forms.editable.text.prototype = {
 				className : self.className
 			});
 
-			this.textarea = new sb.element({
+			this.textField = new sb.element({
 				tag : this.type,
 				value : this.value,
 				className : this.className,
@@ -246,7 +276,7 @@ sb.forms.editable.text.prototype = {
 					keydown : function(e){
 
 						if(!self._origValue){
-							self._origValue = self.textarea.value;
+							self._origValue = self.textField.value;
 						}
 
 						if(e.keyCode == 9 && self.isNotEdited()){
@@ -256,7 +286,21 @@ sb.forms.editable.text.prototype = {
 						} else if((e.ctrlKey || e.metaKey) && e.keyCode == 83){
 							e.stopPropagation();
 							e.preventDefault();
-							self.onSave.call(self, self.textarea.value);
+							self.onSave.call(self, self.textField.value);
+						}
+
+						var maxlength = this.getAttribute('maxlength');
+						if(maxlength && this.value.length == maxlength){
+							e.preventDefault();
+							return self.onMaxLength(e);
+						}
+
+						if(self.onKeyDown(e) === false){
+							return false;
+						}
+
+						if(self.onKeyUp(e) === false){
+							return false;
 						}
 					},
 					blur : function(e){
@@ -268,7 +312,11 @@ sb.forms.editable.text.prototype = {
 				}
 			});
 
-			this.textarea.appendTo(this.editor);
+			if(this.maxlength){
+				this.textField.setAttribute('maxlength', this.maxlength);
+			}
+
+			this.textField.appendTo(this.editor);
 
 			this.editBar = new sb.element({
 				tag : 'editbar',
@@ -283,7 +331,7 @@ sb.forms.editable.text.prototype = {
 							
 							switch(target.innerHTML){
 								case 'save':
-									self.onSave(self.textarea.value);
+									self.onSave(self.textField.value);
 									break;
 
 								case 'cancel':
