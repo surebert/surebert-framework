@@ -2499,7 +2499,7 @@ myElement.replace('#myOtherElement');
 */
 Element.prototype.replace = function(node){
 	node = sb.$(node);
-	if(typeof node.parentNode !='undefined'){
+	if(node.parentNode){
 		node.parentNode.replaceChild(this, node);
 	}
 	node = null;
