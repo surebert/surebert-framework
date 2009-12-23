@@ -5,9 +5,10 @@ sb.include('Element.prototype.isWithin');
 @Description: Creates a click to edit text block
 @Param: Object
 type string input or textarea
+className string the classname for the widget, defaults to
+attributes object additional html attributes you want assigned to the textfield, cols, rows, size, maxlength, etc
 onBeforeEdit function Fires before editing begins,  Can be used to load raw text wihtout HTML from server
 onSave function Fires after save, send back to server, stop editing
-className string the classname for the widget, defaults to
 
 @Example:
 //use the following in a dblclick event for the text you want to make editable
@@ -319,12 +320,12 @@ sb.forms.editable.field.prototype = {
 				}
 			});
 
-			if(this.maxlength){
-				this.textField.setAttribute('maxlength', this.maxlength);
+			if(this.type == 'input'){
+				this.textField.setAttribute('type', 'text');
 			}
-
-			if(this.size){
-				this.textField.setAttribute('size', this.size);
+			
+			for(var prop in this.attributes){
+				this.textField.setAttribute(prop, this.attributes[prop]);
 			}
 
 			this.textField.appendTo(this.editor);
