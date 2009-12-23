@@ -1,7 +1,7 @@
 sb.forms.editable = {};
 sb.include('Element.prototype.isWithin');
 /**
-@Name: sb.forms.editable.text
+@Name: sb.forms.editable.field
 @Description: Creates a click to edit text block
 @Param: Object
 type string input or textarea
@@ -12,7 +12,7 @@ className string the classname for the widget, defaults to
 @Example:
 //use the following in a dblclick event for the text you want to make editable
 
-var editor = sb.forms.editable.text({
+var editor = sb.forms.editable.field({
 	element : e.target,
 	type : 'textarea',
 	onBeforeEdit : function(){},
@@ -20,8 +20,8 @@ var editor = sb.forms.editable.text({
 });
 
 editor.edit();
-
 //example CSS
+
 .sb_forms_editable textarea{
 	cursor:text;
 	display:block;
@@ -32,13 +32,11 @@ editor.edit();
 	font-size:1.1em;
 }
 
-//if its an editbar for an input
 .sb_forms_editable editbar.input{
 	margin-left:5px;
 }
 
-//if its an editbar for a textarea
-.sb_forms_editable editbar.input{
+.sb_forms_editable editbar.textarea{
 	display:block;
 	text-align:right;
 }
@@ -53,9 +51,9 @@ editor.edit();
 }
 
 */
-sb.forms.editable.text = function(params){
+sb.forms.editable.field = function(params){
 	if(!params.element){
-		throw('You must define the element with sb.forms.editable.text');
+		throw('You must define the element with sb.forms.editable.field');
 	}
 	this.element = $(params.element);
 	if(this.element.sb_editor){
@@ -68,10 +66,10 @@ sb.forms.editable.text = function(params){
 	this.className = params.className || 'sb_forms_editable';
 };
 
-sb.forms.editable.text.prototype = {
+sb.forms.editable.field.prototype = {
 
 	/**
-	@Name: sb.forms.editable.text.onBeforeEdit
+	@Name: sb.forms.editable.field.onBeforeEdit
 	@Description: Fires before editing begins.  Can be used to load raw data with ajax
 	to fill the textField with.  Reference the textField with this.textField.  The default is
 	to use the innerHTML of the area being edited
@@ -96,7 +94,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.onSave
+	@Name: sb.forms.editable.field.onSave
 	@Description: Passes the value of the textField for you to save back with ajax
 	@Param string save The value of the textField when save if fired
 	editor.onSave = function(){
@@ -119,7 +117,7 @@ sb.forms.editable.text.prototype = {
 	onSave : function(value){},
 	
 	/**
-	@Name: sb.forms.editable.text.onButtonPress
+	@Name: sb.forms.editable.field.onButtonPress
 	@Description: Fires when a button is pressed other than save or cancel
 	@Param event e The press event
 	@Example:
@@ -130,7 +128,7 @@ sb.forms.editable.text.prototype = {
 	onButtonPress : function(e){},
 
 	/**
-	@Name: sb.forms.editable.text.onMaxLength
+	@Name: sb.forms.editable.field.onMaxLength
 	@Description: Fires when user exceeds textField maxlength if set.
 	@Param event e The press event
 	@Example:
@@ -139,7 +137,7 @@ sb.forms.editable.text.prototype = {
 	onMaxLength : function(e){},
 
 	/**
-	@Name: sb.forms.editable.text.onKeyDown
+	@Name: sb.forms.editable.field.onKeyDown
 	@Description: Fires when a key is pressed, lets you do something with it
 	@Param event e The press event
 	@Example:
@@ -148,7 +146,7 @@ sb.forms.editable.text.prototype = {
 	onKeyDown : function(e){},
 
 	/**
-	@Name: sb.forms.editable.text.onKeyUp
+	@Name: sb.forms.editable.field.onKeyUp
 	@Description: Fires when a key is released, lets you do something with it
 	@Param event e The press event
 	@Example:
@@ -160,7 +158,7 @@ sb.forms.editable.text.prototype = {
 	onKeyUp : function(e){},
 
 	/**
-	@Name: sb.forms.editable.text.setValue
+	@Name: sb.forms.editable.field.setValue
 	@Description: Sets the value of the textField, use in onBeforeEdit after loading raw text from ajax
 	@Example:
 	editor.setValue('text to edit');
@@ -171,7 +169,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.setHTML
+	@Name: sb.forms.editable.field.setHTML
 	@Description: Sets the html of the element being edited, use in onSave after saving
 	@Example:
 	editor.setHTML('<p>text that was edited</p>');
@@ -182,7 +180,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.edit
+	@Name: sb.forms.editable.field.edit
 	@Description: Put the editor in edit mode
 	@Example:
 	editor.edit(target);
@@ -191,7 +189,6 @@ sb.forms.editable.text.prototype = {
 		if(!this.editor){
 			this.create();
 		}
-		this.editor.title = 'shortcuts: esc to cancel, ctrl+s to save';
 		
 		this.editor.replace(this.element);
 		
@@ -201,7 +198,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.editStop
+	@Name: sb.forms.editable.field.editStop
 	@Description: Exit edit mode
 	@Example:
 	editor.editStop();
@@ -213,7 +210,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.focus
+	@Name: sb.forms.editable.field.focus
 	@Description: Focuses on text area and puts cursor at top left. automatically fires after setValue
 	@Example:
 	editor.focus();
@@ -235,7 +232,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.addButton
+	@Name: sb.forms.editable.field.addButton
 	@Description: Adds a button to the editBar
 	@Param string str The name of the button to add
 	@Example:
@@ -247,7 +244,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.isNotEdited
+	@Name: sb.forms.editable.field.isNotEdited
 	@Description: Determines if field is edited or not
 	@Example:
 	if(editor.isNotEdited()){}
@@ -257,7 +254,7 @@ sb.forms.editable.text.prototype = {
 	},
 
 	/**
-	@Name: sb.forms.editable.text.editStop
+	@Name: sb.forms.editable.field.editStop
 	@Description: Used internally Creates editor
 	*/
 	create : function(){
@@ -265,8 +262,15 @@ sb.forms.editable.text.prototype = {
 		if(!this.editor){
 			this.editor = new sb.element({
 				tag : 'div',
-				className : self.className
+				className : self.className,
+				title : 'shortcuts: esc to cancel, ctrl+s'
 			});
+
+			if(this.type == 'input'){
+				this.editor.title += ' or enter ';
+			}
+
+			this.editor.title += 'to save';
 
 			this.textField = new sb.element({
 				tag : this.type,
@@ -283,14 +287,17 @@ sb.forms.editable.text.prototype = {
 							self.editStop();
 						} else if(e.keyCode == 27){
 							self.editStop();
-						} else if((e.ctrlKey || e.metaKey) && e.keyCode == 83){
+						} else if(
+							this.nodeName == 'INPUT' && e.keyCode == 13
+							|| (e.ctrlKey || e.metaKey) && e.keyCode == 83
+						){
 							e.stopPropagation();
 							e.preventDefault();
 							self.onSave.call(self, self.textField.value);
 						}
-
+						
 						var maxlength = this.getAttribute('maxlength');
-						if(maxlength && this.value.length == maxlength){
+						if(maxlength && this.value.length == maxlength && e.keyCode != 8){
 							e.preventDefault();
 							return self.onMaxLength(e);
 						}
@@ -314,6 +321,10 @@ sb.forms.editable.text.prototype = {
 
 			if(this.maxlength){
 				this.textField.setAttribute('maxlength', this.maxlength);
+			}
+
+			if(this.size){
+				this.textField.setAttribute('size', this.size);
 			}
 
 			this.textField.appendTo(this.editor);
