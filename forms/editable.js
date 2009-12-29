@@ -5,6 +5,7 @@ sb.include('Element.prototype.isWithin');
 @Description: Creates a click to edit text block
 @Param: Object
 type string input or textarea
+editableElement object/string The element to edit #myDiv, $('#myDiv')
 className string the classname for the widget, defaults to
 attributes object additional html attributes you want assigned to the textfield, cols, rows, size, maxlength, etc
 onBeforeEdit function Fires before editing begins,  Can be used to load raw text wihtout HTML from server
@@ -14,7 +15,7 @@ onSave function Fires after save, send back to server, stop editing
 //use the following in a dblclick event for the text you want to make editable
 
 var editor = sb.forms.editable.field({
-	element : e.target,
+	editableElement : e.target,
 	type : 'textarea',
 	onBeforeEdit : function(){},
 	onSave : function(value){}
@@ -53,16 +54,16 @@ editor.edit();
 
 */
 sb.forms.editable.field = function(params){
-	if(!params.element){
+	if(!params.editableElement){
 		throw('You must define the element with sb.forms.editable.field');
 	}
-	this.element = $(params.element);
-	if(this.element.sb_editor){
-		return this.element.editor;
+	this.editableElement = $(params.editableElement);
+	if(this.editableElement.sb_editor){
+		return this.editableElement.editor;
 	}
 	
 	sb.objects.infuse(params, this);
-	this.element.sb_editor = this;
+	this.editableElement.sb_editor = this;
 
 	this.className = params.className || 'sb_forms_editable';
 };
@@ -91,7 +92,7 @@ sb.forms.editable.field.prototype = {
 	};
 	*/
 	onBeforeEdit : function(){
-		this.setValue(this.element.innerHTML);
+		this.setValue(this.editableElement.innerHTML);
 	},
 
 	/**
@@ -176,7 +177,7 @@ sb.forms.editable.field.prototype = {
 	editor.setHTML('<p>text that was edited</p>');
 	*/
 	setHTML : function(html){
-		this.element.innerHTML = html;
+		this.editableElement.innerHTML = html;
 		this.editStop();
 	},
 
@@ -191,7 +192,7 @@ sb.forms.editable.field.prototype = {
 			this.create();
 		}
 		
-		this.editor.replace(this.element);
+		this.editor.replace(this.editableElement);
 		
 		if(typeof this.onBeforeEdit == 'function'){
 			this.onBeforeEdit.call(this);
@@ -206,7 +207,7 @@ sb.forms.editable.field.prototype = {
 	*/
 	editStop : function(){
 	
-		this.element.replace(this.editor);
+		this.editableElement.replace(this.editor);
 		this._origValue = '';
 	},
 
