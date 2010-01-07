@@ -109,7 +109,8 @@ class sb_PDO_RecordPager {
 			$ret->requested_page = $pagenum;
 
 			//get counts
-			$count_sql = preg_replace("/SELECT(.*)FROM/", "SELECT COUNT(*) as 'count' FROM ", $this->sql) . ";";
+			$count_sql = preg_replace("/SELECT(.*)FROM/s", "SELECT COUNT(*) AS 'count' FROM ", $this->sql) . ";";
+			
 			$res = $this->db->s2o($count_sql, $this->values, $this->object_type);
 			$ret->record_count = $res[0]->count;
 
