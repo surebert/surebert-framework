@@ -33,7 +33,7 @@ sb.widget.notifier = {
 
     moveCounter : 0,
 
-	timeout : 4000,
+	timeout : 6000,
 
     clearMethod : function(){
 
