@@ -77,9 +77,9 @@ sb.events.classListener.prototype = {
 
 		if(this[type] && typeof this[type][cl] == 'function'){
 
-			if(target.nodeName != 'INPUT'  && target.type !='checkbox'){
+			/*if(target.nodeName != 'INPUT'  && target.type !='checkbox'){
 				e.preventDefault();
-			}
+			}*/
 			this[type][cl](e);
 			if(typeof target.blur == 'function'){
 				target.blur();
