@@ -5,7 +5,9 @@
 sb.noCopy = {};
 (function(){
 	var noCopy = function(e){
-		if(e.target.getAttribute('sb_nocopy')){
+		var target = e.target;
+		
+		if(target.getAttribute('sb_nocopy') ||( target.nodeName== 'A' && target.$("img[sb_nocopy=true]").length())){
 			e.stopPropagation();
 			e.preventDefault();
 		}
