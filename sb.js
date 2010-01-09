@@ -430,7 +430,7 @@ $ = function(selector, root) {
 
 	nodeList.setSelector(selector);
 
-	if(document.querySelectorAll){
+	if(document.querySelectorAll2){
 		nodeList.add(root.querySelectorAll(selector));
 
 	} else {
@@ -470,15 +470,12 @@ $.parseSelectors = function(nodes, within){
 
 	var found = [],s=0;
 
-	//split at comma
 	var selectors = nodes.selector.split(",");
 
 	var len = selectors.length;
-	var inheriters = [];
 
 	for(s=0;s<len;s++){
-
-		inheriters = selectors[s].split(" ");
+	
 		root = [within];
 
 		selectors[s].split(" ").forEach(function(selector,k,a){
@@ -569,7 +566,7 @@ $.parseSelectors = function(nodes, within){
 					return true;
 				}
 			}
-
+			
 			//Tag selectors - no class or id specified.
 			root = $.getElementsByTagName(root, selector);
 
