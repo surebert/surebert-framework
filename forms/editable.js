@@ -276,7 +276,7 @@ sb.forms.editable.field.prototype = {
 
 			this.textField = new sb.element({
 				tag : this.type,
-				value : this.value,
+				value : this.value || '',
 				className : this.className,
 				events : {
 					keydown : function(e){
