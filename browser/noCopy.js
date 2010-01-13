@@ -2,12 +2,12 @@
  * @Name: sb.browser.noCopy
  * @Description: Causes the browser to reject copying by denying contextmenu and dragstart for elements with sb_nocopy attribute
  */
-sb.noCopy = {};
+sb.browser.noCopy = {};
 (function(){
 	var noCopy = function(e){
 		var target = e.target;
-		
-		if(target.getAttribute('sb_nocopy') ||( target.nodeName== 'A' && target.$("img[sb_nocopy=true]").length())){
+		var a = 'sb_nocopy';
+		if(target.getAttribute(a) ||( target.nodeName== 'A' && target.$('img['+a+'="true"]').length())){
 			e.stopPropagation();
 			e.preventDefault();
 		}
