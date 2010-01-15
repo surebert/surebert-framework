@@ -36,6 +36,12 @@ class sb_Application_Debugger{
 			echo "\n".$m."\n";
 		}
     }
+
+	public static function init(){
+		set_error_handler('sb_Application_Debugger::error_handler');
+		set_exception_handler('sb_Application_Debugger::exception_handler');
+
+	}
 }
 
 
@@ -56,7 +62,5 @@ class sb_Exception extends Exception{
     }
 };
 
-set_error_handler('sb_Application_Debugger::error_handler');
-set_exception_handler('sb_Application_Debugger::exception_handler');
 
 ?>
