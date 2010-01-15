@@ -4,7 +4,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 3.12 10-01-2008 12-03-2009
+ * @version 3.13 10-01-2008 01-15-2010
  * @package sb_Application
  *
  */
@@ -718,64 +718,12 @@ class Gateway {
 
     }
 
-    /**
-     * Converts errors into exceptions
-     * @param integer $code The error code
-     * @param string $message The error message
-     * @param string $file The file the error occurred in
-     * @param integer $line The line the error occurred on
-     */
-    public static function error_handler($code, $message, $file, $line) {
-        throw new sb_Exception($code, $message, $file, $line);
-    }
-
-    /**
-     * Handles acceptions and turns them into strings
-     * @param Exception $e
-     */
-    public static function exception_handler(Exception $e){
-
-        $s = Gateway::$html_errors ? '<br />' : "\n";
-        $m = 'Code: '.$e->getCode()."\n".
-            'Message: '.$e->getMessage()."\n".
-            'Location: '.$e->getFile()."\n".
-            'Line: '.$e->getLine()."\n".
-            "Trace: \n\t".str_replace("\n", "\n\t",$e->getTraceAsString());
-
-        if(Gateway::$html_errors){
-			echo '<div style="background-color:red;padding:10px;color:#FFF;">'.nl2br(str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;", $m)).'</div>';
-        } else if(Gateway::$command_line){
-            file_put_contents('php://stderr', "\n".$m."\n");
-        } else {
-			echo "\n".$m."\n";
-		}
-    }
 }
 
 if(isset($argv)) {
     Gateway::$command_line = true;
 	Gateway::$html_errors = false;
 }
-
-/**
- * Used to throw custom exceptions
- * @author paul.visco@roswellpark.org
- * @package sb_Exception
- */
-class sb_Exception extends Exception{
-
-    private $context = null;
-
-    public function __construct($code, $message, $file, $line, $context = null){
-        parent::__construct($message, $code);
-        $this->file = $file;
-        $this->line = $line;
-        $this->context = $context;
-    }
-};
-
-set_error_handler('Gateway::error_handler');
-set_exception_handler('Gateway::exception_handler');
 
 define("ROOT", str_replace('/public', '', str_replace("\\", "/", Gateway::$command_line ? $_ENV['PWD'] : $_SERVER['DOCUMENT_ROOT'])));
 
