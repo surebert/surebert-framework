@@ -2723,8 +2723,6 @@ Element.prototype.setStyle = function(prop, val){
 			this.style.opacity = val;
 			this.style.zoom = 1;
 			this.style.filter = "alpha(opacity:"+val*100+")";
-
-
 		} else {
 
 			if(prop == 'cssFloat' && typeof this.style.styleFloat == 'string'){

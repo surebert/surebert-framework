@@ -56,6 +56,8 @@ sb.drag = {
 			el.style.top = y+'px';
 		}
 		
+		el.setStyle('opacity', 0.8);
+		
 		sb.browser.removeSelection();
 		
 		if(typeof sb.drag.ondrag == 'function'){
@@ -73,7 +75,7 @@ sb.drag = {
 		if(sb.drag.mup){
 			sb.events.remove(sb.drag.mup);
 		}
-		//sb.drag.el.setOpacity(sb.drag.el.origOpacity||1);
+		sb.drag.el.setStyle('opacity', sb.drag.el.origOpacity ||1);
 		
 		if(typeof sb.drag.ondragstop == 'function'){
 			sb.drag.ondragstop.call(sb.drag.el, e);	
@@ -87,7 +89,8 @@ sb.drag = {
 		var scroll = sb.browser.getScrollPosition();
 		
 		el = $(this);
-		
+		el.origOpacity = el.getStyle('opacity') ||1;
+
 		//set handlers
 		if(typeof this.ondrag == 'function'){
 			sb.drag.ondrag = this.ondrag;	
@@ -102,9 +105,8 @@ sb.drag = {
 			sb.drag.ondragstop = this.ondragstop;	
 		}
 		
-		
 		if(el.getStyle('position') == 'static' && sb.drag.debug ==1){
-			alert('You need to set position style on elemement');
+			throw('You need to set position style on elemement');
 		}
 		
 		while(el.nodeType == 3 || el.getStyle('position') == 'static'){
@@ -124,8 +126,9 @@ sb.drag = {
 		if (isNaN(el.x.estart)) {el.x.estart = 0;}
 	  	if (isNaN(el.y.estart)) {el.y.estart = 0;}
 	 
-
-		el.style.zIndex = ++sb.drag.zIndex;
+		if(el.style.zIndex < 1){
+			el.style.zIndex = ++sb.drag.zIndex;
+		}
 		
 		//set as global dragable element
 		sb.drag.el = el;
@@ -133,7 +136,6 @@ sb.drag = {
 		
 		if(target.hasClassName('dragHandle')){
 			sb.drag.mmove = sb.events.add(document, 'mousemove', sb.drag.move);
-			//el.opacity(0.3);
 		} 
 		sb.drag.mup = sb.events.add(document, 'mouseup', sb.drag.stop);
 	

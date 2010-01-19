@@ -11,15 +11,11 @@ var draggableThing = $('#dragme');
 draggableThing.makeDraggable();
 */
 Element.prototype.makeDraggable = function(){
-
-	sb.$(this.id+' *').forEach(function(v){
+	this.$('.dragHandle').forEach(function(v){
 		if(v.className.match(/dragHandle/i)){
 			v.style.cursor = 'move';
 		}
 	});
-	if(this.className.match(/dragHandle/)){
-		this.style.cursor = 'move';
-	}
 	this.sbDraggable = this.evt('mousedown', sb.drag.start);
 };
 
@@ -34,13 +30,10 @@ draggableThing.makeUnDraggable();
 */
 Element.prototype.makeUnDraggable = function(){
 	
-	sb.$(this.id+' *').forEach(function(v){
+	this.$('.dragHandle').forEach(function(v){
 		if(v.className.match(/dragHandle/i)){
 			v.style.cursor = '';
 		}
 	});
-	if(this.className.match(/dragHandle/)){
-		this.style.cursor = '';
-	}
 	this.eventRemove(this.sbDraggable);
 };

@@ -1,5 +1,4 @@
 sb.include('Element.prototype.makeDraggable');
-sb.include('String.prototype.isNumeric');
 
 sb.widget.floatWin = function(o){
 	
@@ -7,7 +6,7 @@ sb.widget.floatWin = function(o){
 	
 	var floatWin = new sb.element({
 		tag : 'div',
-		className : 'sb_floatWin',
+		className : 'sb_floatWin '+o.className || '',
 		
 		addContent : function(content){
 			var typ = sb.typeOf(content);
@@ -22,6 +21,7 @@ sb.widget.floatWin = function(o){
 			
 			if(sb.typeOf(el)=='sb.element'){
 				el.win=this;
+				el.style.cursor = 'pointer';
 				return el.appendToTop(this.titleIcons);
 			}
 		},
@@ -96,18 +96,12 @@ sb.widget.floatWin = function(o){
 			tag : 'div',
 			className : 'sb_floatWinTitleText dragHandle',
 			innerHTML : 'title',
-			styles : {
-				zIndex : 999,
-				position:'absolute',
-				left:'0px',
-				top: '0px'
-			},
 			shaded : 0,
 			events : {
 				dblclick : function(){
 					if(this.shaded === 0){
 						this.oldHeight = floatWin.style.height;
-						floatWin.style.height ='40px';
+						floatWin.style.height = this.titleBar.offsetHeight+'px';
 						floatWin.style.overflow ='hidden';
 						this.shaded=1;
 					} else {
@@ -124,21 +118,24 @@ sb.widget.floatWin = function(o){
 		}
 	});
 	
-	
-	floatWin.mv(sb.browser.w/2,sb.browser.h/2,999);
 	floatWin.mv(sb.browser.w/2,sb.browser.h/2,999);
 	
 	floatWin.titleBar.appendTo(floatWin);
-	floatWin.titleText.appendTo(floatWin.titleBar);
 	floatWin.titleIcons.appendTo(floatWin.titleBar);
+	floatWin.titleText.appendTo(floatWin.titleBar);
+	
 	
 	floatWin.content.appendTo(floatWin);
 	floatWin.makeDraggable();
-	
-	if(o.opacity.isNumeric()){
-		floatWin.opacity = o.opacity;
-	} else {
-		floatWin.opacity = 0.85;
+
+	if(!o.closeButton){
+		floatWin.addIcon(new sb.element({
+			tag : 'img',
+			src : '/surebert/load/_media/close.png',
+			onclick : function(){
+				floatWin.close();
+			}
+		}));
 	}
 	
 	if(typeof o.title =='string'){
