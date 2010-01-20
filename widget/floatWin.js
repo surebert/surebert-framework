@@ -32,6 +32,7 @@ sb.widget.floatWin = function(o){
 		
 		close : function(){
 			this.hide();
+			
 		},
 		
 		content : new sb.element({
