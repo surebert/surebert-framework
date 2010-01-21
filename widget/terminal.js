@@ -5,7 +5,7 @@ sb.widget.terminal = function(params){
 	var self = this;
 	var type = this.type || 'input';
 	self.className = self.className || 'sb_terminal';
-	
+	this.allowJS = this.allowJS || false;
 	this.create(type);
 	this.stack = [];
 	
@@ -39,19 +39,26 @@ sb.widget.terminal.prototype = {
 
 					var target = e.target;
 					var data = [];
-					var value = this.value.trim();
+					var command = this.value.trim();
 
-					if(value == 'textarea' || value == 'input'){
-						self.create(value);
+					if(command == 'textarea' || command == 'input'){
+						self.create(command);
 						e.preventDefault();
 						return true;
 					}
 					
 					switch(e.keyCode){
 						case 13:
+							e.preventDefault();
 							if(self.type == 'input' || self.type == 'textarea' && e.shiftKey){
-								self.process(e);
-								e.preventDefault();
+								self.stack.push(command);
+								if(command.match(/^js:/)){
+									eval(command.replace(/^js:/, ''));
+									return true;
+								}
+								if(!self.processClientside(command)){
+									self.processServerside(command);
+								}
 							}
 
 							break;
@@ -87,18 +94,14 @@ sb.widget.terminal.prototype = {
 		
 		this.textField.focus();
 	},
-	process : function(e){
+	processClientside : function(command){
+		return false;
+	},
+	processServerside : function(command){
 		var self = this;
 		var data = '';
-		var value = e.target.value;
-		self.stack.push(value);
-
-		if(value.match(/^js:/)){
-			eval(value.replace(/^js:/, ''));
-			return;
-		}
-
-		var arr = value.split(' ');
+		
+		var arr = command.split(' ');
 
 		if(arr[0]){
 			data = arr.slice(1);
@@ -115,8 +118,8 @@ sb.widget.terminal.prototype = {
 						self.onError('Command not found');
 					}
 
-					target.value = '';
-					target.select();
+					self.textField.value = '';
+					self.textField.select();
 
 				}
 			},
@@ -127,8 +130,8 @@ sb.widget.terminal.prototype = {
 					self.onError('No Response');
 				}
 
-				target.value = '';
-				target.select();
+				self.textField.value = '';
+				self.textField.select();
 			}
 
 		}).fetch();
