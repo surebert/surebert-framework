@@ -18,7 +18,7 @@ class sb_Logger_StdOut extends sb_Logger_Base{
 	 * @return boolean If the data was written or not
 	 */
 	protected function __write($data, $log_type){
-		return fwrite(STDOUT, "\n\n".date('Y/m/d H:i:s')."\n".$data);
+		return file_put_contents("php://stdout", "\n\n".date('Y/m/d H:i:s')."\n".$data);
 	}
 
 }
