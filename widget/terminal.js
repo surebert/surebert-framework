@@ -19,7 +19,7 @@ sb.widget.terminal = function(params){
 		},
 		events : {
 			
-			keyup : function(e){
+			keydown : function(e){
 
 				var target = e.target;
 				var data = [];
@@ -28,6 +28,7 @@ sb.widget.terminal = function(params){
 					case 13:
 						if(self.type == 'input' || self.type == 'textarea' && e.shiftKey){
 							self.process(e);
+							e.preventDefault();
 						}
 						
 						break;
