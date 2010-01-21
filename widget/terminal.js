@@ -1,13 +1,13 @@
 sb.widget.terminal = function(params){
 	sb.objects.infuse(params, this);
 	var self = this;
-
-
-	this.input = new sb.element({
-		tag : 'input',
+	var type = this.type || 'input';
+	self.className = self.className || 'sb_terminal';
+	this.textField = new sb.element({
+		tag : type,
 		type: 'text',
 		value : '',
-		className : 'terminal',
+		className : self.className,
 		styles : {
 			width : '100%',
 			backgroundColor : 'black',
@@ -18,6 +18,7 @@ sb.widget.terminal = function(params){
 			padding : '5px'
 		},
 		events : {
+			
 			keyup : function(e){
 
 				var target = e.target;
@@ -25,7 +26,10 @@ sb.widget.terminal = function(params){
 
 				switch(e.keyCode){
 					case 13:
-						self.process(e);
+						if(self.type == 'input' || self.type == 'textarea' && e.shiftKey){
+							self.process(e);
+						}
+						
 						break;
 
 					case 27:
@@ -45,8 +49,14 @@ sb.widget.terminal = function(params){
 
 	});
 
+	if(type == 'textarea'){
+		sb.include('forms.textarea');
+		sb.include('forms.textarea.allowTabs');
+		this.textField.evt('keydown', sb.forms.textarea.allowTabs);
+	}
+
 	this.stack = [];
-	this.input.appendToTop('body');
+	this.textField.appendToTop('body');
 };
 
 sb.widget.terminal.prototype = {
