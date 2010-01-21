@@ -499,12 +499,7 @@ class Gateway {
 
             if(class_exists($model)){
 
-                if(method_exists($model, $action) && in_array('sb_Magic_Model', class_implements($model, true))){
-
-                    $reflection = new ReflectionMethod($model, $action);
-
-                    //check for phpdocs
-                    $docs = $reflection->getDocComment();
+                if(in_array('sb_Magic_Model', class_implements($model, true))){
 
                     //get class default method
                     $http_method = 'post';
@@ -514,21 +509,32 @@ class Gateway {
 
                     $servable = false;
 
-                    if(!empty($docs)){
-                        if(preg_match("~@http_method (get|post)~", $docs, $match)){
-                            $http_method = $match[1];
-                        }
+					if(!method_exists($model, $action)){
+						$action == '__call';
+						$servable = true;
+					} else {
+						 $reflection = new ReflectionMethod($model, $action);
 
-                        if(preg_match("~@input_as_array (true|false)~", $docs, $match)){
-                            $input_as_array = $match[1] == 'true' ? true : false;
-                        }
+						//check for phpdocs
+						$docs = $reflection->getDocComment();
 
-                        if(preg_match("~@servable (true|false)~", $docs, $match)){
 
-                            $servable = $match[1] == 'true' ? true : false;
-                        }
+						if(!empty($docs)){
+							if(preg_match("~@http_method (get|post)~", $docs, $match)){
+								$http_method = $match[1];
+							}
 
-                    }
+							if(preg_match("~@input_as_array (true|false)~", $docs, $match)){
+								$input_as_array = $match[1] == 'true' ? true : false;
+							}
+
+							if(preg_match("~@servable (true|false)~", $docs, $match)){
+
+								$servable = $match[1] == 'true' ? true : false;
+							}
+
+						}
+					}
 
                     if($servable){
                         //notify which model is being served
