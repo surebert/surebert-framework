@@ -124,12 +124,13 @@ sb.widget.terminal.prototype = {
 				}
 			},
 			onResponse : function(r){
-				if(r !== '' && typeof(self.onResponse == 'function')){
-					self.onResponse(r);
-				} else if(typeof(self.onError == 'function')){
-					self.onError('No Response');
+				if(!this.ajax.getResponseHeader('Content-Type') == 'javascript'){
+					if(r !== '' && typeof(self.onResponse == 'function')){
+						self.onResponse(r);
+					} else if(typeof(self.onError == 'function')){
+						self.onError('No Response');
+					}
 				}
-
 				self.textField.value = '';
 				self.textField.select();
 			}

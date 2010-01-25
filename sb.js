@@ -1544,7 +1544,7 @@ sb.ajax.prototype = {
 		}
 
 		if(!this.format){
-
+			
 			if(this.contentType){
 				if(this.contentType.match('application/json')){
 					this.format = 'json';
@@ -1587,7 +1587,7 @@ sb.ajax.prototype = {
 				}
 				break;
 
-			case 'js':
+			case 'javascript':
 				js =  this.ajax.responseText;
 				break;
 
@@ -1775,7 +1775,7 @@ sb.ajax.prototype = {
 			//alert 400 if file not found
 			alert(status);
 			//you also have access to other headers
-			alert(this.getResponseHeader('Content-type');
+			alert(this.ajax.getResponseHeader('Content-Type'));
 		}
 	});
 
@@ -1793,7 +1793,7 @@ sb.ajax.prototype = {
 			//alert 400 if file not found
 			alert(status);
 			//you also have access to other headers
-			alert(this.getResponseHeader('Content-type');
+			alert(this.ajax.getResponseHeader('Content-Type'));
 		}
 	});
 
