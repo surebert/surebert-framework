@@ -124,7 +124,7 @@ sb.widget.terminal.prototype = {
 				}
 			},
 			onResponse : function(r){
-				if(!this.ajax.getResponseHeader('Content-Type') == 'javascript'){
+				if(this.ajax.getResponseHeader('Content-Type') != 'text/javascript'){
 					if(r !== '' && typeof(self.onResponse == 'function')){
 						self.onResponse(r);
 					} else if(typeof(self.onError == 'function')){
