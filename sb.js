@@ -116,7 +116,7 @@ var sb = {
 				url : url,
 				async : 0,
 				method : 'get',
-				format : 'js',
+				format : 'javascript',
 				debug : sb.loadDebug ? 1 : 0,
 				onResponse: function(r){
 				//#######look into this
