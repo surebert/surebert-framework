@@ -4,7 +4,6 @@
  * requires php-pecl-ssh2 extension
  * see http://php.net/manual/en/wrappers.ssh2.php for more info
  *
- * @author paul.visco@roswellpark.org
  * <code>
  * $client = new sb_SSH2_Client('server.com', 1027);
  * $client->login('uname', 'pass');
@@ -13,6 +12,9 @@
  *
  * $data = $client->exec('ls /tmp');
  * </code>
+ * 
+ * @author paul.visco@roswellpark.org
+ * @package sb_SSH2
  */
 class sb_SSH2_Client{
 

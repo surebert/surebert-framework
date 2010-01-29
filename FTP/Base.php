@@ -1,6 +1,8 @@
 <?php
 /**
  * Common OOP interface for FTP and SFTP client
+ *
+ * @package sb_FTP
  */
 interface sb_FTP_Base{
 

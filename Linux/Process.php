@@ -1,5 +1,6 @@
 <?php
-/* Used to create a control new processes
+/**
+ *  Used to create a control new processes
  *
  * Adapted from http://us.php.net/manual/en/function.exec.php
  * @author paul.visco@roswellpark.org

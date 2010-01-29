@@ -1,11 +1,13 @@
 <?php
 /**
  * Create an object oriented FTP client interface
+ *
+ * requires PHP be compiled with ftp support
  * 
  * @author paul.visco@roswellpark.org
- * requires PHP be compiled with ftp support
+ * @package sb_FTP
  */
-class FTP_Client implements sb_FTP_Base{
+class sb_FTP_Client implements sb_FTP_Base{
 
 	/**
 	 * Instantiates an FTP connection

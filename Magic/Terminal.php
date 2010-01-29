@@ -1,4 +1,9 @@
 <?php
+/**
+ * Used to handle sb.terminal server side requests
+ *
+ * @package sb_Magic
+ */
 class sb_Magic_Terminal implements sb_Magic_Model{
 
 	/**

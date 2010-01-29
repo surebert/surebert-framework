@@ -16,6 +16,8 @@
  *		echo $e->getMessage() . "\n";
  * }
  * <code>
+ *
+ * @package sb_SFTP
  */
 class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 
