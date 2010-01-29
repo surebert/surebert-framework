@@ -89,6 +89,8 @@ class sb_Text_Bling{
 		
 		$str = sb_Strings::html_escape_tags($str);
 		
+		$str = self::convert_quotes($str);
+
 		$str = self::lists_to_html($str);
 		
 		$str = self::tables_to_html($str);
@@ -100,8 +102,6 @@ class sb_Text_Bling{
 		$str = self::text_styles($str);
 		
 		$str = self::parse_css($str);
-		
-		$str = self::convert_quotes($str);
 		
 		$str = self::add_searches($str);
 		
