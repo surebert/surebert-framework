@@ -15,7 +15,7 @@ class sb_FTP_Client implements sb_FTP_Base{
 	 * @param integer $port the port to connect to, 21 is default
 	 * @param integer $timeout The time to wait before aborting if not connection is created
 	 */
-	public function __construct($host, $port=21, $timeout){
+	public function __construct($host, $port=21, $timeout=30){
 		$this->connection = ftp_connect($host, $port, $timeout);
 		if(!$this->connection){
 			throw new Exception("Could not connect to $host on port $port.");
@@ -35,6 +35,8 @@ class sb_FTP_Client implements sb_FTP_Base{
 		if($passive){
 			 ftp_pasv($this->connection, true);
 		}
+
+		return true;
     }
 
 	/**
@@ -134,6 +136,57 @@ class sb_FTP_Client implements sb_FTP_Base{
 
 		return true;
 	}
+
+	/**
+	 * Change workign directory
+	 * @param string $directory The path to change to
+	 * @return boolean
+	 */
+	public function chdir($directory){
+		if(!@ftp_chdir($this->connection, $directory)){
+			throw new Exception("Could not change to remote directory: ".$directory);
+		}
+
+		return true;
+	}
+
+	/**
+	 * List files in remote directory
+	 * @param string $directory The path
+	 * @return array
+	 */
+	public function nlist($directory){
+		$list = ftp_nlist($this->connection, $directory);
+		if(!$list){
+			throw new Exception("Could list files in remote directory: ".$directory);
+		}
+
+		return $list;
+	}
+
+	/**
+	 * List files in remote directory
+	 * @param string $directory The path
+	 * @return array
+	 */
+	public function rawlist($directory){
+		$list = ftp_rawlist($this->connection, $directory);
+		if(!$list){
+			throw new Exception("Could raw list files in remote directory: ".$directory);
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Send a raw command to the server
+	 * @param string $command The command to send
+	 * @return array
+	 */
+	public function raw($command){
+		return ftp_raw($this->connection, $command);
+	}
+
 
 	/**
 	 * Closes the FTP connection
