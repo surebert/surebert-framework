@@ -7,7 +7,8 @@ myElement.show();
 */
 Element.prototype.show = function(){
 	try{
-	this.style.display = (this.getStyle('display')=='none') ? 'block' : this.getStyle('display'); 
+		var s = this.getStyle('display');
+		this.style.display = ( s =='none') ? 'block' : s;
 	} catch(e){
 		this.style.display='block';
 	}
