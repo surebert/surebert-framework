@@ -71,7 +71,7 @@ class sb_Logger_Syslog{
 
 	/**
 	 * The plain text log message to send, limited to 1024 characters
-	 * remember to allow space for the header which is around 25 chars
+	 * remember to allow space for the header which is ~40 chars
 	 *
 	 * Anything over 1024 will be truncated
 	 * @var string
@@ -131,7 +131,7 @@ class sb_Logger_Syslog{
 		if(!empty($server)){
 			$this->server = $server;
 		}
-
+		
 		if (intval($timeout) > 0){
 			$this->timeout = intval($timeout);
 		}
