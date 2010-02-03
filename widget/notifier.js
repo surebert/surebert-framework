@@ -86,8 +86,8 @@ sb.widget.notifier = {
            tag : 'div',
            id : 'sb_notifications'
         });
-
-        this.box.appendToTop('body');
+		
+        this.box.appendToTop(document.body);
     },
 
     /**
@@ -188,9 +188,12 @@ sb.widget.notifier = {
 	@Description: Looks for sb_notifications box, if not found, creates and appends to the top of body tag
 	*/
     init : function(o){
-        this.box = $('#sb_notifications');
+		o = o || {};
+        this.box = sb.$('#sb_notifications');
+		
         this.events = o.events || {};
         if(!this.box){
+
             this.createBox();
         }
 

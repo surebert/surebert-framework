@@ -34,14 +34,24 @@ sb.widget.terminal.prototype = {
 				padding : '5px'
 			},
 			events : {
-
 				keydown : function(e){
 
 					var target = e.target;
 					var data = [];
 					var command = this.value.trim();
-
+					if(command == 'server'){
+						this.style.backgroundColor = 'yellow';
+						self.sendToServer = true;
+						self.clear();
+						return true;
+						
+					}
 					if(command == 'textarea' || command == 'input'){
+						if(command == 'textarea'){
+
+							sb.include('forms.textarea');
+							sb.include('forms.textarea.allowTabs');
+						}
 						self.create(command);
 						e.preventDefault();
 						return true;
@@ -50,15 +60,25 @@ sb.widget.terminal.prototype = {
 					switch(e.keyCode){
 						case 13:
 							e.preventDefault();
-							if(self.type == 'input' || self.type == 'textarea' && e.shiftKey){
+							if(this.nodeName == 'INPUT' || this.nodeName == 'TEXTAREA' && e.shiftKey){
+
 								self.stack.push(command);
-								if(command.match(/^js:/)){
-									eval(command.replace(/^js:/, ''));
-									return true;
-								}
-								if(!self.processClientside(command)){
+								var s = sb.forms.textarea.getSelection(this);
+								
+								if(s.selected != ''){
+									
+									eval(s.selected);
+
+								} else if(self.sendToServer){
 									self.processServerside(command);
+									
+								} else {
+									if(!self.processClientside(command)){
+										eval(command);
+										self.clear();
+									}
 								}
+								
 							}
 
 							break;
@@ -93,6 +113,9 @@ sb.widget.terminal.prototype = {
 		}
 		
 		this.textField.focus();
+	},
+	clear : function(){
+		this.textField.value = '';
 	},
 	processClientside : function(command){
 		return false;

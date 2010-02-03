@@ -41,8 +41,12 @@ sb.forms.textarea = {
 		
 		if (document.selection) {
 			range = document.selection.createRange();
+			
 			stored_range = range.duplicate();
-			stored_range.moveToElementText( field );
+			try{
+				stored_range.moveToElementText(field);
+			}catch(e){}
+			
 			stored_range.setEndPoint( 'EndToEnd', range );
 			selectionStart = stored_range.text.length - range.text.length;
 			
