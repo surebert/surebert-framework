@@ -93,9 +93,10 @@ sb.json.rpc2.client.prototype = {
 		}
 
 		if(this.url.match(/^http/)){
+			
 			this.dispatchViaScript(request);
 		} else {
-			this.dispatchViaAjax(request);
+			//this.dispatchViaAjax(request);
 		}
 
 	},
@@ -133,10 +134,11 @@ sb.json.rpc2.client.prototype = {
 			src : src.join('&'),
 			onload : function(){
 				s.remove();
-				s = null
+				s=null;
 			}
-		}).load();
+		});
 
+		s.load();
 	},
 
 	/**
