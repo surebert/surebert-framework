@@ -1,6 +1,5 @@
 /**
 @Author: Paul Visco of http://paul.estrip.org
-@Version: 4.86 04/24/04 - 09/16/09
 @Package: surebert 
 */
 
@@ -50,8 +49,9 @@ var sb = {
 	//or multiple modules
 	sb.include('cookies,date');
 	*/
-	include : function(module){
-
+	include : function(module, onload){
+		onload = typeof onload == 'function' ? onload : function(){};
+		
 		if(module.match(',')){
 			var modules = module.split(',');
 			modules.forEach(function(v){
@@ -73,7 +73,7 @@ var sb = {
 				path +='.';
 			}
 			path +=mods[m];
-
+			
 			try{
 
 				unit = unit[mods[m]];
@@ -81,15 +81,28 @@ var sb = {
 			} catch(e){}
 
 			if(typeof unit == 'undefined'){
-
+				
 				this.included.push(path);
 				file = path.replace(/\./g, "/");
+				
+				if(sb.base.match(/^http/)){
+					var s = new sb.script({
+						src : sb.base+path
+					});
+					
+					if(path == module){
 
-				if(sb.base != '/surebert/load'){
-					file = file+'.js';
+						s.onload = onload;
+					}
+
+					s.load();
+				} else {
+					sb.load(sb.base+path);
+					if(path == module){
+						onload();
+					}
 				}
-
-				sb.load(sb.base+'/'+file);
+				
 
 			}
 		}
@@ -119,7 +132,7 @@ var sb = {
 				format : 'javascript',
 				debug : sb.loadDebug ? 1 : 0,
 				onResponse: function(r){
-				//#######look into this
+					//#######look into this
 
 					try{
 						evaled=1;
@@ -133,11 +146,12 @@ var sb = {
 					}
 					load=null;
 				}
-			}).fetch();}());
+			}).fetch();
+		}());
 
 		return evaled;
 	},
-    /**
+	/**
     @Name: sb.script
 	@Description: creates a script tag for loading
 	@Return: DOM node A script tag
@@ -154,38 +168,43 @@ var sb = {
 
     script.load();
     */
-    script : function(o){
+	script : function(o){
         
-        var script = document.createElement("script");
-        script.type = o.type || 'text/javascript';
-        script.charset = o.charset || 'utf-8';
-        script.src = o.src;
-        script.load = function(){
-            document.getElementsByTagName('head')[0].appendChild(this);
-        };
+		var script = document.createElement("script");
+		script.type = o.type || 'text/javascript';
+		script.charset = o.charset || 'utf-8';
+		script.src = o.src;
+		
+		script.onload = typeof o.onload =='function' ? o.onload : function(){};
+		script.load = function(){
+			document.getElementsByTagName('head')[0].appendChild(this);
+		};
 
-        script.remove = function(){
+		script.remove = function(){
 
-            if(this.clearAttributes){
-                this.clearAttributes();
-            }
+			if(this.clearAttributes){
+				this.clearAttributes();
+			}
 
-            this.parentNode.removeChild(this);
-            this.onload = this.onreadystatechange = null;
-            this.remove = null;
-        };
+			this.parentNode.removeChild(this);
+			this.onload = this.onreadystatechange = null;
+			this.remove = null;
+		};
         
-        if(script.readyState){
-            script.onreadystatechange = function(){
-                //IE does not fire regular onloaded
-                if (this.readyState && this.readyState !== "loaded") { return; }
-                this.onload();
-            };
-        }
+		if(script.readyState){
+			script.onreadystatechange = function(){
+				//IE does not fire regular onloaded
+				if (this.readyState && this.readyState !== "loaded") {
+					return;
+				}
+                
+				script.onload();
+			};
+		}
 
-        return script;
+		return script;
             
-    },
+	},
 
 	/**
 	@Name: sb.math
@@ -439,7 +458,9 @@ $ = function(selector, root) {
 
 	if(nodeList.length() === 0 && nodeList.selector.match(/^\#[\w-]+$/) ){
 		return null;
-	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#[\w-]+$/) || sb.nodeList.singleTags.some(function(v){return v === nodeList.selector;}))){
+	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#[\w-]+$/) || sb.nodeList.singleTags.some(function(v){
+		return v === nodeList.selector;
+	}))){
 
 		return nodeList.nodes[0];
 	} else {
@@ -466,11 +487,7 @@ $.copyElementPrototypes = function(node){
 $.parseSelectors = function(nodes, within){
 
 	within = within || document;
-	var root = [within];
-
-	var found = [],s=0;
-
-	var selectors = nodes.selector.split(",");
+	var root = [within], s=0, selectors = nodes.selector.split(",");
 
 	var len = selectors.length;
 
@@ -533,7 +550,7 @@ $.parseSelectors = function(nodes, within){
 
 				return true;
 
-			}  else if((selector.indexOf("#") === 0 && selector.match(/^\#[\w-]+$/)) || selector.match(/\w+\#[\w-]+/)) {
+			} else if((selector.indexOf("#") === 0 && selector.match(/^\#[\w-]+$/)) || selector.match(/\w+\#[\w-]+/)) {
 
 				var element = $.getElementById(selector);
 
@@ -548,7 +565,7 @@ $.parseSelectors = function(nodes, within){
 
 				return true;
 
-			}  else if (selector.indexOf(".") !== false){
+			} else if (selector.indexOf(".") !== false){
 
 				var period_pos = selector.indexOf(".");
 
@@ -601,23 +618,22 @@ $.getElementById = function(selector){
 */
 $.getElementsByClassName = function(selector, root){
 
-    var nodes,elements = [];
+	var nodes,elements = [],x=0;
+	
+	if(root.getElementsByClassName && selector.charAt(0) == '.'){
 
-    if(root.getElementsByClassName && selector.charAt(0) == '.'){
-
-        var x;
 		nodes = root.getElementsByClassName(selector.replace(/\./, ''));
 
-        for(x=0;x<nodes.length;x++){
-            elements.push(nodes[x]);
-        }
-        return elements;
-    }
+		for(x=0;x<nodes.length;x++){
+			elements.push(nodes[x]);
+		}
+		return elements;
+	}
 
 	var parts = selector.split('.');
-    nodes = root.getElementsByTagName(parts[0] || '*');
-    var className = parts[1], node, cur_class_name,len = nodes.length,x=0;
-    var rg = RegExp("\\b"+className+"\\b");
+	nodes = root.getElementsByTagName(parts[0] || '*');
+	var className = parts[1], node, cur_class_name,len = nodes.length,x=0;
+	var rg = RegExp("\\b"+className+"\\b");
 	
 	if(nodes.length > 0){
 		do{
@@ -794,14 +810,14 @@ $.getElementsByParent = function(selector){
 	var nodes = [];
 	var len = elements.length;
 
-    var rg = new RegExp(tags[0], 'i');
+	var rg = new RegExp(tags[0], 'i');
 
-    if(tags[0].match(/\./)){
-         parents = $(tags[0]);
-    }
+	if(tags[0].match(/\./)){
+		parents = $(tags[0]);
+	}
 	for(var n=0;n<len;n++){
 		if(rg.test(elements[n].parentNode.nodeName) || (parents && parents.nodes.inArray(elements[n].parentNode))){
-            elements[n].sbid = sb.uniqueID();
+			elements[n].sbid = sb.uniqueID();
 			nodes.push(elements[n]);
 		}
 	}
@@ -827,7 +843,9 @@ $.getElementsBySiblingCombinator = function(within, selector){
 
 		while((node = node.nextSibling)){
 			nn = node.nodeName.toLowerCase();
-			if(nn == nodeName){break;}
+			if(nn == nodeName){
+				break;
+			}
 			if(node.nodeType == 1 && nn == siblingNodeName){
 				node.sbid = sb.uniqueID();
 				elements.push(node);
@@ -919,13 +937,13 @@ $.parsePseudoSelectors = function(within, selector){
 
 			default:
 
-			if(pseudo.indexOf('not')+1){
-				notSelector = pseudo.match(/not\((.*?)\)/);
+				if(pseudo.indexOf('not')+1){
+					notSelector = pseudo.match(/not\((.*?)\)/);
 
-				if(node.nodeName.toLowerCase() != notSelector[1]){
-					elements.push(node);
+					if(node.nodeName.toLowerCase() != notSelector[1]){
+						elements.push(node);
+					}
 				}
-			}
 		}
 
 
@@ -953,19 +971,19 @@ sb.browser ={
 	*/
 	ie6 : 0,
 
-    /**
+	/**
 	@Name: sb.browser.agent
 	@Type: string
 	@Description: The browser agent in short form op=opera, sf=safari, ff=firefox, ie=iexplorer
 	*/
-    agent : '',
+	agent : '',
 
-    /**
+	/**
 	@Name: sb.browser.version
 	@Type: integer
 	@Description: The version number of the browser
 	*/
-    version : 0,
+	version : 0,
 
 	/**
 	@Name: sb.browser.getAgent
@@ -989,7 +1007,7 @@ sb.browser ={
 			this.agent = 'ie';
 			this.version = 6;
 			sb.browser.ie6 =1;
-		}  else if (document.all && window.XMLHttpRequest && document.compatMode){
+		} else if (document.all && window.XMLHttpRequest && document.compatMode){
 			this.agent = 'ie';
 			this.version = 7;
 
@@ -1032,13 +1050,14 @@ sb.browser ={
 	//pos = [800, 642]
 	*/
 	measure : function(){
-		sb.browser.w=0; sb.browser.h =0;
+		sb.browser.w=0;
+		sb.browser.h =0;
 		if( typeof window.innerWidth == 'number' ) {
-		    sb.browser.w = window.innerWidth;
-		    sb.browser.h = window.innerHeight;
+			sb.browser.w = window.innerWidth;
+			sb.browser.h = window.innerHeight;
 		} else if( window.document.documentElement && ( window.document.documentElement.clientWidth || window.document.documentElement.clientHeight ) ) {
-		    sb.browser.w = document.documentElement.clientWidth;
-		    sb.browser.h = document.documentElement.clientHeight;
+			sb.browser.w = document.documentElement.clientWidth;
+			sb.browser.h = document.documentElement.clientHeight;
 		}
 
 		return [sb.browser.w, sb.browser.h];
@@ -1134,7 +1153,9 @@ sb.objects = {
 		from = from || {};
 		sb.objects.forEach.call(from, function(val,prop,o){
 
-			try{ to[prop] = val;} catch(e){}
+			try{
+				to[prop] = val;
+			} catch(e){}
 		});
 		from = null;
 		return to;
@@ -1171,16 +1192,20 @@ sb.objects = {
 		sb.objects.dump({o});
 	*/
 	dump : function(o, pre){
-			var prop,str ='';
-			sb.objects.forEach.call(o, function(v,p,o){
-				try{
-					str+="\n\n"+p+' = '+v;
-				} catch(e){
-					str += "\n"+p+' = CANNOT PROCESS VALUE!';
-				}
-			});
+		var prop,str ='';
+		sb.objects.forEach.call(o, function(v,p,o){
+			try{
+				str+="\n\n"+p+' = '+v;
+			} catch(e){
+				str += "\n"+p+' = CANNOT PROCESS VALUE!';
+			}
+		});
 
-			if(!pre){ return str;} else { return '<pre style="margin:5px;border:1px;padding:5px;">'+str+'</pre>';}
+		if(!pre){
+			return str;
+		} else {
+			return '<pre style="margin:5px;border:1px;padding:5px;">'+str+'</pre>';
+		}
 
 	},
 
@@ -1211,7 +1236,10 @@ sb.nodeList = function(params){
 	var nls= this;
 	['forEach', 'map', 'filter', 'every', 'some', 'indexOf', 'lastIndexOf', 'inArray'].forEach(function(v,k,a){
 		nls[v] = function(func){
-            if(v == 'forEach'){ nls.nodes[v](func); return nls;}
+			if(v == 'forEach'){
+				nls.nodes[v](func);
+				return nls;
+			}
 			return nls.nodes[v](func);
 		};
 	});
@@ -1336,7 +1364,9 @@ sb.nodeList.prototype = {
 			if(sb.typeOf(el) == 'sb.element'){
 				return v != el;
 			} else {
-				return !el.nodes.some(function(v1){return v===v1;});
+				return !el.nodes.some(function(v1){
+					return v===v1;
+				});
 			}
 
 		});
@@ -1433,7 +1463,9 @@ sb.ajax = function (params){
 	if(window.XMLHttpRequest){
 		this.ajax = new XMLHttpRequest();
 	} else {
-		try{this.ajax=new window.ActiveXObject("Microsoft.XMLHTTP");}catch(e3){
+		try{
+			this.ajax=new window.ActiveXObject("Microsoft.XMLHTTP");
+		}catch(e3){
 			throw('This browser does not support surebert');
 		}
 	}
@@ -1448,7 +1480,9 @@ sb.ajax = function (params){
 
 	this.method = params.method || sb.ajax.defaultMethod;
 	var self = this;
-	this.ajax.onreadystatechange=function(){self.onreadystatechange();};
+	this.ajax.onreadystatechange=function(){
+		self.onreadystatechange();
+	};
 
 };
 
@@ -1520,7 +1554,9 @@ sb.ajax.prototype = {
 
 		var js = '';
 
-		if(this.ajax.readyState != 4 || this.completed == 1){return true;}
+		if(this.ajax.readyState != 4 || this.completed == 1){
+			return true;
+		}
 
 		this.completed = 1;
 
@@ -1608,7 +1644,7 @@ sb.ajax.prototype = {
 		if(js !==''){
 
 			try{
-				 eval(js);
+				eval(js);
 
 			}catch(e2){
 				this.log('Could not eval javascript from server');
@@ -1851,7 +1887,9 @@ sb.dom = {
 		o.interval = o.interval || 10;
 
 		o.tries = o.tries || 600;
-		if(o.tries == -1){o.tries =99999999;}
+		if(o.tries == -1){
+			o.tries =99999999;
+		}
 
 		if(typeof o.onReady=='function'){
 
@@ -1904,7 +1942,9 @@ var answer = myArray.inArray(2);
 //answer is true
 */
 Array.prototype.inArray = function(val){
-	return this.some(function(v){return v===val;});
+	return this.some(function(v){
+		return v===val;
+	});
 };
 
 /**
@@ -2034,33 +2074,42 @@ sb.events = {
 	*/
 	add : function() {
 
-	    if(window.addEventListener){
+		if(window.addEventListener){
 
-	        return function(el, type, fn) {
-	        	el = sb.$(el);
-	        	var f = function(e) {
+			return function(el, type, fn) {
+				el = sb.$(el);
+				var f = function(e){
 
-	        		var sb_target = e.target;
-	        		var sb_related_target = e.relatedTarget;
-	        		delete e.target;
-	        		delete e.relatedTarget;
-	        		e.__defineGetter__("target", function() { return sb.events.distillTarget(sb_target); });
-	        		e.__defineGetter__("relatedTarget", function() { return sb.events.distillTarget(sb_related_target); });
-	                fn.call(el, e);
-	            };
-	        	var evt = {el:el, type:type, fn:f, remove : sb.events.removeThis};
-	            el.addEventListener(type, f, false);
-	            return sb.events.record(evt);
-	        };
-	    } else if ( window.attachEvent){
-	        return function(el, type, fn) {
-	        	el = sb.$(el);
-	        	var tar = false;
+					var sb_target = e.target;
+					var sb_related_target = e.relatedTarget;
+					delete e.target;
+					delete e.relatedTarget;
+					e.__defineGetter__("target", function() {
+						return sb.events.distillTarget(sb_target);
+					});
+					e.__defineGetter__("relatedTarget", function() {
+						return sb.events.distillTarget(sb_related_target);
+					});
+					fn.call(el, e);
+				};
+				var evt = {
+					el:el,
+					type:type,
+					fn:f,
+					remove : sb.events.removeThis
+				};
+				el.addEventListener(type, f, false);
+				return sb.events.record(evt);
+			};
+		} else if ( window.attachEvent){
+			return function(el, type, fn) {
+				el = sb.$(el);
+				var tar = false;
 
-	            var f = function() {
-	            	var e = window.event;
-	            	var tar = null;
-		            switch(e.type){
+				var f = function() {
+					var e = window.event;
+					var tar = null;
+					switch(e.type){
 						case 'mouseout':
 							tar = e.relatedTarget || e.toElement;
 							break;
@@ -2071,28 +2120,33 @@ sb.events = {
 					}
 
 					if(tar){
-	            		e.relatedTarget = sb.events.distillTarget(tar);
-	            	}
+						e.relatedTarget = sb.events.distillTarget(tar);
+					}
 
-	            	if(e.srcElement){
-	            		e.target = sb.events.distillTarget(e.srcElement);
-	            	}
+					if(e.srcElement){
+						e.target = sb.events.distillTarget(e.srcElement);
+					}
 
-	            	e.preventDefault = function(){
-	            		e.returnValue = false;
-	            	};
+					e.preventDefault = function(){
+						e.returnValue = false;
+					};
 
-	            	e.stopPropagation = function(){
-	            		e.cancelBubble = true;
-	            	};
+					e.stopPropagation = function(){
+						e.cancelBubble = true;
+					};
 
-	                fn.call(el, e);
-	            };
-	            var evt = {el:el, type:type, fn:f, remove : sb.events.removeThis};
-	            el.attachEvent('on'+type, f);
-	            return sb.events.record(evt);
-	        };
-	    }
+					fn.call(el, e);
+				};
+				var evt = {
+					el:el,
+					type:type,
+					fn:f,
+					remove : sb.events.removeThis
+					};
+				el.attachEvent('on'+type, f);
+				return sb.events.record(evt);
+			};
+		}
 	}(),
 
 	/**
@@ -2109,7 +2163,7 @@ sb.events = {
 	*/
 	log : [],
 
-    /**
+	/**
 	@Name: sb.events.record
 	@Description: used internally
 	*/
@@ -2166,7 +2220,7 @@ sb.events = {
 			tar = tar.parentNode;
 		}
 
-	   return $(tar);
+		return $(tar);
 	}
 
 };
@@ -2254,7 +2308,7 @@ sb.element = function(o){
 		delete o.children;
 	}
 
-    this.eventsAdded = [];
+	this.eventsAdded = [];
 
 
 	if(typeof o.events !='undefined'){
@@ -2286,9 +2340,9 @@ sb.element = function(o){
  * Create Element for IE and browsers that don't have it, notify that we are emulating so that we can copy properties as required
  */
 if(typeof Element == 'undefined'){
-		Element = function(){};
-		Element.emulated = true;
-		Element.prototype = {};
+	Element = function(){};
+	Element.emulated = true;
+	Element.prototype = {};
 }
 
 /**
@@ -2322,7 +2376,9 @@ Element.prototype.addClassName = function(className){
 @Example:
 myElement.append(myOtherElement);
 */
-Element.prototype.append = function(el){return this.appendChild(sb.$(el));};
+Element.prototype.append = function(el){
+	return this.appendChild(sb.$(el));
+};
 
 /**
 @Name: Element.prototype.appendTo
@@ -2615,7 +2671,7 @@ Element.prototype.styles = function(params){
 	for(var prop in params){
 		if(params.hasOwnProperty(prop)){
 			try{
-			this.setStyle(prop, params[prop]);
+				this.setStyle(prop, params[prop]);
 			}catch(e){}
 		}
 	}
@@ -2680,7 +2736,9 @@ Element.prototype.getStyle = function(prop){
 		if(typeof val == 'string'){
 
 			val = val.toLowerCase();
-			if(val == 'rgba(0, 0, 0, 0)'){val = 'transparent';}
+			if(val == 'rgba(0, 0, 0, 0)'){
+				val = 'transparent';
+			}
 
 			if(typeof sb.colors.html !='undefined'){
 				if(sb.colors.html[val]){
@@ -2715,70 +2773,78 @@ myElement.setStyle('opacity', 0.5);
 */
 Element.prototype.setStyle = function(prop, val){
 
-		if(sb.styles.pxProps.inArray(prop) && val !=='' && !val.match(/em|cm|pt|px|%/)){
-			val +='px';
+	if(sb.styles.pxProps.inArray(prop) && val !=='' && !val.match(/em|cm|pt|px|%/)){
+		val +='px';
+	}
+
+	if(prop == 'opacity' && typeof this.style.filter == 'string' && typeof this.style.zoom == 'string'){
+		this.style.opacity = val;
+		this.style.zoom = 1;
+		this.style.filter = "alpha(opacity:"+val*100+")";
+	} else {
+
+		if(prop == 'cssFloat' && typeof this.style.styleFloat == 'string'){
+			prop = 'styleFloat';
 		}
 
-		if(prop == 'opacity' && typeof this.style.filter == 'string' && typeof this.style.zoom == 'string'){
-			this.style.opacity = val;
-			this.style.zoom = 1;
-			this.style.filter = "alpha(opacity:"+val*100+")";
+		if(typeof this.style[prop] == 'string'){
+			this.style[prop] = val;
 		} else {
-
-			if(prop == 'cssFloat' && typeof this.style.styleFloat == 'string'){
-				prop = 'styleFloat';
-			}
-
-			if(typeof this.style[prop] == 'string'){
-				this.style[prop] = val;
-			} else {
-				throw("style["+prop+"] does not exist in this browser's style implemenation");
-			}
+			throw("style["+prop+"] does not exist in this browser's style implemenation");
 		}
+	}
 };
 
 Element.prototype.typeOf = function(){
 	return 'sb.element';
 };
 
-if(!Array.prototype.forEach){
-	sb.include('js1_5');
-}
+sb.init = function(){
+	
+	sb.dom.onReady({
+		id : 'body',
+		onReady : function(){
+			sb.onbodyload.forEach(function(v){
+				if(typeof v == 'function'){
+					v();
+				}
+			});
+		},
+		tries : 600,
+		ontimeout : function(){
+			if(typeof sb.onbodynotready =='function'){
+				sb.onbodynotready();
+			}
+		}
+	});
 
-if(sb.browser.ie6){
-	sb.include('ie6');
-} else {
-	/**
-	@Name: sb.ie6
-	@Description: Used Internally
-	*/
-	sb.ie6 = {
-		pngFix: function(){},
-		pngFixBg: function(el){}
-	};
-}
-
-sb.dom.onReady({
-	id : 'body',
-	onReady : function(){
-		sb.onbodyload.forEach(function(v){
-			if(typeof v == 'function'){
-				v();
+	sb.events.add(window, 'resize', sb.browser.measure);
+	sb.events.add(window, 'unload', function(e){
+		
+		sb.onleavepage.forEach(function(v){
+			if(typeof(v) =='function'){
+				v(e);
 			}
 		});
-	},
-	tries : 600,
-	ontimeout : function(){
-		if(typeof sb.onbodynotready =='function'){
-			sb.onbodynotready();
-		}
-	}
-});
-
-sb.events.add(window, 'resize', sb.browser.measure);
-sb.events.add(window, 'unload', function(e){
-	sb.onleavepage.forEach(function(v){
-		if(typeof(v) =='function'){v(e);}
+		sb.events.removeAll();
 	});
-	sb.events.removeAll();
-});
+	
+};
+
+if(!Array.prototype.forEach){
+	Array.prototype.forEach = function(f){
+		var k;
+		if(typeof f == 'function'){
+			var l = this.length;
+			for(k=0;k<l;k++){
+				f(this[k], k, this);
+			}
+		}
+	};
+	
+	sb.include('js1_5', sb.init);
+	
+} else {
+	sb.init();
+}
+
