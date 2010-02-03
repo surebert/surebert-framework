@@ -1,3 +1,5 @@
+sb.include('math.rand');
+
 /**
 @Name: Element.prototype.quiver
 @Author: Paul Visco 
