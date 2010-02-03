@@ -193,7 +193,7 @@ class sb_Logger_Syslog{
 
 		$strlen = strlen($str);
 		if($strlen > $max_length){
-			trigger_error("Syslog ".$type." is > ".$max_length." (".$strlen.") in length and will be truncated.  Original str is: ".$str);
+			trigger_error("Syslog ".$type." is > ".$max_length." (".$strlen.") in length and will be truncated.  Original str is: ".$str, E_FATAL);
 			return substr($str, 0, $max_length);
 		}
 
