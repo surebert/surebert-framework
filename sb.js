@@ -83,11 +83,15 @@ var sb = {
 			if(typeof unit == 'undefined'){
 				
 				this.included.push(path);
-				file = path.replace(/\./g, "/");
+				if(sb.base == '/surebert'){
+					file = sb.base+'/'+path.replace(/\./g, "/");
+				} else {
+					file = sb.base+path;
+				}
 				
 				if(sb.base.match(/^http/)){
 					var s = new sb.script({
-						src : sb.base+path
+						src : file
 					});
 					
 					if(path == module){
@@ -97,7 +101,7 @@ var sb = {
 
 					s.load();
 				} else {
-					sb.load(sb.base+path);
+					sb.load(file);
 					if(path == module){
 						onload();
 					}
