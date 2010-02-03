@@ -133,6 +133,7 @@ sb.json.rpc2.client.prototype = {
 		var s = new sb.script({
 			src : src.join('&'),
 			onload : function(){
+				
 				s.remove();
 				s=null;
 			}
