@@ -25,13 +25,12 @@ sb.widget.terminal.prototype = {
 			value : '',
 			className : self.className,
 			styles : {
-				width : '100%',
+				width : '95%',
 				backgroundColor : 'black',
 				color: 'lime',
 				fontFamily : 'courier',
 				border : 0,
 				fontSize : '14px',
-				padding : '5px'
 			},
 			events : {
 				keydown : function(e){

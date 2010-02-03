@@ -70,6 +70,36 @@ sb.json.rpc2.client = function(o){
 sb.json.rpc2.client.instances = [];
 
 sb.json.rpc2.client.prototype = {
+
+	/**
+	@Name: sb.json.rpc2.dispatch
+	@Description:  Dispatches a json.rpc2.request via ajax for local, or script for http
+	@Param: sb.json.rpc2.request
+	@Return: calls client's onResponse method and passed a json rpc2 response object in json
+	@Example:
+	client.dispatch(new sb.json.rpc2.request({
+			method : 'current_user',
+			params : ['reid']
+	}));
+	 */
+	dispatch : function(request){
+
+		if(request instanceof sb.json.rpc2.request){
+			this.request = request;
+		}
+
+		if(!this.request instanceof sb.json.rpc2.request){
+			throw('request must be an instance of sb.json.rpc2.request');
+		}
+
+		if(this.url.match(/^http/)){
+			this.dispatchViaScript(request);
+		} else {
+			this.dispatchViaAjax(request);
+		}
+
+	},
+
 	/**
 	@Name: sb.json.rpc2.dispatchViaScript
 	@Description:  Dispatches a json.rpc2.request via script tag for cross site json service usage
@@ -84,11 +114,11 @@ sb.json.rpc2.client.prototype = {
 	 */
 	dispatchViaScript : function(request){
 		sb.include('String.prototype.base64Encode');
-		
+
 		if(request instanceof sb.json.rpc2.request){
 			this.request = request;
 		}
-		
+
 		if(!this.request instanceof sb.json.rpc2.request){
 			throw('request must be an instance of sb.json.rpc2.request');
 		}
@@ -99,22 +129,18 @@ sb.json.rpc2.client.prototype = {
 		src.push('params='+sb.json.encode(this.request.params).base64Encode());
 		src.push('id='+this.id);
 
-		var transport = new sb.element({
-			tag : 'script',
-			type : 'text/javascript',
-			src : src.join('&')
-		});
-
-		if(this.debug == 1){
-			sb.consol.log("Adding script tag to body with src: "+transport.src);
-		}
-	
-		transport.appendTo(document.body);
+		var s = new sb.script({
+			src : src.join('&'),
+			onload : function(){
+				s.remove();
+				s = null
+			}
+		}).load();
 
 	},
-	
+
 	/**
-	@Name: sb.json.rpc2.dispatchV
+	@Name: sb.json.rpc2.dispatchViaAjax
 	@Description:  Dispatches a json.rpc2.request via ajax, only works locally
 	@Param: sb.json.rpc2.request
 	@Return: calls client's onResponse method and passed a json rpc2 response object in json
@@ -125,7 +151,7 @@ sb.json.rpc2.client.prototype = {
 			params : ['reid']
 	}));
 	 */
-	dispatch : function(request){
+	dispatchViaAjax : function(request){
 		
 		if(request instanceof sb.json.rpc2.request){
 			this.request = request;
