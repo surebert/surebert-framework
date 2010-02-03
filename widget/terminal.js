@@ -40,12 +40,23 @@ sb.widget.terminal.prototype = {
 					var data = [];
 					var command = this.value.trim();
 					if(command == 'server'){
-						this.style.backgroundColor = 'yellow';
+						this.style.backgroundColor = 'orange';
+						this.style.color = 'brown';
 						self.sendToServer = true;
 						self.clear();
 						return true;
 						
 					}
+
+					if(command == 'client'){
+						this.style.backgroundColor = 'black';
+						this.style.color = 'lime';
+						self.sendToServer = false;
+						self.clear();
+						return true;
+
+					}
+
 					if(command == 'textarea' || command == 'input'){
 						if(command == 'textarea'){
 
