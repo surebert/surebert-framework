@@ -2799,52 +2799,30 @@ Element.prototype.typeOf = function(){
 	return 'sb.element';
 };
 
-sb.init = function(){
-	
-	sb.dom.onReady({
-		id : 'body',
-		onReady : function(){
-			sb.onbodyload.forEach(function(v){
-				if(typeof v == 'function'){
-					v();
-				}
-			});
-		},
-		tries : 600,
-		ontimeout : function(){
-			if(typeof sb.onbodynotready =='function'){
-				sb.onbodynotready();
-			}
-		}
-	});
-
-	sb.events.add(window, 'resize', sb.browser.measure);
-	sb.events.add(window, 'unload', function(e){
-		
-		sb.onleavepage.forEach(function(v){
-			if(typeof(v) =='function'){
-				v(e);
+sb.dom.onReady({
+	id : 'body',
+	onReady : function(){
+		sb.onbodyload.forEach(function(v){
+			if(typeof v == 'function'){
+				v();
 			}
 		});
-		sb.events.removeAll();
-	});
-	
-};
-
-if(!Array.prototype.forEach){
-	Array.prototype.forEach = function(f){
-		var k;
-		if(typeof f == 'function'){
-			var l = this.length;
-			for(k=0;k<l;k++){
-				f(this[k], k, this);
-			}
+	},
+	tries : 600,
+	ontimeout : function(){
+		if(typeof sb.onbodynotready =='function'){
+			sb.onbodynotready();
 		}
-	};
-	
-	sb.include('js1_5', sb.init);
-	
-} else {
-	sb.init();
-}
+	}
+});
 
+sb.events.add(window, 'resize', sb.browser.measure);
+sb.events.add(window, 'unload', function(e){
+
+	sb.onleavepage.forEach(function(v){
+		if(typeof(v) =='function'){
+			v(e);
+		}
+	});
+	sb.events.removeAll();
+});

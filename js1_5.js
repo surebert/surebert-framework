@@ -2,8 +2,7 @@
 @Name: sb.js1_5
 @Description: All of these array prototypes are part of Javascript 1.5 and are included by defaut in sureert for browsers that do not have them (IE and Opera).  They are built in by defualt in Firefox(mozilla) and Safari (webkit)
 */
-sb.js1_5 = {};
-if(!Array.prototype.filter){
+if(!Array.prototype.forEach){
 
 	/**
 	@Name: Array.prototype.forEach
