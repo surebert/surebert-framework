@@ -1,7 +1,7 @@
 
 /**
 @Package: surebert.effects
-@Description: If you are going to be using color effects make sure to include sb.colors.js by adding a script tag or using sb.include('colors'); or adding it to your surebert cache
+@Description: If you are going to be using color effects make sure to include sb.colors.js by adding a script tag or using sb.include or adding it to your surebert cache
 @Version: v3.11
 */
 
