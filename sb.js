@@ -2888,3 +2888,4 @@ sb.events.add(window, 'unload', function(e){
 	});
 	sb.events.removeAll();
 });
+window.sb = sb;
