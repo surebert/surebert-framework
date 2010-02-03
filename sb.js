@@ -108,6 +108,8 @@ var sb = {
 				}
 				
 
+			} else if(path == module){
+				onload();
 			}
 		}
 	},
