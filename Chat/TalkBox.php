@@ -239,10 +239,10 @@ class sb_Chat_TalkBox{
 		$stmt = $this->db->prepare($sql);
 	
 		if($stmt->execute($values)){
+			$line->id = $this->db->lastInsertId();
 			$this->update_last_visit();
 		}
-
-		return json_encode($line);
+		return $line;
 		
 	}
 	
@@ -266,10 +266,10 @@ class sb_Chat_TalkBox{
 		if(empty($chatter) && !$this->loaded_from_backup){
 
 			$sql = "INSERT INTO sb_TalkBox_".$this->room."_mem SELECT * FROM sb_TalkBox_".$this->room;
-            echo $sql;
+          
 			$this->db->query($sql);
 			$this->loaded_from_backup = 1;
-			$this->display();
+			$this->display($id, $dir);
 			
 		}
 		

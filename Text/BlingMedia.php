@@ -458,9 +458,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 	 * @return string The cleaned text
 	 */
 	public static function parse($str){
-		
 		$str = parent::clean($str);
-		
 		$str = self::pdf_to_link($str);
 		$str = self::images_to_html($str);
 		$str = self::nonflash_media_to_html($str);
