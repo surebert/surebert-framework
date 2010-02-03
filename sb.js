@@ -240,6 +240,45 @@ var sb = {
 	onleavepage : [],
 
 	/**
+	@Name: sb.get
+	@Description: a shortcut for sending data via ajax with get and fetch it automatically
+	@Param: string url The address to send to
+	@Param: object data The data to send as object or string
+	@Param: function The callback function
+	@Param: string format The ajax return format json, xml, text, js, etc
+	@Return: sb.ajax The sb.ajax instance created
+	@Example:
+	sb.get('/some/url', {a: 'b'}, function(r){alert(r);}
+	or
+	sb.get('/some/url', function(r){alert(r);}
+	*/
+	get : function(url, data, onResponse, format){
+
+		if(typeof data == 'function'){onResponse = data;data=null;}
+		return sb.ajax.shortcut(url, data, onResponse, format, 'get');
+	},
+
+
+	/**
+	@Name: sb.post
+	@Description: a shortcut for sending data via ajax with post and fetch it automatically
+	@Param: string url The address to send to
+	@Param: object data The data to send as object or string
+	@Param: function The callback function
+	@Param: string format The ajax return format json, xml, text, js, etc
+	@Return: sb.ajax The sb.ajax instance created
+	@Example:
+	sb.post('/some/url', {a: 'b'}, function(r){alert(r);}
+	or
+	sb.post('/some/url', function(r){alert(r);}
+	*/
+	post : function(url, data, onResponse, format){
+
+		if(typeof data == 'function'){onResponse = data;data=null;}
+		return sb.ajax.shortcut(url, data, onResponse, format, 'post');
+	},
+
+	/**
 	@Name: sb.toArray
 	@Description: converts other types of iterable objects into an array e.g. an arguments list or an element sb.nodeList returned from getElementsByTagName.
 	@Param: Object Iterable non-array
@@ -1511,6 +1550,23 @@ sb.ajax.defaultMethod = 'post';
 sb.ajax.defaultFormat = 'text';
 */
 sb.ajax.defaultFormat = 'text';
+
+/**
+@Name: sb.ajax.shortcut
+@Description: Used internally for sb.post and sb.get
+*/
+sb.ajax.shortcut = function(url, data, onResponse, format, method){
+
+	var aj = new sb.ajax({
+		url : url,
+		method : method,
+		format : format,
+		data : data,
+		onResponse : onResponse
+	});
+	aj.fetch();
+	return aj;
+};
 
 sb.ajax.prototype = {
 
