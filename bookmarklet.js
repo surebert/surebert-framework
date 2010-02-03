@@ -2,6 +2,8 @@
  * Used when loading surebert from bookmarklet
  * e.g. <a href="javascript:var d=document;var s=d.createElement('script');s.src='http://webservicesdev.roswellpark.org/surebert/basic/bookmarklet';d.body.appendChild(s);void(0);">surebert</a>
  */
+
+
 sb.include('forms.textarea');
 sb.include('forms.textarea.allowTabs');
 

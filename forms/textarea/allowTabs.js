@@ -1,3 +1,5 @@
+sb.include('forms.textarea');
+
 /**
 @Name: sb.forms.textarea.allowTabs
 @Description: Allows the user to use tabs in a textarea
