@@ -241,6 +241,8 @@ class sb_JSON_RPC2_Server {
 
 		$request = null;
 
+		$input = '';
+
 		//DEBUGGING
 		if(!empty($debug_request)) {
 			$request = new sb_JSON_RPC2_Request($debug_request);
