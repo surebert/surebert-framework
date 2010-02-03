@@ -19,7 +19,7 @@ sb.include('widget.terminal', function(){
 		},
 		onAfterCreate : function(){},
 		processClientside : function(command){
-			var m = command.match(/^(a|e|s)\.p\.(.*?)$/);
+			var m = command.match(/^(a|e|s|n)\.p\.(.*?)$/);
 			if(m){
 				var d = false;
 				switch(m[1]){
@@ -31,6 +31,9 @@ sb.include('widget.terminal', function(){
 						break;
 					case 'a':
 						d = 'Array';
+						break;
+					case 'n':
+						d = 'nodeList';
 						break;
 				}
 				if(d){
