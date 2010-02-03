@@ -41,9 +41,6 @@ sb.include('widget.terminal', function(){
 				}
 				
 			}
-			//eval(command);
-			//this.clear();
-			//return true;
 			return false;
 		}
 	});
