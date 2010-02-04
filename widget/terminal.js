@@ -30,7 +30,7 @@ sb.widget.terminal.prototype = {
 				color: 'lime',
 				fontFamily : 'courier',
 				border : 0,
-				fontSize : '14px',
+				fontSize : '14px'
 			},
 			events : {
 				keydown : function(e){
