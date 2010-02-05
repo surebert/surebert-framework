@@ -6,13 +6,71 @@
  *
  * Used to create syslog compatible logs
  *
+ * $syslog = new sb_Logger_Syslog('myprocess');
+ * $syslog->set_message('hello log', 1, 11)->save()
+ * //OR
+ * $syslog->set_message('hello log', 1, 11)->send('mylogserver.com');
  * @author Paul Visco
  * @package sb_Logger
  */
 class sb_Logger_Syslog{
 
 	/**
-	 *   Facility values:
+	 * (Optional) By default is hostname of machine logging, can override if logging for other machine
+	 * no embedded space, no domain name, only a-z A-Z 0-9 and other authorized characters
+	 * @var string
+	 */
+	public $hostname='';
+
+	/**
+	 * Process used to generate the message
+	 * e.g. ls, su, php limit to alphnum < 32 chars, details can go in contents if longer is required
+	 * @var string
+	 */
+	public $process;
+
+	/**
+	 * The server to send to when sending, can also be passed as argument to ->send()
+	 * @var string
+	 */
+	public $server;
+
+	/**
+	 * The current line being logged
+	 * @var string
+	 */
+	protected $message ='';
+
+	/**
+	 * Create a new log to send or save
+	 * @param string $process The process used to create the log e.g. ls, su - limit to alphnum < 32 chars - truncates access
+	 * @param string $hostname The hostname of the machine that generated the log messages
+	 * *  e.g. ls, su, php limit to alphnum < 32 chars, details can go in contents if longer is required
+	 * 
+	*/
+	public function __construct($process, $hostname=''){
+		
+		$this->process = $this->check_length($process, 32, 'process');
+		$this->hostname = $hostname ? $hostname : php_uname('n');
+	}
+
+	/**
+	 * Set the message to send or save
+	 * @param string $content The plain text log message, must be under 1024
+	 * Anything over 1024 will be truncated remember to allow space for the
+	 * header which is ~40 chars
+	 *
+	 * @param integer $severity The severity of the message
+	 *		0 Emergency: system is unusable
+	 *		1 Alert: action must be taken immediately
+	 *		2 Critical: critical conditions
+	 *		3 Error: error conditions
+	 *		4 Warning: warning conditions
+	 *		5 Notice: normal but significant condition (default value)
+	 *		6 Informational: informational messages
+	 *		7 Debug: debug-level messages
+	 *
+	 *  @param integer $facility
 	 *      0 kernel messages
 	 *      1 user-level messages
 	 *      2 mail system
@@ -37,70 +95,47 @@ class sb_Logger_Syslog{
 	 *     21 local user 5 (local5)
 	 *     22 local user 6 (local6)
 	 *     23 local user 7 (local7)
-	 * @var integer
-	 */
-	public $facility = 16;
-
-	/**
-	 * The severity of the message
-	 *	0 Emergency: system is unusable
-	 *	1 Alert: action must be taken immediately
-	 *	2 Critical: critical conditions
-	 *	3 Error: error conditions
-	 *	4 Warning: warning conditions
-	 *	5 Notice: normal but significant condition (default value)
-	 *	6 Informational: informational messages
-	 *	7 Debug: debug-level messages
-	 * @var integer
-	 */
-	public $severity = 5;
-
-	/**
-	 * (Optional) By default is hostname of machine logging, can override if logging for other machine
-	 * no embedded space, no domain name, only a-z A-Z 0-9 and other authorized characters
-	 * @var string
-	 */
-	public $hostname='';
-
-	/**
-	 * Process used to generate the message
-	 * e.g. ls, su, php limit to alphnum < 32 chars, details can go in contents if longer is required
-	 * @var string
-	 */
-	public $process;
-
-	/**
-	 * The plain text log message to send, limited to 1024 characters
-	 * remember to allow space for the header which is ~40 chars
 	 *
-	 * Anything over 1024 will be truncated
-	 * @var string
+	 *	@return object This so you can chain ->send or ->save
 	 */
-	public $content;
+	public function set_message($content, $severity=5, $facility=16){
 
-	/**
-	 * Raw data packet to send instead of assembled message
-	 * @var string
-	 */
-	protected $raw_data ='';
-
-	/**
-	 * Create a new log to send or save
-	 * @param string $process The process used to create the log e.g. ls, su - limit to alphnum < 32 chars - truncates access
-	 * @param string $content The plain text log message, must be under 1024
-	 */
-	public function __construct($process, $content, $facility=16, $severity=5){
-		
-		$this->process = $this->check_length($process, 32, 'process');
-		
 		$this->content = $this->check_length($content);
+		
+		$facility = intval($facility);
+		$severity = intval($severity);
+		if ($facility <  0) { $facility =  0;}
+		if ($facility > 23) { $facility = 23;}
+		if ($severity <  0) { $severity =  0;}
+		if ($severity >  7) { $severity =  7;}
 
-		$this->facility = intval($facility);
-		$this->severity = intval($severity);
-		if ($this->facility <  0) { $this->facility =  0;}
-		if ($this->facility > 23) { $this->facility = 23;}
-		if ($this->severity <  0) { $this->severity =  0;}
-		if ($this->severity >  7) { $this->severity =  7;}
+		$this->process = $this->check_length($this->process, 32, 'process');
+
+		$time = time();
+		$month      = date("M", $time);
+		$day        = substr("  ".date("j", $time), -2);
+		$hhmmss     = date("H:i:s", $time);
+		$tstamp  = $month." ".$day." ".$hhmmss;
+
+		$priority    = "<".($facility*8 + $severity).">";
+		$header = $tstamp." ".$this->hostname;
+
+		$this->message = $priority.$header." ".$this->process.": ".$this->content;
+
+		$this->message = $this->check_length($this->message);
+
+		return $this;
+
+	}
+
+	/**
+	 *
+	 * @param string $message The raw message to send
+	 * @return object This so you can chain ->send or ->save
+	 */
+	public function set_raw_message($message){
+		$this->message = $message;
+		return $this;
 	}
 
 	/**
@@ -118,7 +153,7 @@ class sb_Logger_Syslog{
 			mkdir($log_dir, 0777, true);
 		}
 	
-		return file_put_contents($log_dir.date('Y_m_d').'.log', $this->construct_message()."\n", FILE_APPEND);
+		return file_put_contents($log_dir.date('Y_m_d').'.log', $this->message."\n", FILE_APPEND);
 	}
 
 	/**
@@ -131,54 +166,24 @@ class sb_Logger_Syslog{
 		if(!empty($server)){
 			$this->server = $server;
 		}
+
+		if(empty($this->server)){
+			trigger_error('No server to send to has been specified', E_USER_WARNING);
+		}
 		
 		if (intval($timeout) > 0){
 			$this->timeout = intval($timeout);
 		}
 
-		$message = $this->construct_message();
-
 		$fp = fsockopen("udp://".$this->server, $this->port, $errno, $errstr);
 		if ($fp){
-			fwrite($fp, $message);
+			$result = fwrite($fp, $this->message);
 			fclose($fp);
-			$result = $message;
 		} else {
-			$result = "ERROR: $errno - $errstr";
+			$result = false;
 		}
 
 		return $result;
-
-	}
-
-	/**
-	 *Constructs the message to log from the properties of the instance
-	 * @return string
-	 */
-	protected function construct_message(){
-	
-		if(!empty($this->raw_data)){
-			$packet = $this->raw_data;
-		} else {
-
-			$this->process = $this->check_length($this->process, 32, 'process');
-
-			$time = time();
-			$month      = date("M", $time);
-			$day        = substr("  ".date("j", $time), -2);
-			$hhmmss     = date("H:i:s", $time);
-			$tstamp  = $month." ".$day." ".$hhmmss;
-
-			$priority    = "<".($this->facility*8 + $this->severity).">";
-			$header = $tstamp." ".(empty($this->hostname) ? php_uname('n') : $this->hostname);
-
-			$packet = $priority.$header." ".$this->process.": ".$this->content;
-
-		}
-
-		$packet = $this->check_length($packet);
-
-		return $packet;
 
 	}
 
@@ -187,27 +192,17 @@ class sb_Logger_Syslog{
 	 * @param string $str The string to check
 	 * @param int $max_length Teh maximun length to check for
 	 * @param string $type The type of thing to check packet or process
-	 * @return <type>
+	 * @return string The string truncated to max length
 	 */
 	protected function check_length($str, $max_length=1024, $type='packet'){
 
 		$strlen = strlen($str);
 		if($strlen > $max_length){
-			trigger_error("Syslog ".$type." is > ".$max_length." (".$strlen.") in length and will be truncated.  Original str is: ".$str, E_FATAL);
+			trigger_error("Syslog ".$type." is > ".$max_length." (".$strlen.") in length and will be truncated.  Original str is: ".$str, E_USER_WARNING);
 			return substr($str, 0, $max_length);
 		}
 
 		return $str;
-	}
-
-	/**
-	 * Send a raw string instead of the assembled packet
-	 * @param string $packet If this is set it is sent instead of contructing the message packet, allows you to construct custom packets to send
-	 */
-	public function set_raw_data($packet){
-
-		$this->raw_packet = $packet;
-
 	}
 }
 ?>
