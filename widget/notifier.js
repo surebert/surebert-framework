@@ -108,6 +108,7 @@ sb.widget.notifier = {
 	@Description: All user notifications feedback goes through this function.
     @Param: message string The message to be displayed, can be plain text or HTML
     @Param: className string Optional The CSS className to assign to the message
+	@Param: stay boolean Optional Determines if box stays or fade by default
     @Param: effect object Optional Can override the properties of the effect used to move the boxes
         effect.heightTween string The height tween method
         effect.opacityTween string The opacity tween method
@@ -116,7 +117,7 @@ sb.widget.notifier = {
     @Example:
     sb.widget.notifier.notify('Hello World '+new Date());
 	*/
-    notify : function(message, className, effect){
+    notify : function(message, className, stay, effect){
 
         className = ' '+className || '';
         var t = this;
@@ -134,9 +135,9 @@ sb.widget.notifier = {
         };
 
         el.appendToTop(this.box);
-     
-        el.clearing = window.setTimeout(el.clear, sb.widget.notifier.timeout);
-
+		if(!stay){
+			el.clearing = window.setTimeout(el.clear, sb.widget.notifier.timeout);
+		}
         return el;
 
     },

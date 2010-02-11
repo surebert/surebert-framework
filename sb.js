@@ -246,13 +246,17 @@ var sb = {
 	@Description: a shortcut for sending data via ajax with get and fetch it automatically
 	@Param: string url The address to send to
 	@Param: object data The data to send as object or string
-	@Param: function The callback function
+	@Param: function onResponse The callback function or #id of node to replace innerHTML of
 	@Param: string format The ajax return format json, xml, text, js, etc
 	@Return: sb.ajax The sb.ajax instance created
 	@Example:
-	sb.get('/some/url', {a: 'b'}, function(r){alert(r);}
+	sb.get('/some/url', {a: 'b'}, function(r){alert(r);});
 	or
-	sb.get('/some/url', function(r){alert(r);}
+	sb.get('/some/url', function(r){alert(r);});
+	or
+	sb.get('/some/url', {a: 'b'}, '#myDiv');
+	or
+	sb.get('/some/url', '#myDiv');
 	*/
 	get : function(url, data, onResponse, format){
 
@@ -266,13 +270,18 @@ var sb = {
 	@Description: a shortcut for sending data via ajax with post and fetch it automatically
 	@Param: string url The address to send to
 	@Param: object data The data to send as object or string
-	@Param: function The callback function
+	@Param: function onResponse The callback function or #id of node to replace innerHTML of
 	@Param: string format The ajax return format json, xml, text, js, etc
 	@Return: sb.ajax The sb.ajax instance created
 	@Example:
-	sb.post('/some/url', {a: 'b'}, function(r){alert(r);}
+	sb.post('/some/url', {a: 'b'}, function(r){alert(r);});
 	or
-	sb.post('/some/url', function(r){alert(r);}
+	sb.post('/some/url', function(r){alert(r);});
+	or
+	sb.post('/some/url', {a: 'b'}, '#myDiv');
+	or
+	sb.post('/some/url', '#myDiv');
+
 	*/
 	post : function(url, data, onResponse, format){
 
@@ -1563,9 +1572,14 @@ sb.ajax.shortcut = function(url, data, onResponse, format, method){
 		url : url,
 		method : method,
 		format : format,
-		data : data,
-		onResponse : onResponse
+		data : data
 	});
+
+	if(typeof onResponse == 'function'){
+		aj.onResponse = onResponse;
+	} else if (typeof onResponse == 'string'){
+		aj.node = onResponse;
+	}
 	aj.fetch();
 	return aj;
 };
