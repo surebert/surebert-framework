@@ -134,6 +134,27 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
     }
 
 	/**
+	 * Lists the contents of a remote directory
+	 * @param string $remote_dir
+	 * @return Array The array of files
+	 */
+	public function ls($remote_dir){
+		$dir = "ssh2.sftp://".$this->sftp.$remote_dir;
+		$handle = opendir($dir);
+		$files = Array();
+		while (false !== ($file = readdir($handle))) {
+			if (substr($file, 0, 1) != '.'){
+				$files[] = $file;
+			}
+		}
+		
+		closedir($handle);
+
+		return $files;
+
+	}
+
+	/**
 	 * Gets the size of a remote file
 	 * @param string $remote_file path to remote file
 	 * @return integer The size of the file in bytes
