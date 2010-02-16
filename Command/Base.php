@@ -99,7 +99,7 @@ class sb_Command_Base {
 		$this->log('TOTAL ERRORS: '.$this->number_of_errors, 'MESSAGE');
 		$this->log('TOTAL TIME REQUIRED: '.$milliseconds."ms\n", 'MESSAGE');
 
-		$this->log(date('Y/m/d H:i:s')." - End Log \n", 'MESSAGE');
+		$this->log(date('Y/m/d H:i:s')." - End Log", 'MESSAGE');
 
 	}
 
