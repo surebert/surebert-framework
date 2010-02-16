@@ -97,7 +97,7 @@ class sb_Command_Base {
 		$milliseconds = round((microtime(true) - $this->start_time)*1000, 2);
 		$this->log('PEAK MEMORY USAGE: '.$this->get_memory_usage(), 'MESSAGE');
 		$this->log('TOTAL ERRORS: '.$this->number_of_errors, 'MESSAGE');
-		$this->log('TOTAL TIME REQUIRED: '.$milliseconds."ms\n", 'MESSAGE');
+		$this->log('TOTAL TIME REQUIRED: '.$milliseconds."ms", 'MESSAGE');
 
 		$this->log(date('Y/m/d H:i:s')." - End Log", 'MESSAGE');
 
