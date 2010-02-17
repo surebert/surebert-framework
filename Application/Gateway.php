@@ -737,7 +737,6 @@ $root = str_replace("\\", "/", $root);
 $root = preg_replace('~/public.*$~', '', $root);
 define("ROOT", $root);
 unset($root);
-echo ROOT;
 
 //initialize the gateway
 Gateway::init();
