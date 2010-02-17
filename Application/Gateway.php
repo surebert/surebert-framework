@@ -731,7 +731,13 @@ if(isset($argv)) {
 	Gateway::$html_errors = false;
 }
 
-define("ROOT", str_replace('/public', '', str_replace("\\", "/", Gateway::$command_line ? $_ENV['PWD'] : $_SERVER['DOCUMENT_ROOT'])));
+//get root
+$root = Gateway::$command_line ? $argv[0] : $_SERVER['DOCUMENT_ROOT'];
+$root = str_replace("\\", "/", $root);
+$root = preg_replace('~/public.*$~', '', $root);
+define("ROOT", $root);
+unset($root);
+echo ROOT;
 
 //initialize the gateway
 Gateway::init();
