@@ -732,11 +732,20 @@ if(isset($argv)) {
 }
 
 //get root
-$root = Gateway::$command_line ? $argv[0] : $_SERVER['DOCUMENT_ROOT'];
+if(Gateway::$command_line){
+	$root = $argv[0];
+	if($root == 'gateway.php'){
+		$root = dirname(getcwd());
+	}
+} else {
+	$root = $_SERVER['DOCUMENT_ROOT'];
+}
+
 $root = str_replace("\\", "/", $root);
 $root = preg_replace('~/public.*$~', '', $root);
 define("ROOT", $root);
 unset($root);
+
 
 //initialize the gateway
 Gateway::init();
