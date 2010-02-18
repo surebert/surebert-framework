@@ -16,7 +16,7 @@ r.onKeyUp() function which can be changed at any point
 r.observe(); function start or restart observing keypresses
 r.unobserve(); function stop observing keypresses
 @Example:
-var onDelayedKeyUp = $('#search_main').onDelayedKeyup({
+var onDelayedKeyUp = $('#search_main').onDelayedKeyUp({
     delay : 500,
     onAfterDelay : function(e){
         //if the value is more than one character
@@ -38,9 +38,8 @@ var onDelayedKeyUp = $('#search_main').onDelayedKeyup({
     }
 });
 */
-Element.prototype.onDelayedKeyup = function(o){
+Element.prototype.onDelayedKeyUp = function(o){
 
-    if(!o.onAfterDe)
     var el = this;
     var ret = {
         onAfterDelay : o.onAfterDelay,
