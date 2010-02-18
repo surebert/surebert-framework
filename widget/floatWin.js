@@ -1,4 +1,7 @@
 sb.include('Element.prototype.makeDraggable');
+sb.include('Element.prototype.getPosition');
+sb.include('Element.prototype.mv');
+sb.include('Element.prototype.hide');
 
 sb.widget.floatWin = function(o){
 	
