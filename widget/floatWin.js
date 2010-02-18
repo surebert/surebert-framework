@@ -132,7 +132,7 @@ sb.widget.floatWin = function(o){
 	if(!o.closeButton){
 		floatWin.addIcon(new sb.element({
 			tag : 'img',
-			src : '/surebert/load/_media/close.png',
+			src : sb.base+'_media/close.png',
 			onclick : function(){
 				floatWin.close();
 			}
