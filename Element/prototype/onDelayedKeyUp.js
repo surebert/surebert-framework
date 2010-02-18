@@ -50,16 +50,20 @@ Element.prototype.onDelayedKeyUp = function(o){
         debug : o.debug,
         count : 0,
         unobserve : function(){
-            window.clearTimeout(this.timer);
-            sb.events.remove(this.keyup);
+            window.clearTimeout(ret.timer);
+           
+			sb.events.remove(ret.keyup);
+			sb.events.remove(ret.keydown);
+			ret.keyup = false;
+			ret.keydown = false;
         },
 
         observe : function(){
 
             if(this.keyup){return;}
 
-            this.keyup = el.evt('keyup', function(e){
-
+            ret.keyup = el.evt('keyup', function(e){
+				
                 ret.count = 0;
 
                if(typeof ret.onKeyUp == 'function'){
@@ -76,7 +80,7 @@ Element.prototype.onDelayedKeyUp = function(o){
                     };
                 }
 
-                if(!ret.timer){
+                if(!ret.timer && e.keyCode != 27){
                    
                      ret.timer = window.setInterval(function(){
                         ret.count++;
@@ -103,7 +107,7 @@ Element.prototype.onDelayedKeyUp = function(o){
                 
             });
 
-            this.keydown = el.evt('keydown', function(e){
+            ret.keydown = el.evt('keydown', function(e){
                
                 if(typeof ret.onKeyDown == 'function'){
                     ret.onKeyDown.call(el, e);
