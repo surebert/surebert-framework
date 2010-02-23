@@ -71,7 +71,7 @@ sb.widget.floatWin.prototype = {
 
 			},
 			dblclick : function(e){
-				document.title = e.target.nodeName;
+				
 				if(e.target == self.titleText || e.target.isWithin(self.titleText)){
 					if(this.shaded){
 
