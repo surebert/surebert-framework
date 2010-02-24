@@ -14,7 +14,7 @@ Element.prototype.getContaining = function(nodeName){
 	var ret = false;
 	var parent = this;
 
-	while(parent = $(parent.parentNode)){
+	while(parent = sb.$(parent.parentNode)){
 		if(parent.nodeName && parent.nodeName == nodeName.toUpperCase()){
 
 			return parent;

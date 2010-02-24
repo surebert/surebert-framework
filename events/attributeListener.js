@@ -22,7 +22,10 @@ var myListener = new sb.events.attributeListener({
 });
 
 */
-sb.events.attributeListener = sb.events.listener;
+sb.events.attributeListener = function(params){
+	return sb.events.listener.apply(this, arguments);
+};
+sb.events.attributeListener.prototype = new sb.events.listener();
 sb.events.attributeListener.prototype.delegate = function(e){
 	var target = e.target;
 	var attr = target.getAttribute(this.attribute);

@@ -88,7 +88,7 @@ sb.drag = {
 		var x=e.clientX, y=e.clientY, el;
 		var scroll = sb.browser.getScrollPosition();
 		
-		el = $(this);
+		el = sb.$(this);
 		el.origOpacity = el.getStyle('opacity') ||1;
 
 		//set handlers
@@ -110,7 +110,7 @@ sb.drag = {
 		}
 		
 		while(el.nodeType == 3 || el.getStyle('position') == 'static'){
-			el = $(el.parentNode);
+			el = sb.$(el.parentNode);
 		}
 		
 		el.x = {

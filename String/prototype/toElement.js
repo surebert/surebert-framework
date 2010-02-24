@@ -17,9 +17,9 @@ String.prototype.toElement = function(parentNodeType){
 	});
 	
 	if(temp.childNodes.length > 1){
-		return $(temp);
+		return sb.$(temp);
 	} else {
-		return $(temp.firstChild);	
+		return sb.$(temp.firstChild);
 	}
 };
 

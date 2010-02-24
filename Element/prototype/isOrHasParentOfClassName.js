@@ -19,7 +19,7 @@ Element.prototype.isOrHasParentOfClassName = function(className){
 
     var ret = false;
     var parent = this;
-    while(parent = $(parent.parentNode)){
+    while(parent = sb.$(parent.parentNode)){
         if(parent.hasClassName && parent.hasClassName(className)){
             return parent;
         }

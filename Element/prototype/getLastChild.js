@@ -14,5 +14,5 @@ Element.prototype.getLastChild = function(){
 	while (node && node.nodeType && node.nodeType == 3) {
 		node = node.previousSibling;
 	}
-	return $(node);
+	return sb.$(node);
 };

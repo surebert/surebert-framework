@@ -9,7 +9,7 @@
 $('#one_element').containsElement('#another_element');
 */
 Element.prototype.containsElement = function(b){
-    b = $(b);
+    b = sb.$(b);
 
     return this.contains ?
     this != b && this.contains(b) :

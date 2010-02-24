@@ -11,15 +11,15 @@ myList = new sb.widget.swapList('#myList', '');
 */
 Element.prototype.getParent = function(){
 	if(this.parentNode){
-		return $(this.parentNode);
+		return sb.$(this.parentNode);
 	}
 	return false;
 };
 
 sb.widget.swapList = function(id, innerHTML){
 	this.id = id;
-	this.list = $(id);
-	this.listItems = $(id+' li');
+	this.list = sb.$(id);
+	this.listItems = sb.$(id+' li');
 	this.addButtons(innerHTML);
 	this.addEvents();
 };
@@ -46,7 +46,7 @@ sb.widget.swapList.prototype = {
 	
 	addOrder : function(){
 		var order =0;
-		$(this.id+' li').forEach(function(li){
+		sb.$(this.id+' li').forEach(function(li){
 			li.order =order;
 			//li.firstChild.innerHTML = order;
 			order++;
@@ -55,7 +55,7 @@ sb.widget.swapList.prototype = {
 	
 	getOrder : function(){
 		var order =[];
-		$(this.id+' li').forEach(function(li, k){
+		sb.$(this.id+' li').forEach(function(li, k){
 			order[k] = li.id;
 		});
 		return order;

@@ -57,7 +57,7 @@ sb.forms.editable.field = function(params){
 	if(!params.editableElement){
 		throw('You must define the element with sb.forms.editable.field');
 	}
-	this.editableElement = $(params.editableElement);
+	this.editableElement = sb.$(params.editableElement);
 	if(this.editableElement.sb_editor){
 		return this.editableElement.editor;
 	}

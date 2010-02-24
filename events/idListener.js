@@ -20,7 +20,11 @@ var myListener = new sb.events.idListener({
 });
 
 */
-sb.events.idListener = sb.events.listener;
+sb.events.idListener = function(params){
+	return sb.events.listener.apply(this, arguments);
+};
+
+sb.events.idListener.prototype = new sb.events.listener();
 sb.events.idListener.prototype.delegate = function(e){
 	var target = e.target;
 	if(target.id == ''){return false;}

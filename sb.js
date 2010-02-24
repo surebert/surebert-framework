@@ -424,7 +424,7 @@ var sb = {
 };
 
 /**
-@Name: $
+@Name: sb.$
 @Type: function
 @Param: String Use CSS selectors to return the elements desired
 @Description: One of the most important parts of the surebert library. Can reference DOM elements in many way using CSS selectors.  The simplest use of it is to reference DOM elements by their id property.
@@ -474,7 +474,7 @@ e.g. 'p, b, #wrapper' Commas allow you to make multiple selections at once.This 
 e.g  '*:not(p)' LIMITED SUPPORT - returns all nodes that are not p tags
 */
 
-$ = function(selector, root) {
+sb.$ = function(selector, root) {
 
 	root = root || document;
 
@@ -488,7 +488,7 @@ $ = function(selector, root) {
 		if(Element.emulated === true && typeof selector == 'object' && selector !== null){
 			
 			if(selector.nodeType && selector.nodeType == 1){
-				$.copyElementPrototypes(selector);
+				sb.$.copyElementPrototypes(selector);
 				
 			} else if (typeof selector.getElementPrototypes == 'function'){
 				
@@ -507,7 +507,7 @@ $ = function(selector, root) {
 		nodeList.add(root.querySelectorAll(selector));
 
 	} else {
-		$.parseSelectors(nodeList, root);
+		sb.$.parseSelectors(nodeList, root);
 	}
 
 	if(nodeList.length() === 0 && nodeList.selector.match(/^\#[\w-]+$/) ){
@@ -523,7 +523,7 @@ $ = function(selector, root) {
 
 };
 
-$.copyElementPrototypes = function(node){
+sb.$.copyElementPrototypes = function(node){
 	var ep = Element.prototype;
 	for(var prop in ep){
 		if(ep.hasOwnProperty(prop)){
@@ -538,7 +538,7 @@ $.copyElementPrototypes = function(node){
 @Param: within
 @Description: Used Internally
 */
-$.parseSelectors = function(nodes, within){
+sb.$.parseSelectors = function(nodes, within){
 
 	within = within || document;
 	var root = [within], s=0, selectors = nodes.selector.split(",");
@@ -553,7 +553,7 @@ $.parseSelectors = function(nodes, within){
 
 			if(selector.indexOf(">")+1){
 
-				root = $.getElementsByParent(selector);
+				root = sb.$.getElementsByParent(selector);
 
 				if(k+1 == a.length){
 					nodes.add(root);
@@ -565,7 +565,7 @@ $.parseSelectors = function(nodes, within){
 			} else if(selector.indexOf('[')+1){
 
 				///look for attribute's by searching for sqaure brackets //
-				root = $.getElementsByAttributes(root, selector);
+				root = sb.$.getElementsByAttributes(root, selector);
 
 				if(k+1 == a.length){
 					nodes.add(root);
@@ -574,7 +574,7 @@ $.parseSelectors = function(nodes, within){
 				return true;
 			} else if(selector.indexOf("~")+1){
 
-				root = $.getElementsBySiblingCombinator(root, selector);
+				root = sb.$.getElementsBySiblingCombinator(root, selector);
 
 				if(k+1 == a.length){
 					nodes.add(root);
@@ -585,7 +585,7 @@ $.parseSelectors = function(nodes, within){
 
 			} else if(selector.indexOf("+")+1){
 
-				root = $.getElementsByAdjacentSibling(root, selector);
+				root = sb.$.getElementsByAdjacentSibling(root, selector);
 
 				if(k+1 == a.length){
 					nodes.add(root);
@@ -596,7 +596,7 @@ $.parseSelectors = function(nodes, within){
 
 			} else if(selector.indexOf(":")+1){
 				//look for pseudo selectors
-				root = $.parsePseudoSelectors(root, selector);
+				root = sb.$.parsePseudoSelectors(root, selector);
 
 				if(k+1 == a.length){
 					nodes.add(root);
@@ -606,7 +606,7 @@ $.parseSelectors = function(nodes, within){
 
 			} else if((selector.indexOf("#") === 0 && selector.match(/^\#[\w-]+$/)) || selector.match(/\w+\#[\w-]+/)) {
 
-				var element = $.getElementById(selector);
+				var element = sb.$.getElementById(selector);
 
 				if(element){
 					root = (element instanceof Array) ? element : [element];
@@ -628,7 +628,7 @@ $.parseSelectors = function(nodes, within){
 
 				if(period_pos+1 && !(period_pos > left_bracket_pos && period_pos < right_bracket_pos)) {
 
-					root = $.getElementsByClassName(selector, root[0]);
+					root = sb.$.getElementsByClassName(selector, root[0]);
 
 					if(k+1 == a.length){
 						nodes.add(root);
@@ -639,7 +639,7 @@ $.parseSelectors = function(nodes, within){
 			}
 			
 			//Tag selectors - no class or id specified.
-			root = $.getElementsByTagName(root, selector);
+			root = sb.$.getElementsByTagName(root, selector);
 
 			if(k+1 == a.length){
 				nodes.add(root);
@@ -654,10 +654,10 @@ $.parseSelectors = function(nodes, within){
 };
 
 /**
-@Name: $.getElementById
+@Name: sb.$.getElementById
 @Description: Used Internally
 */
-$.getElementById = function(selector){
+sb.$.getElementById = function(selector){
 
 	var parts = selector.split("#");
 	var element = document.getElementById(parts[1]);
@@ -665,12 +665,12 @@ $.getElementById = function(selector){
 };
 
 /**
-@Name: $.getElementsByClassName
+@Name: sb.$.getElementsByClassName
 @Param: string Selector The selector e.g. .myclass or div.myclass
 @Param: element The root to search within e.g. document, div
 @Description: Used Internally
 */
-$.getElementsByClassName = function(selector, root){
+sb.$.getElementsByClassName = function(selector, root){
 
 	var nodes,elements = [],x=0;
 	
@@ -706,10 +706,10 @@ $.getElementsByClassName = function(selector, root){
 };
 
 /**
-@Name: $.getElementsByTagName
+@Name: sb.$.getElementsByTagName
 @Description: Used Internally
 */
-$.getElementsByTagName = function(root, tag) {
+sb.$.getElementsByTagName = function(root, tag) {
 	root = (root instanceof Array) ? root : [root];
 
 	var matches = [],len1 = root.length,len2,x=0,i=0,nodes,elements;
@@ -730,10 +730,10 @@ $.getElementsByTagName = function(root, tag) {
 };
 
 /**
-@Name: $.getElementsByAttributes
+@Name: sb.$.getElementsByAttributes
 @Description: Used Internally
 */
-$.getElementsByAttributes = function(within, selector){
+sb.$.getElementsByAttributes = function(within, selector){
 	var f = 1;
 	var tag,attr,operator,value;
 
@@ -810,56 +810,56 @@ $.getElementsByAttributes = function(within, selector){
 };
 
 /**
-@Name: $.getNextSibling
+@Name: sb.$.getNextSibling
 @Description: Used Internally
 */
-$.getNextSibling = function(node){
+sb.$.getNextSibling = function(node){
 	while((node = node.nextSibling) && node.nodeType != 1){}
 	return node;
 };
 
 /**
-@Name: $.getPreviousSibling
+@Name: sb.$.getPreviousSibling
 @Description: Used Internally
 */
-$.getPreviousSibling = function(node){
+sb.$.getPreviousSibling = function(node){
 	while((node = node.previousSibling) && node.nodeType != 1){}
 	return node;
 };
 
 /**
-@Name: $.getFirstChild
+@Name: sb.$.getFirstChild
 @Description: Used Internally
 */
-$.getFirstChild = function(node){
+sb.$.getFirstChild = function(node){
 	node = node.firstChild;
 	while (node && node.nodeType && node.nodeType == 3) {
-		node = $.getNextSibling(node);
+		node = sb.$.getNextSibling(node);
 	}
 	return node;
 };
 
 /**
-@Name: $.getLastChild
+@Name: sb.$.getLastChild
 @Description: Used Internally
 */
-$.getLastChild = function(node){
+sb.$.getLastChild = function(node){
 
 	node = node.lastChild;
 	while (node && node.nodeType && node.nodeType == 3) {
-		node = $.getPreviousSibling(node);
+		node = sb.$.getPreviousSibling(node);
 	}
 	return node;
 };
 
 /**
-@Name: $.getElementsByParent
+@Name: sb.$.getElementsByParent
 @Description: Used Internally
 */
-$.getElementsByParent = function(selector){
+sb.$.getElementsByParent = function(selector){
 	var parents , tags = selector.split(">");
 
-	var elements = $.getElementsByTagName([document.body], tags[1]);
+	var elements = sb.$.getElementsByTagName([document.body], tags[1]);
 
 	var nodes = [];
 	var len = elements.length;
@@ -867,7 +867,7 @@ $.getElementsByParent = function(selector){
 	var rg = new RegExp(tags[0], 'i');
 
 	if(tags[0].match(/\./)){
-		parents = $(tags[0]);
+		parents = sb.$(tags[0]);
 	}
 	for(var n=0;n<len;n++){
 		if(rg.test(elements[n].parentNode.nodeName) || (parents && parents.nodes.inArray(elements[n].parentNode))){
@@ -881,15 +881,15 @@ $.getElementsByParent = function(selector){
 };
 
 /**
-@Name: $.getElementsBySiblingCombinator
+@Name: sb.$.getElementsBySiblingCombinator
 @Description: Used Internally
 */
-$.getElementsBySiblingCombinator = function(within, selector){
+sb.$.getElementsBySiblingCombinator = function(within, selector){
 	var parts = selector.split("~");
 
 	var nodeName = parts[0],siblingNodeName = parts[1],elements = [],x=0,nn;
 
-	var siblings = $.getElementsByTagName(within, nodeName);
+	var siblings = sb.$.getElementsByTagName(within, nodeName);
 	var len = siblings.length;
 
 	for(x=0;x<len;x++){
@@ -911,20 +911,20 @@ $.getElementsBySiblingCombinator = function(within, selector){
 };
 
 /**
-@Name: $.getElementsByAdjacentSibling
+@Name: sb.$.getElementsByAdjacentSibling
 @Description: Used Internally
 */
-$.getElementsByAdjacentSibling = function(within, selector){
+sb.$.getElementsByAdjacentSibling = function(within, selector){
 	var parts = selector.split("+");
 
 	var nodeName =parts[0];
 	var adjacentNodeName = parts[1].toUpperCase();
-	var elements = $.getElementsByTagName([document.body], nodeName);
+	var elements = sb.$.getElementsByTagName([document.body], nodeName);
 	elements = (!elements.length) ? [elements] : elements;
 	//put in the proper adajcent siblings
 	var nodes = [], x=0,node,len = elements.length;
 	for(x=0;x<len;x++){
-		node = $.getNextSibling(elements[x]);
+		node = sb.$.getNextSibling(elements[x]);
 		if(node && node.nodeName == adjacentNodeName){
 			nodes.push(node);
 		}
@@ -935,17 +935,17 @@ $.getElementsByAdjacentSibling = function(within, selector){
 };
 
 /**
-@Name: $.parsePseudoSelectors
+@Name: sb.$.parsePseudoSelectors
 @Description: Used Internally
 */
-$.parsePseudoSelectors = function(within, selector){
+sb.$.parsePseudoSelectors = function(within, selector){
 
 	var nth,notSelector,elements = [],parts = selector.split(":");
 
 	selector =parts[0];
 	var pseudo = parts[1];
 
-	var nodes = $.getElementsByTagName(within, selector);
+	var nodes = sb.$.getElementsByTagName(within, selector);
 	var parentNode;
 
 	nodes.forEach(function(node,k,a){
@@ -964,13 +964,13 @@ $.parsePseudoSelectors = function(within, selector){
 
 			case 'first-child':
 
-				if(!$.getPreviousSibling(node)){
+				if(!sb.$.getPreviousSibling(node)){
 					elements.push(node);
 				}
 				break;
 
 			case 'last-child':
-				if(!$.getNextSibling(node)){
+				if(!sb.$.getNextSibling(node)){
 					elements.push(node);
 				}
 				break;
@@ -983,7 +983,7 @@ $.parsePseudoSelectors = function(within, selector){
 
 			case 'only-child':
 
-				if(!$.getPreviousSibling(node) && !$.getNextSibling(node)){
+				if(!sb.$.getPreviousSibling(node) && !sb.$.getNextSibling(node)){
 					elements.push(node);
 				}
 
@@ -1005,8 +1005,6 @@ $.parsePseudoSelectors = function(within, selector){
 
 	return elements;
 };
-
-sb.$ = $;
 
 /**
 @Name: sb.browser
@@ -2296,7 +2294,7 @@ sb.events = {
 			tar = tar.parentNode;
 		}
 
-		return $(tar);
+		return sb.$(tar);
 	}
 
 };
@@ -2426,7 +2424,7 @@ if(typeof Element == 'undefined'){
 @Description: Methods of sb.element instances. Assume that myElement is an sb.element instance in all examples of Element.prototype
 */
 Element.prototype.$ = function(selector){
-	return $(selector, this);
+	return sb.$(selector, this);
 };
 
 /**
@@ -2509,7 +2507,7 @@ myElement.appendAfter('#myDiv');
 
 */
 Element.prototype.appendAfter = function(after){
-	var a = $(after);
+	var a = sb.$(after);
 
 	if(a.nextSibling){
 		while((a = a.nextSibling) && a.nodeType != 1){}
@@ -2892,6 +2890,12 @@ sb.dom.onReady({
 	}
 });
 
+if(!console){
+	var console = {
+		log : function(){}
+	};
+};
+
 sb.events.add(window, 'resize', sb.browser.measure);
 sb.events.add(window, 'unload', function(e){
 
@@ -2903,3 +2907,6 @@ sb.events.add(window, 'unload', function(e){
 	sb.events.removeAll();
 });
 window.sb = document.sb = sb;
+if(typeof sbNo$ == 'undefined'){
+	var $ = sb.$;
+}

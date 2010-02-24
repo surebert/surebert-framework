@@ -43,7 +43,7 @@ sb.widget.accordian.minHeight = (sb.browser.agent =='ie' && sb.browser.version==
 sb.widget.accordian.prototype = {
 	accordians : [],
 	loadAccordians : function(){
-		this.accordians = $('dl.'+this.className).nodes;
+		this.accordians = sb.$('dl.'+this.className).nodes;
 	},
 	
 	getAndCloseSections : function(accordian){
@@ -176,7 +176,6 @@ sb.widget.accordian.prototype = {
 	
 		function show(e){
 			var target = e.target;
-			var t = $(target);
 			if(target.nodeName == 'DT' && accordian.firing==0 && target.selected !=1){
 				accordian.firing =1;
 				

@@ -18,8 +18,8 @@ myBling.basic();
 */
 
 sb.forms.textarea.textBling = function(editBar, editBox){
-	this.editBar = $(editBar);
-	this.editBox = $(editBox);
+	this.editBar = sb.$(editBar);
+	this.editBox = sb.$(editBox);
 	this.editBar.editBox = this.editBox;
 	this.addEvents();
 };

@@ -31,7 +31,7 @@ myList.onItemSelect = function(){
 //returns an element to its default position
 Element.prototype.getParent = function(){
 	if(this.parentNode){
-		return $(this.parentNode);
+		return sb.$(this.parentNode);
 	}
 };
 
@@ -88,8 +88,8 @@ Element.prototype.turnColor2 = function(){
 
 sb.widget.sortList = function(id, innerHTML){
 	this.id = id;
-	this.list = $(id);
-	this.listItems = $(id+' li');
+	this.list = sb.$(id);
+	this.listItems = sb.$(id+' li');
 	this.addButtons(innerHTML);
 	this.addEvents();
 };
@@ -117,7 +117,7 @@ sb.widget.sortList.prototype = {
 	
 	addOrder : function(){
 		var order =0;
-		$(this.id+' li').forEach(function(li){
+		sb.$(this.id+' li').forEach(function(li){
 			li.order =order;
 			li.firstChild.innerHTML = order;
 			order++;
@@ -126,7 +126,7 @@ sb.widget.sortList.prototype = {
 	
 	dataOut : function(){
 		var order =[];
-		$(this.id+' li').forEach(function(li, k){
+		sb.$(this.id+' li').forEach(function(li, k){
 			order[k] = li.id;
 		});
 		return order;

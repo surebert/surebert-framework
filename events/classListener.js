@@ -21,14 +21,32 @@ var myListener = new sb.events.classListener({
 });
 
 */
-sb.events.classListener = sb.events.listener;
+
+/**
+@Name: sb.events.listener
+@Description: Used Internally for other event listeners
+@Param: object params Used to preseed the listener with class listeners
+@Return: object
+*/
+/**
+@Name: sb.events.listener
+@Description: Used Internally for other event listeners
+@Param: object params Used to preseed the listener with class listeners
+@Return: object
+*/
+sb.events.classListener = function(params){
+	return sb.events.listener.apply(this, arguments);
+};
+
+sb.events.classListener.prototype = new sb.events.listener();
 sb.events.classListener.prototype.delegate = function(e){
-	var target = e.target;
-	var cl = target.className;
+
+	var cl = e.target.className;
+	
 	if(cl == ''){return false;}
 
-	var cl = cl.replace(' ', '_');
-
+	cl = cl.replace(' ', '_');
+	
 	var type = e.type;
 
 	if(this[type] && typeof this[type][cl] == 'function'){

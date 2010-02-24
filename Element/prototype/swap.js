@@ -6,7 +6,7 @@
 myElement.swap(otherElement);
 */
 Element.prototype.swap = function(b){
-    b = $(b);
+    b = sb.$(b);
     if(b && b.cloneNode){
         a2 = this.cloneNode(true);
         b2 = b.cloneNode(true);

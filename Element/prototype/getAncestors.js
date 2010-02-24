@@ -14,7 +14,7 @@ mySbElement.getAncestors(myOtherSbElement);
 Element.prototype.getAncestors = function(within){
 	
 	if(within){
-		within = $(within);
+		within = sb.$(within);
 	}
 	
 	var ancestors =[], el=this;
@@ -22,7 +22,7 @@ Element.prototype.getAncestors = function(within){
 	do{
 		if(typeof el =='object' && el.parentNode && el.parentNode.nodeName !='HTML' && el.parentNode !=document && el.parentNode != within){
 			el = el.parentNode;
-			ancestors.push($(el));
+			ancestors.push(sb.$(el));
 		} else {
 			el = false;
 		}

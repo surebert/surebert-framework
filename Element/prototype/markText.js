@@ -10,7 +10,7 @@ o.matchExact Boolean 1=matches exactly, 0=matches like etc will mark chicken wit
 o.caseSensitive Will only match case sensitive
 */
 Element.prototype.markText = function(o){
-	var allTags = $(this.id +' *');
+	var allTags = sb.$('#'+this.id).$('*');
 	var textNodes =[];
 	var className = o.className || 'sb_markText';
 	var find = o.find || '';

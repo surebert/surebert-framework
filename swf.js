@@ -125,7 +125,7 @@ sb.swf.prototype = {
 	mySwf.embed('#someElement');
 	*/
 	embed : function(el){
-		el = $(el);
+		el = sb.$(el);
 		el.innerHTML = this.toHTML();
 		return el;
 	}

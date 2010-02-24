@@ -9,5 +9,5 @@ myElement.getPreviousSibling();
 Element.prototype.getPreviousSibling = function(){
 	var node = this;
 	while((node = node.previousSibling) && node.nodeType != 1){}
-	return $(node);
+	return sb.$(node);
 };

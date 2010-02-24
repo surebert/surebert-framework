@@ -73,7 +73,7 @@ if(!console){
 sb.widget.tree = function(params){
 	sb.objects.infuse(params, this);
 	this.dynamicLoadURL = this.dynamicLoadURL || '';
-	this.root = $(this.root);
+	this.root = sb.$(this.root);
 	this.root.addClassName('sb_tree');
 
 	this.addClasses(this.root);
@@ -187,7 +187,7 @@ sb.widget.tree.prototype = {
 
 	addSubList : function(node, html, open){
 
-		node = $(node);
+		node = sb.$(node);
 		//remove the old sublist
 		node.$('ul').forEach(function(v){v.remove();v=null;});
 		//replace new sublist

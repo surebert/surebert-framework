@@ -84,11 +84,11 @@ sb.widget.magicTable = function(o){
 	}
 
 	if(typeof this.table == 'string' || this.table.appendTo){
-		this.table = $(this.table);
+		this.table = sb.$(this.table);
 		
-		this.head = $(this.table.tHead);
+		this.head = sb.$(this.table.tHead);
 		
-		this.body = $(this.table.tBodies[0]);
+		this.body = sb.$(this.table.tBodies[0]);
 	}
 	
 	if(this.sortable){
@@ -591,6 +591,7 @@ sb.widget.magicTable.prototype = {
 	@Description: Used Internally
 	*/
 	addCells : function(data, parent, tag){
+		
 		var self = this;
 		if(data[0].forEach){
 			data.forEach(function(row){

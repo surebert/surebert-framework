@@ -10,7 +10,7 @@ sb.include('Element.prototype.containsElement');
 $('#my_element').isWithin('#another_element');
 */
 Element.prototype.isWithin = function(b){
-    var b = $(b);
+    var b = sb.$(b);
     if(b && b.containsElement){
         return b.containsElement(this);
     }

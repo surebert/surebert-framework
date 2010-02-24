@@ -13,5 +13,5 @@ Element.getFirstChild = function(){
 	while (node && node.nodeType && node.nodeType == 3) {
 		node = node.nextSibling;
 	}
-	return $(node);
+	return sb.$(node);
 };

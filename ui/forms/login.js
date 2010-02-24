@@ -32,7 +32,7 @@ sb.ui.forms.login = function(params){
 	this.onUrlNotFound = params.onUrlNotFound || function(){};
 	this.labelUname = params.labelUname || 'uname';
 	this.labelPass = params.labelPass || 'pass';
-	this.parentNode = $(params.parentNode);
+	this.parentNode = sb.$(params.parentNode);
 
 	if(this.form){
 		return this.form;
@@ -65,7 +65,7 @@ sb.ui.forms.login.prototype = {
 		if(this.parentNode){
 			this.parentNode.innerHTML = '';
 			this.form.appendTo(this.parentNode);
-			this.submitBtn = $('#sb_widget_login_form_submit');
+			this.submitBtn = sb.$('#sb_widget_login_form_submit');
 
 			this.submitBtn.waiting = function(){
 				this.value = 'checking...';
@@ -84,7 +84,7 @@ sb.ui.forms.login.prototype = {
 	showMessage : function(message, type){
 
 		if(!this.message){
-			this.message = $('#sb_widget_login_feedback');
+			this.message = sb.$('#sb_widget_login_feedback');
 		}
 
 		var colors = {

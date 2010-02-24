@@ -6,7 +6,6 @@ sb.include('events.observer');
 @Return: object
 */
 sb.events.listener = function(params){
-
 	sb.objects.infuse(params, this);
 	var self = this;
 	this.observe();
@@ -23,6 +22,7 @@ sb.events.listener.prototype = {
 	*/
 	observe : function(){
 		var self = this;
+
 		this.events = {};
 		['click', 'mouseup', 'mousedown', 'dblclick', 'submit', 'keydown', 'keyup', 'keypress', 'mousemove', 'mouseover', 'mouseout'].forEach(function(evt){
 

@@ -92,7 +92,7 @@ sb.effect.prototype = {
 	setParams : function(params){
 		sb.objects.infuse(params, this);
 		if(typeof params.el !='undefined'){
-			this.el = $(this.el);
+			this.el = sb.$(this.el);
 		} 
 		
 	},

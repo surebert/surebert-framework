@@ -31,7 +31,7 @@ sb.events.observer = {
 	@Name: sb.events.observer.html
 	@Description: A reference to the HTML node which captures all events
 	*/
-	html : $('html'),
+	html : sb.$('html'),
 
 	/**
 	@Name: sb.events.observer.delegateEvents
@@ -56,7 +56,7 @@ sb.events.observer = {
 	observeFormSubmits : function(){
 		var self = this;
 		
-		$('form').nodes.forEach(function(v){
+		sb.$('form').nodes.forEach(function(v){
 			if(!v._sb_on_submit){
 				v._sb_on_submit = sb.events.add(v, 'submit', self.delegateEvents);
 			}

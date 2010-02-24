@@ -2,7 +2,7 @@ sb.include('effect');
 /**
 @Name: Element.prototype.cssTransition()
 @Type: constructor
-@Description: Easily handles a multitude of css transitions for S$ elements and sb.elements.  This is what most people will probably use for all effects they create.
+@Description: Easily handles a multitude of css transitions for $ elements and sb.elements.  This is what most people will probably use for all effects they create.
 @Example: 
 sb.include('colors.getTweenColor');
 var body = $('body');
