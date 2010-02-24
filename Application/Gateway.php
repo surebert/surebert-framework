@@ -4,7 +4,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 3.13 10-01-2008 01-15-2010
+ * @version 3.14 10-01-2008 02-24-2010
  * @package sb_Application
  *
  */
@@ -508,11 +508,7 @@ class Gateway {
                     $input_as_array = false;
 
                     $servable = false;
-
-					if(!method_exists($model, $action)){
-						$action == '__call';
-						$servable = true;
-					} else {
+					if(method_exists($model, $action)){
 						 $reflection = new ReflectionMethod($model, $action);
 
 						//check for phpdocs
@@ -534,6 +530,10 @@ class Gateway {
 							}
 
 						}
+					} else if(method_exists($model, '__call')){
+
+						$action == '__call';
+						$servable = true;
 					}
 
                     if($servable){
@@ -572,8 +572,6 @@ class Gateway {
                         }
 
                         return $instance->filter_output($data);
-                    } else {
-                        return Gateway::render_view('/error/404.view');
                     }
                 }
             }
