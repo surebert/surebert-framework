@@ -13,7 +13,7 @@ var myListener = new sb.events.idListener({
 		}
 	},
 	click : {
-		some_other_od : function(e){
+		some_other_id : function(e){
 			alert('click');
 		}
 	}

@@ -8,14 +8,14 @@ with a specific className or combo of classNames in order.  Observes by default
 @Return: type desc
 @Example:
 var myListener = new sb.events.attributeListener({
-	attribute: 'some_attribute',
+	attribute: 'method',
 	mousemove : {
-		some_attribute : function(e){
+		jump : function(e){
 			console.log('move '+ new Date());
 		}
 	},
 	click : {
-		some_attribute : function(e){
+		some_value : function(e){
 			alert('click');
 		}
 	}
