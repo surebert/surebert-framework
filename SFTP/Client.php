@@ -15,7 +15,7 @@
  * } catch (Exception $e){
  *		echo $e->getMessage() . "\n";
  * }
- * <code>
+ * </code>
  *
  * @package sb_SFTP
  */
