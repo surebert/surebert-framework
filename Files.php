@@ -77,6 +77,8 @@ class sb_Files{
 				case 'txt':
 				case 'css':
                 case 'csv':
+				case 'php':
+					$ext == 'txt'? 'plain' : $ext;
 					$m = 'text/'.$ext;
 					break;
 
