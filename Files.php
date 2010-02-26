@@ -92,6 +92,10 @@ class sb_Files{
 					$m = 'video/x-flv';
 					break;
 
+				case 'gz':
+					$m = 'application/x-gzip';
+					break;
+
 				case 'mp3':
 					$m = 'audio/mpeg';
 					break;
@@ -103,6 +107,10 @@ class sb_Files{
                 case 'ppt':
                     $m = 'application/vnd.ms-powerpoint';
                     break;
+
+				case 'tar':
+					$m = 'application/x-tar';
+					break;
 
 				case 'wav':
 					$m = 'audio/x-wav';
