@@ -104,6 +104,12 @@ sb.events.observer = {
 			mouseover : this.delegateEvents,
 			mouseout : this.delegateEvents,
 			mousemove : this.delegateEvents,
+			drag : this.delegateEvents,
+			dragstart : this.delegateEvents,
+			dragend : this.delegateEvents,
+			dragenter : this.delegateEvents,
+			dragleave : this.delegateEvents,
+			drop : this.delegateEvents,
 			submit : this.delegateEvents
 		});
 		

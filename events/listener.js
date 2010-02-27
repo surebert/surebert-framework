@@ -24,7 +24,7 @@ sb.events.listener.prototype = {
 		var self = this;
 
 		this.events = {};
-		['click', 'mouseup', 'mousedown', 'dblclick', 'submit', 'keydown', 'keyup', 'keypress', 'mousemove', 'mouseover', 'mouseout'].forEach(function(evt){
+		['click', 'mouseup', 'mousedown', 'dblclick', 'submit', 'keydown', 'keyup', 'keypress', 'mousemove', 'mouseover', 'mouseout', 'dragstart', 'dragend', 'drag', 'dragenter', 'dragleave', 'drop'].forEach(function(evt){
 
 			if(self[evt]){
 				self.events[evt] = function(e){
