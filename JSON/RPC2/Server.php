@@ -7,7 +7,6 @@
  *
  */
 
-
 class sb_JSON_RPC2_Server {
 
 /**
@@ -408,7 +407,7 @@ class sb_JSON_RPC2_Server {
 
 			if($reflect) {
 				$params = $reflect->getParameters();
-				$ps = '';
+				$ps = Array();
 				foreach($params as $param) {
 					$ps[] = '$'.$param->getName();
 				}
