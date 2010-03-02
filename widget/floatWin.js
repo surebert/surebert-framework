@@ -4,6 +4,7 @@ sb.include('Element.prototype.mv');
 sb.include('Element.prototype.wh');
 sb.include('Element.prototype.hide');
 sb.include('Element.prototype.show');
+sb.include('Element.prototype.isWithin');
 
 sb.widget.floatWin = function(params){
 	sb.objects.infuse(params, this);
