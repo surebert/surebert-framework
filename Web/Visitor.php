@@ -63,7 +63,7 @@ class sb_Web_Visitor{
         $this->mobl = $mobl;
         $this->tstamp = time();
         $this->ip = class_exists('Gateway') ? Gateway::$remote_addr : '';
-        $this->agent = class_exists('Gateway') ? Gateway::$remote_addr : '';
+        $this->agent = class_exists('Gateway') && isset(Gateway::$agent) ? Gateway::$agent : '';
     }
 
     /**
@@ -76,7 +76,7 @@ class sb_Web_Visitor{
             sb_Web_Visitors::$db=$db;
         }
 
-        sb_Web_Visitors::log($this);
+        return sb_Web_Visitors::log($this);
 
     }
 }

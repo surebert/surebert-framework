@@ -111,9 +111,7 @@ class sb_Web_Visitors{
 
 		$visitor = self::distill($visitor);
 
-		self::insert($visitor);
-
-		self::expire($visitor);
+		return self::insert($visitor);
 
 	}
 
@@ -124,19 +122,20 @@ class sb_Web_Visitors{
 	 */
 	private static function insert(sb_Web_Visitor $visitor){
 
-
-		$delete = self::$db->prepare("DELETE FROM online_visitors WHERE ip = INET_ATON(:ip) AND uname='guest' OR uname=:uname");
+		$expiration = (time()-self::$time_before_expire);
+		$delete = self::$db->prepare("DELETE FROM online_visitors WHERE (ip = INET_ATON(:ip) AND uname='guest' OR uname=:uname) OR tstamp < :expiration");
 
 		$delete->execute(Array(
 			':ip' => $visitor->ip,
-			':uname' => $visitor->uname
+			':uname' => $visitor->uname,
+			":expiration" => $expiration
 		));
 
 		$sql = "INSERT INTO online_visitors (mobl, ip, tstamp, uname, dname, agent, agent_str) VALUES (:mobl, INET_ATON(:ip), :tstamp, :uname, :dname, :agent, :agent_str)";
 
 		$insert = self::$db->prepare($sql);
 
-		$values = Array(
+		return $insert->execute(Array(
 			':mobl' => $visitor->mobl,
 			':ip' => $visitor->ip,
 			':tstamp' => $visitor->tstamp,
@@ -144,11 +143,7 @@ class sb_Web_Visitors{
             ':dname' => $visitor->dname,
 			':agent' => $visitor->agent,
 			':agent_str' => $visitor->agent_str
-		);
-
-		if(!$insert->execute($values) && self::$debug == 1){
-			print_r($insert->errorInfo());
-		}
+		));
 	}
 
 	/**
@@ -191,18 +186,6 @@ class sb_Web_Visitors{
 		}
 
 		return $visitor;
-	}
-
-	/**
-	 * Expires a user from teh database when they are no longer fresh
-	 *
-	 * @param sb_Web_Visitor $visitor
-	 */
-	private static function expire(sb_Web_Visitor $visitor){
-		$expiration = (time()-self::$time_before_expire);
-		$sql = "DELETE FROM online_visitors WHERE tstamp < :expiration";
-
-		self::$db->s2o($sql, Array(":expiration" => $expiration));
 	}
 
 	/**
