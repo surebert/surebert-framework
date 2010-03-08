@@ -38,7 +38,7 @@ class sb_PDO_Debugger extends sb_PDO{
 	public function s2o($sql, $params=null, $class_name='', $prepare_and_store=1){
 
         try{
-            return parent::s2o($sql, $params, $class_name);
+            return parent::s2o($sql, $params, $class_name, $prepare_and_store);
         } catch(Exception $e){
             throw(new Exception('CALLED: '.__METHOD__."(\"".$sql."\", ".(is_null($params) ? 'null' : print_r($params, 1)).", '".$class_name."');\nERROR RETURNED: ".print_r($this->errorInfo(), 1)));
 
