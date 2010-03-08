@@ -1,0 +1,1 @@
+sb.ui.forms = {};
