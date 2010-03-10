@@ -28,8 +28,10 @@ class sb_Files{
 
 			$buffer = fread($handle, $chunk_size);
 			echo $buffer;
-			ob_flush();
-			flush();
+            if(ob_get_level()){
+                ob_flush();
+                flush();
+            }
 
 			if ($return_bytes) {
 				$cnt += strlen($buffer);
