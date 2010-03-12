@@ -4,7 +4,6 @@
  *	maps the smbclient command line executable to a local PHP object.
  *
  * @author Anthony Cashaw, Paul Visco
- * @version 1.0 09/09/09 09/22/09
  * @package sb_Samba
  */
 class sb_Samba_Connection {
@@ -20,6 +19,13 @@ class sb_Samba_Connection {
 	 * @var string
 	 */
 	private $host;
+
+    /**
+     * Determines if commands executed and raw results are echoed in stdout
+     * @var boolean
+     */
+    public $debug = false;
+
 	/**
 	 * Object to log with
 	 * @var sb_Logger_Base
@@ -77,20 +83,55 @@ class sb_Samba_Connection {
 	}
 
 	/**
-	 * Copies files from the windows machine to the linux machine
+	 * gets files from the windows machine to the linux machine
 	 * @param $getpath the file path at the windows machine
 	 * @param $putpath the file path on the local linux box where the file will be placed
-	 * @param $output the raw command line output for smbclient
+     *
+	 * @return array $output the raw command line output for smbclient
 	 */
-	public function copy($remotepath, $localfile = '.', &$output = null) {
+	public function get($remotepath, $localfile = '.') {
 		//get file string massage
 		$remotepath = self::winslashes($remotepath);
 
-		$this->execute('get "'.$remotepath.'" '.$localfile, $output);
-		return $output ? 0 : 1;
+		$this->execute('get "'.$remotepath.'" "'.$localfile.'"', $output);
+		return $output;
 
 	}
+    
+	/**
+	 * Allows the placent of files from the local system to the remote windows system
+	 * @todo  fix the remote file portion of the command string
+	 * @param $localfile
+	 * @param $remotefile
+     *
+	 * @return array $output
+	 */
+	public function put($localfile, $remotefile = ".") {
 
+		$remotefile = rtrim($remotefile, "/ \\");
+
+		$remotefile = self::winslashes("$remotefile");
+		$command = 'put "'.$localfile.'" "'.$remotefile.'"';
+
+		$this->execute($command, $output);
+		return $output ? 0 : 1;
+	}
+
+    /**
+     * rename a remote file
+     * @param string $remote_file_path The original file path/name
+     * @param string $new_remote_file_path The new file path/name
+     *
+     * @return array $output
+     */
+    public function rename($remote_file_path, $new_remote_file_path){
+        //get file string massage
+		$remote_file_path = self::winslashes($remote_file_path);
+        $new_remote_file_path = self::winslashes($new_remote_file_path);
+
+		$this->execute('rename "'.$remote_file_path.'" "'.$new_remote_file_path.'"', $output);
+		return $output;
+    }
 
 	/**
 	 * Executes the command line function that completes the remote windows operations
@@ -98,7 +139,7 @@ class sb_Samba_Connection {
 	 * @param $output array what the command line returns
 	 * @param $log boolean weather to log this transaction
 	 */
-	private function execute($command, &$output = null) {
+	public function execute($command, &$output = null) {
 
 		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
 		exec($cmd, $output, $return);
@@ -106,12 +147,19 @@ class sb_Samba_Connection {
         if(stristr(implode(" ", $output), 'NT_STATUS_ACCOUNT_LOCKED_OUT')){
             throw(new Exception('NT_STATUS_ACCOUNT_LOCKED_OUT: '.$this->username));
         }
+        
+        if($this->debug == true){
 
+            echo "\n".$cmd;
+            print_r($output);
+        }
+        
 		//LOG: Transaction
 		if(self::$log) {
 			self::$log->samba("Command: $cmd \n Output:" . print_r($output, 1) . "\n Return: " . print_r($return, 1) . "\n\n\n");
 		}
 
+        return $return;
 	}
 
 	/**
@@ -139,25 +187,6 @@ class sb_Samba_Connection {
 	public function dir($subdir = '', &$raw = NULL) {
 
 		return $this->ls($subdir, $raw);
-	}
-
-	/**
-	 * Allows the placent of files from the local system to the remote windows system
-	 * @todo  fix the remote file portion of the command string
-	 * @param $localfile
-	 * @param $remotefile
-	 * @param $output
-	 * @return boolean success
-	 */
-	public function paste($localfile, $remotefile = "." , &$output = null) {
-
-		$remotefile = rtrim($remotefile, "/ \\");
-
-		$remotefile = self::winslashes("$remotefile");
-		$command = 'put '.$localfile.' "'.$remotefile.'"';
-
-		$this->execute($command, $output);
-		return $output ? 0 : 1;
 	}
 
 	/**
