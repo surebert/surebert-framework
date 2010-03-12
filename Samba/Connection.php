@@ -85,7 +85,8 @@ class sb_Samba_Connection {
 	public function copy($remotepath, $localfile = '.', &$output = null) {
 		//get file string massage
 		$remotepath = self::winslashes($remotepath);
-		$this->execute("get $remotepath $localfile", $output);
+
+		$this->execute('get "'.$remotepath.'" '.$localfile, $output);
 		return $output ? 0 : 1;
 
 	}
@@ -101,6 +102,10 @@ class sb_Samba_Connection {
 
 		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
 		exec($cmd, $output, $return);
+
+        if(stristr(implode(" ", $output), 'NT_STATUS_ACCOUNT_LOCKED_OUT')){
+            throw(new Exception('NT_STATUS_ACCOUNT_LOCKED_OUT: '.$this->username));
+        }
 
 		//LOG: Transaction
 		if(self::$log) {
@@ -149,7 +154,7 @@ class sb_Samba_Connection {
 		$remotefile = rtrim($remotefile, "/ \\");
 
 		$remotefile = self::winslashes("$remotefile");
-		$command = "put $localfile $remotefile";
+		$command = 'put '.$localfile.' "'.$remotefile.'"';
 
 		$this->execute($command, $output);
 		return $output ? 0 : 1;
