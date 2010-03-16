@@ -214,24 +214,12 @@ class sb_Web_Visitors{
 	 *
 	 * @return array The usernames of the users online
 	 */
-	public static function list_users($unames_only=false){
+	public static function list_users(){
 		$expiration = (time()-self::$time_before_offline);
 
 		$sql = "SELECT DISTINCT uname, dname FROM online_visitors WHERE uname !='guest' AND uname !='' AND tstamp > :expiration ORDER BY uname";
-		$result = self::$db->s2o($sql, Array(":expiration" => $expiration));
-		$users = Array();
-		foreach($result as $user){
-			if($unames_only){
-				$name = $user->uname;
-			} else {
-				$name = !empty($user->dname) ? $user->dname : $user->uname;
-			}
-            
-			array_push($users, $name);
-		}
-
-		return $users;
-
+		return self::$db->s2o($sql, Array(":expiration" => $expiration));
+		
 	}
 
 	/**
