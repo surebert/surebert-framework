@@ -115,7 +115,7 @@ class sb_Text_Bling{
 		//remove any bling that is not processed
 		//$str = self::strip_bling($str);
 		
-		return stripslashes($str);
+		return $str;
 	}
 	
 	/**
