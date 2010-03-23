@@ -149,9 +149,8 @@ class sb_Samba_Connection {
         }
         
         if($this->debug == true){
-
-            echo "\n".$cmd;
-            print_r($output);
+			file_put_contents("php://stdout", "\n".$cmd);
+            file_put_contents("php://stdout", "\n".print_r($output, 1));
         }
         
 		//LOG: Transaction
