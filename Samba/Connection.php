@@ -169,7 +169,7 @@ class sb_Samba_Connection {
 	public function ls($subdir = '', &$raw = NULL) {
 
 		$teststr  = str_replace('\\', '-', $subdir);
-		$nub =  (preg_match('/[-?|\/?]*([\w -]+\.\w{1,4})/', $teststr))?'':'\*';
+		$nub =  (preg_match('/[-?|\/?]*([\w \-]+\.\w{1,4})/', $teststr))?'':'\*';
 
 		$this->execute("ls $subdir".$nub, $raw_ls);
 
@@ -214,7 +214,7 @@ class sb_Samba_Connection {
 	 */
 	private	function parseListing($listing, $subdir = '') {
 		$ret = new sb_Samba_Listing();
-		$exp = '/^\s*([\w ]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
+		$exp = '/^\s*([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
 
 		preg_match_all($exp, $listing, $matches);
 
