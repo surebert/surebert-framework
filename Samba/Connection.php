@@ -169,7 +169,7 @@ class sb_Samba_Connection {
 	public function ls($subdir = '', &$raw = NULL) {
 
 		$teststr  = str_replace('\\', '-', $subdir);
-		$nub =  (preg_match('/[-?|\/?]*([\w ]+\.\w{1,4})/', $teststr))?'':'\*';
+		$nub =  (preg_match('/[-?|\/?]*([\w -]+\.\w{1,4})/', $teststr))?'':'\*';
 
 		$this->execute("ls $subdir".$nub, $raw_ls);
 
