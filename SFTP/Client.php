@@ -205,11 +205,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	 * @param string $path Delete remote path
 	 */
 	public function delete($path){
-		if(@ssh2_sftp_unlink($this->sftp, $path)){
-			throw new Exception("Could unlink file: ".$path);
-		}
-
-		return true;
+		return ssh2_sftp_unlink($this->sftp, $path);
 	}
 
 	/**
