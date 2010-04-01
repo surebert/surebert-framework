@@ -90,9 +90,7 @@ class sb_Samba_Connection {
 	 * @return array $output the raw command line output for smbclient
 	 */
 	public function get($remotepath, $localfile = '.') {
-		//get file string massage
 		$remotepath = self::winslashes($remotepath);
-
 		$this->execute('get "'.$remotepath.'" "'.$localfile.'"', $output);
 		return $output;
 
@@ -107,10 +105,9 @@ class sb_Samba_Connection {
 	 * @return array $output
 	 */
 	public function put($localfile, $remotefile = ".") {
-
+		$remotepath = self::winslashes($remotepath);
 		$remotefile = rtrim($remotefile, "/ \\");
 
-		$remotefile = self::winslashes("$remotefile");
 		$command = 'put "'.$localfile.'" "'.$remotefile.'"';
 
 		$this->execute($command, $output);
@@ -126,9 +123,7 @@ class sb_Samba_Connection {
      */
     public function rename($remote_file_path, $new_remote_file_path){
         //get file string massage
-		$remote_file_path = self::winslashes($remote_file_path);
-        $new_remote_file_path = self::winslashes($new_remote_file_path);
-
+        $remote_file_path = self::winslashes($remote_file_path);
 		$this->execute('rename "'.$remote_file_path.'" "'.$new_remote_file_path.'"', $output);
 		return $output;
     }
@@ -140,7 +135,7 @@ class sb_Samba_Connection {
 	 * @param $log boolean weather to log this transaction
 	 */
 	public function execute($command, &$output = null) {
-
+		
 		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
 		exec($cmd, $output, $return);
 
@@ -205,7 +200,6 @@ class sb_Samba_Connection {
 		return $ret;
 	}
 
-
 	/**
 	 * Converts a line of returned output into a sb_Samba_Listing object
 	 * @param $listing
@@ -229,6 +223,33 @@ class sb_Samba_Connection {
 		}
 
 		return 0;
+	}
+
+	/**
+	 *
+	 * @param string $local_dir The local directory  e.g. /blah/foo/
+	 * @param string $remote_dir The remote directory  e.g. \windows\share\files
+	 *
+	 * @param array $output The raw out as a reference in array if passed
+	 * @return boolean was it successful or not
+	 */
+	public function mput($local_dir, $remote_dir, $file_pattern='*', &$raw = NULL){
+		$result = $this->execute('cd '.self::winslashes($remote_dir).';lcd '.$local_dir.';prompt;mput '.$file_pattern.';exit;', $raw);
+
+		return $result;
+	}
+
+	/**
+	 *
+	 * @param string $remote_dir The remote directory to make e.g. \windows\share\files
+	 *
+	 * @param array $output The raw out as a reference in array if passed
+	 * @return boolean was it successful or not
+	 */
+	public function mkdir($remote_dir, &$raw = NULL){
+		$result = $this->execute('mkdir '.self::winslashes($remote_dir), $raw);
+
+		return $result;
 	}
 
 	/**
