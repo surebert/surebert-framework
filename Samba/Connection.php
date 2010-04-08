@@ -35,7 +35,7 @@ class sb_Samba_Connection {
 	 * The password that to the windows account
 	 * @var string
 	 */
-php /home/crony/transfer/public/gateway.php /mckesson/transfer_crmfrt_to_mckesson
+	private $password;
 	/**
 	 * Weather to log the ls transactions
 	 * @var boolean
@@ -125,8 +125,8 @@ php /home/crony/transfer/public/gateway.php /mckesson/transfer_crmfrt_to_mckesso
         //get file string massage
         $remote_file_path = self::winslashes($remote_file_path);
 	$new_remote_file_path = self::winslashes($new_remote_file_path);
-		$this->execute('rename "'.$remote_file_path.'" "'.$new_remote_file_path.'"', $output);
-		return $output;
+	$this->execute('rename "'.$remote_file_path.'" "'.$new_remote_file_path.'"', $output);
+	return $output;
     }
 
 	/**
