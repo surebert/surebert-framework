@@ -31,11 +31,7 @@ class sb_Samba_Connection {
 	 * @var sb_Logger_Base
 	 */
 	public static $log;
-	/**
-	 * The password that to the windows account
-	 * @var string
-	 */
-	private $password;
+	
 	/**
 	 * Weather to log the ls transactions
 	 * @var boolean
