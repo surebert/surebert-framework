@@ -205,7 +205,7 @@ class sb_Samba_Connection {
 	 */
 	private	function parseListing($listing, $subdir = '') {
 		$ret = new sb_Samba_Listing();
-		$exp = '/^\s*([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
+		$exp = '/^\s{3}([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
 
 		preg_match_all($exp, $listing, $matches);
 
