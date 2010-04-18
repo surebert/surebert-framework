@@ -31,7 +31,7 @@ class sb_Samba_Connection {
 	 * @var sb_Logger_Base
 	 */
 	public static $log;
-	
+
 	/**
 	 * Weather to log the ls transactions
 	 * @var boolean
@@ -91,7 +91,7 @@ class sb_Samba_Connection {
 		return $output;
 
 	}
-    
+
 	/**
 	 * Allows the placent of files from the local system to the remote windows system
 	 * @todo  fix the remote file portion of the command string
@@ -132,19 +132,19 @@ class sb_Samba_Connection {
 	 * @param $log boolean weather to log this transaction
 	 */
 	public function execute($command, &$output = null) {
-		
+
 		$cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
 		exec($cmd, $output, $return);
 
         if(stristr(implode(" ", $output), 'NT_STATUS_ACCOUNT_LOCKED_OUT')){
             throw(new Exception('NT_STATUS_ACCOUNT_LOCKED_OUT: '.$this->username));
         }
-        
+
         if($this->debug == true){
 			file_put_contents("php://stdout", "\n".$cmd);
             file_put_contents("php://stdout", "\n".print_r($output, 1));
         }
-        
+
 		//LOG: Transaction
 		if(self::$log) {
 			self::$log->samba("Command: $cmd \n Output:" . print_r($output, 1) . "\n Return: " . print_r($return, 1) . "\n\n\n");
@@ -205,7 +205,7 @@ class sb_Samba_Connection {
 	 */
 	private	function parseListing($listing, $subdir = '') {
 		$ret = new sb_Samba_Listing();
-		$exp = '/^\s{3}([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
+		$exp = '/^\s{2}([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
 
 		preg_match_all($exp, $listing, $matches);
 
