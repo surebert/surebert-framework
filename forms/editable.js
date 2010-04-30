@@ -136,7 +136,7 @@ sb.forms.editable.field.prototype = {
 	@Example:
 	editor.onMaxLength = function(e){};
 	*/
-	onMaxLength : function(e){},
+	onMaxLength : function(e){e.preventDefault();},
 
 	/**
 	@Name: sb.forms.editable.field.onKeyDown
@@ -300,7 +300,6 @@ sb.forms.editable.field.prototype = {
 						
 						var maxlength = this.getAttribute('maxlength');
 						if(maxlength && this.value.length == maxlength && e.keyCode != 8){
-							e.preventDefault();
 							return self.onMaxLength(e);
 						}
 
@@ -333,7 +332,7 @@ sb.forms.editable.field.prototype = {
 
 			this.editBar = new sb.element({
 				tag : 'editbar',
-				innerHTML : '<button>cancel</button><button>save</button>',
+				innerHTML : '<button class="cancel">cancel</button><button class="save">save</button>',
 				className : this.type,
 				events : {
 					mousedown : function(e){
