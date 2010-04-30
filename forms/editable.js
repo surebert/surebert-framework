@@ -127,7 +127,18 @@ sb.forms.editable.field.prototype = {
 		var button = e.target;
 	};
 	*/
-	onButtonPress : function(e){},
+	onButtonPress : function(e){return true;},
+
+	/**
+	@Name: sb.forms.editable.field.onEditStop
+	@Description: Fires when a button is pressed other than save or cancel
+	@Param event e The press event
+	@Example:
+	editor.onEditStop = function(){
+		
+	};
+	*/
+	onEditStop : function(e){},
 
 	/**
 	@Name: sb.forms.editable.field.onMaxLength
@@ -205,8 +216,10 @@ sb.forms.editable.field.prototype = {
 	@Example:
 	editor.editStop();
 	*/
-	editStop : function(){
-	
+	editStop : function(e){
+		if(typeof this.onEditStop == 'function'){
+			this.onEditStop(e);
+		}
 		this.editableElement.replace(this.editor);
 		this._origValue = '';
 	},
@@ -345,23 +358,22 @@ sb.forms.editable.field.prototype = {
 				events : {
 					mousedown : function(e){
 						var target = e.target;
-						e.preventDefault();
-						e.stopPropagation();
 						if(target.nodeName == 'BUTTON'){
-							
+							if(self.onButtonPress.call(self, e) === false){
+								return false;
+							}
 							switch(target.innerHTML){
 								case 'save':
 									self.onSave(self.textField.value);
 									break;
 
 								case 'cancel':
-									self.editStop();
+									self.editStop(e);
 									break;
-
-								default:
-									self.onButtonPress(e);
 							}
 						}
+						e.preventDefault();
+						e.stopPropagation();
 						
 						return true;
 
