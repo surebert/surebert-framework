@@ -155,12 +155,13 @@ sb.widget.notifier = {
 
         t.moving = window.setTimeout(function(){
             var pos = sb.browser.getScrollPosition();
-
+			
             if(t.sliding){
                 t.sliding.stop();
             }
             var y = t.box.getY();
-            var x = parseInt(t.box.style.right, 10);
+            var x = parseInt(t.box.style.right, 10) || 0;
+			
             t.box.style.zIndex = 999;
             t.sliding = t.box.cssTransition([{
                 prop : 'top',
