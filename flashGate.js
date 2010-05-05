@@ -6,8 +6,9 @@
 #############################
 */
 sb.include('swf');
+
 sb.flashGate = new sb.swf({
-	src : sb.base+"/FlashGate.swf",
+	src : sb_FlashGateSrc || sb.base+"/FlashGate.swf",
 	//src : '${swf}.swf?d='+Math.random(),
 	width : 1,
 	height : 1,
