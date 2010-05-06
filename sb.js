@@ -1,3 +1,11 @@
+if(!Array.prototype.forEach){Array.prototype.forEach=function(func){var k;if(typeof func=='function'){var len=this.length;for(k=0;k<len;k++){func(this[k],k,this);}}};Array.prototype.filter=function(func){var n=[];if(typeof func=='function'){this.forEach(function(v,k,arr){if(func(arr[k],k,arr)===true){n.push(v);}});}
+return n;};Array.prototype.every=function(func){var k;if(typeof func=='function'){for(k=0;k<this.length;k++){if(func(this[k],k,this)!==true){return false;}}
+return true;}};Array.prototype.indexOf=function(val){for(var k=0;k<this.length;k++){if(this[k]==val){return k;}}
+return-1;};Array.prototype.lastIndexOf=function(val){var p=-1,k;for(k=0;k<this.length;k++){if(this[k]==val){p=k;}}
+return p;};Array.prototype.map=function(func){var n=[];if(typeof func=='function'){this.forEach(function(v,k,a){n.push(func(v,k,a));});}
+return n;};Array.prototype.some=function(func){var k;if(typeof func=='function'){for(k=0;k<this.length;k++){if(func(this[k],k,this)===true){return true;}}
+return false;}};}
+
 /**
 @Author: Paul Visco of http://paul.estrip.org
 @Package: surebert 
