@@ -37,7 +37,7 @@ DOC;
 	 * Convertt a database table to a model
 	 *
 	 * <code>
-	 * $setup = new sb_Setup_TableToModel();
+	 * $setup = new sb_Application_TableToModel();
 	 * </code>
 	 *
 	 */
