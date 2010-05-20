@@ -195,6 +195,63 @@ class sb_Files{
 		}
 	}
 
+	/**
+	 * Determines the size of directors and returns stats object
+	 * @param string $path The path to the server
+	 * @return object
+	 */
+	public static function get_directory_size($path) {
+
+		$stats = new stdClass();
+		$stats->size = 0;
+		$stats->file_count = 0;
+		$stats->dir_count = 0;
+		if ($handle = opendir ($path)) {
+			while (false !== ($file = readdir($handle))) {
+				$nextpath = $path . '/' . $file;
+				if ($file != '.' && $file != '..' && !is_link ($nextpath)) {
+					if (is_dir ($nextpath)) {
+						$stats->dir_count++;
+						$result = self::get_directory_size($nextpath);
+						$stats->size += $result->size;
+						$stats->file_count += $result->file_count;
+						$stats->dir_count += $result->dir_count;
+					}
+					elseif (is_file ($nextpath)) {
+						$stats->size += filesize ($nextpath);
+						$stats->file_count++;
+					}
+				}
+			}
+		}
+		closedir ($handle);
+		return $stats;
+	}
+
+	/**
+	 * Converts file size to string that is human readible
+	 * @param integer $size The size in bytes
+	 * @return string
+	 */
+	public static function size_to_string($size) {
+
+		if($size<1024) {
+			return $size." bytes";
+		}
+		else if($size<(1024*1024)) {
+			$size=round($size/1024,1);
+			return $size." KB";
+		}
+		else if($size<(1024*1024*1024)) {
+			$size=round($size/(1024*1024),1);
+			return $size." MB";
+		}
+		else {
+			$size=round($size/(1024*1024*1024),1);
+			return $size." GB";
+		}
+	}
+
 }
 
 ?>
