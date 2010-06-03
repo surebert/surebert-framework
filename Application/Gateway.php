@@ -767,7 +767,9 @@ if(method_exists('App', "filter_all_output")) {
     echo $output;
 }
 
-ob_flush();
+if(ob_get_level()){
+	ob_flush();
+}
 
 if(Gateway::$logger instanceof sb_Logger_Base){
 
