@@ -143,8 +143,8 @@ sb.widget.floatWin.prototype = {
 	},
 
 	close : function(){
+		this.onClose();
 		this.win.hide();
-
 	},
 
 	show : function(){
@@ -199,6 +199,7 @@ sb.widget.floatWin.prototype = {
 	},
 	onTitleBarClick : function(e){},
 	onContentClick : function(e){},
-	onIconClick : function(e){}
+	onIconClick : function(e){},
+	onClose : function(e){}
 };
 
