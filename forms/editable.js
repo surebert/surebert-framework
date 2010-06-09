@@ -298,10 +298,6 @@ sb.forms.editable.field.prototype = {
 							self._origValue = self.textField.value;
 						}
 
-						if(e.ctrlKey){
-							self.bluring = false;
-						}
-						
 						if(e.keyCode == 9 && self.isNotEdited()){
 							self.editStop();
 						} else if(e.keyCode == 27){
@@ -327,16 +323,6 @@ sb.forms.editable.field.prototype = {
 						if(self.onKeyUp(e) === false){
 							return false;
 						}
-					},
-					blur : function(e){
-						if(self.isNotEdited()){
-							self.bluring = true;
-							window.setTimeout(function(){
-							if(self.bluring){
-									self.editStop();
-							}}, 400);
-						}
-
 					}
 				}
 			});
