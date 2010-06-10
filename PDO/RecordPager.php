@@ -44,6 +44,13 @@ class sb_PDO_RecordPager {
 	public $page_null = 0;
 
 	/**
+	 * Set a max limit of records to page
+	 *
+	 * @var integer
+	 */
+	public $max_limit = null;
+
+	/**
 	 * The values passed for bound SQL parameters - added 05/06/08
 	 *
 	 * @var array
@@ -109,10 +116,15 @@ class sb_PDO_RecordPager {
 			$ret->requested_page = $pagenum;
 
 			//get counts
-			$count_sql = "SELECT COUNT(*) AS 'count' FROM (".$this->sql.") sb65a";
-			$res = $this->db->s2o($count_sql, $this->values, $this->object_type);
+			$sql = $this->sql;
+			if($this->max_limit){
+				$sql .= " LIMIT ".$this->max_limit;
+			}
+			$count_sql = "SELECT COUNT(*) AS 'count' FROM (".$sql.") sb65a";
+			
+			$res = $this->db->s2o($count_sql, $this->values);
 			$ret->record_count = $res[0]->count;
-
+		
 			//page count
 			$temp = round($ret->record_count / $this->pagesize);
 			$temp2 = $temp * $this->pagesize;
@@ -123,7 +135,6 @@ class sb_PDO_RecordPager {
 
 			//current page
 			$ret->current_page = ($pagenum > $ret->page_count)?$ret->page_count:$pagenum;
-
 
 			//get limit clause
 			$start = ($this->pagesize * ($ret->current_page - 1));
