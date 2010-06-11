@@ -329,7 +329,7 @@ class sb_Image{
 	public function to_png(){
 		
 	
-		imagepng($this->edited, $this->path, 96);
+		imagepng($this->edited, $this->path, 1);
 	}
 	
 	/**
