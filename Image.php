@@ -202,7 +202,7 @@ class sb_Image{
 				imagealphablending($this->edited, false);
 				imagesavealpha($this->edited, true);	
 			
-				imagecopyresized($this->edited, $this->original, 0, 0, 0, 0, $this->width['dest'], $this->height['dest'], $this->width['orig'], $this->height['orig']);
+				imagecopyresampled($this->edited, $this->original, 0, 0, 0, 0, $this->width['dest'], $this->height['dest'], $this->width['orig'], $this->height['orig']);
 				
 			break;
 		}
