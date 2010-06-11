@@ -319,7 +319,7 @@ class sb_Image{
 	 */
 	public function to_jpg(){
 		
-		imagejpeg($this->edited, $this->path);
+		imagejpeg($this->edited, $this->path, 96);
 	}
 	
 	/**
@@ -329,7 +329,7 @@ class sb_Image{
 	public function to_png(){
 		
 	
-		imagepng($this->edited, $this->path);
+		imagepng($this->edited, $this->path, 96);
 	}
 	
 	/**
