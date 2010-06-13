@@ -165,10 +165,13 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 		
 		preg_match_all( "/\[flash\](.*?)\[\/flash\]/s", $str, $matches );
 		$count = count($matches[1]);
+
 		for($x=0;$x<$count;$x++)
 		{
 			$swf = self::$content_path.'/'.$matches[1][$x];
-			$swf_info = getimagesize($swf);
+			$path = ROOT.'/public/'.$swf;
+			
+			$swf_info = @getimagesize($path);
 			$width = $swf_info[0];
 			$height = $swf_info[1];
 			if ($width > self::$max_image_width){
@@ -193,10 +196,11 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 		$count = count($matches[1]);
 		for($x=0;$x<$count;$x++){
 			$flv = self::$content_path.'/'.$matches[1][$x];
-			if(!is_file($flv)){
+			$path = ROOT.'/public/'.$flv;
+			if(!is_file($path)){
 				continue;
 			}
-			$flv_info = @getimagesize($flv);
+			$flv_info = @getimagesize($path);
 			$width = $flv_info[0];
 			$height = $flv_info[1];
 			if ($width > self::$max_image_width){
@@ -374,8 +378,9 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 	public static function images_to_html($str){
 		
 		preg_match_all( "/\[(draw|img)=?(\w+)?\](.*?)\[\/(?:draw|img)\]/s", $str, $matches );
-		
+	
 		$images = $matches[0];
+		
 		$num_images = count($images);
 	
 		for($x=0;$x<$num_images;$x++){
@@ -398,7 +403,6 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			
 			$path = $data[0];
 			
-			
 			if(self::$allow_external_images == 1 && preg_match("~^http~", $path)){
 				$src = $path;
 				$orig_src = $path;
@@ -410,8 +414,9 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 				
 				$thumb_src = self::$content_path.'/'.dirname($path)."/th_".basename($path);
 			
-			}
 			
+			}
+
 			if(self::$mobile == 1){
 				$src = $thumb_src;
 			}
@@ -421,7 +426,6 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			if(is_file($path) || self::$allow_external_images == 1){
 			
 				$file_info = @getimagesize($path);		
-			
 				$type = $file_info['2']; //1 = GIF, 2 = JPG, 3 = PNG
 				$width = $file_info[0];
 				$height = $file_info[1];
