@@ -249,7 +249,7 @@ class sb_Chat_TalkBox{
 	public $loaded_from_backup = 0;
 	
 
-	public function display($id, $dir ="up"){
+	public function display($id, $dir ="up", $limit=10){
 		
 		$ltgt = ($dir == "up") ? ">" : "<";
 		
@@ -258,7 +258,7 @@ class sb_Chat_TalkBox{
 		$sql .= "ORDER BY id DESC";
 		
 		if($dir == 'down' || $id == 0){
-			$sql .=" LIMIT 10";
+			$sql .=" LIMIT ".$limit;
 		}
 		
 		$chatter = $this->db->s2o($sql, Array(":id" => $id));
