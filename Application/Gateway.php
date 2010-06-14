@@ -114,7 +114,6 @@ class sb_View {
      */
     protected function template_not_found($template) {
 
-        header("HTTP/1.0 404 Not Found");
         if(is_file(ROOT.'/private/views/error/404.view')) {
             echo Gateway::render_view('/error/404');
         }
