@@ -412,7 +412,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 				
 				$orig_src = self::$content_path.'/'.dirname($path)."/".basename($path);
 				
-				$thumb_src = self::$content_path.'/'.dirname($path)."/th_".basename($path);
+				$thumb_src = self::$content_path.'/'.dirname($path)."/thumbs/".basename($path);
 			
 			
 			}
@@ -434,6 +434,10 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 					$image = '<div style="width:'.$width.'px;height'.$height.'px;"class="'.$className.'"><img  title="'.$alt.'" src="'.$src.'" '.$file_info[3].' alt="'.$alt.'" /><div class="tb_caption">'.$caption.'</div></div>';
 				} else {
 					$image = '<img class="'.$className.'" title="'.$alt.'" src="'.$src.'" '.$file_info[3].' alt="'.$alt.'" />';
+					if(self::$mobile == 1){
+						$image= '<a href="'.$orig_src.'">'.$image.'</a>';
+					}
+
 				}
 				
 				if($center ==1){
@@ -443,10 +447,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			}
 			
 			if(!empty($image)){
-				if(self::$mobile == 1){
-					$image .= '<p><a href="'.$orig_src.'">::VIEW ORIGINAL IMAGE::</a></p>';
-				}
-			
+				
 				$str = str_replace($images[$x], $image, $str);
 			}
 		
