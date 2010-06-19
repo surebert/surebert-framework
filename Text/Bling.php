@@ -513,6 +513,10 @@ class sb_Text_Bling{
 		$str=str_replace("[caps]", '<span class="tb_caps">', $str);
 		$str=str_replace("[/caps]", "</span>", $str);
 
+		## add small caps
+		$str=str_replace("[code]", '<pre style="background-color:black;color:green;overflow:scroll;">', $str);
+		$str=str_replace("[/code]", "</pre>", $str);
+
 		## font size
 		$str = preg_replace( "~\[size=(.*?)\](.*?)\[\/size\]~s", '<span style="font-size:\\1;">\\2</span>', $str );
 		
