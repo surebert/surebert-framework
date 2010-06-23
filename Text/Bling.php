@@ -67,12 +67,10 @@ class sb_Text_Bling{
 	 * @return string
 	 */
 	public static function parse_css($str){
-		
-		//remove any javascript or expression calls from css
-		$str = str_replace(Array("javascript", "expression"), "", $str);
-		
-		## font size can be any type of font size e.g.  1em, 12px, large
-		return preg_replace( "~\[css=(.*?)\](.*?)\[\/css\]~s", '<span style="\\1;">\\2</span>', $str);
+
+		return  preg_replace_callback("~\[css=(.*?)\](.*?)\[\/css\]~s", function($match){
+			return '<span style="'.str_replace(Array('javascript', 'expression'), '', $match[1]).'">'.$match[2].'</span>';
+		}, $str);
 		
 	}
 	
