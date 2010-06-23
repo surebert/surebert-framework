@@ -52,10 +52,10 @@ class sb_Text_Bling{
 	 */
 	public static function emoticons_to_html($str){
 		
-		$str = str_replace (" :)", ' <img src="../media/emot/icon_biggrin.gif" alt="big_grin" />', $str);
-		$str = str_replace (" :(", ' <img src="../media/emot/icon_cry.gif" alt="cry"  />', $str);
-		$str = str_replace (" ;)", ' <img src="../media/emot/icon_wink.gif" alt="wink" />', $str);
-		$str = str_replace (" 8*", ' <img src="../media/emot/icon_eek.gif" alt="eek" />', $str);
+		$str = str_replace (" :)", ' <img src="/media/emot/icon_biggrin.gif" alt="big_grin" />', $str);
+		$str = str_replace (" :(", ' <img src="/media/emot/icon_cry.gif" alt="cry"  />', $str);
+		$str = str_replace (" ;)", ' <img src="/media/emot/icon_wink.gif" alt="wink" />', $str);
+		$str = str_replace (" 8*", ' <img src="/media/emot/icon_eek.gif" alt="eek" />', $str);
 		
 		return $str;
 	}
