@@ -26,7 +26,9 @@ class sb_Files_ForceDownload{
 		header('Content-Type: application/force-download');
 		header('Content-disposition: attachment; filename='.$display_file_name);
 		
-		while (@ob_end_flush());
+		while (ob_get_level() > 0) {
+			ob_end_flush();
+		}
 		sb_Files::read_chunked($file);
 	}
 
