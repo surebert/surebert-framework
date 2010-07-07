@@ -428,7 +428,6 @@ class sb_Text_Bling{
 			"hel"=>"he'll", 
 			"heres"=>"here's", 
 			"hes"=>"he's", 
-			'hers'=>"her's",
 			"hows"=>"how's", 
 			"hsa"=>"has", 
 			"hte"=>"the", 
