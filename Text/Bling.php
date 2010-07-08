@@ -81,7 +81,7 @@ class sb_Text_Bling{
 	 * @param boolean $media Determines if media is parsed into html
 	 * @return string The cleaned text
 	 */
-	public static function clean($str, $media=1){
+	public static function clean($str, $allow_email=false){
 		
 		$str = self::typo_fix($str);
 		
@@ -93,7 +93,7 @@ class sb_Text_Bling{
 		
 		$str = self::tables_to_html($str);
 		
-		$str = self::links_to_html($str);
+		$str = self::links_to_html($str, $allow_email);
 	
 		$str = self::colorize_instant_messages($str);
 		
@@ -259,11 +259,15 @@ class sb_Text_Bling{
 	 * @param string $str
 	 * @return string
 	 */
-	public static function links_to_html($str){
+	public static function links_to_html($str, $allow_email=false){
 		
 		### Convert Email Tags ###
-		$str = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)?[\w]+)#i", '<b> \\2 AT \\3 </b>', $str);
-		
+		if(!$allow_email){
+			$str = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)?[\w]+)#i", '<b> \\2 AT \\3 </b>', $str);
+		} else {
+			$str = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)?[\w]+)#i", ' <a href="mailto:\\2@\\3">\\2@\\3</a>', $str);
+		}
+
 		### phrase links ###
 		$str = preg_replace( "~\[link=(.*?)\](.*?)\[\/link\]~", "<a class=\"blank\" href=\"\\1\">\\2</a>", $str);
 		
