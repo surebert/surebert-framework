@@ -221,14 +221,10 @@ class sb_JSON_RPC2_Client {
 		if(substr($body,0,3)=="\x1f\x8b\x08") {
 			$body = $this->gzdecode($body);
 		}
-		//FIX THIS
+		
 		if(!empty($this->encryption_key)) {
 			$body = $this->encryptor->decrypt($body);
 		}
-
-		//Not sure about this?
-		$body = utf8_encode($body);
-
 
 		if($this->logger instanceOf sb_Logger) {
 			$this->logger->sb_json_rpc2_client("<-- ".$body);
@@ -251,6 +247,9 @@ class sb_JSON_RPC2_Client {
 			}
 		}
 
+		//Not sure about this?
+		$body = utf8_encode($body);
+		
 		if(!isset($response)){
 			$response = new sb_JSON_RPC2_Response($body);
 		}
