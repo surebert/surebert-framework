@@ -319,29 +319,32 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 	 */
 	public static function nonflash_media_to_html($str){
 		
-		preg_match_all( "~\[(wav|mid|amr|3gp|mp4)\](.*?)\[\/(wav|mid|amr|3gp|mp4)\]~s", $str, $matches );
+		preg_match_all( "~\[(wav|mid|amr|3gp|mp4|avi)\](.*?)\[\/(wav|mid|amr|3gp|mp4|avi)\]~s", $str, $matches );
 
 		$count = count($matches[0]);
 		
 		for($x=0;$x<$count;$x++){
 			
 			$media = self::$content_path.'/'.$matches[2][$x];
-			
-			if(self::$mobile == 1) {
+			$qt = '';
+			if(!self::$mobile) {
 				
-				$qt = '<a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
-					
-			} else {
+				if($matches[1][$x] == "avi"){
+
+					$qt .= '<embed src="'.$media.'" width="400" height="300" scale="aspect" controller="true" autoplay="true" />';
+				} else {
+					$w = ($matches[1][$x] == "3gp" || $matches[1][$x] == "mp4") ? "320" : "150";
+
+					$h =  ($matches[1][$x] == "3gp" || $matches[1][$x] == "mp4") ? "256" : "16";
+
+					$qt = '<div style="background-color:black;border:2px solid black;width:'.$w.'px;height:'.$h.'px"><object  classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="'.$w.'" height="'.$h.'" codebase="http://www.apple.com/qtactivex/qtplugin.cab" ><param name="src" value="'.self::$content_path.'/'.$matches[2][$x].'" /><param name="conroller" value="true" /><param name="autoplay" value="false" />';
+					$qt .= '<object data="'.self::$content_path.'/'.$matches[2][$x].'" width="'.$w.'" height="'.$h.'" class="qt"><param name="controller" value="true" /><param name="autoplay" value="false" />No</object>';
+					$qt .='</object></div>';
+				}
 				
-				$w = ($matches[1][$x] == "3gp" || $matches[1][$x] == "mp4") ? "320" : "150";
-			
-				$h =  ($matches[1][$x] == "3gp" || $matches[1][$x] == "mp4") ? "256" : "16";
-	
-				$qt = '<div style="background-color:black;border:2px solid black;width:'.$w.'px;height:'.$h.'px"><object  classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="'.$w.'" height="'.$h.'" codebase="http://www.apple.com/qtactivex/qtplugin.cab" ><param name="src" value="'.self::$content_path.'/'.$matches[2][$x].'" /><param name="conroller" value="true" /><param name="autoplay" value="false" />';
-				$qt .= '<object data="'.self::$content_path.'/'.$matches[2][$x].'" width="'.$w.'" height="'.$h.'" class="qt"><param name="controller" value="true" /><param name="autoplay" value="false" />No</object>';
-				$qt .='</object></div>';
-	
 			}
+
+			$qt .= '<a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
 
 			//replace media in the journal
 			$str = str_replace($matches[0][$x], $qt, $str);
