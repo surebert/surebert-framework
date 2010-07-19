@@ -181,6 +181,10 @@ class sb_JSON_RPC2_Client {
 		$out[] = 'Connection: close';
 
 		$response_str = '';
+
+		if($this->port == 443){
+			$host = 'ssl://'.$this->host;
+		}
 		$fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
 		if (!(get_resource_type($fp) == 'stream')) {
 			throw new Exception('Could not reach '.$this->host.": #$errno - $errstr");
