@@ -1720,6 +1720,7 @@ sb.ajax.prototype = {
 				break;
 
 			default:
+				
 				this.response = this.ajax.responseText;
 		}
 
@@ -2155,7 +2156,7 @@ sb.events = {
 	});
 	*/
 	add : function() {
-
+		
 		if(window.addEventListener){
 
 			return function(el, type, fn) {
@@ -2603,7 +2604,7 @@ Element.prototype.hasClassName = function(classname){
 myElement.remove();
 */
 Element.prototype.remove = function(){
-	if(typeof this.parentNode !='undefined'){
+	if(this.parentNode){
 		this.parentNode.removeChild(this);
 	}
 	return this;
