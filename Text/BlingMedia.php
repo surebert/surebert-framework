@@ -233,11 +233,11 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			$uniqid = 'mp3'.uniqid();
 			
 			if(self::$mobile ==1){
-				$mp3 = '<object width="180" height="90"><param name="movie" value="'.self::$custom_mp3_player.'?file='.$mp3.'" /><param name="wmode" value="transparent" /><embed src="'.self::$custom_flv_player.'?file='.$mp3.'" type="application/x-shockwave-flash" wmode="transparent" width="180" height="90"></embed></object>';
+				$mp3 = '<object width="180" height="90"><param name="movie" value="'.self::$custom_mp3_player.'?file='.$mp3.'" /><param name="wmode" value="transparent" /><embed src="'.self::$custom_mp3_player.'?file='.$mp3.'" type="application/x-shockwave-flash" wmode="transparent" width="180" height="90"></embed></object><p><a href="'.$mp3.'">::DOWNLOAD SOUND::</a></p>';
 				
 			} else {
 				self::$javascript .='var mp3 = new sb.swf({src:"'.self::$custom_mp3_player.'?file='.$mp3.'",width:"180", height:"90", bgColor:"#000000", version:6, alt: \' <a href="'.$mp3.'">::DOWNLOAD SOUND::</a> \'});mp3.embed("#'.$uniqid.'");mp3=null;';
-				$mp3 = '<p id="'.$uniqid.'"></p>';
+				$mp3 = '<p id="'.$uniqid.'"></p><p><a href="'.$mp3.'">::DOWNLOAD SOUND::</a></p>';
 
 			}
 			
