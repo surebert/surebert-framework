@@ -108,7 +108,7 @@ class sb_Email_Writer {
 				}
 
 				if(!empty($email->bcc)){
-					$email->body .= "\nDEBUG MODE: Should be be BCCed to: ".implode(", ", $email->cc)." when not in debug mode!";
+					$email->body .= "\nDEBUG MODE: Should be be BCCed to: ".implode(", ", $email->bcc)." when not in debug mode!";
 					$email->bcc = Array();
 				}
             }
