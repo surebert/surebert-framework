@@ -257,7 +257,6 @@ class sb_Flash_Signature{
 		
 		//create a new image with the data from this object
 		$this->draw();
-		
 			
 		if(!(is_null($width) && is_null($height))){
 			$this->resize_image($width, $height);
@@ -309,7 +308,7 @@ class sb_Flash_Signature{
 		}
 		
 		if($this->stamp_id){
-			$this->write($this->id, 10, 10);
+			$this->write($this->user_name, 10, 10);
 			
 			//stamp the time_stamp and IP
 			$this->write($this->time_stamp.' '.$this->ip, 10, $this->height-30);
