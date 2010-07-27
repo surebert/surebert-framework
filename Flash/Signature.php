@@ -379,7 +379,7 @@ class sb_Flash_Signature{
 			return null;
 		}
 		
-		$sql = "INSERT INTO storage (id, user_name, ip, time_stamp, path, width, height, app_id, deleted) VALUES (:id, :user_name, :ip, :time_stamp, :path, :width, :height, :app_id, 0)";
+		$sql = "INSERT INTO storage (id, user_name, ip, time_stamp, path, width, height, app_id, deleted) VALUES (:id, :user_name, INET_ATON(:ip), :time_stamp, :path, :width, :height, :app_id, 0)";
 		
 		$stmt = $this->db->prepare($sql);
 		
@@ -421,7 +421,7 @@ class sb_Flash_Signature{
 			return null;
 		}
 		
-		$sql = "SELECT id, user_name, ip, time_stamp, path, width, height FROM storage WHERE id=:id";
+		$sql = "SELECT id, user_name, INET_NTOA(ip) AS ip, time_stamp, path, width, height FROM storage WHERE id=:id";
 		
 		$stmt = $this->db->prepare($sql);
 	
