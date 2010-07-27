@@ -10,10 +10,10 @@
  * <code>
  * DROP TABLE IF EXISTS `storage`;
  * CREATE TABLE `storage` (
- *   `sid` int(11) NOT NULL auto_increment,
- *   `id` varchar(100) default NULL,
- *   `user_name` varchar(100) default NULL,
- *   `ip` varchar(15) default NULL,
+ *   `sid` int UNSIGNED NOT NULL auto_increment,
+ *   `id` char(32) default NULL,
+ *   `user_name` varchar(30) default NULL,
+ *   `ip` INT UNSIGNED default NULL,
  *   `time_stamp` datetime default NULL,
  *   `path` text,
  *   `width` smallint(5) unsigned default NULL,
