@@ -269,7 +269,7 @@ class sb_Text_Bling{
 		}
 
 		### phrase links ###
-		$str = preg_replace( "~\[link=(.*?)\](.*?)\[\/link\]~", "<a class=\"blank\" href=\"\\1\">\\2</a>", $str);
+		$str = preg_replace( "~\[(?:url|link)=(.*?)\](.*?)\[\/(?:url|link)\]~", "<a class=\"blank\" href=\"\\1\">\\2</a>", $str);
 		
 		### url links ###\\2://\\3
 		$str = preg_replace("#(\s|\n)([a-z]+?)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", ' <a href="\\2://\\3" title="\\2://\\3">(LINK)</a>', $str); 
@@ -482,35 +482,39 @@ class sb_Text_Bling{
 	public static function text_styles($str){
 				
 		##bold
-		$str = preg_replace("~\[b\](.*?)\[/b\]~", '<strong class="tb_b">$1</strong>', $str);
+		$str = preg_replace("~\[b\](.*?)\[/b\]~is", '<strong class="tb_b">$1</strong>', $str);
 	
 		##italic
-		$str = preg_replace("~\[i\](.*?)\[/i\]~", '<em class="tb_i">$1</em>', $str);
+		$str = preg_replace("~\[i\](.*?)\[/i\]~is", '<em class="tb_i">$1</em>', $str);
 		
 		##underline
-		$str = preg_replace("~\[u\](.*?)\[/u\]~", '<u class="tb_u">$1</u>', $str);
+		$str = preg_replace("~\[u\](.*?)\[/u\]~is", '<u class="tb_u">$1</u>', $str);
 		
 		##cite
-		$str = preg_replace("~\[cite\](.*?)\[/cite\]~", '<cite class="tb_cite">$1</cite>', $str);
+		$str = preg_replace("~\[cite\](.*?)\[/cite\]~is", '<cite class="tb_cite">$1</cite>', $str);
 		
 		##hilite
-		$str = preg_replace("~\[h(?:ilite)?\](.*?)\[/h(?:ilite)?\]~", '<span class="tb_hilite">$1</span>', $str);
+		$str = preg_replace("~\[h(?:ilite)?\](.*?)\[/h(?:ilite)?\]~is", '<span class="tb_hilite">$1</span>', $str);
 		
 		##line-though
-		$str = preg_replace("~\[strike](.*?)\[/strike]~", '<del class="tb_strike">$1</del>', $str);
+		$str = preg_replace("~\[strike](.*?)\[/strike]~is", '<del class="tb_strike">$1</del>', $str);
 		
 		## add small caps
-		$str = preg_replace("~\[caps](.*?)\[/caps]~", '<span class="tb_caps">$1</span>', $str);
+		$str = preg_replace("~\[caps](.*?)\[/caps]~is", '<span class="tb_caps">$1</span>', $str);
 		
 		## add code tag
 		## add small caps
-		$str = preg_replace("~\[code](.*?)\[/code]~s", '<pre style="background-color:black;color:green;overflow:auto;">$1</pre>', $str);
+		$str = preg_replace("~\[code](.*?)\[/code]~is", '<pre style="background-color:black;color:green;overflow:auto;">$1</pre>', $str);
 
 		## font size
-		$str = preg_replace( "~\[size=(.*?)\](.*?)\[\/size\]~s", '<span style="font-size:\\1;">\\2</span>', $str );
-		
+		$str = preg_replace( "~\[size=(.*?)\](.*?)\[\/size\]~is", '<span style="font-size:\\1;">\\2</span>', $str);
+
+
+		## font size
+		$str = preg_replace( "~\[color=(.*?)\](.*?)\[\/color\]~is", '<span style="color:\\1;">\\2</span>', $str);
+		//$str = preg_replace( "~\[color=(.*?)\](.*?)\[\/color\]~s", '<span style="color:\\1;">\\2</span>', $str);
 		## font color
-		preg_match_all( "/(\[color=(\w+|\W\w+)\])(.*?)\[\/color\]/s", $str, $matches );
+		preg_match_all( "/(\[color=(\w+|\W\w+)\])(.*?)\[\/color\]/is", $str, $matches );
 		$match = $matches[0];
 		$color = $matches[2];
 		$content = $matches[3];
@@ -519,11 +523,11 @@ class sb_Text_Bling{
 		for($x=0;$x<$count;$x++){
 		
 			if (strlen($color[$x]) == 1){
-				$str = str_replace($match[$x], '<span class="'.$color[$x].'">'.$content[$x].'</span>', $str);
+				//$str = str_replace($match[$x], '<span class="'.$color[$x].'">'.$content[$x].'</span>', $str);
 				
 			} else {
 				
-				$str = str_replace($match[$x], '<span style="color:'.$color[$x].'">'.$content[$x].'</span>', $str);
+				//$str = str_replace($match[$x], '<span style="color:'.$color[$x].'">'.$content[$x].'</span>', $str);
 			}
 			
 		}
