@@ -504,7 +504,7 @@ class sb_Text_Bling{
 		
 		## add code tag
 		## add small caps
-		$str = preg_replace("~\[code](.*?)\[/code]~s", '<pre style="background-color:black;color:green;overflow:scroll;">$1</pre>', $str);
+		$str = preg_replace("~\[code](.*?)\[/code]~s", '<pre style="background-color:black;color:green;overflow:auto;">$1</pre>', $str);
 
 		## font size
 		$str = preg_replace( "~\[size=(.*?)\](.*?)\[\/size\]~s", '<span style="font-size:\\1;">\\2</span>', $str );
