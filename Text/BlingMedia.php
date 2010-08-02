@@ -231,16 +231,13 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			$mp3 = self::$content_path.'/'.$matches[1][$x];
 		
 			$uniqid = 'mp3'.uniqid();
-			
-			if(self::$mobile ==1){
-				$mp3 = '<object width="180" height="90"><param name="movie" value="'.self::$custom_mp3_player.'?file='.$mp3.'" /><param name="wmode" value="transparent" /><embed src="'.self::$custom_mp3_player.'?file='.$mp3.'" type="application/x-shockwave-flash" wmode="transparent" width="180" height="90"></embed></object><p><a href="'.$mp3.'">::DOWNLOAD SOUND::</a></p>';
-				
-			} else {
-				self::$javascript .='var mp3 = new sb.swf({src:"'.self::$custom_mp3_player.'?file='.$mp3.'",width:"180", height:"90", bgColor:"#000000", version:6, alt: \' <a href="'.$mp3.'">::DOWNLOAD SOUND::</a> \'});mp3.embed("#'.$uniqid.'");mp3=null;';
-				$mp3 = '<p id="'.$uniqid.'"></p><p><a href="'.$mp3.'">::DOWNLOAD SOUND::</a></p>';
-
-			}
-			
+			$str = 	'<div class="audio" mp3="'.$mp3.'"><object type="application/x-shockwave-flash" data="/surebert/load/sb_mp3_mini.swf" width="200" height="20">
+				<param name="movie" value="player_mp3_mini.swf" />
+				<param name="bgcolor" value="acacac" />
+				<param name="FlashVars" value="mp3='.$mp3.'&amp;buttoncolor=666666&amp;slidercolor=ffffff" />
+			</object></div>';
+			$str .= '<p id="'.$uniqid.'"></p><p><a href="'.$mp3.'">::DOWNLOAD SOUND::</a></p>';
+		
 			$str=str_replace($matches[0][$x], $mp3, $str);
 		}
 		

@@ -482,41 +482,29 @@ class sb_Text_Bling{
 	public static function text_styles($str){
 				
 		##bold
-		$str=str_replace('[b]', '<strong class="tb_b">', $str);
-		$str=str_replace('[/b]', '</strong>', $str);
-		$str=str_replace(array("[/s]", "[/strike]"), "</span>", $str);
-		
+		$str = preg_replace("~\[b\](.*?)\[/b\]~", '<strong class="tb_b">$1</strong>', $str);
+	
 		##italic
-		$str=str_replace(Array('[i]', '[em]'), '<em class="tb_i">', $str);
-		$str=str_replace(Array('[/i]', '[/em]'), '</em>', $str);
+		$str = preg_replace("~\[i\](.*?)\[/i\]~", '<em class="tb_i">$1</em>', $str);
 		
 		##underline
-		$str=str_replace('[u]', '<u class="tb_u">', $str);
-		$str=str_replace('[/u]', '</u>', $str);
-		
-		##quote
-		$str=str_replace(Array('[q]','[quote]'), '<q class="tb_q">', $str);
-		$str=str_replace(Array('[/q]','[/quote]'), '</q>', $str);
+		$str = preg_replace("~\[u\](.*?)\[/u\]~", '<u class="tb_u">$1</u>', $str);
 		
 		##cite
-		$str=str_replace('[cite]', '<cite class="tb_cite">', $str);
-		$str=str_replace('[/cite]', '</cite>', $str);
+		$str = preg_replace("~\[cite\](.*?)\[/cite\]~", '<cite class="tb_cite">$1</cite>', $str);
 		
 		##hilite
-		$str=str_replace(Array('[h]', '[hilite]'), '<span class="tb_hilite">', $str);
-		$str=str_replace(Array('[/h]', '[/hilite]'), '</span>', $str);
+		$str = preg_replace("~\[h(?:ilite)?\](.*?)\[/h(?:ilite)?\]~", '<span class="tb_hilite">$1</span>', $str);
 		
 		##line-though
-		$str=str_replace('[strike]', '<span class="tb_strike">', $str);
-		$str=str_replace('[/strike]', "</span>", $str);
+		$str = preg_replace("~\[strike](.*?)\[/strike]~", '<del class="tb_strike">$1</del>', $str);
 		
 		## add small caps
-		$str=str_replace("[caps]", '<span class="tb_caps">', $str);
-		$str=str_replace("[/caps]", "</span>", $str);
-
+		$str = preg_replace("~\[caps](.*?)\[/caps]~", '<span class="tb_caps">$1</span>', $str);
+		
+		## add code tag
 		## add small caps
-		$str=str_replace("[code]", '<pre style="background-color:black;color:green;overflow:scroll;">', $str);
-		$str=str_replace("[/code]", "</pre>", $str);
+		$str = preg_replace("~\[code](.*?)\[/code]~s", '<pre style="background-color:black;color:green;overflow:scroll;">$1</pre>', $str);
 
 		## font size
 		$str = preg_replace( "~\[size=(.*?)\](.*?)\[\/size\]~s", '<span style="font-size:\\1;">\\2</span>', $str );
