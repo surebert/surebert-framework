@@ -27,7 +27,13 @@ sb.forms.textarea.textBling = function(editBar, editBox){
 sb.forms.textarea.textBling.prototype = {
 	
 	renderStyles :1,
-	defaultStyles : ["b", "i", "u", "hilite", "strike"],
+	defaultStyles : [
+		{tag : 'b', title : 'bolds'},
+		{tag : 'i', title : 'italicizes'},
+		{tag : 'u', title :  'underlines'},
+		{tag : 'hilite', title :  'hilites'},
+		{tag : 'strike', title : 'strike through'}
+	],
 	buttonCss :0,
 	buttonSize :1,
 	buttonColor :1,
@@ -81,7 +87,7 @@ sb.forms.textarea.textBling.prototype = {
 			tag : 'button',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
 			bling : bling,
-			title : title || '['+bling+']text[/'+bling+']',
+			title : title || '',
 			kind : 'basic'
 		});
 		//btn.setAttribute('kind', 'basic');
@@ -107,7 +113,8 @@ sb.forms.textarea.textBling.prototype = {
 	basic : function(){
 		
 		for(var x=0;x<this.defaultStyles.length;x++){
-			this.addButton(this.defaultStyles[x]);
+			var s = this.defaultStyles[x];
+			this.addButton(s.tag, s.title+ ' text in between tags ['+s.tag+']text[/'+s.tag+']');
 		}
 	
 		if(this.buttonSize == 1){
