@@ -27,11 +27,10 @@ sb.forms.textarea.textBling = function(editBar, editBox){
 sb.forms.textarea.textBling.prototype = {
 	
 	renderStyles :1,
-	defaultStyles : ["b", "i", "u", "caps", "hilite", "strike"],
+	defaultStyles : ["b", "i", "u", "hilite", "strike"],
 	buttonCss :0,
 	buttonSize :1,
 	buttonColor :1,
-	
 	addEvents : function(){
 			
 			this.editBar.evt('mousedown', function(e){
@@ -120,7 +119,7 @@ sb.forms.textarea.textBling.prototype = {
 		}
 		
 		//add basic prompt buttons such as color, size, link, table, and css
-		this.addPromptButton("link", "e.g. [link=http://www.artvoice.com]links the the address in the link tags[/link]", "Enter the URL address for the link.");
+		this.addPromptButton("link", "e.g. [link="+window.location.protocol+"://"+window.location.host+"]links the the address in the link tags[/link]", "Enter the URL address for the link.");
 		
 		if(this.buttonCss == 1){
 			this.addPromptButton("css", "e.g. [css=background-color:blue]blue text[/css] - sets the font color for the text in the tags", "Enter the any valid CSS style data e.g. background-color:blue;border:2px dotted black;");
