@@ -131,7 +131,7 @@ class sb_Text_Bling{
 		$str =  str_replace('[br]', '<br />', $str);
 		
 		##puttext inside a scrolling box
-		$str = preg_replace( "~\[box\](.*?)\[\/box\]~s", "<p class=\"box\">\\1</p>", $str);
+		$str = preg_replace( "~\[box\](.*?)\[\/box\]~is", "<p class=\"box\">\\1</p>", $str);
 
 		return $str;
 	}
@@ -346,18 +346,12 @@ class sb_Text_Bling{
 	 * @param unknown_type $str
 	 */
 	public static function convert_quotes($str){
-		
-		preg_match_all( "/\[q\](.*?)\[\/q\]/s", $str, $matches );
-		$match = $matches[0];
-		$data = $matches[1];
-		$count = count($match);
 
-		for($x=0;$x<$count;$x++){
-			
-
-			$str = str_replace($match[$x], '<blockquote class="quote"><p>'.$data[$x].'</p></blockquote>', $str);
+		$r = "/\[q(?:uote)?\](.*?)\[\/q(?:uote)?\]/is";
+		while(preg_match($r, $str)){
+			$str = preg_replace($r, '<blockquote class="quote"><p>\\1</p></blockquote>', $str);
 		}
-		
+
 		return $str;
 	}
 	
@@ -507,29 +501,15 @@ class sb_Text_Bling{
 		$str = preg_replace("~\[code](.*?)\[/code]~is", '<pre style="background-color:black;color:green;overflow:auto;">$1</pre>', $str);
 
 		## font size
-		$str = preg_replace( "~\[size=(.*?)\](.*?)\[\/size\]~is", '<span style="font-size:\\1;">\\2</span>', $str);
+		$r = "~\[size=([\d(?:\.\d+)]+(?:em|px)?)\](.*?)\[\/size\]~is";
+		while(preg_match($r, $str)){
+			$str = preg_replace($r, '<span style="font-size:\\1;">\\2</span>', $str);
+		}
 
-
-		## font size
-		$str = preg_replace( "~\[color=(.*?)\](.*?)\[\/color\]~is", '<span style="color:\\1;">\\2</span>', $str);
-		//$str = preg_replace( "~\[color=(.*?)\](.*?)\[\/color\]~s", '<span style="color:\\1;">\\2</span>', $str);
 		## font color
-		preg_match_all( "/(\[color=(\w+|\W\w+)\])(.*?)\[\/color\]/is", $str, $matches );
-		$match = $matches[0];
-		$color = $matches[2];
-		$content = $matches[3];
-		$count = count($match);
-		
-		for($x=0;$x<$count;$x++){
-		
-			if (strlen($color[$x]) == 1){
-				//$str = str_replace($match[$x], '<span class="'.$color[$x].'">'.$content[$x].'</span>', $str);
-				
-			} else {
-				
-				//$str = str_replace($match[$x], '<span style="color:'.$color[$x].'">'.$content[$x].'</span>', $str);
-			}
-			
+		$r = "~\[color=(.*?)\](.*?)\[\/color\]~is";
+		while(preg_match($r, $str)){
+			$str = preg_replace($r, '<span style="color:\\1;">\\2</span>', $str);
 		}
 		
 		return $str;
