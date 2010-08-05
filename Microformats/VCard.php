@@ -188,7 +188,7 @@ class sb_Microformats_VCard {
 		$this->set_string('email', $string);
 	}
 	private function set_language($isocode = '') {
-		$this->lang = (string) (($this->isValidLanguageCode($isocode) == true) ? ';LANGUAGE=' . $isocode : '');
+		$this->lang = (string) (($this->is_valid_language_code($isocode) == true) ? ';LANGUAGE=' . $isocode : '');
 	}
 	public function set_birthday($timestamp) {
 		$this->birthday = (int) date('Ymd', $timestamp);
@@ -197,7 +197,7 @@ class sb_Microformats_VCard {
 		$this->photo = "PHOTO;TYPE=$type;ENCODING=BASE64:" . base64_encode($photo);
 	}
 
-	private function quotedPrintableEncode($quotprint) {
+	private function quoted_printable_encode($quotprint) {
 
 		$quotprint = (string) str_replace('\r\n', chr(13) . chr(10), $quotprint);
 		$quotprint = (string) str_replace('\n', chr(13) . chr(10), $quotprint);
@@ -205,25 +205,25 @@ class sb_Microformats_VCard {
 		$quotprint = (string) str_replace('\=0D=0A', '=0D=0A', $quotprint);
 		return (string) $quotprint;
 	}
-	public static function isValidLanguageCode($code) {
+	public static function is_valid_language_code($code) {
 		return (boolean) ((preg_match('(^([a-zA-Z]{2})((_|-)[a-zA-Z]{2})?$)', trim($code)) > 0) ? true : false);
 	}
-	private function generateCardOutput($format) {
+	private function generate_card_output($format) {
 		$this->output_format = (string) $format;
 		if ($this->output_format == 'vcf') {
 			$this->output = (string) "BEGIN:VCARD\r\n";
 			$this->output .= (string) "VERSION:2.1\r\n";
-			$this->output .= (string) "N;ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->last_name . ";" . $this->first_name . ";" . $this->middle_name . ";" . $this->addon) . "\r\n";
-			$this->output .= (string) "FN;ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->first_name . " " . $this->middle_name . " " . $this->last_name . " " . $this->addon) . "\r\n";
+			$this->output .= (string) "N;ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->last_name . ";" . $this->first_name . ";" . $this->middle_name . ";" . $this->addon) . "\r\n";
+			$this->output .= (string) "FN;ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->first_name . " " . $this->middle_name . " " . $this->last_name . " " . $this->addon) . "\r\n";
 			if (strlen(trim($this->nickname)) > 0) {
-				$this->output .= (string) "NICKNAME;ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->nickname) . "\r\n";
+				$this->output .= (string) "NICKNAME;ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->nickname) . "\r\n";
 			}
-			$this->output .= (string) "ORG" . $this->lang . ";ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->organisation) . ";" . $this->quotedPrintableEncode($this->department) . "\r\n";
+			$this->output .= (string) "ORG" . $this->lang . ";ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->organisation) . ";" . $this->quoted_printable_encode($this->department) . "\r\n";
 			if (strlen(trim($this->job_title)) > 0) {
-				$this->output .= (string) "TITLE" . $this->lang . ";ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->job_title) . "\r\n";
+				$this->output .= (string) "TITLE" . $this->lang . ";ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->job_title) . "\r\n";
 			}
 			if (isset($this->note)) {
-				$this->output .= (string) "NOTE" . $this->lang . ";ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->note) . "\r\n";
+				$this->output .= (string) "NOTE" . $this->lang . ";ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->note) . "\r\n";
 			}
 
 			foreach($this->phones_work as $phone) {
@@ -263,11 +263,11 @@ class sb_Microformats_VCard {
 				$this->output .= (string) "TEL;PREF:" . $this->tel_preferred . "\r\n";
 			}
 			$this->output .= (string) "ADR;WORK:;" . $this->company . ";" . $this->work_street . ";" . $this->work_city . ";" . $this->work_region . ";" . $this->work_zip . ";" . $this->work_country . "\r\n";
-			$this->output .= (string) "LABEL;WORK;ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->company) . "=0D=0A" . $this->quotedPrintableEncode($this->work_street) . "=0D=0A" . $this->quotedPrintableEncode($this->work_city) . ", " . $this->quotedPrintableEncode($this->work_region) . " " . $this->quotedPrintableEncode($this->work_zip) . "=0D=0A" . $this->quotedPrintableEncode($this->work_country) . "\r\n";
+			$this->output .= (string) "LABEL;WORK;ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->company) . "=0D=0A" . $this->quoted_printable_encode($this->work_street) . "=0D=0A" . $this->quoted_printable_encode($this->work_city) . ", " . $this->quoted_printable_encode($this->work_region) . " " . $this->quoted_printable_encode($this->work_zip) . "=0D=0A" . $this->quoted_printable_encode($this->work_country) . "\r\n";
 			$this->output .= (string) "ADR;HOME:;" . $this->home_street . ";" . $this->home_city . ";" . $this->home_region . ";" . $this->home_zip . ";" . $this->home_country . "\r\n";
-			$this->output .= (string) "LABEL;HOME;ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->home_street) . "=0D=0A" . $this->quotedPrintableEncode($this->home_city) . ", " . $this->quotedPrintableEncode($this->home_region) . " " . $this->quotedPrintableEncode($this->home_zip) . "=0D=0A" . $this->quotedPrintableEncode($this->home_country) . "\r\n";
+			$this->output .= (string) "LABEL;HOME;ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->home_street) . "=0D=0A" . $this->quoted_printable_encode($this->home_city) . ", " . $this->quoted_printable_encode($this->home_region) . " " . $this->quoted_printable_encode($this->home_zip) . "=0D=0A" . $this->quoted_printable_encode($this->home_country) . "\r\n";
 			$this->output .= (string) "ADR;POSTAL:;" . $this->postal_street . ";" . $this->postal_city . ";" . $this->postal_region . ";" . $this->postal_zip . ";" . $this->postal_country . "\r\n";
-			$this->output .= (string) "LABEL;POSTAL;ENCODING=QUOTED-PRINTABLE:" . $this->quotedPrintableEncode($this->postal_street) . "=0D=0A" . $this->quotedPrintableEncode($this->postal_city) . ", " . $this->quotedPrintableEncode($this->postal_region) . " " . $this->quotedPrintableEncode($this->postal_zip) . "=0D=0A" . $this->quotedPrintableEncode($this->postal_country) . "\r\n";
+			$this->output .= (string) "LABEL;POSTAL;ENCODING=QUOTED-PRINTABLE:" . $this->quoted_printable_encode($this->postal_street) . "=0D=0A" . $this->quoted_printable_encode($this->postal_city) . ", " . $this->quoted_printable_encode($this->postal_region) . " " . $this->quoted_printable_encode($this->postal_zip) . "=0D=0A" . $this->quoted_printable_encode($this->postal_country) . "\r\n";
 			if (isset($this->url_work)) {
 				$this->output .= (string) "URL;WORK:" . $this->url_work . "\r\n";
 			}
@@ -287,20 +287,20 @@ class sb_Microformats_VCard {
 			$this->output .= (string) "END:VCARD\r\n";
 		}
 	}
-	public function getCardOutput($format = "vcf") {
+	public function get_card_output($format = "vcf") {
 		if (!isset($this->output) || $this->output_format != $format) {
-			$this->generateCardOutput($format);
+			$this->generate_card_output($format);
 		}
 		return (string) $this->output;
 	}
-	public function outputFile($format = 'vcf') {
+	public function output_file($format = 'vcf') {
 		if ($format == 'vcf') {
 			header('Content-Type: text/x-vcard');
 			header('Content-Disposition: attachment; filename=vCard_' . date('Y-m-d_H-m-s') . '.vcf');
-			echo $this->getCardOutput('vcf');
+			echo $this->get_card_output('vcf');
 		}
 	}
-	private function getCardFilePath() {
+	private function get_card_file_path() {
 		$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 		$port = (string) (($_SERVER['SERVER_PORT'] != 80) ? ':' . $_SERVER['SERVER_PORT'] : '');
 		return (string) 'http://' . $_SERVER['SERVER_NAME'] . $port . $path_parts["dirname"] . '/' . $this->download_dir . '/' . $this->card_filename;
