@@ -32,9 +32,11 @@ class sb_View_FLVStream extends sb_View{
 		$file = ROOT.$this->base_dir.'/'.$filename;
 		
 		if((file_exists($file)) && ($ext==".flv")){
-			
+
 		        header("Content-Type: video/x-flv");
-		        
+		        while (ob_get_level() > 0) {
+					ob_end_flush();
+				}
 		        if($seekat != 0) {
 	                echo("FLV");
 	                echo(pack('C', 1 ));
