@@ -256,9 +256,7 @@ class sb_Microformats_VCard {
 			if (isset($this->tel_isdn)) {
 				$this->output .= (string) "TEL;ISDN:" . $this->tel_isdn . "\r\n";
 			}
-			if(isset($this->photo)) {
-				$this->output .= (string) $this->photo . "\r\n";
-			}
+		
 			if (isset($this->tel_preferred)) {
 				$this->output .= (string) "TEL;PREF:" . $this->tel_preferred . "\r\n";
 			}
@@ -282,6 +280,9 @@ class sb_Microformats_VCard {
 			}
 			if (isset($this->tel_telex)) {
 				$this->output .= (string) "EMAIL;TLX:" . $this->tel_telex . "\r\n";
+			}
+				if(isset($this->photo)) {
+				$this->output .= (string) $this->photo . "\r\n";
 			}
 			$this->output .= (string) "REV:" . $this->rev . "\r\n";
 			$this->output .= (string) "END:VCARD\r\n";
