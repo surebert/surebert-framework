@@ -225,26 +225,23 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 		}
 		
 		
-		preg_match_all( "/\[mp3\](.*?)\[\/mp3\]/s", $str, $matches );
-		$count = count($matches[1]);
-		for($x=0;$x<$count;$x++){
-			$mp3 = self::$content_path.'/'.$matches[1][$x];
-		
-			$uniqid = 'mp3'.uniqid();
-			$str = 	'<div class="audio" mp3="'.$mp3.'"><object type="application/x-shockwave-flash" data="/surebert/load/sb_mp3_mini.swf" width="200" height="20">
-				<param name="movie" value="player_mp3_mini.swf" />
-				<param name="bgcolor" value="acacac" />
-				<param name="FlashVars" value="mp3='.$mp3.'&amp;buttoncolor=666666&amp;slidercolor=ffffff" />
-			</object></div>';
-			$str .= '<p id="'.$uniqid.'"></p><p><a href="'.$mp3.'">::DOWNLOAD SOUND::</a></p>';
-		
-			$str=str_replace($matches[0][$x], $mp3, $str);
-		}
-		
 		return $str;
 	}
-	
-	
+
+	public function mp3_to_audio($str){
+		$path = self::$content_path;
+		return  preg_replace_callback("~\[mp3\](.*?)\[\/mp3\]~s", function($match) use ($path){
+		$uniqid = 'mp3'.uniqid();
+		$mp3 = $path.'/'.$match[1];
+		$str = 	'<div class="audio" mp3="'.$mp3.'"><object type="application/x-shockwave-flash" data="/surebert/load/sb_mp3_mini.swf" width="200" height="20">
+			<param name="movie" value="player_mp3_mini.swf" />
+			<param name="bgcolor" value="acacac" />
+			<param name="FlashVars" value="mp3='.$mp3.'&amp;buttoncolor=666666&amp;slidercolor=ffffff" />
+		</object></div>';
+		$str .= '<p id="'.$uniqid.'"></p><p><a href="'.$mp3.'">::DOWNLOAD SOUND::</a></p>';
+			return $str;
+		}, $str);
+	}
 	
 	/**
 	 * Convert external video links to embedded flash players [youtube][/youtube] and [gvideo][/gvideo]
@@ -253,32 +250,24 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 	 * @return string
 	 */
 	public static function external_video_to_player($str){
-		
+
 		### Youtube videos ###
-		preg_match_all( "/\[youtube\](.*?)\[\/youtube\]/s", $str, $matches );
-		$count = count($matches[1]);
-		for($x=0;$x<$count;$x++){
-			if(strstr($matches[1][$x], 'v=')){
-				preg_match("~v=(.*)~", $matches[1][$x], $swf);
+		$width = self::$flash_player_size['width'];
+		$height = self::$flash_player_size['height'];
+		$str = preg_replace_callback("~\[youtube\](.*?)\[\/youtube\]~s", function($match) use ($width, $height){
+
+			if(strstr($match[1], 'v=')){
+				preg_match("~v=(.*)~", $match[1], $swf);
 				$swf = $swf[1];
 			} else {
-				$swf = $matches[1][$x];
+				$swf = $match[1];
 			}
-			
-			$uniqid = 'flash'.uniqid();
-			
-			if(self::$mobile ==1){
-				$swf = '<object width="'.self::$flash_player_size['width'].'" height="'.self::$flash_player_size['height'].'"><param name="movie" value="http://www.youtube.com/v/'.$swf.'" /><param name="wmode" value="transparent" /><embed src="http://www.youtube.com/v/'.$swf.'" type="application/x-shockwave-flash" wmode="transparent" width="'.self::$flash_player_size['width'].'" height="'.self::$flash_player_size['height'].'"></embed></object>';
-				
-			} else {
-				self::$javascript .='var uswf = new sb.swf({src:"http://www.youtube.com/v/'.$swf.'", width:"'.self::$flash_player_size['width'].'", height:"'.self::$flash_player_size['height'].'", bgColor:"#000000"});uswf.embed("#'.$uniqid.'");uswf=null;';
-				$swf = '<p id="'.$uniqid.'"></p>';
-			}
-			
-			$str=str_replace($matches[0][$x], $swf, $str);
-			
-		}
-		
+
+
+			$str = '<object width="'.$width.'" height="'.$height.'"><param name="movie" value="http://www.youtube.com/v/'.$swf.'" /><param name="wmode" value="transparent" /><embed src="http://www.youtube.com/v/'.$swf.'" type="application/x-shockwave-flash" wmode="transparent" width="'.$width.'" height="'.$height.'"></embed></object>';
+			return $str;
+		}, $str);
+
 		### Google Video ###
 		preg_match_all( "/\[gvideo\](.*?)\[\/gvideo\]/s", $str, $matches );
 		$count = count($matches[1]);
@@ -467,8 +456,10 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 		$str = self::pdf_to_link($str);
 		$str = self::images_to_html($str);
 		$str = self::nonflash_media_to_html($str);
-		$str = self::user_flash_to_swf($str);
+
 		$str = self::external_video_to_player($str);
+		$str = self::user_flash_to_swf($str);
+		$str = self::mp3_to_audio($str);
 		$str = self::maps_to_html($str);
 		
 		return $str;
