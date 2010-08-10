@@ -288,9 +288,14 @@ class sb_RSS_Feed extends DomDocument{
     * @param string $nodeValue
     * @return object DOM node
     */
-    private function create_node($nodeName, $nodeValue){
+    private function create_node($nodeName, $nodeValue, $cdata = false){
 		$node = $this->createElement($nodeName);
-		$text = $this->createTextNode($nodeValue);
+		if($cdata){
+			$text = $this->createCDATASection($nodeValue);
+		} else {
+			$text = $this->createTextNode($nodeValue);
+		}
+		
 		$node->appendChild($text);
 		return $node;
 		
@@ -323,7 +328,7 @@ class sb_RSS_Feed extends DomDocument{
     		
         	if(is_string($val) && !empty($val)){
         		
-		        $new_item->appendChild($this->create_node($key, $val));
+		        $new_item->appendChild($this->create_node($key, $val, $key == 'description'));
         	}
         }
         
@@ -346,9 +351,8 @@ class sb_RSS_Feed extends DomDocument{
     		
     		//parse string based key value pairs
     		if (is_string($val) && !empty($val)){
-    			
-    			$this->channel->appendChild($this->create_node($key, $val));
-    			
+				$this->channel->appendChild($this->create_node($key, $val, $key == 'description'));
+    		
     		//parse image	
     		} else if ($this->{$key} instanceof sb_RSS_Image){
     		
