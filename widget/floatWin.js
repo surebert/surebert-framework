@@ -57,17 +57,18 @@ sb.widget.floatWin.prototype = {
 		this.win.events({
 			click : function(e){
 				var target = e.target;
-
+				self.onClick(e);
 				if(target.isWithin(self.content)){
 					self.onContentClick(e);
 				} else {
+
 					if(target.isWithin(self.titleBar)){
 						self.onTitleBarClick(e);
 					}
-
 					if(target.nodeName == 'IMG' && target.isWithin(self.titleIcons)){
 						self.onIconClick(e);
 					}
+					
 				}
 
 			},
