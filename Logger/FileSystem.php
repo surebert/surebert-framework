@@ -22,7 +22,15 @@ class sb_Logger_FileSystem extends sb_Logger_Base{
 		$this->_agent_str = !empty($agent) ? $agent : Gateway::$remote_addr;
 		
 	}
-	
+
+	/**
+	 * Allows the setting of the log root
+	 * @param <type> $log_root
+	 */
+	public function set_log_root($log_root){
+		$this->_log_root = $log_root;
+	}
+
 	/**
 	 * Grabs the log path based on the type of log
 	 * @param $log Sting the log type.  Should be in the $enabled_logs array
