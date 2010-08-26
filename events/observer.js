@@ -99,6 +99,7 @@ sb.events.observer = {
 		
 		this.html.events({
 			click : this.delegateEvents,
+			contextmenu : this.contextMenu,
 			mousedown : this.delegateEvents,
 			dblclick : this.delegateEvents,
 			mouseover : this.delegateEvents,
@@ -115,7 +116,10 @@ sb.events.observer = {
 		
 		//handle keyups
 		this.documentKeyUp = sb.events.add(document, 'keyup', this.delegateEvents);
-		
+
+		//handle contextmenu
+		this.documentContextMenu = sb.events.add(document, 'contextmenu', this.delegateEvents);
+
 		//handle keydowns
 		this.documentKeyDown = sb.events.add(document, 'keydown', this.delegateEvents);
 		
