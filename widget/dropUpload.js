@@ -57,7 +57,6 @@ var myUploader = new sb.widget.dropUpload({
 });
 myUploader.init();
 */
-
 sb.widget.dropUpload = function(o){
 	sb.objects.infuse(o, this);
 	this.target = $(this.target);
@@ -114,13 +113,22 @@ sb.widget.dropUpload.prototype = {
 	@Name: sb.widget.dropUpload.prototype.onDragOver
 	@Description: fires on onDragOver
 	@Params:
-	e {total int} and other properties
+	e event from the dragover event
 	*/
 	onDragOver : function(e){},
 
-	
+	/**
+	@Name: sb.widget.dropUpload.prototype.onDragEnter
+	@Description: fires on onDragEnter
+	@Params:
+	e event from the dragenter event
+	*/
 	onDragEnter : function(e){},
-	onResponse : function(response){},
+
+	/**
+	@Name: sb.widget.dropUpload.prototype.onDropHandler
+	@Description: Used internally
+	*/
 	onDropHandler : function(e){
 		var self = this,i = 0;
 		e.preventDefault();
@@ -168,6 +176,11 @@ sb.widget.dropUpload.prototype = {
 
 		});
 	},
+
+	/**
+	@Name: sb.widget.dropUpload.prototype.addEvents
+	@Description: Used internally
+	*/
 	addEvents : function(){
 		var self = this;
 		this.target.addEventListener("dragenter",  function(e){
@@ -189,6 +202,11 @@ sb.widget.dropUpload.prototype = {
 		}, false);
 
 	},
+
+	/**
+	@Name: sb.widget.dropUpload.prototype.init
+	@Description: initializes the events
+	*/
 	init : function(){
 		this.addEvents();
 	}
