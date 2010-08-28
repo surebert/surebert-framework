@@ -142,13 +142,15 @@ sb.widget.dropUpload.prototype = {
 		files.forEach(function(file){
 			file.index = sb.widget.dropUpload.files++;
 
-			self.onDropFile(file);
+			
 			if(!file.name.match(self.allowedFilePatterns)){
 				self.onNonAllowedFilePattern(file);
 				return;
 			};
 
-			 var xhr = new XMLHttpRequest;
+			self.onDropFile(file);
+
+			var xhr = new XMLHttpRequest;
 			xhr.upload.addEventListener("progress", function(e) {
 				if (e.lengthComputable) {
 					var percentage = Math.round((e.loaded * 100) / e.total);
