@@ -31,7 +31,7 @@ var myUploader = new sb.widget.dropUpload({
 		});
 		this.lis[file.index].percentage.appendTo(this.lis[file.index]);
 	},
-	onFileUploaded : function(file, response){
+	onFileUploaded : function(file){
 
 		this.lis[file.index].percentage.innerHTML = 'DONE!';
 	},
@@ -60,6 +60,7 @@ myUploader.init();
 sb.widget.dropUpload = function(o){
 	sb.objects.infuse(o, this);
 	this.target = $(this.target);
+	this.maxFileSizeK = this.maxFileSizeK || 1024;
 };
 
 /**
@@ -74,6 +75,13 @@ sb.widget.dropUpload.prototype = {
 	@Description: fires when file name does match allowed pattern.  Upload of that file is canceled when this fires
 	*/
 	onNonAllowedFilePattern : function(file){},
+
+	/**
+	@Name: sb.widget.dropUpload.prototype.onFileUploaded
+	@Description: fires after the upload is complete and the data returns and is stored in file.data
+	file {index string, name string, size int, data string}
+	*/
+	onFileUploaded : function(file){},
 
 	/**
 	@Name: sb.widget.dropUpload.prototype.onUploadProgress
@@ -126,6 +134,15 @@ sb.widget.dropUpload.prototype = {
 	onDragEnter : function(e){},
 
 	/**
+	@Name: sb.widget.dropUpload.prototype.exceedsMaxFileSizeK
+	@Description: fires on exceedsMaxFileSizeK
+	@Params:
+	file object The file that exceeds the max fix
+	exceededByK int The amount it exceeds the max by in k
+	*/
+	onExceedsMaxFileSizeK : function(file, exceededByK){},
+
+	/**
 	@Name: sb.widget.dropUpload.prototype.onDropHandler
 	@Description: Used internally
 	*/
@@ -142,10 +159,12 @@ sb.widget.dropUpload.prototype = {
 		files.forEach(function(file){
 			file.index = sb.widget.dropUpload.files++;
 
-			
 			if(!file.name.match(self.allowedFilePatterns)){
-				self.onNonAllowedFilePattern(file);
-				return;
+				return self.onNonAllowedFilePattern(file);
+			};
+			var size = file.size/1024;
+			if(size > self.maxFileSizeK) {
+				return self.onExceedsMaxFileSizeK(file, Math.round(size-self.maxFileSizeK));
 			};
 
 			self.onDropFile(file);
@@ -169,7 +188,8 @@ sb.widget.dropUpload.prototype = {
 			xhr.onreadystatechange = function () {
 				if (this.readyState != 4) {return;}
 				self.onUploadProgress(file, 100);
-				self.onFileUploaded(file, this.responseTxt);
+				file.data = this.responseText;
+				self.onFileUploaded(file);
 			}
 
 			xhr.setRequestHeader('X_FILE_NAME', file.fileName);
