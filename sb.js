@@ -1054,6 +1054,7 @@ sb.browser ={
 
 		var opera = new RegExp("opera/(\\d{1}.\\d{1})", "i");
 		var safari = new RegExp("safari/(\\d{3})", "i");
+		var chrome = new RegExp("chrome/(\\d{1}\\.\\d{1})", "i");
 		var firefox = new RegExp("firefox/(\\d{1}.\\d{1})", "i");
 		var agent = window.navigator.userAgent;
 		var str;
@@ -1075,24 +1076,19 @@ sb.browser ={
 			this.agent = 'ff';
 			str = agent.match(firefox);
 			this.version = str[1];
+		} else if(agent.match(chrome)){
+			this.agent = 'cr';
+			str = agent.match(chrome);
+			this.version = str[1];
 		} else if(agent.match(safari)){
-
 			str = agent.match(safari);
-
 			this.agent = 'sf';
 			if(agent.match(/iphone/i)){
 				this.agent += '_iphone';
 			} else if(agent.match(/ipod/i)){
 				this.agent += '_ipod';
 			}
-
-			if(str[1] < 400){
-				this.version =1;
-			} else if(str[1] < 500){
-				this.version =2;
-			} else if(str[1] < 600){
-				this.version =3;
-			}
+			this.version = str[1];
 
 		} else {
 			this.agent='other';
