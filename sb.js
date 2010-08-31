@@ -2186,8 +2186,10 @@ sb.events = {
 				var tar = false;
 
 				var f = function() {
-					var e = window.event;
-					var tar = null;
+					var e = window.event,tar = null,d= document.documentElement,b=document.body;
+					e.pageX = e.clientX+d.scrollLeft+b.scrollLeft;
+					e.pageY = e.clientY+d.scrollTop+b.scrollTop;
+
 					switch(e.type){
 						case 'mouseout':
 							tar = e.relatedTarget || e.toElement;
@@ -2250,8 +2252,7 @@ sb.events = {
 		sb.events.log.push(evt);
 		return evt;
 	},
-
-
+	
 	/**
 	@Name: sb.events.remove
     @Type: function
