@@ -125,6 +125,9 @@ sb.widget.slider.prototype = {
 		this.draggable = 0;
 		document.onmousemove = null;
 		document.onmouseup = null;
+		if(typeof this.onStopSlide == 'function'){
+			this.onStopSlide();
+		}
 	},
 	
 	events : [],
@@ -193,7 +196,7 @@ sb.widget.slider.prototype = {
 		}
 		
 		if(this.track.getStyle('fontSize')=='0px'){
-			this.nob.setStyle('fontSize', '1.5em');
+			this.nob.setStyle('fontSize', '1.2em');
 		}
 		
 		this.track.style.width=this.track.offsetWidth-this.nob.offsetWidth+'px';
