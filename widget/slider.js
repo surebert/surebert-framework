@@ -111,6 +111,10 @@ sb.widget.slider.prototype = {
 		if(mv == 1){this.setX(x);}
 		return x;
 	},
+
+	setValue : function(val){
+		this.valueToPos(val, true);
+	},
 	
 	drag : function(e){
 		var t=this,x;
@@ -241,8 +245,8 @@ sb.widget.slider.prototype = {
 		
 		this.track.evt('mousedown',
 			function(e){
-				if(typeof t.onmousedown =='function'){t.onmousedown();}
 				t.setX(t.valueToPos(t.defaultValue)+e.clientX-t.origX-t.nob.offsetWidth/2);
+				if(typeof t.onClickValue =='function'){t.onClickValue();}
 			}
 		);
 		
