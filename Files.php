@@ -80,7 +80,7 @@ class sb_Files{
 				case 'css':
                 case 'csv':
 				case 'php':
-					$ext == 'txt'? 'plain' : $ext;
+					$ext = $ext == 'txt' ? 'plain' : $ext;
 					$m = 'text/'.$ext;
 					break;
 
