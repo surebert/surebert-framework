@@ -673,7 +673,7 @@ class Gateway {
         self::$files = $_FILES;
 
         //empty the input data so as to prevent its use
-        $_GET = $_POST = $_FILES = Array();
+        $_GET = $_POST = $_FILES = $_REQUEST = Array();
 
         //convert REQUEST into an array and define Controller which loads view
         self::$request = new sb_Request($request);
