@@ -604,7 +604,7 @@ class Gateway {
             require(ROOT.'/private/views/IndexView.php');
         } else if(preg_match('~View$~', $class_name)) {
             $d = preg_replace("~[A-Z][a-z]+$~", "", $class_name);
-            require(ROOT.'/private/views/'.strtolower($d).'/'.$class_name.'.php');
+            require(ROOT.'/private/views/'.$d.'/'.$class_name.'.php');
         } else if(file_exists(ROOT.'/private/models/'.$class_name.'.php')) {
 
             require(ROOT.'/private/models/'.$class_name.'.php');
