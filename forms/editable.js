@@ -61,7 +61,7 @@ sb.forms.editable.field = function(params){
 	if(this.editableElement.sb_editor){
 		return this.editableElement.editor;
 	}
-	
+
 	sb.objects.infuse(params, this);
 	this.editableElement.sb_editor = this;
 
@@ -117,7 +117,7 @@ sb.forms.editable.field.prototype = {
 
 	*/
 	onSave : function(value){},
-	
+
 	/**
 	@Name: sb.forms.editable.field.onButtonPress
 	@Description: Fires when a button is pressed other than save or cancel
@@ -135,7 +135,7 @@ sb.forms.editable.field.prototype = {
 	@Param event e The press event
 	@Example:
 	editor.onEditStop = function(){
-		
+
 	};
 	*/
 	onEditStop : function(e){},
@@ -202,9 +202,9 @@ sb.forms.editable.field.prototype = {
 		if(!this.editor){
 			this.create();
 		}
-		
+
 		this.editor.replace(this.editableElement);
-		
+
 		if(typeof this.onBeforeEdit == 'function'){
 			this.onBeforeEdit.call(this);
 		}
@@ -253,8 +253,13 @@ sb.forms.editable.field.prototype = {
 	@Example:
 	editor.addButton('email');
 	*/
-	addButton : function(str){
-		this.editBar.innerHTML = '<button>'+str+'</button>'+this.editBar.innerHTML;
+	addButton : function(str, title, appendAfter){
+		var btn = '<button title="'+title+'">'+str+'</button>';
+		if(appendAfter){
+			this.editBar.innerHTML += btn;
+		} else {
+			this.editBar.innerHTML = btn+this.editBar.innerHTML;
+		}
 
 	},
 
@@ -310,7 +315,7 @@ sb.forms.editable.field.prototype = {
 							e.preventDefault();
 							self.onSave.call(self, self.textField.value);
 						}
-						
+
 						var maxlength = this.getAttribute('maxlength');
 						if(maxlength && this.value.length == maxlength && e.keyCode != 8){
 							return self.onMaxLength(e);
@@ -330,7 +335,7 @@ sb.forms.editable.field.prototype = {
 			if(this.type == 'input'){
 				this.textField.setAttribute('type', 'text');
 			}
-			
+
 			for(var prop in this.attributes){
 				this.textField.setAttribute(prop, this.attributes[prop]);
 			}
@@ -360,7 +365,7 @@ sb.forms.editable.field.prototype = {
 						}
 						e.preventDefault();
 						e.stopPropagation();
-						
+
 						return true;
 
 					}

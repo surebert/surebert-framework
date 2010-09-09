@@ -40,31 +40,32 @@ sb.forms.textarea.textBling.prototype = {
 	addEvents : function(){
 			
 			this.editBar.evt('mousedown', function(e){
-				var target = e.target;
 				
+				var target = e.target;
 				//for safari which uses the span as the target
 				if(target.nodeName =='SPAN'){
 					target=target.parentNode;
 				}
 
-                                if(typeof target.onPress == 'function'){
-                                    target.onPress(e);
-                                }
-
-				if(target.kind){
-				
-					switch(target.kind){
+				if(typeof target.onPress == 'function'){
+					target.onPress(e);
+				}
+				var kind = target.getAttribute('kind');
+				if(kind){
+					var bling = target.getAttribute('bling');
+					switch(kind){
 						case 'basic':
-							sb.forms.textarea.addTags(this.editBox, '['+target.bling+']', '[/'+target.bling+']');
+							sb.forms.textarea.addTags(this.editBox, '['+bling+']', '[/'+bling+']');
 							break;
 							
 						case 'prompt':
-							var myPrompt = window.prompt(target.question, "");
+							var question = target.getAttribute('question');
+							var myPrompt = window.prompt(question, "");
 							if(myPrompt){
 								if(/^\d+?(\.\d+)?$/.test(myPrompt)){
 									myPrompt +='px';
 								}
-								sb.forms.textarea.addTags(this.editBox, '['+target.bling+'='+myPrompt+']', '[/'+target.bling+']');
+								sb.forms.textarea.addTags(this.editBox, '['+bling+'='+myPrompt+']', '[/'+bling+']');
 							}
 							break;
 						
@@ -86,11 +87,10 @@ sb.forms.textarea.textBling.prototype = {
 		var btn = new sb.element({
 			tag : 'button',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
-			bling : bling,
-			title : title || '',
-			kind : 'basic'
+			title : title || ''
 		});
-		//btn.setAttribute('kind', 'basic');
+		btn.setAttribute('bling', bling);
+		btn.setAttribute('kind', 'basic');
 		
 		btn.appendTo(this.editBar);
 		
@@ -101,11 +101,12 @@ sb.forms.textarea.textBling.prototype = {
 		var btn = new sb.element({
 			tag : 'button',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
-			title : title,
-			bling : bling,
-			kind : 'prompt',
-			question : question
+			title : title
 		});
+
+		btn.setAttribute('bling', bling);
+		btn.setAttribute('kind', 'prompt');
+		btn.setAttribute('question', question);
 		
 		btn.appendTo(this.editBar);
 	},
