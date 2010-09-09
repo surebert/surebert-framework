@@ -477,7 +477,13 @@ class sb_Text_Bling{
 				
 		##bold
 		$str = preg_replace("~\[b\](.*?)\[/b\]~is", '<strong class="tb_b">$1</strong>', $str);
-	
+
+		##sup
+		$str = preg_replace("~\[sup\](.*?)\[/sup\]~is", '<sup class="tb_sup">$1</sup>', $str);
+
+		##sub
+		$str = preg_replace("~\[sub\](.*?)\[/sub\]~is", '<sub class="tb_sub">$1</sub>', $str);
+
 		##italic
 		$str = preg_replace("~\[i\](.*?)\[/i\]~is", '<em class="tb_i">$1</em>', $str);
 		
