@@ -53,29 +53,30 @@ class sb_Password_Random {
 
 		$this->password = '';
 
-		$letters = range('a', 'z');
+		$chars = range('a', 'z');
+
+		$chars = array_merge($chars, Array('*','&', '^', '%', '$', '#', '@', '!'));
 
 		//get rid of l and o as they can be confused with 1 and 0
-		unset($letters[11]);
-		unset($letters[14]);
+		unset($chars[11]);
+		unset($chars[14]);
 
-		$letters = array_values($letters);
+		$chars = array_values($chars);
 
-		$letters_length = count($letters);
+		$chars_length = count($chars);
 
 		foreach(range(1,$this->length) as $char){
 			
 			$char = '';
 		
-			$letter = $letters[rand(0, $letters_length-1)];
 			$integer = rand(2, 9);
-
-			if(!preg_match("~[a-kmnp-z]~", $this->password)){
-				$char = $letter;
-			} else if(!preg_match("~[2-9]~", $this->password)){
+			$new_char = $chars[rand(0, $chars_length-1)];
+			if(strstr($this->password, $new_char)){
+				$char = $new_char;
+			} else if(strstr($this->password, $integer)){
 				$char = $integer;
 			} else {
-				$char = rand(0, 1) ? $letter : $integer;
+				$char = rand(0, 1) ? $new_char : $integer;
 			}
 
 			$this->password .= $char;
