@@ -47,7 +47,7 @@ class sb_Password_Random {
 	}
 
 	/**
-	 * Generates the password randomly to include at least on letter
+	 * Generates the password randomly
 	 */
 	protected function generate(){
 
