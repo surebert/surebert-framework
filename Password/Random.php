@@ -33,7 +33,7 @@ class sb_Password_Random {
 	 */
 	function __construct($length, $mixed_case = true) {
 
-		if(preg_match("~^\d$~", $length)){
+		if(preg_match("~^\d+$~", $length)){
 			$this->length = $length;
 		} else {
 			throw(new Exception("Length must an integer"));
