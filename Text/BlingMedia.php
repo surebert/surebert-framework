@@ -49,8 +49,8 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 	 * @var array
 	 */
 	public static $flash_player_size = Array(
-		'width' => 400,
-		'height' => 335
+		'width' => 465,
+		'height' => 365
 	);
 	
 	/**
@@ -264,7 +264,20 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			}
 
 
-			$str = '<object width="'.$width.'" height="'.$height.'"><param name="movie" value="http://www.youtube.com/v/'.$swf.'" /><param name="wmode" value="transparent" /><embed src="http://www.youtube.com/v/'.$swf.'" type="application/x-shockwave-flash" wmode="transparent" width="'.$width.'" height="'.$height.'"></embed></object>';
+			$str = '<object width="'.$width.'" height="'.$height.'"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://www.youtube.com/v/'.$swf.'" /><param name="wmode" value="transparent" /><embed src="http://www.youtube.com/v/'.$swf.'" type="application/x-shockwave-flash" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" width="'.$width.'" height="'.$height.'"></embed></object>';
+			return $str;
+		}, $str);
+
+
+		### Youtube videos ###
+		$width = self::$flash_player_size['width'];
+		$height = self::$flash_player_size['height'];
+		$str = preg_replace_callback("~\[vimeo](.*?)\[\/vimeo]~s", function($match) use ($width, $height){
+			$swf = $match[1];
+			$swf = preg_replace("~^http://vimeo.com/~", "", $swf);
+			$src = 'http://vimeo.com/moogaloop.swf?server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&color=00adef&fullscreen=1&clip_id='.$swf;
+			$str = '<object width="'.$width.'" height="'.$height.'"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="'.$src.'" /><param name="wmode" value="transparent" /><embed src="'.$src.'" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent" width="'.$width.'" height="'.$height.'"></embed></object>';
+
 			return $str;
 		}, $str);
 
