@@ -11,7 +11,8 @@ class sb_Files_ForceDownload{
 	/**
 	 * Send headers and begins force-download
 	 *
-	 * @param string $file
+	 * @param string $file The path to the file to force download
+	 * @param strin $display_file_name The filename to give to the force download if different than the basename of the file arg
 	 *
 	 */
 
