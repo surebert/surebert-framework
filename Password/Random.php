@@ -55,7 +55,9 @@ class sb_Password_Random {
 
 		$chars = range('a', 'z');
 
-		$chars = array_merge($chars, Array('*','&', '^', '%', '$', '#', '@', '!'));
+		$symbols = Array('*','&', '^', '%', '$', '#', '@', '!');
+
+		$chars = array_merge($chars, $symbols);
 
 		//get rid of l and o as they can be confused with 1 and 0
 		unset($chars[11]);
@@ -81,6 +83,8 @@ class sb_Password_Random {
 
 			$this->password .= $char;
 		}
+
+		$this->password = substr_replace($this->password, array_rand($symbols), rand(0, str_len($this->password)), 1);
 
 	}
 
