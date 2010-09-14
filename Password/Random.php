@@ -84,7 +84,7 @@ class sb_Password_Random {
 			$this->password .= $char;
 		}
 
-		$this->password = substr_replace($this->password, array_rand($symbols), rand(0, str_len($this->password)), 1);
+		$this->password = substr_replace($this->password, array_rand($symbols), rand(0, strlen($this->password)), 1);
 
 	}
 
