@@ -104,6 +104,10 @@ class sb_Files{
 					$m = 'audio/mpeg';
 					break;
 
+				case 'mp4':
+					$m = 'video/mp4';
+					break;
+				
 				case 'mid':
 					$m = 'audio/x-midi';
 					break;
@@ -155,6 +159,8 @@ class sb_Files{
                 return $finfo->file($file);
             }
         }
+
+		return false;
     }
     /**
      * Convert a filename to a mime type
