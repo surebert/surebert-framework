@@ -36,6 +36,12 @@ class sb_Logger_Syslog{
 	public $server;
 
 	/**
+	 * The port to send on
+	 * @var integer
+	 */
+	public $port = 514;
+
+	/**
 	 * The current line being logged
 	 * @var string
 	 */
@@ -167,6 +173,8 @@ class sb_Logger_Syslog{
 			$this->server = $server;
 		}
 
+		$this->port = $port;
+		
 		if(empty($this->server)){
 			trigger_error('No server to send to has been specified', E_USER_WARNING);
 		}
