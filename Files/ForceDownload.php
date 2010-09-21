@@ -18,6 +18,7 @@ class sb_Files_ForceDownload{
 
 	public static function send($file, $display_file_name=''){
 		$display_file_name = $display_file_name ? $display_file_name : basename($file);
+		$display_file_name = str_replace(" ", "_", $display_file_name);
 		header("HTTP/1.1 200 OK");
 		header("Status: 200 OK");
 		header("Pragma: private");
