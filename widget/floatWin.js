@@ -57,6 +57,7 @@ sb.widget.floatWin.prototype = {
 		this.win.events({
 			click : function(e){
 				var target = e.target;
+
 				self.onClick(e);
 				if(target.isWithin(self.content)){
 					self.onContentClick(e);
@@ -151,6 +152,7 @@ sb.widget.floatWin.prototype = {
 	show : function(){
 		this.win.show();
 		this.titleText.style.backgroundColor = this.titleBar.getStyle('backgroundColor');
+		this.onDisplay();
 
 	},
 
@@ -200,6 +202,8 @@ sb.widget.floatWin.prototype = {
 	},
 	onTitleBarClick : function(e){},
 	onContentClick : function(e){},
+	onClick : function(e){},
+	onDisplay : function(){},
 	onIconClick : function(e){},
 	onClose : function(e){}
 };
