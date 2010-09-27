@@ -105,13 +105,8 @@ class sb_Text_Bling{
 		
 		$str = self::misc_tags($str);
 		
-		//$str = nl2br($str);
-		
 		//turn any tabs into 4 spaces
 		$str = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;", $str);
-		
-		//remove any bling that is not processed
-		//$str = self::strip_bling($str);
 		
 		return $str;
 	}
@@ -136,7 +131,6 @@ class sb_Text_Bling{
 		return $str;
 	}
 	
-	
 	/**
 	 * Converts [list][/list] to ordered lists
 	 *
@@ -144,67 +138,33 @@ class sb_Text_Bling{
 	 * @return string
 	 */
 	public static function lists_to_html($str){
-		
-		preg_match_all( "~\[list\](.*?)\[/list\]~s", $str, $matches );
-		$match = $matches[0];
-		$list = $matches[1];
-		$count = count($match);
-		
-		for($x=0;$x<$count;$x++)		{
-		
-			//find each new line and make it a XHTML compliant <li>item</li>
-			preg_match_all( "~^\w|\s.*$~m", $list[$x], $items );
-			$num_items = count($items[0]);
-			
-			$item='';
-			for($i=0;$i<$num_items;$i++)
-			{
-				//if it's not a blank row make a list item
-				if (strlen(trim($items[0][$i])) != 0){
-					$item  .= '<li>'.$items[0][$i].'</li>';
+
+		$str = preg_replace_callback("~\[list\](.*?)\[/list\]\n?~s", function($match){
+
+			$lis = preg_replace_callback("~^\w|\s.*$~m", function($inner_match){
+				$li = trim($inner_match[0]);
+				if(!empty($li)){
+					return '<li class="tb">'.trim($li).'</li>';
 				}
-			}
-			
-			$final_list = '<ul class="tb_ul">'.$item.'</ul>';
-			$final_list = str_replace("\n", "", $final_list);
-			$final_list = str_replace("\r", "", $final_list);
-		
-			//replace each List with the appropriate XHTML list
-			$str = str_replace($match[$x], $final_list, $str);
-			//reset list for next one
-			$item = NULL;
-		}
-		
-		preg_match_all( "~\[numlist\](.*?)\[/numlist\]~s", $str, $matches );
-		$match = $matches[0];
-		$list = $matches[1];
-		$count = count($match);
-		
-		for($x=0;$x<$count;$x++)		{
-		
-			//find each new line and make it a XHTML compliant <li>item</li>
-			preg_match_all( "~^\w|\s.*$~m", $list[$x], $items );
-			$num_items = count($items[0]);
-			
-			$item='';
-			for($i=0;$i<$num_items;$i++)
-			{
-				//if it's not a blank row make a list item
-				if (strlen(trim($items[0][$i])) != 0){
-					$item  .= '<li>'.$items[0][$i].'</li>';
+				return '';
+			}, $match[1]);
+			return '<ul class="tb">'.$lis.'</ul>';
+
+		}, $str);
+
+		$str = preg_replace_callback("~\[numlist\](.*?)\[/numlist\]\n?~s", function($match){
+
+			$lis = preg_replace_callback("~^\w|\s.*$~m", function($inner_match){
+				$li = trim($inner_match[0]);
+				if(!empty($li)){
+					return '<li class="tb">'.trim($li).'</li>';
 				}
-			}
-			
-			$final_list = '<ol class="tb_ol">'.$item.'</ol>';
-			$final_list = str_replace("\n", "", $final_list);
-			$final_list = str_replace("\r", "", $final_list);
-		
-			//replace each List with the appropriate XHTML list
-			$str = str_replace($match[$x], $final_list, $str);
-			//reset list for next one
-			$item = NULL;
-		}
-		
+				return '';
+			}, $match[1]);
+			return '<ol class="tb">'.$lis.'</ol>';
+
+		}, $str);
+
 		return $str;
 	}
 	
