@@ -136,6 +136,7 @@ class sb_Text_Bling{
 	 *
 	 * @param string $str
 	 * @return string
+	 * @todo combine numlist and list into one
 	 */
 	public static function lists_to_html($str){
 
