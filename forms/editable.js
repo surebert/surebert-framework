@@ -303,9 +303,7 @@ sb.forms.editable.field.prototype = {
 							self._origValue = self.textField.value;
 						}
 
-						if(e.keyCode == 9 && self.isNotEdited()){
-							self.editStop();
-						} else if(e.keyCode == 27){
+						if(e.keyCode == 27){
 							self.editStop();
 						} else if(
 							this.nodeName == 'INPUT' && e.keyCode == 13
