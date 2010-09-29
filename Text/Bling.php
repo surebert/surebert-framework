@@ -140,7 +140,7 @@ class sb_Text_Bling{
 	 */
 	public static function lists_to_html($str){
 
-		$str = preg_replace_callback("~\[list\](.*?)\[/list\]\n?~s", function($match){
+		$str = preg_replace_callback("~\[list\](.*?)\[/list\]\n~s", function($match){
 
 			$lis = preg_replace_callback("~^\w|\s.*$~m", function($inner_match){
 				$li = trim($inner_match[0]);
@@ -470,6 +470,12 @@ class sb_Text_Bling{
 
 		## font size
 		$r = "~\[size=([\d(?:\.\d+)]+(?:em|px)?)\](.*?)\[\/size\]~is";
+		while(preg_match($r, $str)){
+			$str = preg_replace($r, '<span style="font-size:\\1;">\\2</span>', $str);
+		}
+
+		## font size
+		$r = "~\[size=(small|medium|large)\](.*?)\[\/size\]~is";
 		while(preg_match($r, $str)){
 			$str = preg_replace($r, '<span style="font-size:\\1;">\\2</span>', $str);
 		}
