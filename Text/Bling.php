@@ -220,7 +220,7 @@ class sb_Text_Bling{
 	 * @param string $str
 	 * @return string
 	 */
-	public static function links_to_html($str, $allow_email=false){
+	public static function links_to_html($str, $allow_email=false, $link_markup=null){
 		
 		### Convert Email Tags ###
 		if(!$allow_email){
@@ -231,9 +231,10 @@ class sb_Text_Bling{
 
 		### phrase links ###
 		$str = preg_replace( "~\[(?:url|link)=(.*?)\](.*?)\[\/(?:url|link)\]~", "<a class=\"blank\" href=\"\\1\">\\2</a>", $str);
-		
+
+		$link = $link_markup ? $link_markup : '(LINK)';
 		### url links ###\\2://\\3
-		$str = preg_replace("#(\s|\n)([a-z]+?)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", ' <a href="\\2://\\3" title="\\2://\\3">(LINK)</a>', $str); 
+		$str = preg_replace("#(\s|\n)([a-z]+?)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", ' <a href="\\2://\\3" title="\\2://\\3">'.$link.'</a>', $str);
 		
 		return $str;
 	}
