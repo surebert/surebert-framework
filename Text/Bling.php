@@ -234,8 +234,19 @@ class sb_Text_Bling{
 
 		$link = $link_markup ? $link_markup : '(LINK)';
 		### url links ###\\2://\\3
-		$str = preg_replace("#(\s|\n)([a-z]+?)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", ' <a href="\\2://\\3" title="\\2://\\3">'.$link.'</a>', $str);
-		
+		//$str = preg_replace("#(\s|\n)([a-z]+?)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", ' <a href="\\2://\\3" title="\\2://\\3">'.$link.'</a>', $str);
+
+		$str = preg_replace_callback("#(^|\s)([a-z]+?://[\w\-\.,\?!%\*\#:;~\\&$@\/=\+]+)#i", function($match) use($link){
+			$href = $match[2];
+			$end_punct = '';
+
+			if(preg_match("~[\.\?\!]$~", $href, $matchx)){
+				$end_punct = $matchx[0];
+				$href = substr($href,0,-1);
+			}
+			return $match[1].'<a href="'.$href.'" title="'.$href.'">'.$link.'</a>'.$end_punct;
+		}, $str);
+
 		return $str;
 	}
 	
