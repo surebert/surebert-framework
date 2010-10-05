@@ -103,11 +103,14 @@ sb.widget.floatWin.prototype = {
 		this.win.makeDraggable();
 
 		if(this.closeButton){
-			this.addIcon(new sb.element({
+			this.closeButton = this.addIcon(new sb.element({
 				tag : 'img',
 				src : sb.base+'_media/close.png',
-				onclick : function(){
-					self.close();
+				title : 'Click to close',
+				events : {
+					click : function(e){
+						self.close(e);
+					}
 				}
 			}));
 		}
@@ -144,9 +147,9 @@ sb.widget.floatWin.prototype = {
 		this.content.innerHTML ='';
 	},
 
-	close : function(){
-		this.onClose();
-		this.win.hide();
+	close : function(e){
+		this.onClose(e);
+		this.win.hide(e);
 	},
 
 	show : function(){
