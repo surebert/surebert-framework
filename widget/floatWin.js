@@ -23,6 +23,7 @@ sb.widget.floatWin.prototype = {
 		this.titleBar = new sb.element({
 			tag : 'div',
 			className : 'sb_floatWinTitleBar dragHandle',
+			title : 'Drag me to move window',
 			onselectstart : function() {
 				return false;
 			},
