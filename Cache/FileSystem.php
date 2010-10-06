@@ -70,14 +70,14 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
             try{
                 mkdir($dir, 0777, true);
             } catch (Exception $e){
-                throw new Exception('Could create cache directory: '.$key." - ".$e->getMessage());
+                throw new Exception('Could create cache directory: '.$file_path." - ".$e->getMessage());
             }
 		}
 
         try{
             $fh = fopen($file_path, 'a+');
         } catch (Exception $e){
-            throw new Exception('Could not write to cache: '.$key." - ".$e->getMessage());
+            throw new Exception('Could not write to cache: '.$file_path." - ".$e->getMessage());
         }
 	    
 	    //exclusive lock
@@ -94,7 +94,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	    $data = serialize(array($lifetime, $data));
 	    
 	    if (fwrite($fh, $data)===false){
-	    	throw new Exception('Could not write to cache: '.$key);
+	    	throw new Exception('Could not write to cache: '.$file_path);
 	    }
 	    
 	    fclose($fh);
