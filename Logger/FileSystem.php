@@ -11,15 +11,13 @@ class sb_Logger_FileSystem extends sb_Logger_Base{
 	
 	/**
 	* Creates an sb_Logger instance
-	* @param $log_types Array Sets the type of logging accepting, each one can be called as a method
 	* @param $agent String The agent string
 	*/
-	public function __construct($log_types=Array(), $agent = ''){
+	public function __construct($agent = '', $log_root=''){
 		
-		parent::__construct($log_types);
-		$this->_log_root = ROOT.'/private/logs';
-		
-		$this->_agent_str = !empty($agent) ? $agent : Gateway::$remote_addr;
+		parent::__construct($agent);
+		$log_root = !empty($log_root) ? $log_root : ROOT.'/private/logs';
+		$this->set_log_root($log_root);
 		
 	}
 

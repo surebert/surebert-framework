@@ -42,39 +42,22 @@ abstract class sb_Logger_Base{
 	
 	/**
 	* Creates an sb_Logger instance
-	* @param $log_types Array Sets the type of logging accepting, each one can be called as a method
 	* @param $agent String The agent string
 	*
 	* <code>
 	* //LOGGER_TYPE replace with FileSystem() etc
-	* App::$logger = new sb_Logger_LOGGER_TYPE(Array('audit','files','debug'));
+	* App::$logger = new sb_Logger_LOGGER_TYPE();
 	* App::$logger->set_agent_string("\t".App::$user->uname."\t".App::$user->roswell_id."\t".Gateway::$remote_addr);
 	* App::$logger->debug('Here is a message');
 	* //If the argument is anything other than a string it is converted to json for logging as string
 	* App::$logger->files($obj);
 	* </code>
 	*/
-	public function __construct($log_types = Array(), $agent = ''){
+	public function __construct($agent = ''){
 	
-		$this->add_log_types($log_types);
 		$this->_agent_str = !empty($agent) ? $agent : Gateway::$remote_addr;
 	}
 
-	/**
-	 * Adds additional logging methods
-	 * @param string an unlimited number of string arguments representing the types of logs to enable
-	 * <code>
-	 * $logger->add_log_types(Array('jump', 'dance', 'run'));
-	 * </code>
-	 */
-	public function add_log_types($log_types = Array()){
-
-		foreach($log_types as $type){
-			
-			$this->_enabled_logs[$type] = true;
-		}
-	}
-	
 	/**
 	 * Sets the agent string representing the agent/user that initiated the action
 	 *
@@ -97,19 +80,17 @@ abstract class sb_Logger_Base{
 			return true;
 		}
 
-		if(array_key_exists($log_type, $this->_enabled_logs)){
-			$data = $arguments[0];
+		$data = $arguments[0];
 
-			if(!is_string($data)){
-				if($this->_conversion_method == 'print_r'){
-					$data = print_r($data, 1);
-				} else {
-					$data = json_encode($data);
-				}
+		if(!is_string($data)){
+			if($this->_conversion_method == 'print_r'){
+				$data = print_r($data, 1);
+			} else {
+				$data = json_encode($data);
 			}
-
-			return $this->__write($data, $log_type);
 		}
+
+		return $this->__write($data, $log_type);
 
 		return false;
 	}
