@@ -130,6 +130,17 @@ sb.forms.editable.field.prototype = {
 	onButtonPress : function(e){return true;},
 
 	/**
+	@Name: sb.forms.editable.field.onButtonUp
+	@Description: Fires after a button is pressed other than save or cancel
+	@Param event e The press event
+	@Example:
+	editor.onButtonUp = function(e){
+		var button = e.target;
+	};
+	*/
+	onButtonUp : function(e){return true;},
+
+	/**
 	@Name: sb.forms.editable.field.onEditStop
 	@Description: Fires when a button is pressed other than save or cancel
 	@Param event e The press event
@@ -359,6 +370,19 @@ sb.forms.editable.field.prototype = {
 								case 'cancel':
 									self.editStop(e);
 									break;
+							}
+						}
+						e.preventDefault();
+						e.stopPropagation();
+
+						return true;
+
+					},
+					mouseup : function(e){
+						var target = e.target;
+						if(target.nodeName == 'BUTTON'){
+							if(self.onButtonUp.call(self, e) === false){
+								return false;
 							}
 						}
 						e.preventDefault();
