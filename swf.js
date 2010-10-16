@@ -136,9 +136,15 @@ sb.swf.infuse = sb.objects.infuse;
 sb.swf.infuse({
 	/**
 	@Name: sb.swf.version
-	@Description: Used Internally
+	@Description: Integer The major version number
 	*/
-	version : 4,
+	version : 0,
+
+	/**
+	@Name: sb.swf.fullVersion
+	@Description: String The full version with revision numbers comma delimited
+	*/
+	fullVersion : '0,0,0',
 	
 	/**
 	@Name: sb.swf.swfs
@@ -151,56 +157,6 @@ sb.swf.infuse({
 	@Description: Used Internally
 	*/
 	instanceId : 0,
-	
-	/**
-	@Name: sb.swf.check
-	@Description: Used Internally
-	*/
-	check : function(){
-		var version, description;
-		try{
-			version = new RegExp("\\d{1}\.\\d{0,5}", "i");
-			if(window.navigator.plugins["Shockwave Flash"]){
-				description = window.navigator.plugins["Shockwave Flash"].description;
-				if(description.match(version)){
-					sb.swf.version = description.match(version);
-				}
-				
-			}
-		} catch(e){sb.swf.version=0;}
-		return sb.swf.version;
-	},
-	
-	/**
-	@Name: sb.swf.testIe
-	@Description: Used Internally
-	*/
-	testIe : function(){
-		try{
-			
-			if(new window.ActiveXObject("ShockwaveFlash.ShockwaveFlash." + sb.swf.version)){
-				return false;
-			}
-		} catch(e){return true;}
-			
-	},
-	
-	/**
-	@Name: sb.swf.ieCheck
-	@Description: Used Internally
-	*/
-	ieCheck : function(){	
-		try{
-			//THERE MUST BE A BETTER SOLUTION
-			while(!sb.swf.testIe()){
-				sb.swf.version++;
-			}
-			sb.swf.version--;
-			return sb.swf.version;
-		} catch(e){
-			return true;
-		}
-	},
 	
 	/**
 	@Name: sb.swf.cleanup
@@ -233,16 +189,21 @@ sb.swf.infuse({
 	@Description: Used Internally
 	*/
 	detect : function(){
-		for(var x=0;x<window.navigator.plugins.length;x++){
-		//	sb.objects.alert(navigator.plugins[x]);
-		}
-		if (window.navigator.plugins && window.navigator.plugins.length){
-			sb.swf.format = 'embed';
-			return sb.swf.check();
-		} else if(sb.browser.agent =='ie'){
-			sb.swf.format = 'object';
-			return sb.swf.ieCheck();
-		} 
+		this.fullVersion = '0,0,0';
+		try {
+			if(navigator && navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]){
+
+				if(navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin){
+					this.fullVersion = (navigator.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
+				}
+				this.format = 'embed';
+			} else {
+				this.fullVersion = new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version').replace(/\D+/g, ',').match(/^,?(.+),?$/)[1];
+				this.format = 'object';
+			}
+
+		} catch(e) {}
+		this.version = this.fullVersion.split(',')[0];
 	}
 	
 });
