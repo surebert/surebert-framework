@@ -113,6 +113,8 @@ class sb_Files{
 					break;
 
                 case 'ppt':
+				case 'pps':
+				case 'ppx':
                     $m = 'application/vnd.ms-powerpoint';
                     break;
 
