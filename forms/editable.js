@@ -127,7 +127,9 @@ sb.forms.editable.field.prototype = {
 		var button = e.target;
 	};
 	*/
-	onButtonPress : function(e){return true;},
+	onButtonPress : function(e){
+		return true;
+	},
 
 	/**
 	@Name: sb.forms.editable.field.onButtonUp
@@ -138,7 +140,9 @@ sb.forms.editable.field.prototype = {
 		var button = e.target;
 	};
 	*/
-	onButtonUp : function(e){return true;},
+	onButtonUp : function(e){
+		return true;
+	},
 
 	/**
 	@Name: sb.forms.editable.field.onEditStop
@@ -158,7 +162,9 @@ sb.forms.editable.field.prototype = {
 	@Example:
 	editor.onMaxLength = function(e){};
 	*/
-	onMaxLength : function(e){e.preventDefault();},
+	onMaxLength : function(e){
+		e.preventDefault();
+	},
 
 	/**
 	@Name: sb.forms.editable.field.onKeyDown
@@ -319,7 +325,7 @@ sb.forms.editable.field.prototype = {
 						} else if(
 							this.nodeName == 'INPUT' && e.keyCode == 13
 							|| (e.ctrlKey || e.metaKey) && e.keyCode == 83
-						){
+							){
 							e.stopPropagation();
 							e.preventDefault();
 							self.onSave.call(self, self.textField.value);
@@ -343,6 +349,22 @@ sb.forms.editable.field.prototype = {
 
 			if(this.type == 'input'){
 				this.textField.setAttribute('type', 'text');
+			}
+
+			if(this.maxlength){
+				this.textField.setAttribute('maxlength', this.maxlength);
+			}
+
+			if(this.size){
+				this.textField.setAttribute('size', this.size);
+			}
+
+			if(this.rows){
+				this.textField.setAttribute('rows', this.rows);
+			}
+
+			if(this.cols){
+				this.textField.setAttribute('cols', this.cols);
 			}
 
 			for(var prop in this.attributes){
