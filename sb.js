@@ -1237,6 +1237,14 @@ sb.objects = {
 		return copy;
 	},
 
+	hardcopy : function(o){
+		var c = {};
+		for(var p in o){
+			try{c[p] = o[p];}catch(e){};
+		}
+		return c;
+	},
+
 	/**
 	@Name: sb.objects.dump
 	@Description: Returns the properties of the object and their values for an object
