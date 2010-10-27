@@ -32,26 +32,39 @@ sb.forms.inputValidator = function(o){
 			self._validate(e.target);
 		});
 	}
+	
+	this.onKeyDownEvt = sb.events.add(document, 'keydown', function(e){
+		
+		if(typeof self.onKeyDown == 'function'){
+			self.onKeyDown(e);
+		}
+	});
 
 };
 
 sb.forms.inputValidator.prototype = {
 	_validate : function(input){
 		var validate = input.getAttribute('validate');
-		if(input.getAttribute('validate') && this.validations[validate]){
-			var validation = this.validations[validate];
+		if(validate){
+			var self = this;
+			var validationTypes = validate.split(' ');
+			validationTypes.forEach(function(validationType){
 
-			if(validation == 'function'){
-				input.valid = validation(input.value);
-			} else {
-				input.valid = input.value.match(validation);
-			}
+				var validation = self.validations[validationType];
 
-			if(input.valid){
-				this.onValid(input);
-			} else {
-				this.onInValid(input);
-			}
+				if(typeof validation == 'function'){
+					input.valid = validation(input);
+				} else {
+					input.valid = input.value.match(validation);
+				}
+
+				if(input.valid){
+					self.onValid(input);
+				} else {
+					self.onInValid(input);
+				}
+			});
+			
 		}
 	},
 	/**
@@ -85,7 +98,7 @@ sb.forms.inputValidator.prototype = {
 	*/
 	validateInputsWithinElement : function(el){
 		var self = this;
-		$(el).$('input').forEach(function(inp){
+		$(el).$('input,textarea').forEach(function(inp){
 			self._validate(inp);
 		});
 	}
