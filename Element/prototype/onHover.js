@@ -54,32 +54,41 @@ Element.prototype.onHover = function(o){
             this.interval = interval || this.interval;
             var self = this;
             this.unobserve();
-            this.events.push(el.evt('mouseover', function(){self.hover();}));
-            this.events.push(el.evt('mouseout', function(){self.hoverstop();}));
+            this.events.push(el.evt('mouseover', function(e){
+				self.evt = sb.objects.hardcopy(e);
+				self.hover();
+			}));
+            this.events.push(el.evt('mouseout', function(e){
+				self.evt = sb.objects.hardcopy(e);
+				self.hoverstop();
+			}));
+			this.events.push(el.evt('mousemove', function(e){
+				self.evt = sb.objects.hardcopy(e);
+			}));
         },
 
-        hover : function(interval){
-        
+        hover : function(){
+			
             var t = this;
            
-            t.interval = interval || t.interval;
             //stop but don't fire
             t.hoverstop(true);
-
+			
             t.timer = window.setInterval(function(){
+				
                 if(typeof t.onStart == 'function'){
-                    t.onStart.call(el);
+                    t.onStart.call(el, t.evt);
                 }
             }, t.interval);
         },
 
-        hoverstop : function(suppressHandler){
+        hoverstop : function(){
             var t=this;
             if(t.timer){
                 window.clearInterval(t.timer);
                 t.timer = null;
-                if(!suppressHandler && typeof t.onStop == 'function'){
-                    t.onStop.call(el);
+                if(typeof t.onStop == 'function'){
+                    t.onStop.call(el, t.evt);
                 }
                 
             }
