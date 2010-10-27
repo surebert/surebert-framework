@@ -29,38 +29,65 @@ sb.forms.inputValidator = function(o){
 	var self = this;
 	if(this.validateOnKeyUp == true){
 		this.validateOnKeyUp = sb.events.add(document, 'keyup', function(e){
-			  self._validate(e.target);
-		  });
+			self._validate(e.target);
+		});
 	}
 
 };
 
 sb.forms.inputValidator.prototype = {
-  _validate : function(input){
-	  var validate = input.getAttribute('validate');
-	  if(input.getAttribute('validate') && this.validations[validate]){
-	     var validation = this.validations[validate];
+	_validate : function(input){
+		var validate = input.getAttribute('validate');
+		if(input.getAttribute('validate') && this.validations[validate]){
+			var validation = this.validations[validate];
 
-		 if(validation == 'function'){
-			 input.valid = validation(input.value);
-		 } else {
-			 input.valid = input.value.match(validation);
-		 }
+			if(validation == 'function'){
+				input.valid = validation(input.value);
+			} else {
+				input.valid = input.value.match(validation);
+			}
 
-		 if(input.valid){
-			 this.onValid(input);
-		 } else {
-			 this.onInValid(input);
-		 }
-	  }
-  },
-  onValid: function(input){},
-  onInValid: function(input){},
-  validateInputsWithinElement : function(el){
-	var self = this;
-	$(el).$('input').forEach(function(inp){
-		self._validate(inp);
-	});
-  }
+			if(input.valid){
+				this.onValid(input);
+			} else {
+				this.onInValid(input);
+			}
+		}
+	},
+	/**
+	@Name: sb.forms.inputValidator.prototype.onValid
+	@Description: Fires when the input is validated and it is valid
+	@Param: input The input that is valid
+	@Example:
+	validator.onValid = function(input){
+		input.style.backgroundColor = 'lime';
+	};
+	*/
+	onValid: function(input){},
+
+	/**
+	@Name: sb.forms.inputValidator.prototype.onInValid
+	@Description: Fires when the input is validated and it is invalid
+	@Param: input The input that is valid
+	@Example:
+	validator.onInValid = function(input){
+		input.style.backgroundColor = 'red';
+	};
+	*/
+	onInValid: function(input){},
+
+	/**
+	@Name: sb.forms.inputValidator.prototype.validateInputsWithinElement
+	@Description: USed to validate all inputs contained within a specific element
+	@Param: input The input that is valid
+	@Example:
+	validator.validateInputsWithinElement('#myDiv');
+	*/
+	validateInputsWithinElement : function(el){
+		var self = this;
+		$(el).$('input').forEach(function(inp){
+			self._validate(inp);
+		});
+	}
 
 };
