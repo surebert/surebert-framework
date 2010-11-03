@@ -24,17 +24,25 @@ onInValid(input) function Fires when the input is not validate
 	}
 });
 */
+
 sb.forms.inputValidator = function(o){
 	sb.objects.infuse(o, this);
 	var self = this;
-	if(this.validateOnKeyUp == true){
-		this.validateOnKeyUp = sb.events.add(document, 'keyup', function(e){
-			self._validate(e.target);
-		});
-	}
+
+	this.validateOnKeyUp = this.validateOnKeyUp === false ? this.validateOnKeyUp : true;
+	this.onKeyUpEvt = sb.events.add(document, 'keyup', function(e){
+	
+		if(typeof self.onKeyUp == 'function'){
+			if(self.onKeyUp(e) === false){
+				return;
+			}
+		}
+		if(self.validateOnKeyUp == true){
+			self._validate(e);
+		}
+	});
 	
 	this.onKeyDownEvt = sb.events.add(document, 'keydown', function(e){
-		
 		if(typeof self.onKeyDown == 'function'){
 			self.onKeyDown(e);
 		}
@@ -43,8 +51,20 @@ sb.forms.inputValidator = function(o){
 };
 
 sb.forms.inputValidator.prototype = {
-	_validate : function(input){
+	_validate : function(e){
+		var input = e.target;
+		if(input.nodeName == 'INPUT'){
+			input.value = input.value.replace(/(^\s+|\s+$)/g, '');
+		}
+		
+		var maxlength = input.getAttribute('maxlength');
+		if(maxlength && input.value && input.value.length >= maxlength){
+			input.value = input.value.substring(0, maxlength);
+			e.preventDefault();
+		}
+
 		var validate = input.getAttribute('validate');
+		input.validationErrors = [];
 		if(validate){
 			var self = this;
 			var validationTypes = validate.split(' ');
@@ -61,6 +81,7 @@ sb.forms.inputValidator.prototype = {
 				if(input.valid){
 					self.onValid(input);
 				} else {
+					input.validationErrors.push(validationType);
 					self.onInValid(input);
 				}
 			});
@@ -88,6 +109,24 @@ sb.forms.inputValidator.prototype = {
 	};
 	*/
 	onInValid: function(input){},
+
+	/**
+	@Name: sb.forms.inputValidator.prototype.onKeyDown
+	@Description: Fires when the input is validated and it is invalid
+	@Param: input The input that is valid
+	@Example:
+	validator.onKeyDown = function(e){};
+	*/
+	onKeyDown : function(){},
+
+	/**
+	@Name: sb.forms.inputValidator.prototype.onKeyDown
+	@Description: Fires when the input is validated and it is invalid
+	@Param: input The input that is valid
+	@Example:
+	validator.onKeyUp = function(e){};
+	*/
+	onKeyUp : function(){},
 
 	/**
 	@Name: sb.forms.inputValidator.prototype.validateInputsWithinElement
