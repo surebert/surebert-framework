@@ -95,7 +95,7 @@ sb.nodeList.attrConvert = function(attr){
 	
 		switch(attr){
 			
-			case 'cellindex':
+		case 'cellindex':
 			attr = 'cellIndex';
 			break;
 		case 'class':

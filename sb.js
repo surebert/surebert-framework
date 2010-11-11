@@ -48,6 +48,7 @@ var sb = {
 	alert(sb.included);
 	*/
 	included : [],
+
 	/**
 	@Name: sb.include
 	@Description:  Includes another surebert module.  Make sure you surebert files are in /surebert or that you have set sb.base before using this.
@@ -2161,34 +2162,7 @@ sb.events = {
 	*/
 	add : function() {
 		
-		if(window.addEventListener){
-
-			return function(el, type, fn) {
-				el = sb.$(el);
-				var f = function(e){
-
-					var sb_target = e.target;
-					var sb_related_target = e.relatedTarget;
-					delete e.target;
-					delete e.relatedTarget;
-					e.__defineGetter__("target", function() {
-						return sb.events.distillTarget(sb_target);
-					});
-					e.__defineGetter__("relatedTarget", function() {
-						return sb.events.distillTarget(sb_related_target);
-					});
-					fn.call(el, e);
-				};
-				var evt = {
-					el:el,
-					type:type,
-					fn:f,
-					remove : sb.events.removeThis
-				};
-				el.addEventListener(type, f, false);
-				return sb.events.record(evt);
-			};
-		} else if ( window.attachEvent){
+		if ( window.attachEvent){
 			return function(el, type, fn) {
 				el = sb.$(el);
 				var tar = false;
@@ -2233,6 +2207,33 @@ sb.events = {
 					remove : sb.events.removeThis
 					};
 				el.attachEvent('on'+type, f);
+				return sb.events.record(evt);
+			};
+		} else if(window.addEventListener){
+
+			return function(el, type, fn) {
+				el = sb.$(el);
+				var f = function(e){
+
+					var sb_target = e.target;
+					var sb_related_target = e.relatedTarget;
+					delete e.target;
+					delete e.relatedTarget;
+					e.__defineGetter__("target", function() {
+						return sb.events.distillTarget(sb_target);
+					});
+					e.__defineGetter__("relatedTarget", function() {
+						return sb.events.distillTarget(sb_related_target);
+					});
+					fn.call(el, e);
+				};
+				var evt = {
+					el:el,
+					type:type,
+					fn:f,
+					remove : sb.events.removeThis
+				};
+				el.addEventListener(type, f, false);
 				return sb.events.record(evt);
 			};
 		}
@@ -2316,7 +2317,7 @@ sb.events = {
 /**
 @Name: sb.element
 @Type: constructor
-@Description: Used to create DOM nodes.  If a string is passed to the fuction it simply return document.createElement(str);
+@Description: Used to create DOM nodes.
 @Param: Object o An object of properties which are used to contruct the DOM object,  all properites are appending as properties to the dom object.  sb.elements have many methods whcih are all listed in the Element.prototype object below
 @Param: String o If passed a nodeName as a string it simply returns document.createElement(nodeName);
 @Param: Object sb.element If passed an sb.element it uses that element as a template and clones it
@@ -2357,30 +2358,12 @@ sb.element = function(o){
 		return o;
 	}
 
-	if(typeof o == 'object' ){
-
-		if(o.tag == 'input' && sb.dom.createNamedElement){
-
-			el = new sb.dom.createNamedElement(o.type, o.name, o.checked);
-
-		} else {
-			el = document.createElement(o.tag);
-		}
-	}
+	el = document.createElement(o.tag);
 
 	//copy properties from the sb.element prototype
 	if(Element.emulated){
 		sb.objects.infuse(Element.prototype, el);
 		o = sb.objects.copy(o);
-	}
-
-	if(typeof o.htmlAttributes !='undefined'){
-		for(var prop in o.htmlAttributes){
-			if(o.htmlAttributes.hasOwnProperty(prop)){
-				el.setAttribute(prop, o.htmlAttributes[prop]);
-			}
-		}
-		delete o.htmlAttributes;
 	}
 
 	if(typeof o.styles !='undefined'){
@@ -2397,7 +2380,6 @@ sb.element = function(o){
 	}
 
 	this.eventsAdded = [];
-
 
 	if(typeof o.events !='undefined'){
 
@@ -2419,6 +2401,45 @@ sb.element = function(o){
 
 		//remove attributes for ie's sake
 		el.removeAttribute('tag');
+	}
+
+	return el;
+};
+
+/**
+@Name: sb.element
+@Type: constructor
+@Description: Used to create DOM nodes.
+@Param: String str The string used to desribe the object format TAG#id.class names@attr=val&vattr=val (or [attr=val][attr=val])
+@Return: sb.element object with all Element.prototype properties
+@Example:
+var div = new sb.el('div#mydiv.chat[dog=one][cat=rob]').appendToTop('body');
+OR
+var div = new sb.el('div#mydiv.chat@dog=one&cat=rob').appendToTop('body');
+*/
+sb.el = function(str){
+	var matches = str.match(/^([a-zA-Z]+)(?:#([\w\-]+))?(?:\.([\w\- ]+))?/);
+	if(!matches){
+		throw("You must pass a string to sb.el constructor");
+	}
+
+	var el = sb.element({
+		tag : matches[1],
+		id : matches[2] || '',
+		className : matches[3] || '',
+		html : function(html){
+			this.innerHTML = html;
+			return this;
+		},
+		innerHTML : ''
+	});
+	var attr = str.match(/([\w-]+=[\w-]+)/g);
+
+	if(attr){
+		attr.forEach(function(v){
+			var a = v.split('=');
+			el.setAttribute(a[0], a[1]);
+		});
 	}
 
 	return el;
@@ -2584,6 +2605,19 @@ Element.prototype.getY = function(){
 		el = el.offsetParent;
 	}
 	return y;
+};
+
+/**
+@Name: Element.prototype.html
+@Type: function
+@Description: Sets the innerHTML of an element
+@Return: The element itself
+
+@Example:
+myElement.html('<p>hello world</p>);
+*/
+Element.prototype.html = function(html){
+	this.innerHTML = html;
 };
 
 /**
