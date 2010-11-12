@@ -474,6 +474,9 @@ class sb_Text_Bling{
 		
 		## add small caps
 		$str = preg_replace("~\[caps](.*?)\[/caps]~is", '<span class="tb_caps">$1</span>', $str);
+
+		## add center
+		$str = preg_replace("~\[center](.*?)\[/center]~is", '<center class="tb_center">$1</center>', $str);
 		
 		## add code tag
 		## add small caps
