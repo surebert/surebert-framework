@@ -2610,14 +2610,26 @@ Element.prototype.getY = function(){
 /**
 @Name: Element.prototype.html
 @Type: function
-@Description: Sets the innerHTML of an element
-@Return: The element itself
+@Param: none - means get innerHTML, value = set innerHTML, function = set innerHTML
+@Description: Gets/Sets the innerHTML of an element
+@Return: The string when getting and the element itself in all other cases
 
 @Example:
-myElement.html('<p>hello world</p>);
+el.html(function(){return this.innerHTML+='sss';});
+myElement.html('<p>hello world</p>');
+var str = myElement.html(); //hello world
+
 */
 Element.prototype.html = function(html){
-	this.innerHTML = html;
+	if(!html){
+		return this.innerHTML;
+	} else if(typeof html == 'function'){
+		this.innerHTML = html.call(this);
+	} else {
+		this.innerHTML = html;
+	}
+
+	return this;
 };
 
 /**
