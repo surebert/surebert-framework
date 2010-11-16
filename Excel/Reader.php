@@ -1676,7 +1676,7 @@ class sb_Excel_Reader extends sb_Excel_ReaderBackend{
 					$val = $this->val($row,$col,$sheet);
 					if ($val=='') { $val="&nbsp;"; }
 					else {
-						$val = htmlentities($val);
+						
 						$link = $this->hyperlink($row,$col,$sheet);
 						if ($link!='') {
 							$val = "<a href=\"$link\">$val</a>";
