@@ -29,18 +29,6 @@ sb.widget.editor = function(id, onload){
 	
 	this.box = sb.$(id);
 	this.box.className ='editor';
-		
-	if(!sb.browser.agent.match(/[ie|ff|sf]/i)){
-		throw('You need Firefox, Safari or IE to use the editor');
-
-		var textarea = this.createTextArea();
-		textarea.replace(id);
-		textarea.setContent = this.setContent;
-		textarea.getContent = this.getContent;
-		textarea.id = this.box.id;
-		return textarea;
-		
-	}
 	
 	this.box.frameBorder=0; //ie bug not working
 	this.box.style.backgroundColor='white'; //ff needs bgcolor

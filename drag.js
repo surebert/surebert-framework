@@ -134,7 +134,7 @@ sb.drag = {
 		sb.drag.el = el;
 		var target = e.target;
 		
-		if(target.hasClassName('dragHandle')){
+		if(typeof target.hasClassName == 'function' && target.hasClassName('dragHandle')){
 			sb.drag.mmove = sb.events.add(document, 'mousemove', sb.drag.move);
 		} 
 		sb.drag.mup = sb.events.add(document, 'mouseup', sb.drag.stop);

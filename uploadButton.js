@@ -63,7 +63,7 @@ sb.uploadButton = function(parameters){
 		height : this.styles.height || 24,
 		id : 'upload'+this.id,
 		bgcolor : '#000000',
-		wmode: 'transparent',
+		wmode: window.chrome ? '' : 'transparent',
 		flashvars : {
 			debug : (this.debug != null) ? this.debug : true,
 			innerHTML : this.innerHTML || 'upload',
