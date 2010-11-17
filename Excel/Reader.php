@@ -65,7 +65,7 @@ class sb_Excel_Reader extends sb_Excel_ReaderBackend {
 			}
 		}
 	}
-
+	
 	/**
 	 * export to multi dimensional array
 	 * @param integer $sheet

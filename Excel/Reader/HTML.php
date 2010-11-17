@@ -6,7 +6,7 @@
  * Extends sb_Excel_Reader to do excel to html mapping with css
  * @package sb_Excel
  */
-class sb_Excel_ReaderHTML extends sb_Excel_Reader {
+class sb_Excel_Reader_HTML extends sb_Excel_Reader {
 
 	/**
 	 * Converts excel file cell style info into css
@@ -27,7 +27,7 @@ class sb_Excel_ReaderHTML extends sb_Excel_Reader {
 		}
 		$height = $this->height($row, $col, $sheet);
 		if ($height != "") {
-			$css .= "font-size:$height" . "px;";
+			$css .= "font-size:$height" . "pt;";
 		}
 		$bgcolor = $this->bgColor($row, $col, $sheet);
 		if ($bgcolor != "") {
