@@ -512,7 +512,7 @@ sb.$ = function(selector, root) {
 
 	nodeList.setSelector(selector);
 
-	if(document.querySelectorAll){
+	if(root.querySelectorAll){
 		nodeList.add(root.querySelectorAll(selector));
 
 	} else {
@@ -1391,22 +1391,24 @@ sb.nodeList.prototype = {
 
 		for(x=0;x<len;x++){
 			node=nodes[x];
-
-			if(!node.sb_id ){
-				node.sb_id = sb.nodeList.sb_id++;
+			var sb_id = node.getAttribute('sb_id');
+			if(!sb_id){
+				sb_id = sb.nodeList.sb_id++;
+				node.setAttribute('sb_id',  sb_id);
 			}
 
-			if(!this.sb_ids[node.sb_id]){
+			if(!this.sb_ids[sb_id]){
 
-				if(emulated){
+				if(!node.xml && emulated){
 					for(prop in ep){
 						node[prop] = ep[prop];
 					}
 				}
 
 				this.nodes.push(node);
-				this.sb_ids[node.sb_id] = true;
+				this.sb_ids[sb_id] = true;
 			}
+
 		}
 	},
 	
@@ -2456,10 +2458,41 @@ if(typeof Element == 'undefined'){
 
 /**
 @Name: sb.element.protoype
-@Description: Methods of sb.element instances. Assume that myElement is an sb.element instance in all examples of Element.prototype
+@Description: returns matching elements within the element
+@Example:
+var myDiv = $('#mdiv');
+myDiv.$('.someClass');
 */
 Element.prototype.$ = function(selector){
 	return sb.$(selector, this);
+};
+
+/**
+@Name: Element.prototype.attr
+@Description: Gets the attribute valur or sets the attribute of an element to the value given
+@Example:
+el.attr('some_attribute');
+el.attr('some_attribute', 'some value');
+el.attr('some_attribute', function(){return 'some value';});
+*/
+Element.prototype.attr = function(attr, val){
+
+	if(typeof attr == 'object'){
+		for(var prop in attr){
+			this.setAttribute(prop, attr[prop]);
+		}
+		return this;
+	} else if(typeof val != 'undefined'){
+		if(typeof val == 'function'){
+			val = val.call(this);
+		}
+		
+		this.setAttribute(attr, val);
+
+		return this;
+	} else {
+		return this.getAttribute(attr);
+	}
 };
 
 /**
