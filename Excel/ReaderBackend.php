@@ -4,9 +4,7 @@
  * An Excel Spreadhseet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
  * @package sb_Excel
  */
-
 abstract class sb_Excel_ReaderBackend {
-
 	const NUM_BIG_BLOCK_DEPOT_BLOCKS_POS = 0x2c;
 	const SMALL_BLOCK_DEPOT_BLOCK_POS = 0x3c;
 	const ROOT_START_BLOCK_POS = 0x30;
@@ -74,7 +72,6 @@ abstract class sb_Excel_ReaderBackend {
 	protected $colindexes = array();
 	protected $standardColWidth = 0;
 	protected $defaultColWidth = 0;
-
 	public $ole_data = '';
 
 	public function get_workbook() {

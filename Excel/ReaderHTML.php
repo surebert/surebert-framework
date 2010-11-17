@@ -1,4 +1,5 @@
 <?php
+
 /**
  * An Excel Spreadhseet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
  *

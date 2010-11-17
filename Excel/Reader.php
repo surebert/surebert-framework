@@ -4,7 +4,6 @@
  * An Excel Spreadhseet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
  * @package sb_Excel
  */
-
 class sb_Excel_Reader extends sb_Excel_ReaderBackend {
 
 	/**
@@ -14,7 +13,7 @@ class sb_Excel_Reader extends sb_Excel_ReaderBackend {
 	 * @param string $outputEncoding The output encoding to use
 	 */
 	public function __construct($file='', $read_extended_info=true, $outputEncoding='') {
-		
+
 		$this->set_UTF_encoder('iconv');
 		if ($outputEncoding != '') {
 			$this->set_output_encoding($outputEncoding);
@@ -150,7 +149,6 @@ class sb_Excel_Reader extends sb_Excel_ReaderBackend {
 	public function rowhidden($row, $sheet=0) {
 		return!!$this->rowInfo[$sheet][$row]['hidden'];
 	}
-
 
 }
 
