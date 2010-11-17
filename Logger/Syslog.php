@@ -42,22 +42,42 @@ class sb_Logger_Syslog{
 	public $port = 514;
 
 	/**
+	 * The maximum packet length
+	 * @var integer
+	 */
+	public $max_length = 1024;
+
+	/**
 	 * The current line being logged
 	 * @var string
 	 */
 	protected $message ='';
 
 	/**
+	 * The agent string if needed, represents the user who generated the message
+	 * @var string
+	 */
+	protected $agent ='';
+
+	/**
 	 * Create a new log to send or save
 	 * @param string $process The process used to create the log e.g. ls, su - limit to alphnum < 32 chars - truncates access
-	 * @param string $hostname The hostname of the machine that generated the log messages
+	 * @param string $hostname The hostname of the machine t1024hat generated the log messages
 	 * *  e.g. ls, su, php limit to alphnum < 32 chars, details can go in contents if longer is required
-	 * 
+	 *
 	*/
 	public function __construct($process, $hostname=''){
-		
+
 		$this->process = $this->check_length($process, 32, 'process');
 		$this->hostname = $hostname ? $hostname : php_uname('n');
+	}
+
+	/**
+	 *
+	 * @param string $agent Sets the user agent that produced the message within the system
+	 */
+	public function set_agent($ip, $identifier){
+		$this->agent .= '|'.$ip.'|'.$identifier.'|';
 	}
 
 	/**
@@ -98,16 +118,17 @@ class sb_Logger_Syslog{
 	 *     18 local user 2 (local2)
 	 *     19 local user 3 (local3)
 	 *     20 local user 4 (local4)
-	 *     21 local user 5 (local5)
+	 *     21 local user 5 (local5)Syslog
 	 *     22 local user 6 (local6)
 	 *     23 local user 7 (local7)
 	 *
+	 *  @param integer $time The tstamp to override the current time
 	 *	@return object This so you can chain ->send or ->save
 	 */
-	public function set_message($content, $severity=5, $facility=16){
+	public function set_message($content, $severity=5, $facility=16, $time=null){
 
 		$this->content = $this->check_length($content);
-		
+
 		$facility = intval($facility);
 		$severity = intval($severity);
 		if ($facility <  0) { $facility =  0;}
@@ -117,21 +138,30 @@ class sb_Logger_Syslog{
 
 		$this->process = $this->check_length($this->process, 32, 'process');
 
-		$time = time();
-		$month      = date("M", $time);
-		$day        = substr("  ".date("j", $time), -2);
-		$hhmmss     = date("H:i:s", $time);
-		$tstamp  = $month." ".$day." ".$hhmmss;
+		$tstamp  = $this->get_tstamp($time);
 
 		$priority    = "<".($facility*8 + $severity).">";
 		$header = $tstamp." ".$this->hostname;
 
-		$this->message = $priority.$header." ".$this->process.": ".$this->content;
+		$this->message = $priority.$header." ".$this->process.": ".$this->agent.$this->content;
 
 		$this->message = $this->check_length($this->message);
 
 		return $this;
 
+	}
+
+	/**
+	 * Gets the BSD syslog style timestamp Nov 17 12:30:19
+	 * @param The optional time to use, any format that strtotime understands
+	 * @return string
+	 */
+	protected function get_tstamp($time=null){
+		$time = !is_null($time) ? strtotime($time) : time();
+		$month      = date("M", $time);
+		$day        = substr("  ".date("j", $time), -2);
+		$hhmmss     = date("H:i:s", $time);
+		return $month." ".$day." ".$hhmmss;
 	}
 
 	/**
@@ -154,12 +184,20 @@ class sb_Logger_Syslog{
 		if(empty($log_dir)){
 			$log_dir = ROOT.'/private/logs/syslog/';
 		}
-		
+
 		if(!is_dir($log_dir)){
 			mkdir($log_dir, 0777, true);
 		}
-	
+
 		return file_put_contents($log_dir.date('Y_m_d').'.log', $this->message."\n", FILE_APPEND);
+	}
+
+	/**
+	 * Returns the current message for debugging
+	 * @return string
+	 */
+	public function debug(){
+		return $this->message;
 	}
 
 	/**
@@ -174,11 +212,11 @@ class sb_Logger_Syslog{
 		}
 
 		$this->port = $port;
-		
+
 		if(empty($this->server)){
 			trigger_error('No server to send to has been specified', E_USER_WARNING);
 		}
-		
+
 		if (intval($timeout) > 0){
 			$this->timeout = intval($timeout);
 		}
@@ -198,12 +236,16 @@ class sb_Logger_Syslog{
 	/**
 	 *Checks to make sure the length of something is expected or warn and truncate
 	 * @param string $str The string to check
-	 * @param int $max_length Teh maximun length to check for
+	 * @param int $max_length The maximun length to check for, -1 means infinite length
 	 * @param string $type The type of thing to check packet or process
 	 * @return string The string truncated to max length
 	 */
-	protected function check_length($str, $max_length=1024, $type='packet'){
-
+	protected function check_length($str, $max_length='', $type='packet'){
+		$max_length = $max_length ? $max_length : $this->max_length;
+		if($max_length == -1){
+			return $str;
+		}
+		
 		$strlen = strlen($str);
 		if($strlen > $max_length){
 			trigger_error("Syslog ".$type." is > ".$max_length." (".$strlen.") in length and will be truncated.  Original str is: ".$str, E_USER_WARNING);
