@@ -11,6 +11,10 @@ class sb_Excel_Reader extends sb_Excel_ReaderBackend {
 	 * @param string $file The file path
 	 * @param <type> $read_extended_info
 	 * @param string $outputEncoding The output encoding to use
+	 * @example
+	 * <code>
+	 * $data = new sb_Excel_Reader('/path/to/excelfile.xls');
+	 * </code>
 	 */
 	public function __construct($file='', $read_extended_info=true, $outputEncoding='') {
 
