@@ -37,6 +37,17 @@ class sb_Excel_Workbook extends DOMDocument{
 	 * @param string $title The first worksheet's name
 	 * @param boolean $auto_convert_types Should types be auto converted
 	 * @param string $encoding The default encoding to use
+	 * <code>
+	 * $workbook = new sb_Excel_Workbook("SMy worksheet");
+	 * $cell1 = $workbook->set_cell_by_alpha_index('A3', 'xxx');
+	 * $cell2 = $workbook->set_cell_by_alpha_index('A3', 'yyy');
+	 * $style = $workbook->add_style('paul', Array(
+	 * 'Color' => '#FFACAC',
+	 * 'Bold' => 1
+	 * ));
+	 * $row = $workbook->set_row(4, Array('a', 'b', 'c', 'd', 'e', 'f'));
+	 * echo $workbook->output_with_headers('somefile');
+	 * </code>
 	 */
 	public function  __construct($title = 'Table1', $auto_convert_types=false, $encoding='UTF-8') {
 
