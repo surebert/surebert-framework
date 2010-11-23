@@ -165,20 +165,19 @@ class sb_Email_Writer {
         $message = "\nEmail sent at ".date('m/d/y h:i:s');
         $message .= "\nFrom:".$email->from. '@'.$this->remote_addr;
         $message .= "\nTo: ".$email->to;
+		foreach($email->cc as $cc) {
+            $message .="\nCc:".$cc;
+        }
+        foreach($email->bcc as $bcc) {
+            $message .="\nBcc:".$bcc;
+        }
         $message .= "\nSubject: ".$email->subject;
         $message .= "\nAttachments: ".count($email->attachments).' ';
         if($this->log_body) {
             $message .= "\nBody: ".$email->body;
             $message .= "\nBody_HTML: ".$email->body_HTML;
         }
-        foreach($email->cc as $cc) {
-            $message .="\nCc:".$cc;
-        }
-
-        foreach($email->bcc as $bcc) {
-            $message .="\nBcc:".$bcc;
-        }
-
+        
         $names = Array();
         foreach($email->attachments as $attachment) {
             $names[] = $attachment->name;
