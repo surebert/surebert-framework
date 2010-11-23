@@ -60,7 +60,7 @@ class sb_Excel_Workbook extends DOMDocument{
 		$this->workbook->appendChild($this->create_attribute('xmlns:x', 'urn:schemas-microsoft-com:office:excel'));
 		$this->workbook->appendChild($this->create_attribute('xmlns:ss', 'urn:schemas-microsoft-com:office:spreadsheet'));
 		$this->workbook->appendChild($this->create_attribute('xmlns:html', 'http://www.w3.org/TR/REC-html40'));
-
+	
 		$this->styles = $this->workbook->appendChild($this->createElement('ss:Styles'));
 		$this->active_worksheet = $this->add_worksheet($title);
 
@@ -89,12 +89,17 @@ class sb_Excel_Workbook extends DOMDocument{
 	}
 
 	/**
-	 * Sets the style for an element Row, Cell
+	 * Assigns the style for an element Row, Cell
 	 * @param DOMElement $item The item to assign the style for
-	 * @param DOMElement $style The style to assign to the item
+	 * @param mixed $style DOMElement style or the string based style id The style to assign to the item
 	 */
-	public function set_style(DOMElement $item, DOMElement $style){
-		$item->appendChild($this->create_attribute('ss:StyleID', $style->getAttribute('ss:ID')));
+	public function assign_style(DOMElement $item, $style){
+		if($style instanceOf DOMElement){
+			$style_id = $style->getAttribute('ss:ID');
+		} else {
+			$style_id = $style;
+		}
+		$item->appendChild($this->create_attribute('ss:StyleID', $style_id));
 	}
 
 	/**
@@ -169,7 +174,7 @@ class sb_Excel_Workbook extends DOMDocument{
 	 */
 	public function set_cell($col_index, $row_index, $val, $type=null){
 
-			$result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']/Data", $this);
+			$result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']/Data", $this->active_worksheet);
 			$data = $result->item(0);
 			if($data){
 				$data->setAttribute('ss:Type', $type);
@@ -211,6 +216,16 @@ class sb_Excel_Workbook extends DOMDocument{
 			}
 		return $data->parentNode;
 
+	}
+
+	public function get_cell($col_index, $row_index){
+		$result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']", $this->active_worksheet);
+		return $result->item(0);
+	}
+
+	public function get_cell_by_alpha_index($alpha_index){
+		$pos = $this->alpha_index_to_numeric($alpha_index);
+		return $this->get_cell($pos[0], $pos[1]);
 	}
 
 	/**
