@@ -49,17 +49,17 @@ class sb_Excel_Workbook extends DOMDocument{
 	 * echo $workbook->output_with_headers('somefile');
 	 * </code>
 	 */
-	public function  __construct($title = 'Table1', $auto_convert_types=false, $encoding='UTF-8') {
+	public function  __construct($title = 'Table1', $auto_convert_types=true, $encoding='UTF-8') {
 
 		parent::__construct('1.0', $encoding);
 		$this->auto_convert_types = $auto_convert_types? true : false;
 
 		$this->workbook = $this->appendChild($this->createElement('Workbook'));
-		$this->workbook->appendChild($this->create_attribute('xmlns', 'urn:schemas-microsoft-com:office:spreadsheet'));
-		$this->workbook->appendChild($this->create_attribute('xmlns:o', 'urn:schemas-microsoft-com:office:office'));
-		$this->workbook->appendChild($this->create_attribute('xmlns:x', 'urn:schemas-microsoft-com:office:excel'));
-		$this->workbook->appendChild($this->create_attribute('xmlns:ss', 'urn:schemas-microsoft-com:office:spreadsheet'));
-		$this->workbook->appendChild($this->create_attribute('xmlns:html', 'http://www.w3.org/TR/REC-html40'));
+		$this->workbook->setAttribute('xmlns', 'urn:schemas-microsoft-com:office:spreadsheet');
+		$this->workbook->setAttribute('xmlns:o', 'urn:schemas-microsoft-com:office:office');
+		$this->workbook->setAttribute('xmlns:x', 'urn:schemas-microsoft-com:office:excel');
+		$this->workbook->setAttribute('xmlns:ss', 'urn:schemas-microsoft-com:office:spreadsheet');
+		$this->workbook->setAttribute('xmlns:html', 'http://www.w3.org/TR/REC-html40');
 	
 		$this->styles = $this->workbook->appendChild($this->createElement('ss:Styles'));
 		$this->active_worksheet = $this->add_worksheet($title);
@@ -99,7 +99,7 @@ class sb_Excel_Workbook extends DOMDocument{
 		} else {
 			$style_id = $style;
 		}
-		$item->appendChild($this->create_attribute('ss:StyleID', $style_id));
+		$item->setAttribute('ss:StyleID', $style_id);
 	}
 
 	/**
@@ -111,7 +111,7 @@ class sb_Excel_Workbook extends DOMDocument{
 		$worksheet = $this->workbook->appendChild($this->createElement('Worksheet'));
 		$title = preg_replace("/[\\\|:|\/|\?|\*|\[|\]]/", "", $title);
 		$title = substr($title, 0, 31);
-		$worksheet->appendChild($this->create_attribute('ss:Name', $title));
+		$worksheet->setAttribute('ss:Name', $title);
 		$worksheet->table = $worksheet->appendChild($this->createElement('Table'));
 		$this->worksheets[md5($title)] = $worksheet;
 		return $worksheet;
@@ -129,20 +129,6 @@ class sb_Excel_Workbook extends DOMDocument{
 		$this->active_worksheet = $worksheet;
 		return $worksheet;
 
-	}
-
-	 /**
-     * Creates and returns a DOM node attribute for appending
-     *
-     * @param string $name The name of the attribute
-     * @param unknown_type $value The value of the attribute
-     * @return object attribute node
-     */
-	protected function create_attribute($name, $value){
-		$attribute = $this->createAttribute($name);
-		$val = $this->createTextNode($value);
-		$attribute->appendChild($val);
-		return $attribute;
 	}
 
 	/**
@@ -176,6 +162,8 @@ class sb_Excel_Workbook extends DOMDocument{
 
 			$result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']/Data", $this->active_worksheet);
 			$data = $result->item(0);
+			$type = $type ? $type : $this->get_value_type($val);
+			
 			if($data){
 				$data->setAttribute('ss:Type', $type);
 				$data->firstChild->nodeValue = $val;
@@ -190,7 +178,7 @@ class sb_Excel_Workbook extends DOMDocument{
 				//echo '<br />creating (row '.$row_index.') '.$val;
 				$row = $this->createElement('Row');
 				$this->active_worksheet->table->appendChild($row);
-				$row->appendChild($this->create_attribute('Index', $row_index));
+				$row->setAttribute('Index', $row_index);
 			} else {
 				//echo '<br />exists (row '.$row_index.') '.$val;
 			}
@@ -201,10 +189,10 @@ class sb_Excel_Workbook extends DOMDocument{
 				//echo '<br />creating (cell '.$col_index.') '.$val;
 				$cell = $this->createElement('Cell');
 				$row->appendChild($cell);
-				$cell->appendChild($this->create_attribute('Index', $col_index));
+				$cell->setAttribute('Index', $col_index);
 				$data = $this->createElement('Data');
 				$cell->appendChild($data);
-				$data->appendChild($this->create_attribute('ss:Type', $type));
+				$data->setAttribute('ss:Type', $type);
 				$data->appendChild($this->createTextNode($val));
 			} else {
 				//echo '<br />exists (cell '.$col_index.') '.$val;
@@ -277,7 +265,7 @@ class sb_Excel_Workbook extends DOMDocument{
 	 */
 	protected function get_value_type($val){
 		$type = 'String';
-		if ($this->auto_convert_types === true && is_numeric($v)) {
+		if ($this->auto_convert_types === true && is_numeric($val)) {
 			$type = 'Number';
 		}
 
@@ -310,5 +298,45 @@ class sb_Excel_Workbook extends DOMDocument{
 
 		return Array($col_index, $match[2]);
 	}
+
+
+	function prettyify() {
+		$xml = $this->saveXML();
+		// add marker linefeeds to aid the pretty-tokeniser (adds a linefeed between all tag-end boundaries)
+		$xml = preg_replace('/(>)(<)(\/*)/', "$1\n$2$3", $xml);
+
+		// now indent the tags
+		$token = strtok($xml, "\n");
+		$result = ''; // holds formatted version as it is built
+		$pad = 0; // initial indent
+		$matches = array(); // returns from preg_matches()
+		// scan each line and adjust indent based on opening/closing tags
+		while ($token !== false) :
+
+			// test for the various tag states
+			// 1. open and closing tags on same line - no change
+			if (preg_match('/.+<\/\w[^>]*>$/', $token, $matches)) :
+				$indent = 0;
+			// 2. closing tag - outdent now
+			elseif (preg_match('/^<\/\w/', $token, $matches)) :
+				$pad--;
+			// 3. opening tag - don't pad this one, only subsequent tags
+			elseif (preg_match('/^<\w[^>]*[^\/]>.*$/', $token, $matches)) :
+				$indent = 1;
+			// 4. no indentation needed
+			else :
+				$indent = 0;
+			endif;
+
+			// pad the line with the required number of leading spaces
+			$line = str_pad($token, strlen($token) + $pad, ' ', STR_PAD_LEFT);
+			$result .= $line . "\n"; // add to the cumulative result, with linefeed
+			$token = strtok("\n"); // get the next token
+			$pad += $indent; // update the pad size for subsequent lines
+		endwhile;
+
+		return $result;
+	}
+
 }
 ?>
