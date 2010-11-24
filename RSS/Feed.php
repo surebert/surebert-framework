@@ -225,7 +225,7 @@ class sb_RSS_Feed extends DomDocument{
 		parent::__construct();
 		
 		$this->root = $this->appendChild($this->createElement('rss'));
-		$this->root->appendChild($this->create_attribute('version', '2.0'));
+		$this->root->setAttribute('version', '2.0');
 		
 		$this->channel = $this->root->appendChild($this->createElement('channel'));
 		$this->title = $title;
@@ -266,20 +266,6 @@ class sb_RSS_Feed extends DomDocument{
     	
     	return $this->saveXML();
     }
-    
-    /**
-     * Creates and returns a DOM node attribute for appending
-     *
-     * @param string $name The name of the attribute
-     * @param unknown_type $value The value of the attribute
-     * @return object attribute node
-     */
-	private function create_attribute($name, $value){
-		$attribute = $this->createAttribute($name);
-		$val = $this->createTextNode($value);
-		$attribute->appendChild($val);
-		return $attribute;
-	}
 	
    /**
     * Creates and returns a new node with textNode, ready for appending
@@ -314,7 +300,7 @@ class sb_RSS_Feed extends DomDocument{
         	if($item->{$key} instanceof sb_RSS_ItemEnclosure){
     			$enclosure = $this->createElement('enclosure');
     			foreach($item->{$key} as $n=>$v){
-    				$enclosure->appendChild($this->create_attribute($n, $v));
+    				$enclosure->setAttribute($n, $v);
     			}
     			
     			$new_item->appendChild($enclosure);
@@ -372,7 +358,7 @@ class sb_RSS_Feed extends DomDocument{
     			
     			$cloud = $this->createElement('cloud');
     			foreach($this->{$key} as $n=>$v){
-    				$cloud->appendChild($this->create_attribute($n, $v));
+    				$cloud->setAttribute($n, $v);
     			}
     			
     			$this->channel->appendChild($cloud);
