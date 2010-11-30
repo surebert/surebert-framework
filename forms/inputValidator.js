@@ -9,7 +9,7 @@ onValid(input) function Fires when the input is validate if it is valid
 onInValid(input) function Fires when the input is not validate
 @Example:
 var acct = new sb.validation({
-	validtor : /^\d\.\d{2}$/,
+	validator : /^\d\.\d{2}$/,
 	errorMessage :  'Sorry this does not match an acct number e.g. 4.32'
 });
 */
@@ -39,19 +39,19 @@ onInValid(input) function Fires when the input is not validate
 var validator = new sb.forms.inputValidator({
 	validations : {
 		acct : new sb.validation({
-			validtor : /^\d\.\d{2}$/,
+			validator : /^\d\.\d{2}$/,
 			errorMessage :  'Sorry this does not match an acct number e.g. 4.32'
 		}),
 		phone : new sb.validation({
-			validtor :/^\d{3}-\d{3}-\d{4}$/,
+			validator :/^\d{3}-\d{3}-\d{4}$/,
 			errorMessage :  'Sorry this does not match a phone number e.g. 716-877-9999'
 		}),
 		email : new sb.validation({
-			validtor : /\b(^(\S+@).+(\.\w+)$)\b/ig,
+			validator : /\b(^(\S+@).+(\.\w+)$)\b/ig,
 			errorMessage :  'Sorry this does not match a phone number e.g. test@test.com'
 		}),
 		at_least_one : new sb.validation({
-			validtor : function(input){
+			validator : function(input){
 				var inputs = $("input[name='"+input.name+"']");
 				return inputs.some(function(v){return v.checked;});
 			},
@@ -128,9 +128,18 @@ sb.forms.inputValidator.prototype = {
 
 		var validate = input.getAttribute('validate');
 		var required = input.getAttribute('required') || 0;
-
+		
+		if(required && validate === ''){
+			validate = '_required';
+			this.validations['_required'] = new sb.validation({
+				validator : /.*/,
+				errorMessage :  'Field required'
+			});
+		}
+		
 		if(validate){
 			var validation  = this.validations[validate];
+			
 			if(!validation){return false;}
 			var self = this;
 			input.valid = false;
@@ -138,12 +147,11 @@ sb.forms.inputValidator.prototype = {
 			if(input.value === '' && required === '0'){
 				input.valid = true;
 			} else if(input.value !== ''){
-				if(this.validations[validate]){
-					
-					if(typeof validation.validtor == 'function'){
-						input.valid = validation.validtor(input);
+				if(validation){
+					if(typeof validation.validator == 'function'){
+						input.valid = validation.validator(input);
 					} else {
-						input.valid = input.value.match(validation.validtor);
+						input.valid = input.value.match(validation.validator);
 					}
 				}
 			}
