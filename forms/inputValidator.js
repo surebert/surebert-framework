@@ -1,3 +1,4 @@
+sb.include('Element.prototype.rollUp');
 /**
 @Name: sb.validation
 @Description: Used to validate inputs
