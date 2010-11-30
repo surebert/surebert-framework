@@ -1,3 +1,17 @@
+/**
+@Name: sb.validation
+@Description: Used to validate inputs
+@Param: Object
+validateOnKeyUp boolean should validations occurr on keyup
+validations object of regex or function properties, these are executed or matched when the input is validated
+onValid(input) function Fires when the input is validate if it is valid
+onInValid(input) function Fires when the input is not validate
+@Example:
+var acct = new sb.validation({
+	validtor : /^\d\.\d{2}$/,
+	errorMessage :  'Sorry this does not match an acct number e.g. 4.32'
+});
+*/
 sb.validation = function(o){
 	sb.objects.infuse(o, this);
 };
@@ -6,10 +20,11 @@ sb.validation.prototype = {
 	validator : null,
 	//func(input)
 	onValid : null,
+	//func(input)
+	onInValid : null,
 	//string
 	errorMessage : null
 };
-
 
 /**
 @Name: sb.forms.inputValidator
@@ -20,9 +35,7 @@ validations object of regex or function properties, these are executed or matche
 onValid(input) function Fires when the input is validate if it is valid
 onInValid(input) function Fires when the input is not validate
 @Example:
-var ptsui = {};
-
-ptsui.validator = new sb.forms.inputValidator({
+var validator = new sb.forms.inputValidator({
 	validations : {
 		acct : new sb.validation({
 			validtor : /^\d\.\d{2}$/,
@@ -68,7 +81,7 @@ ptsui.validator = new sb.forms.inputValidator({
 	}
 
 });
-
+validator.validateInputsWithinElement('#wrapper');
 <input type="text" validate="acct" required="1" name="acct" />
 */
 
