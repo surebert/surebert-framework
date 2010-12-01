@@ -2,6 +2,11 @@
 
 class sb_Identifiers_UUID {
 
+	/**
+	 * Creates a v3 UUID
+	 * sb_Identifiers_UUID::v4();
+	 * @return string
+	 */
 	public static function v3($namespace, $name) {
 		if (!self::is_valid($namespace))
 			return false;
@@ -38,8 +43,9 @@ class sb_Identifiers_UUID {
 	}
 
 	/**
+	 * Creates a v4 UUID
 	 * sb_Identifiers_UUID::v4();
-	 * @return <type>
+	 * @return string
 	 */
 	public static function v4() {
 		return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -59,6 +65,12 @@ class sb_Identifiers_UUID {
 		);
 	}
 
+	/**
+	 * Creates a v5 UUID
+	 * @param string $namespace Another UUID to use as namespace
+	 * @param string $name
+	 * @return string
+	 */
 	public static function v5($namespace, $name) {
 		if (!self::is_valid($namespace))
 			return false;
@@ -94,6 +106,11 @@ class sb_Identifiers_UUID {
 		);
 	}
 
+	/**
+	 * Checks if a UUID is valid
+	 * @param string $uuid
+	 * @return boolean
+	 */
 	public static function is_valid($uuid) {
 		return preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $uuid) === 1;
 	}
