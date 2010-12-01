@@ -4,13 +4,20 @@ sb.include('Element.prototype.rollUp');
 @Description: Used to validate inputs
 @Param: Object
 validateOnKeyUp boolean should validations occurr on keyup
-validations object of regex or function properties, these are executed or matched when the input is validated
+validator regex or function with input as argument, these are executed or matched when the input is validated
 onValid(input) function Fires when the input is validate if it is valid
 onInValid(input) function Fires when the input is not validate
 @Example:
-var acct = new sb.validation({
+var eg1 = new sb.validation({
 	validator : /^\d\.\d{2}$/,
 	errorMessage :  'Sorry this does not match an acct number e.g. 4.32'
+});
+
+var eg2 = new sb.validation({
+	validator : function(input){
+		return input.value != 'ff';
+	},
+	errorMessage :  'Sorry the value is not ff'
 });
 */
 sb.validation = function(o){
