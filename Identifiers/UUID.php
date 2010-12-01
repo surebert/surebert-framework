@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Creates UUIDS taken from http://php.net/manual/en/function.uniqid.php
+ * @package sb_Identifiers
+ */
 class sb_Identifiers_UUID {
 
 	/**
