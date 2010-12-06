@@ -322,7 +322,6 @@ sb.widget.magicTable.prototype = {
 			rows.reverse();
 		}
 		
-		
 		var tbody = this.table.$('tbody').nodes[0];
 		rows.forEach(function(row,k,a){
 			var tr = row.tr;
@@ -826,9 +825,18 @@ sb.widget.magicTable.compare = {
 	@Description: Sort by US date
 	*/
 	usdate : function(a, b) {
-		a = a.split(/\D+/);
-		b = b.split(/\D+/);
-		return (a[2] - b[2]) || (a[0] - b[0]) || (a[1] - b[1]);
+
+		a = new Date(a);
+		b = new Date(b);
+
+		if(a < b){
+			return -1;
+		}
+		if(a > b){
+			return 1;
+		}
+
+		return 0;
 	}
 };
 
