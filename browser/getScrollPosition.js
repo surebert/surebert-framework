@@ -9,12 +9,10 @@ var pos = sb.browser.getScrollPosition();
 sb.browser.getScrollPosition = function(){
 	var x=0,y=0;;
 
-
     if (typeof window.pageYOffset != 'undefined'){
         x = window.pageXOffset;
         y = window.pageYOffset;
-    } else if (typeof document.documentElement.scrollTop
-    != 'undefined' && document.documentElement.scrollTop > 0){
+    } else if (typeof document.documentElement.scrollTop != 'undefined'){
         x = document.documentElement.scrollLeft;
         y = document.documentElement.scrollTop;
     } else if (typeof document.body.scrollTop != 'undefined'){
