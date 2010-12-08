@@ -25,11 +25,13 @@ var scrollTo = sb.browser.scrollTo({
 
 */
 sb.browser.scrollTo = function(o){
+	
 	var scrollPos = sb.browser.getScrollPosition();
 	var x = scrollPos[0];
 	var y = scrollPos[1];
-	o.x = typeof o.x == 'undefined' ? x : o.x;
-	o.y = typeof o.y == 'undefined' ? y : o.y;
+	o.x = typeof o.x == 'undefined' ? x : Math.round(o.x);
+	
+	o.y = typeof o.y == 'undefined' ? y : Math.round(o.y);
 	var stopScroll = function(complete){
 		stop.remove();
 		stop2.remove();
@@ -53,6 +55,9 @@ sb.browser.scrollTo = function(o){
 	var beginY = y;
 	var changeY = o.y-y;
 	var tweenY = changeY < 1 ? 'outQuart': 'inQuart';
+	if(o.debug){
+		document.title = [beginX, changeX, beginY, changeY];
+	}
 	var scrolling = window.setInterval(function(){
 		if(time >= duration){
 			stopScroll();
