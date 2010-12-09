@@ -38,7 +38,7 @@ class sb_Excel_Workbook extends DOMDocument{
 	 * @param boolean $auto_convert_types Should types be auto converted
 	 * @param string $encoding The default encoding to use
 	 * <code>
-	 * $workbook = new sb_Excel_Workbook("SMy worksheet");
+	 * $workbook = new sb_Excel_Workbook("My worksheet");
 	 * $cell1 = $workbook->set_cell_by_alpha_index('A3', 'xxx');
 	 * $cell2 = $workbook->set_cell_by_alpha_index('A3', 'yyy');
 	 * $style = $workbook->add_style('paul', Array(
