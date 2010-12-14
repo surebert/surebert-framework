@@ -12,7 +12,7 @@ class sb_Files{
 	 * read a file into chunks for faster force download and better memory management
 	 *
 	 */
-	public static function read_chunked($file_name,$return_bytes=true) {
+	public static function read_chunked($file_name,$seekat=0,$return_bytes=true) {
 
 		 // how many bytes per chunk
 		$chunk_size = 1*(1024*1024);
@@ -20,6 +20,7 @@ class sb_Files{
 		$cnt =0;
 
 		$handle = fopen($file_name, 'rb');
+		fseek($handle, $seekat);
 		if ($handle === false) {
 			return false;
 		}
