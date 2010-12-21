@@ -126,7 +126,7 @@ class sb_Text_Bling{
 		$str =  str_replace('[br]', '<br />', $str);
 		
 		##puttext inside a scrolling box
-		$str = preg_replace( "~\[box\](.*?)\[\/box\]~is", "<p class=\"box\">\\1</p>", $str);
+		$str = preg_replace( "~\[box\]\n?(.*?)\n?\[\/box\]~is", "<p class=\"box\">\\1</p>", $str);
 
 		return $str;
 	}
