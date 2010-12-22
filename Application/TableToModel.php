@@ -106,7 +106,7 @@ DOC;
 				$old_doc_block = $property->getDocComment();
 
 				preg_match("~(.*)\* @var.*~s", $old_doc_block, $matches);
-
+				$new_doc_block = '';
 				if(isset($matches[1])){
 					$property->description = rtrim($matches[1]);
 					$new_doc_block = $this->field_to_doc_block($field, $property);
