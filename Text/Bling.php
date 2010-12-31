@@ -141,7 +141,7 @@ class sb_Text_Bling{
 	public static function lists_to_html($str){
 
 		//wiki style lists
-		$str = preg_replace_callback('/\b((?:\*|#)+.*?\n(?!(?:\*|#)+))/si', function($match){
+		$str = preg_replace_callback('/(?:^|\n)((?:\*|#)+.*?\n(?!(?:\*|#)+))/si', function($match){
 			$type = substr(trim($match[0]), 0, 1) == '#' ? 'ol' : 'ul';
 
 			$star_cnt = 1;
