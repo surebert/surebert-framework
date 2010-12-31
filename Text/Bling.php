@@ -142,10 +142,10 @@ class sb_Text_Bling{
 
 		$str = preg_replace_callback("~\[list\](.*?)\[/list\]\n~s", function($match){
 
-			$lis = preg_replace_callback("~^\w|\s.*$~m", function($inner_match){
-				$li = trim($inner_match[0]);
+			$lis = preg_replace_callback("~^\w|\s\*?(.*)$~m", function($inner_match){
+				$li = trim($inner_match[1]);
 				if(!empty($li)){
-					return '<li class="tb">'.trim($li).'</li>';
+					return '<li class="tb">'.$li.'</li>';
 				}
 				return '';
 			}, $match[1]);
@@ -155,10 +155,10 @@ class sb_Text_Bling{
 
 		$str = preg_replace_callback("~\[numlist\](.*?)\[/numlist\]\n?~s", function($match){
 
-			$lis = preg_replace_callback("~^\w|\s.*$~m", function($inner_match){
-				$li = trim($inner_match[0]);
+			$lis = preg_replace_callback("~^\w|\s\*?(.*)$~m", function($inner_match){
+				$li = trim($inner_match[1]);
 				if(!empty($li)){
-					return '<li class="tb">'.trim($li).'</li>';
+					return '<li class="tb">'.$li.'</li>';
 				}
 				return '';
 			}, $match[1]);
