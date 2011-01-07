@@ -175,6 +175,7 @@ sb.forms.inputValidator = function(o){
 			var nn = target.nodeName;
 			var validate = target.attr('validate');
 			if((nn == 'TEXTAREA' || e.target.nodeName == 'INPUT') && validate){
+				console.log('d');
 				self.onKeyDown(e);
 			}
 			
@@ -190,7 +191,7 @@ sb.forms.inputValidator.prototype = {
 		var input = e.nodeName ? e : e.target;
 
 		if(input.nodeName == 'INPUT'){
-			input.value = input.value.replace(/(^\s+|\s+$)/g, '');
+			//input.value = input.value.replace(/(^\s+|\s+$)/g, '');
 		}
 		
 		var maxlength = input.getAttribute('maxlength');
