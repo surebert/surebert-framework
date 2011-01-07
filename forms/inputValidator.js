@@ -34,6 +34,67 @@ sb.validation.prototype = {
 	errorMessage : null
 };
 
+
+/**
+@Name: sb.validation.isDate
+@Description: Determines if string is actual date in mm/dd/YYYY format
+@Param: Object
+validateOnKeyUp boolean should validations occurr on keyup
+validator regex or function with input as argument, these are executed or matched when the input is validated
+onValid(input) function Fires when the input is validate if it is valid
+onInValid(input) function Fires when the input is not validate
+@Example:
+var eg1 = new sb.validation({
+	validator : /^\d\.\d{2}$/,
+	errorMessage :  'Sorry this does not match an acct number e.g. 4.32'
+});
+
+var eg2 = new sb.validation({
+	validator : function(input){
+		return input.value != 'ff';
+	},
+	errorMessage :  'Sorry the value is not ff'
+});
+*/
+sb.validation.isDate = function(txtDate, params) {
+	if(!params){
+		params = {};
+	}
+	var currentYear = new Date().getFullYear();
+	var minYear = params.minYear || currentYear;
+	var maxYear = params.maxYear || currentYear+10;
+	var separator = params.separator || '/';
+	var objDate,mSeconds,day, month, year;
+
+	if (txtDate.length !== 10) {
+		return false;
+	}
+
+	if (txtDate.substring(2, 3) !== separator || txtDate.substring(5, 6) !== separator) {
+		return false;
+	}
+
+	month = txtDate.substring(0, 2) - 1;//starts from 0
+	day = txtDate.substring(3, 5) - 0;
+	year = txtDate.substring(6, 10) - 0;
+	if (year < minYear || year > maxYear) {
+		return false;
+	}
+
+	mSeconds = (new Date(year, month, day)).getTime();
+
+	objDate = new Date();
+	objDate.setTime(mSeconds);
+
+	if (objDate.getFullYear() !== year ||
+		objDate.getMonth() !== month ||
+		objDate.getDate() !== day) {
+		return false;
+	}
+
+	return true;
+};
+
 /**
 @Name: sb.forms.inputValidator
 @Description: Validates inputs based on validate attribute
@@ -92,7 +153,6 @@ var validator = new sb.forms.inputValidator({
 validator.validateInputsWithinElement('#wrapper');
 <input type="text" validate="acct" required="1" name="acct" />
 */
-
 sb.forms.inputValidator = function(o){
 	var self = this;
 	sb.objects.infuse(o, this);
@@ -111,7 +171,13 @@ sb.forms.inputValidator = function(o){
 	
 	this.onKeyDownEvt = sb.events.add(document, 'keydown', function(e){
 		if(typeof self.onKeyDown == 'function'){
-			self.onKeyDown(e);
+			var target = e.target;
+			var nn = target.nodeName;
+			var validate = target.attr('validate');
+			if((nn == 'TEXTAREA' || e.target.nodeName == 'INPUT') && validate){
+				self.onKeyDown(e);
+			}
+			
 		}
 	});
 
@@ -178,8 +244,11 @@ sb.forms.inputValidator.prototype = {
 					self.onInValid(input);
 				}
 			}
+
+			return input.valid;
 			
 		}
+		return false;
 	},
 	/**
 	@Name: sb.forms.inputValidator.prototype.onValid
@@ -244,7 +313,7 @@ sb.forms.inputValidator.prototype = {
 
 	/**
 	@Name: sb.forms.inputValidator.prototype.validateInputsWithinElement
-	@Description: USed to validate all inputs contained within a specific element
+	@Description: Used to validate all inputs contained within a specific element
 	@Param: input The input that is valid
 	@Example:
 	validator.validateInputsWithinElement('#myDiv');
@@ -254,6 +323,17 @@ sb.forms.inputValidator.prototype = {
 		$(el).$('input,textarea').forEach(function(inp){
 			self._validate(inp);
 		});
+	},
+
+	/**
+	@Name: sb.forms.inputValidator.prototype.validateInput
+	@Description: Validate a specific input
+	@Param: input The input that is valid
+	@Example:
+	validator.validateInput('#myInput');
+	*/
+	validateInput : function(input){
+		return this._validate($(input));
 	}
 
 };
