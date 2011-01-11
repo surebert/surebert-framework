@@ -2576,7 +2576,7 @@ myElement.appendAfter('#myDiv');
 */
 Element.prototype.appendAfter = function(after){
 	var a = sb.$(after);
-
+	var b = a;
 	if(a.nextSibling){
 		while((a = a.nextSibling) && a.nodeType != 1){}
 		var nxtSib = a;
@@ -2585,7 +2585,7 @@ Element.prototype.appendAfter = function(after){
 	if(nxtSib){
 		return nxtSib.parentNode.insertBefore(this, nxtSib);
 	} else {
-		return this.appendTo(a.parentNode);
+		return this.appendTo(b.parentNode);
 	}
 
 };
