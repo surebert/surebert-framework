@@ -50,7 +50,6 @@ Element.prototype.rollUp = function(o){
 	}
 	this.resizing = this.cssTransition(transitions, o.duration || 48);
 
-
 	this.resizing.start();
 	return this.resizing;
 
