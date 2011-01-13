@@ -14,7 +14,13 @@ Element.prototype.rollUp = function(o){
 	var transitions = [];
 
 	var height = this.offsetHeight;
-
+	if(el.nodeName == 'TR'){
+		var chs = el.$('td');
+		chs.forEach(function(v){
+			v.innerHTML = '';
+		});
+	}
+	
 	transitions.push({
 		prop : 'height',
 		begin : height,
