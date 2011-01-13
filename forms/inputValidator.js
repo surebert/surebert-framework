@@ -34,7 +34,6 @@ sb.validation.prototype = {
 	errorMessage : null
 };
 
-
 /**
 @Name: sb.validation.isDate
 @Description: Determines if string is actual date in mm/dd/YYYY format
@@ -175,7 +174,6 @@ sb.forms.inputValidator = function(o){
 			var nn = target.nodeName;
 			var validate = target.attr('validate');
 			if((nn == 'TEXTAREA' || e.target.nodeName == 'INPUT') && validate){
-				console.log('d');
 				self.onKeyDown(e);
 			}
 			
