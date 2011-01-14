@@ -39,9 +39,20 @@ alert(myDate.i);
 var myDate = new sb.date();
 alert(myDate.format('/m/d/y H:i:s');
 */
-sb.date = function(timestamp){
+sb.date = function(timestamp, offset){
 
-	this.timestamp = timestamp || undefined;
+	this.timestamp = timestamp || false;
+
+	if(timestamp && timestamp.match(/T/)){
+		var d = timestamp.replace(/[ZT\-]/g, ':').split(':');
+		this.date = new Date(d[0], d[1]-1, d[2], d[3]-5, d[4], d[5]);
+	} else {
+		this.date = new Date();
+		if(this.timestamp){
+			this.date.setTime(this.timestamp*1000);
+		}
+	}
+
 	this.getDate();
 };
 
@@ -52,11 +63,8 @@ sb.date.prototype= {
 	@Description: Used Internally
 	*/
 	getDate : function(str){
-		var d = new Date(), self=this;
-		
-		if(this.timestamp !==undefined){
-			d.setTime(this.timestamp*1000);
-		}
+		//'2011-01-14T00:21:07Z'
+		var d=this.date,self=this;
 		
 		d.m = String(d.getMonth()+1).numpad();
 		d.F = sb.dates.months[d.getMonth()];
@@ -87,7 +95,6 @@ sb.date.prototype= {
 			
 			self[prop] = val;
 		});
-		
 		
 	},
 	
