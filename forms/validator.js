@@ -53,7 +53,7 @@ sb.forms.validator.validations = {
 	number : /^\d+$/,
 	email : /\b(^(\S+@).+(\.\w+)$)\b/gi,
 	usdate : /\d{2}\/\d{2}\/\d{4}/,
-	usdateflex : /\d{1,2}\/\d{1,2}\/\d{2,4}/
+	usdateflex : /\d{1,2}\/\d{1,2}\/(\d{2}|\d{4})/
 };
 
 sb.forms.validator.prototype= {

@@ -26,6 +26,12 @@ var sb = {
 	colors : {},
 
 	/**
+	@Name: sb.date
+	@Description: Used Internally.
+	*/
+	date : {},
+
+	/**
 	@Name: sb.consol
 	@Description: Used Internally.  Used as placeholder for sb.developer functions
 	*/

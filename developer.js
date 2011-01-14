@@ -4,7 +4,7 @@
 @Description:These functions are used when developing.  This file does not need to be included in production version of your site.  It basically allows for debugging during development. Used Internally. 
 */
 
-sb.include('date');
+sb.include('date.formatter');
 sb.include('css.rules');
 
 sb.include('math.rand');
@@ -144,7 +144,7 @@ sb.consol = {
 			
 			 	note = new sb.element({
 			 		tag : 'sbConsolNote',
-			 		innerHTML : this.num+'. '+new sb.date().format('m/d - g:i:s a')+"<hr />"+str
+			 		innerHTML : this.num+'. '+new sb.date.formatter().format('m/d - g:i:s a')+"<hr />"+str
 			 	});
 			 	
 			 	
