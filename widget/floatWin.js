@@ -160,9 +160,7 @@ sb.widget.floatWin.prototype = {
 		}
 
 		this.win.appendTo('body');
-
-		this.win.mv(sb.browser.w/2-this.win.offsetWidth/2,20,900+sb.widget.floatWin.winCount);
-
+		this.win.style.zIndex = 900+sb.widget.floatWin.winCount;
 		sb.widget.floatWin.winCount++;
 		this.win.style.position = this.positionType;
 
@@ -215,9 +213,17 @@ sb.widget.floatWin.prototype = {
 		this.win.hide(e);
 	},
 
-	show : function(){
+	show : function(e){
 		this.win.show();
 		this.titleText.style.backgroundColor = this.titleBar.getStyle('backgroundColor');
+		if(e && e.pageX){
+			var x = e.pageX-20;
+			x = x > 0 ? x : 0;
+			var y = e.pageY-20;
+			y = y > 0 ? y : 0;
+			this.win.style.left = x+'px';
+			this.win.style.top = y+'px';
+		}
 		this.onDisplay();
 	},
 
@@ -228,7 +234,7 @@ sb.widget.floatWin.prototype = {
 			this.win.style.width = this.win.origWidth+'px';
 		}
 		this.win.appendTo('body');
-		this.win.style.position = 'fixed';
+		this.win.style.position = this.positionType;
 		this.shade();
 	},
 	
@@ -245,7 +251,7 @@ sb.widget.floatWin.prototype = {
 	mv : function(x,y,z){
 		this.win.mv(x,y,z);
 	},
-
+	
 	wh : function(w,h){
 		this.win.wh(w,h);
 	},
