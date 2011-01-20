@@ -7,7 +7,9 @@ sb.include('Element.prototype.show');
 sb.include('Element.prototype.isWithin');
 
 sb.widget.floatWin = function(params){
+
 	sb.objects.infuse(params, this);
+	this.positionType = this.positionType || 'absolute';
 	this.createBox();
 };
 sb.widget.floatWin.winCount = 0;
@@ -162,7 +164,7 @@ sb.widget.floatWin.prototype = {
 		this.win.mv(sb.browser.w/2-this.win.offsetWidth/2,20,900+sb.widget.floatWin.winCount);
 
 		sb.widget.floatWin.winCount++;
-		this.win.style.position = 'fixed';
+		this.win.style.position = this.positionType;
 
 	},
 
