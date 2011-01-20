@@ -10,10 +10,29 @@ sb.widget.floatWin = function(params){
 	sb.objects.infuse(params, this);
 	this.createBox();
 };
+sb.widget.floatWin.winCount = 0;
+sb.widget.floatWin.createHub = function(){
+
+	this.hub = new sb.element({
+		tag : 'div',
+		id : 'sb_floatwin_hub'
+	});
+
+	this.hub.html('');
+	this.hub.styles({
+		position : 'fixed',
+		bottom : '0px',
+		right : '0px',
+		zIndex : 999
+	});
+	this.hub.appendTo('body');
+};
 
 sb.widget.floatWin.prototype = {
-	createBox : function(){
-
+	createBox : function(e){
+		if(!sb.widget.floatWin.hub){
+			sb.widget.floatWin.createHub();
+		}
 		var self = this;
 		this.win = new sb.element({
 			tag : 'div',
@@ -75,27 +94,23 @@ sb.widget.floatWin.prototype = {
 
 			},
 			dblclick : function(e){
+				var target = e.target;
+
+				self.onDblClick(e);
 				
-				if(e.target == self.titleText || e.target.isWithin(self.titleText)){
-					if(this.shaded){
-
-						this.style.height = '';
-						this.style.overflow = 'auto';
-						this.shaded=0;
-
-					} else {
-
-						this.oldHeight = this.style.height;
-						this.style.height = self.titleBar.offsetHeight+'px';
-						this.style.overflow ='hidden';
-						this.shaded=1;
+				if(target.isWithin(self.titleBar)){
+					if(self.onTitleBarDblClick(e) !== false){
+						if(self.minimized){
+							self.restore();
+						} else {
+							self.minimize();
+						}
 					}
+					
 				}
-				
+
 			}
 		});
-
-		this.win.mv(sb.browser.w/2,sb.browser.h/2,999);
 
 		this.titleBar.appendTo(this.win);
 		this.titleIcons.appendTo(this.titleBar);
@@ -114,15 +129,60 @@ sb.widget.floatWin.prototype = {
 					}
 				}
 			}));
+
+			this.downButton = this.addIcon(new sb.element({
+				tag : 'img',
+				src : sb.base+'_media/down.png',
+				title : 'Click minimize',
+				events : {
+					click : function(e){
+						self.minimize(e);
+					}
+				}
+			}));
+
+			this.upButton = this.addIcon(new sb.element({
+				tag : 'img',
+				src : sb.base+'_media/up.png',
+				title : 'Click restore',
+				events : {
+					click : function(e){
+						self.restore(e);
+					}
+				}
+			}));
 		}
 
 		if(typeof this.title =='string'){
 			this.setTitle(this.title);
 		}
 
+		this.win.appendTo('body');
+
+		this.win.mv(sb.browser.w/2-this.win.offsetWidth/2,20,900+sb.widget.floatWin.winCount);
+
+		sb.widget.floatWin.winCount++;
+		this.win.style.position = 'fixed';
+
 	},
 
 	closeButton : true,
+
+	shade : function(){
+		if(this.win.shaded){
+
+			this.win.style.height = '';
+			this.win.style.overflow = 'auto';
+			this.win.shaded=0;
+
+		} else {
+
+			this.win.oldHeight = this.win.style.height;
+			this.win.style.height = this.titleBar.offsetHeight+'px';
+			this.win.style.overflow ='hidden';
+			this.win.shaded=1;
+		}
+	},
 
 	addContent : function(content){
 		var typ = sb.typeOf(content);
@@ -157,32 +217,27 @@ sb.widget.floatWin.prototype = {
 		this.win.show();
 		this.titleText.style.backgroundColor = this.titleBar.getStyle('backgroundColor');
 		this.onDisplay();
-
 	},
 
-	maximize : function(){
-		this.win.origW = this.win.offsetWidth;
-		this.win.origH = this.win.offsetHeight;
-		this.win.origX = this.win.offsetLeft;
-		this.win.origY = this.win.offsetTop;
-
-		this.win.mv(0,0,999);
-		this.win.wh(sb.browser.w, sb.browser.h);
+	restore : function(){
+		
+		this.minimized = false;
+		if(this.win.origWidth){
+			this.win.style.width = this.win.origWidth+'px';
+		}
+		this.win.appendTo('body');
+		this.win.style.position = 'fixed';
+		this.shade();
 	},
-
+	
 	minimize : function(){
-		this.win.origW = this.win.offsetWidth;
-		this.win.origH = this.win.offsetHeight;
-		this.win.origX = this.win.offsetLeft;
-		this.win.origY = this.win.offsetTop;
+		this.win.appendTo(sb.widget.floatWin.hub);
+		this.minimized = true;
+		this.win.origWidth = this.win.getWidth();
+		this.win.style.width = '250px';
+		this.win.style.position = '';
 
-		var titleHeight=this.titleBar.offsetHeight;
-		titleHeight += parseInt(this.titleBar.getStyle('margin'), 10);
-		titleHeight += parseInt(this.titleBar.getStyle('padding'), 10);
-
-		this.win.mv(0,sb.browser.h-(titleHeight+18),999);
-		this.win.wh(this.offsetWidth, titleHeight);
-		this.win.style.overflow='hidden';
+		this.shade();
 	},
 
 	mv : function(x,y,z){
@@ -193,22 +248,20 @@ sb.widget.floatWin.prototype = {
 		this.win.wh(w,h);
 	},
 
-	restore : function(){
-
-		this.win.wh(this.win.origW, this.win.origH);
-		this.win.mv(this.win.origX, this.win.origY, 999);
-		this.win.style.overflow='';
+	setTitle : function(txt){
+		this.titleText.innerHTML=txt;
 	},
 
-	setTitle : function(txt){
-
-		this.titleText.innerHTML=txt;
+	getTitle : function(){
+		return this.titleText.innerHTML;
 	},
 	onTitleBarClick : function(e){},
 	onContentClick : function(e){},
 	onClick : function(e){},
 	onDisplay : function(){},
 	onIconClick : function(e){},
-	onClose : function(e){}
+	onClose : function(e){},
+	onTitleBarDblClick : function(e){},
+	onDblClick : function(e){}
 };
 
