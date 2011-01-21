@@ -193,6 +193,15 @@ sb.widget.floatWin.prototype = {
 		}
 	},
 
+	setContent : function(content){
+		var typ = sb.typeOf(content);
+		if(typ == 'string'){
+			this.content.innerHTML = content;
+		} else if(typ =='sb.element'){
+			content.appendTo(this.content);
+		}
+	},
+
 	addIcon : function(el){
 
 		if(sb.typeOf(el)=='sb.element'){
