@@ -41,8 +41,10 @@ class sb_Cache_Memcache implements sb_Cache_Base{
 	 */
 	public function __construct($host, $port, $namespace){
 	
-		$this->memcache = $memcache = new Memcache;
-		$memcache->connect($host, $port) or die ("Could not connect to memcache");
+		$this->memcache = new Memcache;
+		if(!@$this->memcache->connect($host, $port)){
+			throw(new Exception('Cannot connect to memcached server'));
+		}
 		$this->namespace = $namespace;
 	}
 	
