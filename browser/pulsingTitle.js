@@ -20,7 +20,6 @@ sb.browser.pulsingTitle = function(title, interval){
 	this.origTitle = document.title;
 	
 	sb.browser.pulsingTitle.instance = this;
-	alert('f');
 	if(this.title){
 		this.pulse(this.title);
 	}
