@@ -10,19 +10,18 @@ var p = new sb.browser.pulsingTitle('dancing');
 p.stop();
 */
 sb.browser.pulsingTitle = function(title, interval){
-	this.title = title || 'pulsing';
-	this.interval = interval || 2000;
-
-	if(sb.browser.pulsingTitle.instances > 0){
-		return sb.browser.pulseTitle.instance;
-	}
-
-	this.origTitle = document.title;
 	
-	sb.browser.pulsingTitle.instance = this;
-	if(this.title){
-		this.pulse(this.title);
+	if(!sb.browser.pulsingTitle.instance){
+		this.origTitle = document.title;
+		this.interval = interval || 2000;
+		sb.browser.pulsingTitle.instance = this;
 	}
+
+	sb.browser.pulsingTitle.instance.title = title || 'pulsing';
+	sb.browser.pulsingTitle.instance.interval = interval || 2000;
+	
+	sb.browser.pulsingTitle.instance.pulse(sb.browser.pulsingTitle.instance.title);
+	return sb.browser.pulsingTitle.instance;
 
 };
 
