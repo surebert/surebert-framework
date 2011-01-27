@@ -239,7 +239,7 @@ class sb_Graph_Point{
 			$value = new stdClass();
 			$value->label = trim($key);
 			
-			if(empty($val)){$val = null;}
+			if(!is_numeric($val)){$val = null;}
 			
 			$value->value = $val;
 			$this->values[] = $value;
