@@ -73,7 +73,10 @@ sb.widget.floatWin.prototype = {
 
 		this.content = new sb.element({
 			tag : 'div',
-			className : 'sb_floatWinContent'
+			className : 'sb_floatWinContent',
+			styles : {
+				width : '100%'
+			}
 		});
 
 		this.win.events({
@@ -119,6 +122,12 @@ sb.widget.floatWin.prototype = {
 		this.titleText.appendTo(this.titleBar);
 		this.content.appendTo(this.win);
 		this.win.makeDraggable();
+
+		this.win.ondragstop = function(e, pos){
+			if(e.clientY < 0){
+				self.win.style.top = 0;
+			}
+		};
 
 		if(this.closeButton){
 			this.closeButton = this.addIcon(new sb.element({
@@ -219,7 +228,7 @@ sb.widget.floatWin.prototype = {
 
 	close : function(e){
 		this.onClose(e);
-		this.win.hide(e);
+		this.win.remove(e);
 	},
 
 	show : function(e){
