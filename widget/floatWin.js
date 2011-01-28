@@ -228,10 +228,12 @@ sb.widget.floatWin.prototype = {
 
 	close : function(e){
 		this.onClose(e);
+		this.win.hide(e);
 		this.win.remove(e);
 	},
 
 	show : function(e){
+		this.win.appendTo(document.body);
 		this.win.show();
 		this.titleText.style.backgroundColor = this.titleBar.getStyle('backgroundColor');
 		if(e && e.pageX){
