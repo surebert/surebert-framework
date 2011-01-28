@@ -1,5 +1,9 @@
 sb.include('Element.prototype.makeDraggable');
+sb.include('Element.prototype.getDimensions');
+sb.include('Element.prototype.getWidth');
+sb.include('Element.prototype.getHeight');
 sb.include('Element.prototype.getPosition');
+sb.include('Element.prototype.mv');
 sb.include('Element.prototype.mv');
 sb.include('Element.prototype.wh');
 sb.include('Element.prototype.hide');
@@ -140,28 +144,30 @@ sb.widget.floatWin.prototype = {
 					}
 				}
 			}));
-
-			this.downButton = this.addIcon(new sb.element({
-				tag : 'img',
-				src : sb.base+'_media/down.png',
-				title : 'Click minimize',
-				events : {
-					click : function(e){
-						self.minimize(e);
+			if(this.minimizable){
+				
+				this.downButton = this.addIcon(new sb.element({
+					tag : 'img',
+					src : sb.base+'_media/down.png',
+					title : 'Click minimize',
+					events : {
+						click : function(e){
+							self.minimize(e);
+						}
 					}
-				}
-			}));
+				}));
 
-			this.upButton = this.addIcon(new sb.element({
-				tag : 'img',
-				src : sb.base+'_media/up.png',
-				title : 'Click restore',
-				events : {
-					click : function(e){
-						self.restore(e);
+				this.upButton = this.addIcon(new sb.element({
+					tag : 'img',
+					src : sb.base+'_media/up.png',
+					title : 'Click restore',
+					events : {
+						click : function(e){
+							self.restore(e);
+						}
 					}
-				}
-			}));
+				}));
+			}
 		}
 
 		if(typeof this.title =='string'){
