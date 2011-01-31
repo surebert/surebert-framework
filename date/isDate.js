@@ -7,7 +7,7 @@ maxYear int The max year to allow
 @Example:
 sb.date.isDate('01/22/1977');
 */
-sb.date.isDate = function(params){
+sb.date.isDate = function(txtDate, params){
 	if(!params){
 		params = {};
 	}
