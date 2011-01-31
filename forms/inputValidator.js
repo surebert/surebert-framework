@@ -96,6 +96,7 @@ sb.forms.inputValidator = function(o){
 	var self = this;
 	sb.objects.infuse(o, this);
 	this.validateOnKeyUp = this.validateOnKeyUp === false ? this.validateOnKeyUp : true;
+	this.validateOnClick = this.validateOnClick === false ? this.validateOnClick : true;
 	this.onKeyUpEvt = sb.events.add(document, 'keyup', function(e){
 	
 		if(typeof self.onKeyUp == 'function'){
@@ -107,7 +108,19 @@ sb.forms.inputValidator = function(o){
 			self._validate(e);
 		}
 	});
-	
+
+	this.onKeyUpEvt = sb.events.add(document, 'click', function(e){
+
+		if(typeof self.onClick == 'function'){
+			if(self.onClick(e) === false){
+				return;
+			}
+		}
+		if(self.validateOnClick == true && ['checkbox', 'radio'].inArray(e.target.attr('type'))){
+			self._validate(e);
+		}
+	});
+
 	this.onKeyDownEvt = sb.events.add(document, 'keydown', function(e){
 		if(typeof self.onKeyDown == 'function'){
 			var target = e.target;
@@ -124,18 +137,16 @@ sb.forms.inputValidator = function(o){
 };
 
 sb.forms.inputValidator.prototype = {
-	 validateOnKeyUp: true,
+	validateOnKeyUp: true,
 	_validate : function(e){
 		var input = e.nodeName ? e : e.target;
 
-		if(input.nodeName == 'INPUT'){
-			//input.value = input.value.replace(/(^\s+|\s+$)/g, '');
-		}
-		
 		var maxlength = input.getAttribute('maxlength');
 		if(maxlength && input.value && input.value.length >= maxlength){
 			input.value = input.value.substring(0, maxlength);
-			e.preventDefault();
+			if(e && e.preventDefault){
+				e.preventDefault();
+			}
 		}
 
 		var validate = input.getAttribute('validate');
@@ -152,7 +163,9 @@ sb.forms.inputValidator.prototype = {
 		if(validate){
 			var validation  = this.validations[validate];
 			
-			if(!validation){return false;}
+			if(!validation){
+				return false;
+			}
 			var self = this;
 			input.valid = false;
 			//if optional
@@ -187,7 +200,7 @@ sb.forms.inputValidator.prototype = {
 			return input.valid;
 			
 		}
-		return false;
+		return true;
 	},
 	/**
 	@Name: sb.forms.inputValidator.prototype.onValid
@@ -220,13 +233,13 @@ sb.forms.inputValidator.prototype = {
 		
 		var parent = $(input.parentNode);
 		if(!input.errorMessageP){
-				input.errorMessageP = new sb.element({
-					tag : 'p',
-					innerHTML : '',
-					styles : {
-						color : 'red'
-					}
-				});
+			input.errorMessageP = new sb.element({
+				tag : 'p',
+				innerHTML : '',
+				styles : {
+					color : 'red'
+				}
+			});
 		}
 		input.errorMessageP.innerHTML = input.errorMessage;
 		input.errorMessageP.appendToTop(parent);
@@ -251,16 +264,17 @@ sb.forms.inputValidator.prototype = {
 	onKeyUp : function(){},
 
 	/**
-	@Name: sb.forms.inputValidator.prototype.validateInputsWithinElement
-	@Description: Used to validate all inputs contained within a specific element
-	@Param: input The input that is valid
+	@Name: sb.forms.inputValidator.prototype.validateNamedChildrenWithin
+	@Description: Used to validate all named elements contained within a specific 
+	element that have a validate property and name attribute
+	@Param: el The parent element container
 	@Example:
-	validator.validateInputsWithinElement('#myDiv');
+	var valid = validator.validateNamedChildrenWithin('#myDiv');
 	*/
-	validateInputsWithinElement : function(el){
+	validateNamedChildrenWithin : function(el){
 		var self = this;
-		$(el).$('input,textarea').forEach(function(inp){
-			self._validate(inp);
+		return $(el).$('*[name]').every(function(n){
+			return self._validate(n);
 		});
 	},
 
