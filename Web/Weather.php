@@ -22,16 +22,38 @@ class sb_Web_Weather{
 	 * </code>
 	 */
 	public static function fetch($feed){
-
-		$xml = simplexml_load_string(file_get_contents($feed));
 	
 		$weather = new sb_Web_WeatherFeed();
-		if(is_object($xml)){
-			$weather->condition = sprintf($xml->weather);
-			$weather->temp_f = sprintf($xml->temp_f);
-			$weather->temp_c = sprintf($xml->temp_c);
-			$weather->wind_mph = sprintf($xml->wind_mph);
-			$weather->icon = sprintf($xml->icon_url_base.$xml->icon_url_name);
+		$parts = parse_url($feed);
+		$fp = @fsockopen($parts['host'], 80, $errno, $errstr, 2);
+		if($fp) {
+			// make request
+			$out = "GET ".$parts['path']." HTTP/1.1\r\n";
+			$out .= "Host: ".$parts['host']."\r\n";
+			$out .= "Connection: Close\r\n\r\n";
+			fwrite($fp, $out);
+
+			// get response
+			$resp = "";
+			while (!feof($fp)) {
+				$resp .= fgets($fp, 128);
+			}
+			fclose($fp);
+			// check status is 200
+			$status_regex = "/HTTP\/1\.\d\s(\d+)/";
+			if(preg_match($status_regex, $resp, $matches) && $matches[1] == 200) {
+				// load xml as object
+				$parts = explode("\r\n\r\n", $resp);
+				$xml = simplexml_load_string($parts[1]);
+
+				if(is_object($xml)){
+					$weather->condition = sprintf($xml->weather);
+					$weather->temp_f = sprintf($xml->temp_f);
+					$weather->temp_c = sprintf($xml->temp_c);
+					$weather->wind_mph = sprintf($xml->wind_mph);
+					$weather->icon = sprintf($xml->icon_url_base.$xml->icon_url_name);
+				}
+			}
 		}
 		
 		return $weather;
