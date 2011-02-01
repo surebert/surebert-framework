@@ -20,7 +20,7 @@ if(!Array.prototype.forEach){
 	*/
 	Array.prototype.forEach = function(func){
 		var k;
-		if(typeof func == 'function'){
+		if(typeof func === 'function'){
 			var len = this.length;
 			for(k=0;k<len;k++){
 				func(this[k], k, this);
@@ -45,7 +45,7 @@ if(!Array.prototype.forEach){
 	*/
 	Array.prototype.filter = function(func){
 		var n=[];
-		if(typeof func == 'function'){
+		if(typeof func === 'function'){
 			this.forEach(function(v,k,arr){
 				if(func(arr[k], k, arr) === true){
 					n.push(v);
@@ -74,7 +74,7 @@ if(!Array.prototype.forEach){
 	*/
 	Array.prototype.every = function(func){
 		var k;
-		if(typeof func == 'function'){
+		if(typeof func === 'function'){
 			for(k=0;k<this.length;k++){
 
 				if(func(this[k], k, this) !== true){
@@ -100,8 +100,9 @@ if(!Array.prototype.forEach){
 
 	*/
 	Array.prototype.indexOf = function(val){
-		for(var k=0;k<this.length;k++){
-			if(this[k] == val){
+		var k=0;
+		for(k;k<this.length;k++){
+			if(this[k] === val){
 				return k;
 			}
 		}
@@ -122,7 +123,7 @@ if(!Array.prototype.forEach){
 	Array.prototype.lastIndexOf = function(val){
 		var p=-1,k;
 		for(k=0;k<this.length;k++){
-			if(this[k] == val){
+			if(this[k] === val){
 				p=k;
 			}
 		}
@@ -146,7 +147,7 @@ if(!Array.prototype.forEach){
 	*/
 	Array.prototype.map = function(func){
 		var n=[];
-		if(typeof func == 'function'){
+		if(typeof func === 'function'){
 			this.forEach(function(v,k,a){n.push(func(v,k,a));});
 		}
 		return n;
@@ -169,7 +170,7 @@ if(!Array.prototype.forEach){
 	*/
 	Array.prototype.some = function(func){
 		var k;
-		if(typeof func == 'function'){
+		if(typeof func === 'function'){
 			for(k=0;k<this.length;k++){
 				if(func(this[k], k, this) === true){
 					return true;
