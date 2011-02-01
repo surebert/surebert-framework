@@ -25,7 +25,8 @@ sb.widget.terminal.prototype = {
 			value : '',
 			className : self.className,
 			styles : {
-				width : '95%',
+				width : '100%',
+				display : 'block',
 				backgroundColor : 'black',
 				color: 'lime',
 				fontFamily : 'courier',
@@ -38,7 +39,7 @@ sb.widget.terminal.prototype = {
 					var target = e.target;
 					var data = [];
 					var command = this.value.trim();
-					if(command == 'server'){
+					if(command === 'server'){
 						this.style.backgroundColor = 'orange';
 						this.style.color = 'brown';
 						self.sendToServer = true;
@@ -47,7 +48,7 @@ sb.widget.terminal.prototype = {
 						
 					}
 
-					if(command == 'client'){
+					if(command === 'client'){
 						this.style.backgroundColor = 'black';
 						this.style.color = 'lime';
 						self.sendToServer = false;
@@ -56,8 +57,8 @@ sb.widget.terminal.prototype = {
 
 					}
 
-					if(command == 'textarea' || command == 'input'){
-						if(command == 'textarea'){
+					if(command === 'textarea' || command === 'input'){
+						if(command === 'textarea'){
 
 							sb.include('forms.textarea');
 							sb.include('forms.textarea.allowTabs');
@@ -69,13 +70,15 @@ sb.widget.terminal.prototype = {
 					
 					switch(e.keyCode){
 						case 13:
-							e.preventDefault();
-							if(this.nodeName == 'INPUT' || this.nodeName == 'TEXTAREA' && e.shiftKey){
-
+							
+							if(this.nodeName === 'INPUT' || (this.nodeName === 'TEXTAREA' && e.shiftKey)){
+								if(this.nodeName === 'INPUT'){
+									e.preventDefault();
+								}
 								self.stack.push(command);
 								var s = sb.forms.textarea.getSelection(this);
 								
-								if(s.selected != ''){
+								if(s.selected !== ''){
 									
 									eval(s.selected);
 
@@ -96,12 +99,14 @@ sb.widget.terminal.prototype = {
 						case 27:
 							target.value = '';
 							target.select();
+							break;
 
 						case 38:
-							var command = self.stack.pop();
+							command = self.stack.pop();
 							if(command){
 								target.value = command;
 							}
+							break;
 
 					}
 				}
@@ -112,13 +117,13 @@ sb.widget.terminal.prototype = {
 
 		this.textField.appendToTop('body');
 
-		if(type == 'textarea'){
+		if(type === 'textarea'){
 			sb.include('forms.textarea');
 			sb.include('forms.textarea.allowTabs');
 			this.textField.evt('keydown', sb.forms.textarea.allowTabs);
 		}
 
-		if(typeof self.onAfterCreate == 'function'){
+		if(typeof self.onAfterCreate === 'function'){
 			self.onAfterCreate();
 		}
 		
@@ -131,7 +136,7 @@ sb.widget.terminal.prototype = {
 		return false;
 	},
 	processServerside : function(command){
-		var self = this;
+		var self = this, aj;
 		var data = '';
 		
 		var arr = command.split(' ');
@@ -140,14 +145,14 @@ sb.widget.terminal.prototype = {
 			data = arr.slice(1);
 
 		}
-		var aj = new sb.ajax({
+		aj = new sb.ajax({
 			url : '/terminal/'+arr[0],
 			data : {
-				arguments : data.join(' ')
+				args : data.join(' ')
 			},
 			onHeaders : function(status){
-				if(status == 404){
-					if(typeof(self.onError == 'function')){
+				if(status === 404){
+					if(typeof(self.onError === 'function')){
 						self.onError('Command not found');
 					}
 
@@ -157,10 +162,10 @@ sb.widget.terminal.prototype = {
 				}
 			},
 			onResponse : function(r){
-				if(this.ajax.getResponseHeader('Content-Type') != 'text/javascript'){
-					if(r !== '' && typeof(self.onResponse == 'function')){
+				if(this.ajax.getResponseHeader('Content-Type') !== 'text/javascript'){
+					if(r !== '' && typeof(self.onResponse === 'function')){
 						self.onResponse(r);
-					} else if(typeof(self.onError == 'function')){
+					} else if(typeof(self.onError === 'function')){
 						self.onError('No Response');
 					}
 				}
