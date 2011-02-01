@@ -1,5 +1,5 @@
 sb.include('Element.prototype.cssTransition');
-
+sb.include('String.prototype.md5');
 /**
 @Name: sb.widget.notifier
 @Description: provides growl like messages for user
@@ -120,12 +120,20 @@ sb.widget.notifier = {
     notify : function(message, className, stay, effect){
 
         className = ' '+className || '';
-        var t = this;
-        
+        var t = this,id;
+
+		
+		id = 'i'+(message+className).md5();
+		
+        if($('#'+id)){
+			return;
+		}
+		
         var el = new sb.element({
             tag : 'div',
             className : 'sb_notify'+className,
             innerHTML : message,
+			id : id,
             effect : effect || {}
         });
 
