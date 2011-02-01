@@ -7,7 +7,6 @@ sb.include('events.observer');
 */
 sb.events.listener = function(params){
 	sb.objects.infuse(params, this);
-	var self = this;
 	this.observe();
 };
 sb.events.listener.prototype = {
@@ -23,12 +22,12 @@ sb.events.listener.prototype = {
 		var self = this;
 
 		this.events = {};
-		['click', 'mouseup', 'mousedown', 'dblclick', 'contextmenu', 'submit', 'keydown', 'keyup', 'keypress', 'mousemove', 'mouseover', 'mouseout', 'dragstart', 'dragend', 'drag', 'dragenter', 'dragleave', 'drop'].forEach(function(evt){
+		sb.events.observer.getEvents().forEach(function(evt){
 
 			if(self[evt]){
 				self.events[evt] = function(e){
 					self.delegate(e);
-				}
+				};
 			}
 		});
 

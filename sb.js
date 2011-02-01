@@ -1,10 +1,194 @@
-if(!Array.prototype.forEach){Array.prototype.forEach=function(func){var k;if(typeof func=='function'){var len=this.length;for(k=0;k<len;k++){func(this[k],k,this);}}};Array.prototype.filter=function(func){var n=[];if(typeof func=='function'){this.forEach(function(v,k,arr){if(func(arr[k],k,arr)===true){n.push(v);}});}
-return n;};Array.prototype.every=function(func){var k;if(typeof func=='function'){for(k=0;k<this.length;k++){if(func(this[k],k,this)!==true){return false;}}
-return true;}};Array.prototype.indexOf=function(val){for(var k=0;k<this.length;k++){if(this[k]==val){return k;}}
-return-1;};Array.prototype.lastIndexOf=function(val){var p=-1,k;for(k=0;k<this.length;k++){if(this[k]==val){p=k;}}
-return p;};Array.prototype.map=function(func){var n=[];if(typeof func=='function'){this.forEach(function(v,k,a){n.push(func(v,k,a));});}
-return n;};Array.prototype.some=function(func){var k;if(typeof func=='function'){for(k=0;k<this.length;k++){if(func(this[k],k,this)===true){return true;}}
-return false;}};}
+/**
+@Description: All of these array prototypes are part of Javascript 1.5 and are included by defaut in sureert for browsers that do not have them (IE and Opera).  They are built in by defualt in Firefox(mozilla) and Safari (webkit)
+*/
+if(!Array.prototype.forEach){
+
+	/**
+	@Name: Array.prototype.forEach
+	@Description: Runs a function on every value in an array
+	@Param: Function func An anonymous function or a reference to a function.  Array data is passed to the function for each vlaue in the array.  Values passed are v,k,a which stand for value, key and array.  v is the current value as it loops through the array, k is the current key as it loops through tthe array and a is the entire array.
+	@Example:
+	function addOne(val,key,arr){
+		val = val+1;
+
+	}
+	var myArray=[1,2,3];
+	myArray.forEach(addOne);
+
+	//afterwards myArray = [2,3,4]
+	*/
+	Array.prototype.forEach = function(func){
+		var k;
+		if(typeof func === 'function'){
+			var len = this.length;
+			for(k=0;k<len;k++){
+				func(this[k], k, this);
+			}
+		}
+	};
+
+	/**
+	@Name: Array.prototype.filter
+	@Description: Filters values out of an array that do not return true from the test function.
+	@Param: Function func An anonymous function or a reference to a function.  Array data is passed to the function for each vlaue in the array.  Values passed are v,k,a which stand for value, key and array.  v is the current value as it loops through the array, k is the current key as it loops through tthe array and a is the entire array.
+	@Return: Array The new array contains only the values which were true.
+	@Example:
+	function over10(val, key, arr) {
+		if(val > 10){return true;}
+	}
+
+	var myArray = [5, 10, 15];
+	var newArray = myArray.filter(over10);
+	//returns the array 10,15 because those two values are >=10
+
+	*/
+	Array.prototype.filter = function(func){
+		var n=[];
+		if(typeof func === 'function'){
+			this.forEach(function(v,k,arr){
+				if(func(arr[k], k, arr) === true){
+					n.push(v);
+				}
+			});
+		}
+
+		return n;
+
+	};
+
+	/**
+	@Name: Array.prototype.every
+	@Description: Checks to see if every value in an array returns true from the function provided
+	@Param: Function func An anonymous function or a reference to a function.  Array data is passed to the function for each vlaue in the array.  Values passed are v,k,a which stand for value, key and array.  v is the current value as it loops through the array, k is the current key as it loops through tthe array and a is the entire array.
+	@Return: Boolean True or False
+	@Example:
+
+	function over10(val, key, arr) {
+		if(val > 10){return true;}
+	}
+
+	var myArray = [5, 10, 15];
+	myArray.every(over10);
+	//returns false because not every number in the array is over 10
+	*/
+	Array.prototype.every = function(func){
+		var k;
+		if(typeof func === 'function'){
+			for(k=0;k<this.length;k++){
+
+				if(func(this[k], k, this) !== true){
+
+					return false;
+				}
+			}
+			return true;
+		}
+	};
+
+
+	/**
+	@Name: Array.prototype.indexOf
+	@Description: Finds the index of the value given within the array.  Return the position of the first matching value.  Rememeber that array start at 0.
+	@Param: Object/String/Number val The value you want to search for in the array.
+	@Return: Integer
+	@Example:
+
+	var myArray = [1,2,3,'a','b'];
+	var answer = myArray.indexOf('a');
+	//answer is 3
+
+	*/
+	Array.prototype.indexOf = function(val){
+		var k=0;
+		for(k;k<this.length;k++){
+			if(this[k] === val){
+				return k;
+			}
+		}
+		return -1;
+	};
+
+	/**
+	@Name: Array.prototype.lastIndexOf
+	@Description: Finds the last index of the value given within the array.Rememeber that array start at 0.
+	@Param: Object/String/Number val The value you want to search for in the array.
+	@Return: Integer
+	@Example:
+
+	var myArray = [1,2,3,2];
+	var answer = myArray.lastIndexOf(2);
+	//answer is 3
+	*/
+	Array.prototype.lastIndexOf = function(val){
+		var p=-1,k;
+		for(k=0;k<this.length;k++){
+			if(this[k] === val){
+				p=k;
+			}
+		}
+		return p;
+	};
+
+	/**
+	@Name: Array.prototype.map
+	@Description: Runs a function on every item in the array and returns the results in an array.
+	@Param: Function func The function you want applied run on every value in the array.  It is automatically passed the current (value, key, and array) as arguments on eqach loop through the array.  The function can be either a reference to a global function or an inline anonymouse function.
+	@Return: Array A new array with each value mapping to the result of the original arrays value after is is passed through the function specified.
+	@Example:
+	function addTen(val, key, array) {
+		return val+10;
+	}
+
+	var myArray = [5, 10, 15];
+	var answer = myArray.map(addTen);
+	//answer = [15, 20, 25];
+
+	*/
+	Array.prototype.map = function(func){
+		var n=[];
+		if(typeof func === 'function'){
+			this.forEach(function(v,k,a){n.push(func(v,k,a));});
+		}
+		return n;
+	};
+
+	/**
+	@Name: Array.prototype.some
+	@Description: Similar to sb.arrays.every - if some of the function results are true then some returns true
+	@Param: Function func A function that every value of the array is passed to.  The function is passed (val, key, arr) on every pass of the loop.
+	@Return: Boolean Returns true if some of the values return true when run through the function provided
+
+	@Example:
+	function isAboveFive(val, key, arr){
+		if(val >5) {return true;}
+	}
+	var myArray = [5, 10, 15];
+	var answer = myArray.some(isAboveFive);
+	//answer = true //because some values return true when passed through the isAboveFive function
+
+	*/
+	Array.prototype.some = function(func){
+		var k;
+		if(typeof func === 'function'){
+			for(k=0;k<this.length;k++){
+				if(func(this[k], k, this) === true){
+					return true;
+				}
+			}
+			return false;
+		}
+	};
+
+}
+
+/**
+@Description: add console global for browsers that don't have it, so that using it won't throw errors
+*/
+if(typeof console === 'undefined'){
+	console = {
+		log : function(){}
+	};
+}
 
 /**
 @Author: Paul Visco of http://paul.estrip.org
@@ -17,7 +201,7 @@ var sb = {
 	@Name: sb.base
 	@Description: Used Internally to find required files
 	*/
-	base : (typeof window.sbBase !='undefined') ? window.sbBase : '/surebert',
+	base : (typeof window.sbBase !== 'undefined') ? window.sbBase : '/surebert',
 
 	/**
 	@Name: sb.colors
@@ -65,7 +249,7 @@ var sb = {
 	sb.include('cookies,date');
 	*/
 	include : function(module, onload){
-		onload = typeof onload == 'function' ? onload : function(){};
+		onload = typeof onload === 'function' ? onload : function(){};
 		
 		if(module.match(',')){
 			var modules = module.split(',');
@@ -78,7 +262,7 @@ var sb = {
 
 		var mods = module.split('.');
 		var path ='', file, unit=sb,m;
-		if(mods[0] == 'String' || mods[0] == 'Element' || mods[0] == 'Array'){
+		if(mods[0] === 'String' || mods[0] === 'Element' || mods[0] === 'Array'){
 			unit = window;
 		}
 
@@ -95,10 +279,10 @@ var sb = {
 
 			} catch(e){}
 
-			if(typeof unit == 'undefined'){
+			if(typeof unit === 'undefined'){
 				
 				this.included.push(path);
-				if(sb.base == '/surebert'){
+				if(sb.base === '/surebert'){
 					file = sb.base+'/'+path.replace(/\./g, "/");
 				} else {
 					file = sb.base+path;
@@ -109,7 +293,7 @@ var sb = {
 						src : file
 					});
 					
-					if(path == module){
+					if(path === module){
 
 						s.onload = onload;
 					}
@@ -117,13 +301,13 @@ var sb = {
 					s.load();
 				} else {
 					sb.load(file);
-					if(path == module){
+					if(path === module){
 						onload();
 					}
 				}
 				
 
-			} else if(path == module){
+			} else if(path === module){
 				onload();
 			}
 		}
@@ -196,7 +380,7 @@ var sb = {
 		script.charset = o.charset || 'utf-8';
 		script.src = o.src;
 		
-		script.onload = typeof o.onload =='function' ? o.onload : function(){};
+		script.onload = typeof o.onload === 'function' ? o.onload : function(){};
 		script.load = function(){
 			document.getElementsByTagName('head')[0].appendChild(this);
 		};
@@ -275,7 +459,7 @@ var sb = {
 	*/
 	get : function(url, data, onResponse, format){
 
-		if(typeof data == 'function'){onResponse = data;data=null;}
+		if(typeof data === 'function'){onResponse = data;data=null;}
 		return sb.ajax.shortcut(url, data, onResponse, format, 'get');
 	},
 
@@ -300,7 +484,7 @@ var sb = {
 	*/
 	post : function(url, data, onResponse, format){
 
-		if(typeof data == 'function'){onResponse = data;data=null;}
+		if(typeof data === 'function'){onResponse = data;data=null;}
 		return sb.ajax.shortcut(url, data, onResponse, format, 'post');
 	},
 
@@ -317,9 +501,9 @@ var sb = {
 	});
 	*/
 	toArray : function(o){
-		var a=[];
+		var a=[],x=0;
 		var len=o.length;
-		for(var x=0;x<len;x++){
+		for(x;x<len;x++){
 			a.push(o[x]);
 		}
 		return a;
@@ -343,12 +527,12 @@ var sb = {
 			type = 'function';
 		} else if (o instanceof Array) {
 			type = 'array';
-		} else if(typeof o == 'number'){
+		} else if(typeof o === 'number'){
 			type = 'number';
 			if(String(o).match(/\./)){
 				type = 'float';
 			}
-		} else if(typeof o == 'string'){
+		} else if(typeof o === 'string'){
 			type = 'string';
 		} else if(o === true || o === false){
 			type='boolean';
@@ -356,18 +540,18 @@ var sb = {
 			type = (typeof o).toLowerCase();
 		}
 
-		if(typeof o =='object' ){
+		if(typeof o === 'object' ){
 
-			if(typeof o.typeOf == 'function'){
+			if(typeof o.typeOf === 'function'){
 				type = o.typeOf();
 			} else if (o.nodeType){
-				if (o.nodeType == 3) {
+				if (o.nodeType === 3) {
 					type = 'textnode';
 
-				} else if (o.nodeType == 1) {
+				} else if (o.nodeType === 1) {
 					type = 'element';
 				}
-			} else if(typeof o.length !='undefined' && type !='array'){
+			} else if(typeof o.length !=='undefined' && type !=='array'){
 				type = 'sb.nodeList';
 			}
 		}
@@ -498,14 +682,14 @@ sb.$ = function(selector, root) {
 	}
 	
 	//return items that are already objects
-	if(typeof selector != 'string'){
+	if(typeof selector !== 'string'){
 
-		if(Element.emulated === true && typeof selector == 'object' && selector !== null){
+		if(Element.emulated === true && typeof selector === 'object' && selector !== null){
 			
-			if(selector.nodeType && selector.nodeType == 1){
+			if(selector.nodeType && selector.nodeType === 1){
 				sb.$.copyElementPrototypes(selector);
 				
-			} else if (typeof selector.getElementPrototypes == 'function'){
+			} else if (typeof selector.getElementPrototypes === 'function'){
 				
 				selector.getElementPrototypes();
 			}
@@ -525,9 +709,9 @@ sb.$ = function(selector, root) {
 		sb.$.parseSelectors(nodeList, root);
 	}
 
-	if(nodeList.length() === 0 && nodeList.selector.match(/^\#[\w-]+$/) ){
+	if(nodeList.length() === 0 && nodeList.selector.match(/^\#[\w\-]+$/) ){
 		return null;
-	} else if(nodeList.length() == 1 && (nodeList.selector.match(/^\#[\w-]+$/) || sb.nodeList.singleTags.some(function(v){
+	} else if(nodeList.length() === 1 && (nodeList.selector.match(/^\#[\w\-]+$/) || sb.nodeList.singleTags.some(function(v){
 		return v === nodeList.selector;
 	}))){
 
@@ -539,8 +723,8 @@ sb.$ = function(selector, root) {
 };
 
 sb.$.copyElementPrototypes = function(node){
-	var ep = Element.prototype;
-	for(var prop in ep){
+	var ep = Element.prototype,prop;
+	for(prop in ep){
 		if(ep.hasOwnProperty(prop)){
 			node[prop] = ep[prop];
 		}
@@ -570,7 +754,7 @@ sb.$.parseSelectors = function(nodes, within){
 
 				root = sb.$.getElementsByParent(selector);
 
-				if(k+1 == a.length){
+				if(k+1 === a.length){
 					nodes.add(root);
 
 				}
@@ -582,7 +766,7 @@ sb.$.parseSelectors = function(nodes, within){
 				///look for attribute's by searching for sqaure brackets //
 				root = sb.$.getElementsByAttributes(root, selector);
 
-				if(k+1 == a.length){
+				if(k+1 === a.length){
 					nodes.add(root);
 				}
 
@@ -591,7 +775,7 @@ sb.$.parseSelectors = function(nodes, within){
 
 				root = sb.$.getElementsBySiblingCombinator(root, selector);
 
-				if(k+1 == a.length){
+				if(k+1 === a.length){
 					nodes.add(root);
 
 				}
@@ -602,7 +786,7 @@ sb.$.parseSelectors = function(nodes, within){
 
 				root = sb.$.getElementsByAdjacentSibling(root, selector);
 
-				if(k+1 == a.length){
+				if(k+1 === a.length){
 					nodes.add(root);
 
 				}
@@ -613,20 +797,20 @@ sb.$.parseSelectors = function(nodes, within){
 				//look for pseudo selectors
 				root = sb.$.parsePseudoSelectors(root, selector);
 
-				if(k+1 == a.length){
+				if(k+1 === a.length){
 					nodes.add(root);
 				}
 
 				return true;
 
-			} else if((selector.indexOf("#") === 0 && selector.match(/^\#[\w-]+$/)) || selector.match(/\w+\#[\w-]+/)) {
+			} else if((selector.indexOf("#") === 0 && selector.match(/^\#[\w\-]+$/)) || selector.match(/\w+\#[\w\-]+/)) {
 
 				var element = sb.$.getElementById(selector);
 
 				if(element){
 					root = (element instanceof Array) ? element : [element];
 
-					if(k+1 == a.length){
+					if(k+1 === a.length){
 						nodes.add(root);
 
 					}
@@ -645,7 +829,7 @@ sb.$.parseSelectors = function(nodes, within){
 
 					root = sb.$.getElementsByClassName(selector, root[0]);
 
-					if(k+1 == a.length){
+					if(k+1 === a.length){
 						nodes.add(root);
 					}
 
@@ -656,7 +840,7 @@ sb.$.parseSelectors = function(nodes, within){
 			//Tag selectors - no class or id specified.
 			root = sb.$.getElementsByTagName(root, selector);
 
-			if(k+1 == a.length){
+			if(k+1 === a.length){
 				nodes.add(root);
 			}
 
@@ -689,7 +873,7 @@ sb.$.getElementsByClassName = function(selector, root){
 
 	var nodes,elements = [],x=0;
 	
-	if(root.getElementsByClassName && selector.charAt(0) == '.'){
+	if(root.getElementsByClassName && selector.charAt(0) === '.'){
 
 		nodes = root.getElementsByClassName(selector.replace(/\./, ''));
 
@@ -701,14 +885,15 @@ sb.$.getElementsByClassName = function(selector, root){
 
 	var parts = selector.split('.');
 	nodes = root.getElementsByTagName(parts[0] || '*');
-	var className = parts[1], node, cur_class_name,len = nodes.length,x=0;
+	var className = parts[1], node, cur_class_name,len = nodes.length;
+	x=0;
 	var rg = RegExp("\\b"+className+"\\b");
 	
 	if(nodes.length > 0){
 		do{
 			node = nodes[x];
 			cur_class_name = node.className;
-			if (cur_class_name.length && (cur_class_name == className || rg.test(cur_class_name))){
+			if (cur_class_name.length && (cur_class_name === className || rg.test(cur_class_name))){
 
 				elements.push(node);
 			}
@@ -749,18 +934,17 @@ sb.$.getElementsByTagName = function(root, tag) {
 @Description: Used Internally
 */
 sb.$.getElementsByAttributes = function(within, selector){
-	var f = 1;
 	var tag,attr,operator,value;
 
 	if (selector.match(/^(?:(\w*|\*))\[(\w+)([=~\|\^\$\*]?)=?['"]?([^\]'"]*)['"]?\]$/)) {
 		tag = RegExp.$1;
-		attr = (typeof sb.nodeList.attrConvert == 'function') ? sb.nodeList.attrConvert(RegExp.$2) : RegExp.$2;
+		attr = (typeof sb.nodeList.attrConvert === 'function') ? sb.nodeList.attrConvert(RegExp.$2) : RegExp.$2;
 
 		operator = RegExp.$3;
 		value = RegExp.$4 ||'';
 	}
 
-	var elements = $.getElementsByTagName(within, tag);
+	var elements = sb.$.getElementsByTagName(within, tag);
 
 	within = elements.filter(function(el,k,a){
 
@@ -773,7 +957,7 @@ sb.$.getElementsByAttributes = function(within, selector){
 
 		switch(operator){
 			case '=':
-				if(el.attrVal != value){
+				if(el.attrVal !== value){
 					return false;
 				}
 				break;
@@ -799,13 +983,13 @@ sb.$.getElementsByAttributes = function(within, selector){
 				break;
 
 			case '$':
-				if(el.attrVal.lastIndexOf(value)!=(el.attrVal.length-value.length)){
+				if(el.attrVal.lastIndexOf(value)!==(el.attrVal.length-value.length)){
 					return false;
 				}
 				break;
 
 			case '*':
-				if(!(el.attrVal.indexOf(value)+1)){
+				if(el.attrVal.indexOf(value)+1 === 0){
 					return false;
 				}
 				break;
@@ -829,7 +1013,7 @@ sb.$.getElementsByAttributes = function(within, selector){
 @Description: Used Internally
 */
 sb.$.getNextSibling = function(node){
-	while((node = node.nextSibling) && node.nodeType != 1){}
+	while((node = node.nextSibling) && node.nodeType === 3){}
 	return node;
 };
 
@@ -838,7 +1022,7 @@ sb.$.getNextSibling = function(node){
 @Description: Used Internally
 */
 sb.$.getPreviousSibling = function(node){
-	while((node = node.previousSibling) && node.nodeType != 1){}
+	while((node = node.previousSibling) && node.nodeType === 3){}
 	return node;
 };
 
@@ -848,7 +1032,7 @@ sb.$.getPreviousSibling = function(node){
 */
 sb.$.getFirstChild = function(node){
 	node = node.firstChild;
-	while (node && node.nodeType && node.nodeType == 3) {
+	while (node && node.nodeType && node.nodeType === 3) {
 		node = sb.$.getNextSibling(node);
 	}
 	return node;
@@ -861,7 +1045,7 @@ sb.$.getFirstChild = function(node){
 sb.$.getLastChild = function(node){
 
 	node = node.lastChild;
-	while (node && node.nodeType && node.nodeType == 3) {
+	while (node && node.nodeType && node.nodeType === 3) {
 		node = sb.$.getPreviousSibling(node);
 	}
 	return node;
@@ -872,7 +1056,7 @@ sb.$.getLastChild = function(node){
 @Description: Used Internally
 */
 sb.$.getElementsByParent = function(selector){
-	var parents , tags = selector.split(">");
+	var parents ,n=0, tags = selector.split(">");
 
 	var elements = sb.$.getElementsByTagName([document.body], tags[1]);
 
@@ -884,7 +1068,7 @@ sb.$.getElementsByParent = function(selector){
 	if(tags[0].match(/\./)){
 		parents = sb.$(tags[0]);
 	}
-	for(var n=0;n<len;n++){
+	for(n;n<len;n++){
 		if(rg.test(elements[n].parentNode.nodeName) || (parents && parents.nodes.inArray(elements[n].parentNode))){
 			elements[n].sbid = sb.uniqueID();
 			nodes.push(elements[n]);
@@ -912,10 +1096,10 @@ sb.$.getElementsBySiblingCombinator = function(within, selector){
 
 		while((node = node.nextSibling)){
 			nn = node.nodeName.toLowerCase();
-			if(nn == nodeName){
+			if(nn === nodeName){
 				break;
 			}
-			if(node.nodeType == 1 && nn == siblingNodeName){
+			if(node.nodeType === 1 && nn === siblingNodeName){
 				node.sbid = sb.uniqueID();
 				elements.push(node);
 			}
@@ -940,7 +1124,7 @@ sb.$.getElementsByAdjacentSibling = function(within, selector){
 	var nodes = [], x=0,node,len = elements.length;
 	for(x=0;x<len;x++){
 		node = sb.$.getNextSibling(elements[x]);
-		if(node && node.nodeName == adjacentNodeName){
+		if(node && node.nodeName === adjacentNodeName){
 			nodes.push(node);
 		}
 	}
@@ -955,13 +1139,12 @@ sb.$.getElementsByAdjacentSibling = function(within, selector){
 */
 sb.$.parsePseudoSelectors = function(within, selector){
 
-	var nth,notSelector,elements = [],parts = selector.split(":");
+	var notSelector,elements = [],parts = selector.split(":");
 
 	selector =parts[0];
 	var pseudo = parts[1];
 
 	var nodes = sb.$.getElementsByTagName(within, selector);
-	var parentNode;
 
 	nodes.forEach(function(node,k,a){
 
@@ -1009,7 +1192,7 @@ sb.$.parsePseudoSelectors = function(within, selector){
 				if(pseudo.indexOf('not')+1){
 					notSelector = pseudo.match(/not\((.*?)\)/);
 
-					if(node.nodeName.toLowerCase() != notSelector[1]){
+					if(node.nodeName.toLowerCase() !== notSelector[1]){
 						elements.push(node);
 					}
 				}
@@ -1115,7 +1298,7 @@ sb.browser ={
 	measure : function(){
 		sb.browser.w=0;
 		sb.browser.h =0;
-		if( typeof window.innerWidth == 'number' ) {
+		if( typeof window.innerWidth === 'number' ) {
 			sb.browser.w = window.innerWidth;
 			sb.browser.h = window.innerHeight;
 		} else if( window.document.documentElement && ( window.document.documentElement.clientWidth || window.document.documentElement.clientHeight ) ) {
@@ -1153,21 +1336,21 @@ sb.objects = {
 
 		sb.objects.forEach.call(o, function(value, prop, object){
 
-			if(sb.typeOf(value) == 'array'){
+			if(sb.typeOf(value) === 'array'){
 				
 				value.forEach(function(v, k){
 					a.push(prop+'[]='+encodeURIComponent(v));
 				});
 				
-			} else if(typeof value == 'object'){
+			} else if(typeof value === 'object'){
 				
-				if(value == null){
+				if(value === null){
 					return null;
 				}
 				
 				sb.objects.forEach.call(value, function(v2, k2, o2){
 
-					if(typeof v2 == 'object' || sb.typeOf(v2) == 'array'){
+					if(typeof v2 === 'object' || sb.typeOf(v2) === 'array'){
 
 						str = sb.objects.serialize(v2);
 						arr = str.split("&");
@@ -1245,9 +1428,9 @@ sb.objects = {
 	},
 
 	hardcopy : function(o){
-		var c = {};
-		for(var p in o){
-			try{c[p] = o[p];}catch(e){};
+		var c = {},p;
+		for(p in o){
+			try{c[p] = o[p];}catch(e){}
 		}
 		return c;
 	},
@@ -1263,7 +1446,7 @@ sb.objects = {
 		sb.objects.dump({o});
 	*/
 	dump : function(o, pre){
-		var prop,str ='';
+		var str ='';
 		sb.objects.forEach.call(o, function(v,p,o){
 			try{
 				str+="\n\n"+p+' = '+v;
@@ -1281,8 +1464,9 @@ sb.objects = {
 	},
 
 	forEach : function(func){
-		for(var prop in this){
-			if(this.hasOwnProperty(prop) && !sb.objects[prop] || prop =='infuse'){
+		var prop;
+		for(prop in this){
+			if((this.hasOwnProperty(prop) && !sb.objects[prop]) || prop === 'infuse'){
 				func(this[prop], prop, this);
 			}
 		}
@@ -1295,8 +1479,8 @@ sb.objects = {
 */
 //sb.nodeList
 sb.nodeList = function(params){
-
-	for(var prop in params){
+	var prop;
+	for(prop in params){
 		this[prop] = params[prop];
 	}
 
@@ -1307,7 +1491,7 @@ sb.nodeList = function(params){
 	var nls= this;
 	['forEach', 'map', 'filter', 'every', 'some', 'indexOf', 'lastIndexOf', 'inArray'].forEach(function(v,k,a){
 		nls[v] = function(func){
-			if(v == 'forEach'){
+			if(v === 'forEach'){
 				nls.nodes[v](func);
 				return nls;
 			}
@@ -1431,11 +1615,11 @@ sb.nodeList.prototype = {
 	drop : function(el){
 
 		var t = this;
-		el = $(el);
+		el = sb.$(el);
 
 		this.nodes = t.nodes.filter(function(v){
-			if(sb.typeOf(el) == 'sb.element'){
-				return v != el;
+			if(sb.typeOf(el) === 'sb.element'){
+				return v !== el;
 			} else {
 				return !el.nodes.some(function(v1){
 					return v===v1;
@@ -1547,7 +1731,7 @@ sb.ajax = function (params){
 	
 	sb.objects.infuse(params, this);
 
-	if(sb.typeOf(params.data) == 'object'){
+	if(sb.typeOf(params.data) === 'object'){
 		this.data = sb.objects.serialize(params.data);
 	}
 
@@ -1594,9 +1778,9 @@ sb.ajax.shortcut = function(url, data, onResponse, format, method){
 		data : data
 	});
 
-	if(typeof onResponse == 'function'){
+	if(typeof onResponse === 'function'){
 		aj.onResponse = onResponse;
-	} else if (typeof onResponse == 'string'){
+	} else if (typeof onResponse === 'string'){
 		aj.node = onResponse;
 	}
 	aj.fetch();
@@ -1649,14 +1833,14 @@ sb.ajax.prototype = {
 
 		var js = '';
 
-		if(this.ajax.readyState != 4 || this.completed == 1){
+		if(this.ajax.readyState !== 4 || this.completed){
 			return true;
 		}
 
 		this.completed = 1;
 
 		//for backwards compatibility, remove soon
-		if(typeof this.handler == 'function'){
+		if(typeof this.handler === 'function'){
 			this.onResponse = this.handler;
 		}
 
@@ -1666,7 +1850,7 @@ sb.ajax.prototype = {
 		if(this.contentLength > this.maxContentLength){
 
 			//this.addToLog(7);
-			if(typeof this.onContentLengthExceeded == 'function'){
+			if(typeof this.onContentLengthExceeded === 'function'){
 				this.onContentLengthExceeded();
 			}
 			//TODO does this work? after IE8 and safari 4
@@ -1695,7 +1879,7 @@ sb.ajax.prototype = {
 			this.log("\nHEADERS\nStatus: "+this.ajax.status+"\nStatus Text: "+this.ajax.statusText+"\n"+this.ajax.getAllResponseHeaders()+"\nRESPONSE: \n"+(this.ajax.responseText ||'PAGE WAS BLANK ;(')+"\n");
 		}
 
-		if(this.onHeaders(this.ajax.status, this.ajax.statusText) === false || this.ajax.status != 200){
+		if(this.onHeaders(this.ajax.status, this.ajax.statusText) === false || this.ajax.status !== 200){
 			return false;
 		}
 
@@ -1729,7 +1913,7 @@ sb.ajax.prototype = {
 				break;
 
 			case 'boolean':
-				this.response = (this.ajax.responseText == 0) ? false : true;
+				this.response = this.ajax.responseText === '1' ? true : false;
 				break;
 
 			default:
@@ -1742,19 +1926,19 @@ sb.ajax.prototype = {
 			try{
 				eval(js);
 
-			}catch(e2){
+			} catch(e2){
 				this.log('Could not eval javascript from server');
 			}
 		}
-		if(typeof this.onResponse == 'function'){
+		if(typeof this.onResponse === 'function'){
 			this.onResponse(this.response);
 		}
 
-		if(typeof this.node !='undefined'){
+		if(typeof this.node !== 'undefined'){
 
 			if(sb.$(this.node)){
 				this.node = sb.$(this.node);
-				if(typeof this.node.value !='undefined'){
+				if(typeof this.node.value !== 'undefined'){
 					this.node.value = this.ajax.responseText;
 				} else {
 					this.node.innerHTML = this.ajax.responseText;
@@ -1784,7 +1968,7 @@ sb.ajax.prototype = {
 	abort : function(){
 		this.ajax.abort();
 
-		if(typeof this.onmillisec !='undefined'){
+		if(typeof this.onmillisec !== 'undefined'){
 			this.timer.reset();
 		}
 
@@ -1814,7 +1998,7 @@ sb.ajax.prototype = {
 
 		this.completed = 0;
 
-		this.data = sb.typeOf(this.data) == 'object' ? sb.objects.serialize(this.data) : this.data;
+		this.data = sb.typeOf(this.data) === 'object' ? sb.objects.serialize(this.data) : this.data;
 
 		//This must be set to tru or false as IE 8 does not understand 0 or 1
 		if(this.async === 0){
@@ -1824,13 +2008,13 @@ sb.ajax.prototype = {
 		this.format = this.format || '';
 		this.method = this.method.toUpperCase();
 
-		if(this.method == 'GET' && this.data !== undefined){
+		if(this.method === 'GET' && this.data !== undefined){
 			url = url+'?'+this.data;
 		}
 
 		this.ajax.open(this.method, url, this.async);
 
-		if(this.method == 'POST'){
+		if(this.method === 'POST'){
 			this.ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		}
 
@@ -1845,7 +2029,7 @@ sb.ajax.prototype = {
 					self.abort();
 					self.count = 0;
 
-					if(typeof self.onTimeout == 'function'){
+					if(typeof self.onTimeout === 'function'){
 						self.onTimeout();
 					}
 
@@ -1863,7 +2047,7 @@ sb.ajax.prototype = {
 	},
 
 	log : function(message){
-		if(this.debug ==1){
+		if(this.debug){
 
 			var info = (message || '')+"\nSENT\nURL: "+this.url;
 
@@ -1871,11 +2055,11 @@ sb.ajax.prototype = {
 
 			if(sb.consol.ajaxLog){
 				sb.consol.ajaxLog(info);
-			} else if(typeof console != 'undefined'){
+			} else if(typeof console !== 'undefined'){
 				console.log(info);
 			}
 
-			if(typeof this.onLog == 'function'){
+			if(typeof this.onLog === 'function'){
 
 				this.onLog(info);
 			}
@@ -1978,16 +2162,16 @@ sb.dom = {
 	*/
 
 	onReady : function(o){
-		var found =0, timer, count=0;
+		var found = 0, timer, count=0;
 		o.args = o.args || [];
 		o.interval = o.interval || 10;
 
 		o.tries = o.tries || 600;
-		if(o.tries == -1){
-			o.tries =99999999;
+		if(o.tries === -1){
+			o.tries = 99999999;
 		}
 
-		if(typeof o.onReady=='function'){
+		if(typeof o.onReady === 'function'){
 
 			timer = window.setInterval(function(){
 
@@ -1996,23 +2180,23 @@ sb.dom = {
 				if(count >= o.tries){
 					window.clearTimeout(timer);
 
-					if(typeof o.onTimeout=='function'){
+					if(typeof o.onTimeout === 'function'){
 						o.onTimeout(o.id);
 					}
 					return;
 				}
 
-				if(o.id == 'body' && document.body){
+				if(o.id === 'body' && document.body){
 					window.clearTimeout(timer);
 					found=1;
 					o.id = document.body;
-				} else if(o.id !='body' && sb.$(o.id)){
+				} else if(o.id !== 'body' && sb.$(o.id)){
 
 					window.clearTimeout(timer);
 					found=1;
 				}
 
-				if(found == 1){
+				if(found){
 					o.onReady.apply(sb.$(o.id), o.args);
 
 				}
@@ -2061,8 +2245,8 @@ var answer = myArray.remove(5);
 Array.prototype.remove = function(values){
 
 	return this.filter(function(v){
-		if(sb.typeOf(values) !='array'){
-			return v != values;
+		if(sb.typeOf(values) !== 'array'){
+			return v !== values;
 		} else {
 			return !values.inArray(v);
 		}
@@ -2104,7 +2288,7 @@ var newString = str.toCamel();
 //newString = 'backgroundColor'
 */
 String.prototype.toCamel = function(){
-	return String(this).replace(/[-_\s]\D/gi, function(m){
+	return String(this).replace(/[\-_\s]\D/gi, function(m){
 		return m.charAt(m.length - 1).toUpperCase();
 	});
 };
@@ -2173,8 +2357,7 @@ sb.events = {
 		if ( window.attachEvent){
 			return function(el, type, fn) {
 				el = sb.$(el);
-				var tar = false;
-
+				
 				var f = function() {
 					var e = window.event,tar = null,d= document.documentElement,b=document.body;
 					e.pageX = e.clientX+d.scrollLeft+b.scrollLeft;
@@ -2313,7 +2496,7 @@ sb.events = {
 
 	 */
 	distillTarget : function(tar){
-		if (tar && tar.nodeType && (tar.nodeType== 3 || tar.nodeName == 'EMBED')){
+		if (tar && tar.nodeType && (tar.nodeType === 3 || tar.nodeName === 'EMBED')){
 			tar = tar.parentNode;
 		}
 
@@ -2362,7 +2545,7 @@ myDiv.appendChild(myOtherDiv);
 sb.element = function(o){
 	var el,c;
 
-	if(sb.typeOf(o) == 'sb.element'){
+	if(sb.typeOf(o) === 'sb.element'){
 		return o;
 	}
 
@@ -2374,12 +2557,12 @@ sb.element = function(o){
 		o = sb.objects.copy(o);
 	}
 
-	if(typeof o.styles !='undefined'){
+	if(typeof o.styles !== 'undefined'){
 		el.styles(o.styles);
 		delete o.styles;
 	}
 
-	if(typeof o.children !='undefined'){
+	if(typeof o.children !== 'undefined'){
 		var len = o.children.length;
 		for(c=0;c<len;c++){
 			el.appendChild(new sb.element(o.children[c]));
@@ -2389,7 +2572,7 @@ sb.element = function(o){
 
 	this.eventsAdded = [];
 
-	if(typeof o.events !='undefined'){
+	if(typeof o.events !== 'undefined'){
 
 		sb.objects.forEach.call(o.events, function(func,event,obj){
 			el.evt(event, func);
@@ -2401,12 +2584,8 @@ sb.element = function(o){
 	//copy additional props from o
 	sb.objects.infuse(o, el);
 
-	if(sb.browser.agent == 'ie' && sb.browser.version < 8){
-
-		if(el.tag == 'form' && sb.events.observer){
-			el._sb_on_submit = sb.events.add(el, 'submit', sb.events.observer.delegateEvents);
-		}
-
+	if(sb.browser.agent === 'ie' && sb.browser.version < 8){
+		
 		//remove attributes for ie's sake
 		el.removeAttribute('tag');
 	}
@@ -2441,7 +2620,7 @@ sb.el = function(str){
 		},
 		innerHTML : ''
 	});
-	var attr = str.match(/([\w-]+=[\w-]+)/g);
+	var attr = str.match(/([\w\-]+=[\w\-]+)/g);
 
 	if(attr){
 		attr.forEach(function(v){
@@ -2456,7 +2635,7 @@ sb.el = function(str){
 /**
  * Create Element for IE and browsers that don't have it, notify that we are emulating so that we can copy properties as required
  */
-if(typeof Element == 'undefined'){
+if(typeof Element === 'undefined'){
 	Element = function(){};
 	Element.emulated = true;
 	Element.prototype = {};
@@ -2482,14 +2661,14 @@ el.attr('some_attribute', 'some value');
 el.attr('some_attribute', function(){return 'some value';});
 */
 Element.prototype.attr = function(attr, val){
-
-	if(typeof attr == 'object'){
-		for(var prop in attr){
+	var prop;
+	if(typeof attr === 'object'){
+		for(prop in attr){
 			this.setAttribute(prop, attr[prop]);
 		}
 		return this;
-	} else if(typeof val != 'undefined'){
-		if(typeof val == 'function'){
+	} else if(typeof val !== 'undefined'){
+		if(typeof val === 'function'){
 			val = val.call(this);
 		}
 		
@@ -2582,10 +2761,9 @@ myElement.appendAfter('#myDiv');
 */
 Element.prototype.appendAfter = function(after){
 	var a = sb.$(after);
-	var b = a;
+	var b = a,nxtSib = false;
 	if(a.nextSibling){
-		while((a = a.nextSibling) && a.nodeType != 1){}
-		var nxtSib = a;
+		while((a = a.nextSibling) && a.nodeType === 3){nxtSib = a;}
 	}
 
 	if(nxtSib){
@@ -2662,7 +2840,7 @@ var str = myElement.html(); //hello world
 Element.prototype.html = function(html){
 	if(!html){
 		return this.innerHTML;
-	} else if(typeof html == 'function'){
+	} else if(typeof html === 'function'){
 		this.innerHTML = html.call(this);
 	} else {
 		this.innerHTML = html;
@@ -2784,8 +2962,9 @@ myDiv.events({
 });
 */
 Element.prototype.events = function(events){
-	for(var event in events){
-		if(typeof events[event] =='function'){
+	var event;
+	for(event in events){
+		if(typeof events[event] === 'function'){
 			this.evt(event, events[event]);
 		}
 	}
@@ -2840,8 +3019,8 @@ myElement.styles({
 });
 */
 Element.prototype.styles = function(params){
-
-	for(var prop in params){
+	var prop;
+	for(prop in params){
 		if(params.hasOwnProperty(prop)){
 			try{
 				this.setStyle(prop, params[prop]);
@@ -2901,19 +3080,19 @@ Element.prototype.getStyle = function(prop){
 		val=null;
 	}
 
-	if(prop == 'opacity' && val === undefined){
+	if(prop === 'opacity' && val === undefined){
 		val = 1;
 	}
 
 	if(val){
-		if(typeof val == 'string'){
+		if(typeof val === 'string'){
 
 			val = val.toLowerCase();
-			if(val == 'rgba(0, 0, 0, 0)'){
+			if(val === 'rgba(0, 0, 0, 0)'){
 				val = 'transparent';
 			}
 
-			if(typeof sb.colors.html !='undefined'){
+			if(typeof sb.colors.html !== 'undefined'){
 				if(sb.colors.html[val]){
 					val = sb.colors.html[val].hex2rgb();
 				}
@@ -2946,21 +3125,21 @@ myElement.setStyle('opacity', 0.5);
 */
 Element.prototype.setStyle = function(prop, val){
 
-	if(sb.styles.pxProps.inArray(prop) && val !=='' && !val.match(/em|cm|pt|px|%/)){
+	if(sb.styles.pxProps.inArray(prop) && val !== '' && !val.match(/em|cm|pt|px|%/)){
 		val +='px';
 	}
 
-	if(prop == 'opacity' && typeof this.style.filter == 'string' && typeof this.style.zoom == 'string'){
+	if(prop === 'opacity' && typeof this.style.filter === 'string' && typeof this.style.zoom === 'string'){
 		this.style.opacity = val;
 		this.style.zoom = 1;
 		this.style.filter = "alpha(opacity:"+val*100+")";
 	} else {
 
-		if(prop == 'cssFloat' && typeof this.style.styleFloat == 'string'){
+		if(prop === 'cssFloat' && typeof this.style.styleFloat === 'string'){
 			prop = 'styleFloat';
 		}
 
-		if(typeof this.style[prop] == 'string'){
+		if(typeof this.style[prop] === 'string'){
 			this.style[prop] = val;
 		} else {
 			throw("style["+prop+"] does not exist in this browser's style implemenation");
@@ -2976,36 +3155,30 @@ sb.dom.onReady({
 	id : 'body',
 	onReady : function(){
 		sb.onbodyload.forEach(function(v){
-			if(typeof v == 'function'){
+			if(typeof v === 'function'){
 				v();
 			}
 		});
 	},
 	tries : 600,
 	ontimeout : function(){
-		if(typeof sb.onbodynotready =='function'){
+		if(typeof sb.onbodynotready === 'function'){
 			sb.onbodynotready();
 		}
 	}
 });
 
-if(!console){
-	var console = {
-		log : function(){}
-	};
-};
-
 sb.events.add(window, 'resize', sb.browser.measure);
 sb.events.add(window, 'unload', function(e){
 
 	sb.onleavepage.forEach(function(v){
-		if(typeof(v) =='function'){
+		if(typeof(v) === 'function'){
 			v(e);
 		}
 	});
 	sb.events.removeAll();
 });
 window.sb = document.sb = sb;
-if(typeof sbNo$ == 'undefined'){
+if(typeof sbNo$ === 'undefined'){
 	var $ = sb.$;
 }

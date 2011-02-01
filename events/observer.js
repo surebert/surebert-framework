@@ -35,32 +35,18 @@ sb.events.observer = {
 
 	/**
 	@Name: sb.events.observer.delegateEvents
-	@Description: Delgates all the events for the system to the various other modules which may be loaded.  This prevents having to add many duplicate handlers
+	@Description: Used internally.  Delgates all the events for the system to
+    the various other modules which may be loaded.  This prevents having to
+    add many duplicate handlers
 	*/
 	delegateEvents : function(e){
-
-		sb.events.observer.eventHandlers.forEach(function(v){
 		
-			if(v.events[e.type]){
+		sb.events.observer.eventHandlers.forEach(function(v){
+			if(v.events && v.events[e.type]){
 				v.events[e.type](e);
 			}
 		});
 		
-	},
-	
-	/**
-	@Name: sb.events.observer.observeFormSubmits
-	@Description: In IE 6 and IE7, there the document object has no submit event to capture all forms submits, this function forces any currenly existing form, the use the events observers submit handler.  It is automatically called on sb.events.observer.init to handle any forms on the page, and then is used by sb.element when new forms are created and added to the DOM in IE 6 or 7
-	* 
-	*/
-	observeFormSubmits : function(){
-		var self = this;
-		
-		sb.$('form').nodes.forEach(function(v){
-			if(!v._sb_on_submit){
-				v._sb_on_submit = sb.events.add(v, 'submit', self.delegateEvents);
-			}
-		});
 	},
 	
 	/**
@@ -72,7 +58,6 @@ sb.events.observer = {
 	observe : function(eventHandler){
 		
 		if(!this.eventHandlers.inArray(eventHandler)){
-			
 			this.eventHandlers.push(eventHandler);
 		}
 	},
@@ -86,20 +71,48 @@ sb.events.observer = {
 	unobserve : function(eventHandler){
 		this.eventHandlers = this.eventHandlers.remove(eventHandler);
 	},
-	
-	eventHandlers : [],
+
+	/**
+	@Name: sb.events.observer.getEvents
+	@Description: used internally.  These events are handled by the observer
+	*/
+	getEvents : function(){
+		return ['change', 'click', 'mouseup', 'mousedown', 'dblclick', 'contextmenu', 'submit', 'keydown', 'keyup', 'keypress', 'mousemove', 'mouseover', 'mouseout', 'dragstart', 'dragend', 'drag', 'dragenter', 'dragleave', 'drop'];
+	},
+
+	/**
+	@Name: sb.events.observer.handleIEEventBubbles
+	@Description: used internally to handle bubbling of submit and change events in
+	IE by assigning them on mousedown to the select or submit inputs
+	*/
+	handleIEEventBubbles : function(){
+		sb.events.add(document, 'mousedown', function(e){
+			var t= e.target;
+			var nn = t.nodeName;
+			if(nn === 'SELECT'){
+				if(!t.attr('sb_ie_onchange_bubbler')){
+					t.attr('sb_ie_onchange_bubbler', 1);
+					sb.events.add(t, 'change', sb.events.observer.delegateEvents);
+				}
+			} else if((nn === 'INPUT' && t.type === 'submit') || nn === 'BUTTON'){
+				var form = t.getContaining('form');
+				if(form && !form.attr('sb_ie_onsubmit_bubbler')){
+					form.attr('sb_ie_onsubmit_bubbler', 1);
+					sb.events.add(form, 'submit', sb.events.observer.delegateEvents);
+				}
+			}
+
+		});
+	},
 	
 	/**
 	@Name: sb.events.observer.init
 	@Description: Initializes the event observer
 	*/
 	init : function(){
-		
 		this.eventHandlers = [];
-		
 		this.html.events({
 			click : this.delegateEvents,
-			contextmenu : this.contextMenu,
 			mousedown : this.delegateEvents,
 			dblclick : this.delegateEvents,
 			mouseover : this.delegateEvents,
@@ -111,7 +124,8 @@ sb.events.observer = {
 			dragenter : this.delegateEvents,
 			dragleave : this.delegateEvents,
 			drop : this.delegateEvents,
-			submit : this.delegateEvents
+			submit : this.delegateEvents,
+			change : this.delegateEvents
 		});
 		
 		//handle keyups
@@ -126,10 +140,11 @@ sb.events.observer = {
 		//handle keypresses
 		this.documentKeyPress = sb.events.add(document, 'keypress', this.delegateEvents);
 		
-		if(sb.browser.agent == 'ie' && sb.browser.version < 8){
-			this.observeFormSubmits();
-		}
+		if(sb.browser.agent === 'ie' && sb.browser.version < 8){
 		
+			this.handleIEEventBubbles();
+		}
+
 	}
 };
 
