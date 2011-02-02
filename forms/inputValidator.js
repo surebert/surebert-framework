@@ -89,7 +89,7 @@ var validator = new sb.forms.inputValidator({
 	}
 
 });
-validator.validateInputsWithinElement('#wrapper');
+var verified = validator.validateNamedChildrenWithin('#wrapper');
 <input type="text" validate="acct" required="1" name="acct" />
 */
 sb.forms.inputValidator = function(o){
@@ -135,7 +135,6 @@ sb.forms.inputValidator = function(o){
 
 	this.parent = sb.forms.inputValidator.prototype;
 };
-
 sb.forms.inputValidator.prototype = {
 	validateOnKeyUp: true,
 	_validate : function(e){
@@ -150,8 +149,8 @@ sb.forms.inputValidator.prototype = {
 		}
 
 		var validate = input.getAttribute('validate');
-		var required = input.getAttribute('required') || 0;
-		
+		var required = input.getAttribute('required') || '0';
+
 		if(required && validate === ''){
 			validate = '_required';
 			this.validations['_required'] = new sb.validation({
@@ -159,16 +158,17 @@ sb.forms.inputValidator.prototype = {
 				errorMessage :  'Field required'
 			});
 		}
-		
+
 		if(validate){
 			var validation  = this.validations[validate];
-			
+
 			if(!validation){
 				return false;
 			}
 			var self = this;
 			input.valid = false;
 			//if optional
+
 			if(input.value === '' && required === '0'){
 				input.valid = true;
 			} else if(input.value !== ''){
@@ -176,11 +176,11 @@ sb.forms.inputValidator.prototype = {
 					if(typeof validation.validator == 'function'){
 						input.valid = validation.validator(input);
 					} else {
-						input.valid = input.value.match(validation.validator);
+						input.valid = input.value.match(validation.validator) ? true : false;
 					}
 				}
 			}
-			
+
 			if(input.valid){
 				if(typeof validation.onValid == 'function'){
 					validation.onValid(input);
@@ -196,9 +196,8 @@ sb.forms.inputValidator.prototype = {
 					self.onInValid(input);
 				}
 			}
-
 			return input.valid;
-			
+
 		}
 		return true;
 	},
