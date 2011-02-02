@@ -148,18 +148,18 @@ sb.forms.inputValidator.prototype = {
 			}
 		}
 
-		var validate = input.getAttribute('validate');
-		var required = input.getAttribute('required') || '0';
-
-		if(required && validate === ''){
-			validate = '_required';
-			this.validations['_required'] = new sb.validation({
-				validator : /.*/,
-				errorMessage :  'Field required'
-			});
-		}
+		var validate = input.attr('validate');
+		var required = input.attr('required') || '0';
 
 		if(validate){
+			if(required && validate === ''){
+				validate = '_required';
+				this.validations['_required'] = new sb.validation({
+					validator : /.*/,
+					errorMessage :  'Field required'
+				});
+			}
+
 			var validation  = this.validations[validate];
 
 			if(!validation){
