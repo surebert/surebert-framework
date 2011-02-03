@@ -302,7 +302,6 @@ class sb_Graph_Point{
 			if($this->x_axis_hints ==1 ){
 				imageline($this->im, 0, $px_position, $this->width, $px_position,  $this->ink['axis']);
 			}
-			
 			imagestring($this->im, 1, 10, $px_position-4, $label, $this->ink['text']);
 		}
 	}
