@@ -291,6 +291,10 @@ class sb_Graph_Point{
 			$increment = $this->y_axis_legend_increment;
 		}
 		
+		if($increment == 0){
+			$increment = 1;
+		}
+
 		//$spacing = round($spacing, 10);
 		for($label=$min;$label<=$max+$increment;$label+=$increment){
 		
