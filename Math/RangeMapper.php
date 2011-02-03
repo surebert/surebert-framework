@@ -27,6 +27,9 @@ class sb_Math_RangeMapper{
 	}
 	
 	public function convert($fromRangeNumber){
+		if($this->ratio == 1){
+			return $this->toRange[1];
+		}
 		return (($fromRangeNumber-$this->fromRange[0])*$this->ratio)+$this->toRange[0];
 	}
 	
