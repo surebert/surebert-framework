@@ -122,9 +122,7 @@ sb.widget.notifier = {
         className = ' '+className || '';
         var t = this,id;
 
-		
-		id = 'i'+(message+className).md5();
-		
+		id = 'i'+((message+className).md5());
         if($('#'+id)){
 			return;
 		}
