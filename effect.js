@@ -91,7 +91,7 @@ sb.effect.prototype = {
 	*/
 	setParams : function(params){
 		sb.objects.infuse(params, this);
-		if(typeof params.el !='undefined'){
+		if(typeof params.el !== 'undefined'){
 			this.el = sb.$(this.el);
 		} 
 		
@@ -123,7 +123,7 @@ sb.effect.prototype = {
 				
 				t.count++;
 				t.stop();
-				if(typeof t.onEnd =='function'){t.onEnd();}
+				if(typeof t.onEnd === 'function'){t.onEnd();}
 				
 			}
 		}, 12);
@@ -138,7 +138,7 @@ sb.effect.prototype = {
 	myEffect.stop();
 	*/
 	stop : function(){
-		if(typeof this.onStop == 'function'){this.onStop();}
+		if(typeof this.onStop === 'function'){this.onStop();}
 		window.clearInterval(this.repeater);
 	},
 	
@@ -150,7 +150,7 @@ sb.effect.prototype = {
 	myEffect.reset();
 	*/
 	reset : function(){
-		if(typeof this.onReset == 'function'){this.onReset();}
+		if(typeof this.onReset === 'function'){this.onReset();}
 		this.count=0;
 		this.value = this.begin;
 		this.valueRounded = this.begin;
@@ -166,7 +166,7 @@ sb.effect.prototype = {
 	myEffect.restart();
 	*/
 	restart : function(){
-		if(typeof this.onRestart == 'function'){this.onRestart();}
+		if(typeof this.onRestart === 'function'){this.onRestart();}
 		this.reset();
 		this.start();
 	}
@@ -312,10 +312,8 @@ sb.effects.tween = {
 	var myValue = sb.effects.tween.inOutQuad(100, 0, 50, 5);
 	*/
 	inOutQuad : function(t,b,c,d) {
-	    if ((t/=d/2) < 1) {
-	    	return c/2*t*t + b;
-	    }
-	    return -c/2 * ((--t)*(t-2)-1)+b;
+	    if ((t/=d/2) < 1) {return c/2*t*t+b;}
+		return -c/2 * ((--t)*(t-2)-1)+b;
 	},
 	
 	/**
