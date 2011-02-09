@@ -4,19 +4,85 @@ sb.widget.datePicker = function(params){
 
 	var cal = sb.widget.datePicker.instance ? sb.widget.datePicker.instance : this;
 	
-	if(cal.target){
-		cal.hide();
-	}
 	sb.objects.infuse(params, cal);
-	cal.parentNode = cal.parentNode || document.body;
 	cal.setDate(cal.date);
-
+	this.parentNode = sb.$(this.parentNode) || document.body;
+	
 	sb.widget.datePicker.instance = cal;
 	cal.show();
 	return cal;
 };
-
+sb.widget.datePicker.showing = false;
 sb.widget.datePicker.instance = false;
+sb.widget.datePicker.init = function(){
+	this.display = function(e){
+		var target = e.target;
+		if(e.target.hasClassName('sb_date_picker')){
+			e.preventDefault();
+			var x = new sb.widget.datePicker({
+				date : e.target.value,
+				target : e.target,
+				minDate : e.target.attr('sb_min_date'),
+				maxDate : e.target.attr('sb_max_date')
+			});
+		}
+	};
+	sb.events.add('html', 'keydown', function(e){
+		
+		if(e.keyCode == 9){
+			return;
+		}
+		
+		sb.widget.datePicker.display(e);
+		var i = sb.widget.datePicker.instance;
+		switch(e.keyCode){
+
+				//ret
+				case 13:
+					i.onDateSelect(i.getDate());
+					if(i.target && i.target.focus){
+						i.target.focus();
+					}
+					break;
+
+				//esc
+				case 27:
+					i.hide();
+					break;
+
+				//up
+				case 38:
+					i.switchToMaxDate();
+					break;
+				//left
+				case 37:
+					if(e.shiftKey){
+						i.switchToPrevMonth();
+					} else {
+						i.switchToPrevDay();
+					}
+					break;
+
+				//right
+				case 39:
+					if(e.shiftKey){
+						i.switchToNextMonth();
+					} else {
+						i.switchToNextDay();
+					}
+					break;
+
+				//down
+				case 40:
+					i.switchToMinDate();
+					break;
+			}
+	});
+
+	sb.events.add('html', 'click', sb.widget.datePicker.display);
+
+};
+
 
 sb.widget.datePicker.prototype = {
 	months : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -24,8 +90,6 @@ sb.widget.datePicker.prototype = {
 	calendarDay : '',
 	calendarYear : '',
 	calendarMonth : '',
-	onHide : function(){},
-	onShow : function(){},
 	 onClick : function(){},
 	 onHeaderClick : function(){},
 	 onExceedsMinDate : function(date){alert(date+' exceeds min date: '+this.minDate);},
@@ -55,6 +119,20 @@ sb.widget.datePicker.prototype = {
 			console.log(this.calendarMonth+' '+this.calendarYear);
 		}
 
+		var tds = this.days.$('td');
+		var len = tds.length();
+		if(!len){
+			return false;
+		}
+		var x = len-1;
+		for(x;x>=0;x--){
+			if(tds.nodes[x].className != 'sb_no_day'){
+				tds.nodes[x].className =  'sb_day_selected';
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(tds.nodes[x].innerHTML-1)+'/'+this.calendarYear));
+				break;
+			}
+		}
+
 	},
 	switchToNextMonth : function(){
 		var na = this.days.$('td');
@@ -72,6 +150,77 @@ sb.widget.datePicker.prototype = {
 		this.updateCalendar();
 		if(this.debug){
 			console.log(this.calendarMonth+' '+this.calendarYear);
+		}
+
+		var tds = this.days.$('td');
+		var len = tds.length();
+		if(!len){
+			return false;
+		}
+		var x = 0;
+		for(x;x<len;x++){
+			if(tds.nodes[x].className != 'sb_no_day'){
+				tds.nodes[x].className =  'sb_day_selected';
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(parseInt(tds.nodes[x].innerHTML, 10)+1)+'/'+this.calendarYear));
+				break;
+			}
+		}
+
+	},
+
+	switchToNextDay : function(){
+		var tds = this.days.$('td');
+		var len = tds.length();
+		if(!len){
+			return false;
+		}
+		var selectedIndex=0,x = 0;
+
+		for(x;x<len;x++){
+			if(tds.nodes[x].className == 'sb_day_selected'){
+				selectedIndex = x;
+			}
+		}
+
+		if(selectedIndex){
+			var next_td = tds.nodes[selectedIndex+1];
+			if(next_td.className == 'sb_no_day'){
+				this.switchToNextMonth();
+
+
+			} else if(next_td.className != 'sb_day_not_allowed'){
+				tds.nodes[selectedIndex].className = '';
+				next_td.className = 'sb_day_selected';
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(parseInt(next_td.innerHTML, 10)+1)+'/'+this.calendarYear));
+			}
+		}
+
+
+	},
+
+	switchToPrevDay : function(){
+		var tds = this.days.$('td');
+		var len = tds.length();
+		if(!len){
+			return false;
+		}
+		var selectedIndex=0,x = len-1;
+	
+		for(x;x>=0;x--){
+			if(tds.nodes[x].className == 'sb_day_selected'){
+				selectedIndex = x;
+			}
+		}
+		
+		if(selectedIndex){
+			var prev_td = tds.nodes[selectedIndex-1];
+			if(prev_td.className == 'sb_no_day'){
+				this.switchToPrevMonth();
+			} else if(prev_td.className != 'sb_day_not_allowed'){
+				tds.nodes[selectedIndex].className = '';
+				prev_td.className = 'sb_day_selected';
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(tds.nodes[selectedIndex].innerHTML-1)+'/'+this.calendarYear));
+			}
 		}
 
 	},
@@ -109,16 +258,16 @@ sb.widget.datePicker.prototype = {
 		}
 		
 		if(this.minDate){
-			this._minDate = new Date(this.minDate);
-			if(date < this._minDate){
+			var minDate = new Date(this.minDate);
+			if(date < minDate){
 				this.onExceedsMinDate(this.getDate(this.minDate));
 				return false;
 			}
 		}
 
 		if(this.maxDate){
-			this._maxDate = new Date(this.maxDate);
-			if(this.date > this._maxDate){
+			var maxDate = new Date(this.maxDate);
+			if(this.date > maxDate){
 				this.onExceedsMaxDate(this.getDate(this.maxDate));
 				return false;
 			}
@@ -211,7 +360,7 @@ sb.widget.datePicker.prototype = {
 
 						if(target.isWithin(self.days)){
 							var td = target.nodeName == 'TD' ? target : target.getContaining('td');
-							if(td == false || td.className == 'sb_no_day' ||  td.className == 'sb_day_not_allowed'){ return false;}
+							if(td == false || td.className == 'sb_no_day' ||  td.className == 'sb_day_not_allowed'){return false;}
 							 var month = self.calendarMonth+1;
 							 if(month < 10){
 								 month ='0'+month;
@@ -222,6 +371,9 @@ sb.widget.datePicker.prototype = {
 							 }
 							 if(self.setDate(month+'/'+day+'/'+self.calendarYear) !== false && typeof self.onDateSelect === 'function'){
 								self.onDateSelect(self.getDate());
+								if(self.target && self.target.focus){
+									self.target.focus();
+								}
 							 }
 						}
 
@@ -285,54 +437,20 @@ sb.widget.datePicker.prototype = {
 
 	},
 	hide : function(){
-		console.log('hide');
-		this.untrackDocKeyPress();
-
+		sb.widget.datePicker.showing = false;
 		this.calendar.remove();
-		this.onHide();
+		
 	},
 
-	trackDocKeyPress : function(){
-		var self = this;
-		if(this.onDocKeyPress){
-			this.untrackDocKeyPress();
-		}
-		this.onDocKeyPress = sb.events.add('html', 'keydown', function(e){
-			switch(e.keyCode){
-				//up
-				case 38:
-					self.switchToMaxDate();
-					break;
-				//left
-				case 37:
-					self.switchToPrevMonth();
-					break;
-
-				//right
-				case 39:
-					self.switchToNextMonth();
-					break;
-
-				//down
-				case 40:
-					self.switchToMinDate();
-					break;
-			}
-		});
-	},
-
-	untrackDocKeyPress :function(){
-		 sb.events.remove(this.onDocKeyPress);
-		this.onDocKeyPress = false;
-	},
 	show : function(){
 		var self = this;
-		
+		sb.widget.datePicker.showing = true;
 		var target = this.target;
+		if(target.blur){target.blur();}
 		var yPos = target.getY().toString();
         var xPos = target.getWidth() + target.getX();
 		this.createCalendar();
-		this.trackDocKeyPress();
+		
 		this.calendar.styles({
 			left: xPos.toString(),
 			top: yPos,
@@ -349,7 +467,7 @@ sb.widget.datePicker.prototype = {
 				self.hide();});
 		}*/
 		
-		this.calendar.appendTo(document.body);
+		this.calendar.appendTo(this.parentNode);
 		if(!this.sizeSet){
 			this.calendar.style.width = this.days.getWidth()+'px';
 			this.sizeSet = true;
@@ -364,7 +482,6 @@ sb.widget.datePicker.prototype = {
 
 		});
 
-		this.onShow();
 		this.target = target;
 	},
 
@@ -390,6 +507,8 @@ sb.widget.datePicker.prototype = {
 		html += '</tr></thead><tbody>';
 		this.prevMonthBtn.style.visibility = '';
 		this.nextMonthBtn.style.visibility = '';
+		var maxDate = this.maxDate ? new Date(this.maxDate) : maxDate;
+		var minDate = this.minDate ? new Date(this.minDate) : minDate;
         while(day <= days_in_month){
             var day_of_week = i % 7;
             if(day_of_week == 0){
@@ -409,17 +528,17 @@ sb.widget.datePicker.prototype = {
 				var  _day = day < 10 ? '0'+day : day;
 				
 				var date = new Date(this.getDate(month+'/'+_day+'/'+this.calendarYear));
-				if(date < this._minDate || date > this._maxDate){
+				if((minDate && date < minDate) || (maxDate && date > maxDate)){
 
 					html += ' class="sb_day_not_allowed" ';
-					if(date < this._minDate){
+					if(date < minDate){
 						this.prevMonthBtn.style.visibility = 'hidden';
 					} else {
 						this.nextMonthBtn.style.visibility = 'hidden';
 					}
 				}
 				if(this.calendarMonth == this.date.getMonth() && day == this.date.getDate() && this.date.getFullYear() == this.calendarYear){
-					html += ' class="sb_today" ';
+					html += ' class="sb_day_selected" ';
 				}
 				html += '>'+day+'</td>';
                 day++;
