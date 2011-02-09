@@ -28,12 +28,23 @@ sb.widget.datePicker.init = function(){
 		}
 	};
 	sb.events.add('html', 'keydown', function(e){
+		if(e.target.className == 'sb_date_picker'){
+			if(e.keyCode == 9){
+				return;
+			}
+			e.preventDefault();
+		}
+	});
+	sb.events.add('html', 'keyup', function(e){
 		
 		if(e.keyCode == 9){
 			return;
 		}
+
+		if(!e.shiftKey){
+			sb.widget.datePicker.display(e);
+		}
 		
-		sb.widget.datePicker.display(e);
 		var i = sb.widget.datePicker.instance;
 		switch(e.keyCode){
 
@@ -128,7 +139,7 @@ sb.widget.datePicker.prototype = {
 		for(x;x>=0;x--){
 			if(tds.nodes[x].className != 'sb_no_day'){
 				tds.nodes[x].className =  'sb_day_selected';
-				this.setDate(this.getDate(this.calendarMonth+1+'/'+(tds.nodes[x].innerHTML-1)+'/'+this.calendarYear));
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(tds.nodes[x].innerHTML)+'/'+this.calendarYear));
 				break;
 			}
 		}
@@ -161,7 +172,7 @@ sb.widget.datePicker.prototype = {
 		for(x;x<len;x++){
 			if(tds.nodes[x].className != 'sb_no_day'){
 				tds.nodes[x].className =  'sb_day_selected';
-				this.setDate(this.getDate(this.calendarMonth+1+'/'+(parseInt(tds.nodes[x].innerHTML, 10)+1)+'/'+this.calendarYear));
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(parseInt(tds.nodes[x].innerHTML, 10))+'/'+this.calendarYear));
 				break;
 			}
 		}
@@ -191,7 +202,7 @@ sb.widget.datePicker.prototype = {
 			} else if(next_td.className != 'sb_day_not_allowed'){
 				tds.nodes[selectedIndex].className = '';
 				next_td.className = 'sb_day_selected';
-				this.setDate(this.getDate(this.calendarMonth+1+'/'+(parseInt(next_td.innerHTML, 10)+1)+'/'+this.calendarYear));
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(parseInt(next_td.innerHTML, 10))+'/'+this.calendarYear));
 			}
 		}
 
@@ -219,7 +230,7 @@ sb.widget.datePicker.prototype = {
 			} else if(prev_td.className != 'sb_day_not_allowed'){
 				tds.nodes[selectedIndex].className = '';
 				prev_td.className = 'sb_day_selected';
-				this.setDate(this.getDate(this.calendarMonth+1+'/'+(tds.nodes[selectedIndex].innerHTML-1)+'/'+this.calendarYear));
+				this.setDate(this.getDate(this.calendarMonth+1+'/'+(tds.nodes[selectedIndex].innerHTML)+'/'+this.calendarYear));
 			}
 		}
 
