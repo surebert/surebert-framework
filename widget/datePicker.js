@@ -129,7 +129,6 @@ sb.widget.datePicker.prototype = {
 	 onClick : function(){},
 	 onHeaderClick : function(){},
 	 onInvalidDate : function(date){alert('bad date format');},
-	 onNextMonthClick : function(){},
 	 onDateSelect : function(date){
 		 this.target.value = date;
 		 this.hide();
@@ -610,10 +609,10 @@ sb.widget.datePicker.prototype = {
 		this.target = target;
 	},
 
-	days_in_month: function(){
+	daysInMonth: function(){
         return 32 - new Date(this.calendarYear, this.calendarMonth, 32).getDate();
     },
-    first_day_of_month: function(){
+    firstDayOfMonth: function(){
         var date = new Date(this.calendarYear, this.calendarMonth, 1);
         return date.getDay();
     },
@@ -623,8 +622,8 @@ sb.widget.datePicker.prototype = {
         var i = 0;
 		var html = '';
 
-        var days_in_month = this.days_in_month();
-        var fday = this.first_day_of_month();
+        var daysInMonth = this.daysInMonth();
+        var fday = this.firstDayOfMonth();
 
         html += '<table width="100%">';
 		html += '<thead><tr>';
@@ -634,7 +633,7 @@ sb.widget.datePicker.prototype = {
 		this.nextMonthBtn.style.visibility = '';
 		var maxDate = this.maxDate ? new Date(this.maxDate) : maxDate;
 		var minDate = this.minDate ? new Date(this.minDate) : minDate;
-        while(day <= days_in_month){
+        while(day <= daysInMonth){
             var day_of_week = i % 7;
             if(day_of_week == 0){
                 html += '<tr>';
@@ -676,9 +675,5 @@ sb.widget.datePicker.prototype = {
         html += '</tbody></table>';
 
 		return html;
-    },
-
-	reset : function(){
-		this.box.innerHTML = '';
-	}
+    }
 };
