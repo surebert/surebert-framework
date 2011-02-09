@@ -44,7 +44,7 @@ sb.widget.datePicker.init = function(){
 		if(!e.shiftKey){
 			sb.widget.datePicker.display(e);
 		}
-		
+		console.log(e.keyCode);
 		var i = sb.widget.datePicker.instance;
 		switch(e.keyCode){
 
@@ -61,9 +61,20 @@ sb.widget.datePicker.init = function(){
 					i.hide();
 					break;
 
+				//page up
+				case 33:
+					i.switchToMinDate();
+					break;
+
+
+				//page down
+				case 34:
+					i.switchToMaxDate();
+					break;
+
 				//up
 				case 38:
-					i.switchToMaxDate();
+					
 					break;
 				//left
 				case 37:
@@ -85,7 +96,7 @@ sb.widget.datePicker.init = function(){
 
 				//down
 				case 40:
-					i.switchToMinDate();
+					
 					break;
 			}
 	});
@@ -458,7 +469,7 @@ sb.widget.datePicker.prototype = {
 		var target = this.target;
 		if(target.blur){target.blur();}
 		var yPos = target.getY().toString();
-        var xPos = target.getWidth() + target.getX();
+        var xPos = target.getX();
 		this.createCalendar();
 		
 		this.calendar.styles({
