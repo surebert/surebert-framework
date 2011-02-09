@@ -41,10 +41,13 @@ sb.widget.datePicker.init = function(){
 			return;
 		}
 
+		var showing = sb.widget.datePicker.showing;
+
 		if(!e.shiftKey){
 			sb.widget.datePicker.display(e);
 		}
 		var i = sb.widget.datePicker.instance;
+
 		switch(e.keyCode){
 
 				//ret
@@ -62,40 +65,52 @@ sb.widget.datePicker.init = function(){
 
 				//page up
 				case 33:
-					i.switchToMinDate();
+					if(showing){
+						i.switchToMinDate();
+					}
 					break;
 
 
 				//page down
 				case 34:
-					i.switchToMaxDate();
+					if(showing){
+						i.switchToMaxDate();
+					}
 					break;
 
 				//up
 				case 38:
-					
+					if(showing){
+						i.switchToPrevRow();
+					}
 					break;
 				//left
 				case 37:
-					if(e.shiftKey){
-						i.switchToPrevMonth();
-					} else {
-						i.switchToPrevDay();
+					if(showing){
+						if(e.shiftKey){
+							i.switchToPrevMonth();
+						} else {
+							i.switchToPrevDay();
+						}
 					}
 					break;
 
 				//right
 				case 39:
-					if(e.shiftKey){
-						i.switchToNextMonth();
-					} else {
-						i.switchToNextDay();
+					if(showing){
+						if(e.shiftKey){
+							i.switchToNextMonth();
+						} else {
+							i.switchToNextDay();
+						}
 					}
 					break;
 
 				//down
 				case 40:
-					
+					if(showing){
+						i.switchToNextRow();
+					}
 					break;
 			}
 	});
@@ -113,8 +128,6 @@ sb.widget.datePicker.prototype = {
 	calendarMonth : '',
 	 onClick : function(){},
 	 onHeaderClick : function(){},
-	 onExceedsMinDate : function(date){alert(date+' exceeds min date: '+this.minDate);},
-	 onExceedsMaxDate : function(date){alert(date+' exceeds max date: '+this.maxDate);},
 	 onInvalidDate : function(date){alert('bad date format');},
 	 onNextMonthClick : function(){},
 	 onDateSelect : function(date){
@@ -237,12 +250,114 @@ sb.widget.datePicker.prototype = {
 			if(prev_td.className == 'sb_no_day'){
 				this.switchToPrevMonth();
 			} else if(prev_td.className != 'sb_day_not_allowed'){
-				tds.nodes[selectedIndex].className = '';
-				prev_td.className = 'sb_day_selected';
-				this.setDate(this.getDate(this.calendarMonth+1+'/'+(tds.nodes[selectedIndex].innerHTML)+'/'+this.calendarYear));
+				if(this.setDate(this.getDate(this.calendarMonth+1+'/'+(prev_td.innerHTML)+'/'+this.calendarYear))){
+
+					tds.nodes[selectedIndex].className = '';
+					prev_td.className = 'sb_day_selected';
+				}
 			}
 		}
 
+	},
+
+	switchToPrevRow : function(){
+		var tds = this.days.$('td');
+		var len = tds.length();
+		if(!len){
+			return false;
+		}
+		var selectedIndex=false,x = 0;
+		var selectedTd = false;
+		for(x;x<len;x++){
+			if(tds.nodes[x].className == 'sb_day_selected'){
+				selectedIndex = x;
+				selectedTd = tds.nodes[x];
+			}
+		}
+
+		if(selectedIndex !== false){
+			var tr = tds.nodes[selectedIndex].getContaining('tr');
+			var tdIndex = 0;
+			tr.$('td').forEach(function(v,k,a){
+				if(v == selectedTd){
+					tdIndex = k;
+				}
+			});
+			tr = tr.getPreviousSibling();
+			if(!tr){
+				this.switchToPrevMonth();
+				return;
+			}
+
+			var td = tr.$('td').nodes[tdIndex];
+			if(!td || td.className == 'sb_no_day'){
+					this.switchToPrevMonth();
+				return;
+			}
+
+			if(td && this.setDate(this.getDate(this.calendarMonth+1+'/'+(tr.$('td').nodes[tdIndex].innerHTML)+'/'+this.calendarYear))){
+				selectedTd.className = '';
+				
+				tr.$('td').nodes[tdIndex].className = 'sb_day_selected';
+			}
+
+		}
+	},
+
+	switchToNextRow : function(){
+		var tds = this.days.$('td');
+		var len = tds.length();
+		
+		if(!len){
+			return false;
+		}
+		var selectedIndex=false,x = 0;
+		var selectedTd = false;
+		for(x;x<len;x++){
+			if(tds.nodes[x].className == 'sb_day_selected'){
+				selectedIndex = x;
+				selectedTd = tds.nodes[x];
+			}
+		}
+
+		if(selectedIndex !== false){
+			var tr = tds.nodes[selectedIndex].getContaining('tr');
+
+			var tdIndex = false;
+			tds = tr.$('td');
+			tds.forEach(function(v,k,a){
+				if(v == selectedTd){
+					tdIndex = k;
+				}
+			});
+			tr = tr.getNextSibling();
+			if(!tr){
+				this.switchToNextMonth();
+				return;
+			}
+
+			var td = tr.$('td').nodes[tdIndex];
+			if(!td){
+				this.switchToNextMonth();
+				return;
+			}
+			
+			
+			if(td && this.setDate(this.getDate(this.calendarMonth+1+'/'+(td.innerHTML)+'/'+this.calendarYear))){
+
+				selectedTd.className = '';
+				if(!td || td.className == 'sb_no_day'){
+					this.switchToNextMonth();
+					return;
+				}
+				if(td){
+					td.className = 'sb_day_selected';
+				} else {
+					this.switchToNextMonth();
+				}
+			}
+
+		}
 	},
 
 	switchToMaxDate : function(){
@@ -280,7 +395,6 @@ sb.widget.datePicker.prototype = {
 		if(this.minDate){
 			var minDate = new Date(this.minDate);
 			if(date < minDate){
-				this.onExceedsMinDate(this.getDate(this.minDate));
 				return false;
 			}
 		}
@@ -288,7 +402,6 @@ sb.widget.datePicker.prototype = {
 		if(this.maxDate){
 			var maxDate = new Date(this.maxDate);
 			if(this.date > maxDate){
-				this.onExceedsMaxDate(this.getDate(this.maxDate));
 				return false;
 			}
 		}
@@ -297,6 +410,7 @@ sb.widget.datePicker.prototype = {
 		this.calendarDay = this.date.getDate();
 		this.calendarYear = this.date.getFullYear();
 		this.calendarMonth = this.date.getMonth();
+		return true;
 
 	},
 
@@ -329,9 +443,7 @@ sb.widget.datePicker.prototype = {
 							if(e.keyCode == 13){
 
 								if(sb.date.isDate(target.value)){
-									if(self.setDate(target.value) !== false){
-										self.updateCalendar();
-										self.currentYear.replace(target);
+									if(self.setDate(self.getDate(target.value)) !== false){
 										self.onDateSelect(self.getDate());
 									};
 
@@ -339,16 +451,15 @@ sb.widget.datePicker.prototype = {
 									self.yearInput.value = self.getDate();
 									self.onInvalidDate();
 								}
-							} else if(e.keyCode == 27){
-								self.currentYear.replace(target);
 							}
 						}
 					},
 					dblclick : function(e){
 						var target = e.target;
+
 						if(target == self.currentYear){
+							self.yearInput.style.display = 'block';
 							self.yearInput.value = self.getDate();
-							self.yearInput.replace(target);
 							self.yearInput.select();
 							self.yearInput.focus();
 						}
@@ -360,7 +471,6 @@ sb.widget.datePicker.prototype = {
 							if(self.onClick(e) === false){
 								return false;
 							}
-
 						}
 						
 						if(typeof self.onHeaderClick === 'function' && target.isWithin(self.header)){
@@ -447,7 +557,16 @@ sb.widget.datePicker.prototype = {
 			this.days.appendTo(this.calendar);
 			this.days.disableSelection();
 
+			this.yearInput = new sb.element({
+				tag : 'input',
+				type : 'text',
+				size : 10,
+				styles : {
+					display :'none'
+				}
+			});
 
+			this.yearInput.appendTo(this.calendar);
 
 		}
 	},
@@ -479,13 +598,6 @@ sb.widget.datePicker.prototype = {
 		});
 
 		this.updateCalendar();
-		/*if(this.blurEvent){
-			sb.events.remove(this.blurEvent);
-		} else {
-			this.blurEvent = sb.events.add(this.target, 'blur', function(e){
-				alert('s');
-				self.hide();});
-		}*/
 		
 		this.calendar.appendTo(this.parentNode);
 		if(!this.sizeSet){
@@ -493,14 +605,7 @@ sb.widget.datePicker.prototype = {
 			this.sizeSet = true;
 		}
 
-		this.yearInput = new sb.element({
-			tag : 'input',
-			type : 'text',
-			size : 10,
-			fontSize : '0.8em',
-			value : this.calendarYear
-
-		});
+		this.yearInput.style.display = 'none';
 
 		this.target = target;
 	},
@@ -539,7 +644,7 @@ sb.widget.datePicker.prototype = {
                 html += '<td class="sb_no_day"> </td>';
             }
             else if(i >= fday){
-                html += '<td sb_day="1" ';
+                html += '<td ';
 				 var month = this.calendarMonth+1;
 				 if(month < 10){
 					 month ='0'+month;
