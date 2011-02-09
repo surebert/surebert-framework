@@ -44,7 +44,6 @@ sb.widget.datePicker.init = function(){
 		if(!e.shiftKey){
 			sb.widget.datePicker.display(e);
 		}
-		console.log(e.keyCode);
 		var i = sb.widget.datePicker.instance;
 		switch(e.keyCode){
 
