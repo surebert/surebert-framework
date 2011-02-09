@@ -195,9 +195,8 @@ sb.widget.datePicker.prototype = {
 
 		if(selectedIndex){
 			var next_td = tds.nodes[selectedIndex+1];
-			if(next_td.className == 'sb_no_day'){
+			if(!next_td || next_td.className == 'sb_no_day'){
 				this.switchToNextMonth();
-
 
 			} else if(next_td.className != 'sb_day_not_allowed'){
 				tds.nodes[selectedIndex].className = '';
