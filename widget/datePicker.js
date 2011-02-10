@@ -5,179 +5,71 @@ sb.include('date.isDate');
 /**
 @Name: sb.widget.datePicker
 @Author: Greg Dean and Paul Visco
-@Description: used to created a datepicker calendar dropdown.  Listens for clicks on
-any sb_date_picker elements and shows datepicker when they are clicked or mousedowned
+@Description: used to create a datepicker widget.  Always
+returns the current reference to the only instance
 @Example:
-<input class="sb_date_picker" value ="01/22/1977"/>
+var dp = new sb.widget.datePicker();
+dp.onDateSelect = function(date){
+	alert(date);
+	this.hide();
+};
+dp.show({
+	x: 200,
+	y : 200,
+	z : 1000
+});
 
-//listens for any sb_date_picker actions
-sb.widget.datePicker.init();
 */
 sb.widget.datePicker = function(params){
 
 	var cal = sb.widget.datePicker.instance ? sb.widget.datePicker.instance : this;
-	
 	sb.objects.infuse(params, cal);
-	
-	this.parentNode = sb.$(this.parentNode) || document.body;
-	
+	cal.parentNode = sb.$(cal.parentNode) || document.body;
 	sb.widget.datePicker.instance = cal;
 	return cal;
 };
+/**
+@Name: sb.widget.datePicker.showing
+@Description: boolean true if showing, false if not showing a date picker
+*/
 sb.widget.datePicker.showing = false;
-sb.widget.datePicker.instance = false;
-sb.widget.datePicker.tips = [
-	'You can use the mouse to select a date.',
-	'Clicking the arrows icons to the left and right of the title bar moves between months.',
-	'You can also use the keyboard\'s arrow keys to move around the calendar, then hit enter to select the highlighted date.',
-	'Hitting shift + left arrow key moves back by one month.',
-	'Hitting shift + right arrow key moves forward by one month.',
-	'Hitting shift + up arrow moves back by one year.',
-	'Hitting shift + down arrow moves forward by one year.',
-	'Alternatively, you can double-click header to bring up manual date entry box.'
-
-	];
 
 /**
-@Name: sb.widget.datePicker.init
-@Description: Sets up global event listeners for click and keydown, if you don't want it to
-listen for clicks on sb_date_picker add {listen : false} as param
+@Name: sb.widget.datePicker.listen
+@Description: Sets up global event listeners for click and keydown.
+listens for clicks on sb_date_picker add {listen : false} as param
 @Example:
 <input class="sb_date_picker" value ="01/22/1977"/>
 
 //listens for any sb_date_picker actions
-sb.widget.datePicker.init();
+sb.widget.datePicker.listen();
 */
-sb.widget.datePicker.init = function(params){
-	params = params || {};
-	if(params.listen !== false){
-		this.display = function(e){
+sb.widget.datePicker.listen = function(){
+	this.display = function(e){
 			var target = e.target;
 			if(e.target.hasClassName('sb_date_picker')){
 				e.preventDefault();
 				var cal = new sb.widget.datePicker({
-					date : e.target.value,
+					date : e.target.value || sb.$(e.target.attr('sb_date_target')).value,
 					target : e.target,
 					minDate : e.target.attr('sb_min_date'),
 					maxDate : e.target.attr('sb_max_date')
 				});
-				
-				cal.show();
+
+				cal.show({
+					x : e.target.getX(),
+					y : e.target.getY()
+				});
 			}
 		};
 
 		sb.events.add('html', 'click', sb.widget.datePicker.display);
-	}
-
-	sb.events.add('html', 'keydown', function(e){
-		if(e.target.className == 'sb_date_picker'){
-			if(e.keyCode == 9){
-				return;
-			}
-			e.preventDefault();
-		}
-	});
-	sb.events.add('html', 'keyup', function(e){
-		
-		if(e.keyCode == 9){
-			return;
-		}
-
-		var showing = sb.widget.datePicker.showing;
-
-		if(!e.shiftKey){
-			sb.widget.datePicker.display(e);
-		}
-		var i = sb.widget.datePicker.instance;
-
-		switch(e.keyCode){
-
-			//ret
-			case 13:
-				if(e.target == i.yearInput){
-					return;
-				}
-				i.onDateSelect(i.getDate());
-				if(i.target && i.target.focus){
-					i.target.focus();
-				}
-				break;
-
-			//esc
-			case 27:
-				i.hide();
-				break;
-
-			//page up
-			case 33:
-				if(showing){
-					i.switchToMinDate();
-				}
-				break;
-
-
-			//page down
-			case 34:
-				if(showing){
-					i.switchToMaxDate();
-				}
-				break;
-
-			//up
-			case 38:
-				if(showing){
-					if(e.shiftKey){
-						i.switchToPrevYear();
-					} else {
-						i.switchToPrevRow();
-					}
-						
-				}
-				break;
-			//left
-			case 37:
-				if(showing){
-					if(e.shiftKey){
-						i.switchToPrevMonth();
-					} else {
-						i.switchToPrevDay();
-					}
-				}
-				break;
-
-			//right
-			case 39:
-				if(showing){
-					if(e.shiftKey){
-						i.switchToNextMonth();
-					} else {
-						i.switchToNextDay();
-					}
-				}
-				break;
-
-			//down
-			case 40:
-				if(showing){
-					if(e.shiftKey){
-						i.switchToNextYear();
-					} else {
-						i.switchToNextRow();
-					}
-				}
-
-				break;
-		}
-	});
-
 };
 
 /**
 @Name: sb.widget.datePicker.prototype
 */
 sb.widget.datePicker.prototype = {
-	months : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	calendar : false,
 	calendarDay : '',
 	calendarYear : '',
 	calendarMonth : '',
@@ -202,7 +94,8 @@ sb.widget.datePicker.prototype = {
 	 myPicker.onDateSelect = function(e){};
 	*/
 	onDateSelect : function(date){
-		this.target.value = date;
+		var target = sb.$(this.target.attr('sb_date_target')) || this.target;
+		target.value = date;
 		this.hide();
 	},
 
@@ -650,7 +543,7 @@ sb.widget.datePicker.prototype = {
 	 myPicker.refreshCalendar();
 	*/
 	refreshCalendar : function(){
-		this.currentYear.innerHTML = this.months[parseInt(this.calendarMonth)]+' '+ this.calendarYear;
+		this.currentYear.innerHTML = sb.widget.datePicker.months[parseInt(this.calendarMonth)]+' '+ this.calendarYear;
 		this.days.innerHTML = this._drawCalendar();
 	},
 
@@ -668,37 +561,34 @@ sb.widget.datePicker.prototype = {
 	/**
 	@Name: sb.widget.datePicker.prototype.show
 	@Description: show the datepicker
+	@Param: params Object
+	.x The x position to show it at
+	.y The y position to show it at
+	.z The z index to show it at
 	@Example:
-	 myPicker.show();
+	 myPicker.show({x : 100, y : 100, z : 100});
 	*/
-	show : function(){
+	show : function(params){
 		var self = this;
 		sb.widget.datePicker.showing = true;
-		var target = this.target;
-		if(target.blur){
-			target.blur();
-		}
-		var yPos = parseInt(target.getY(), 10);
-		var xPos = parseInt(target.getX(), 10);
+
 		this._createCalendar();
 		this.setDate(this.date);
 		this.calendar.styles({
-			left: xPos+'px',
-			top: yPos+'px',
 			position: 'absolute',
-			zIndex: 1000
+			left : (params.x || sb.browser.w/2)+'px',
+			top : (params.y || sb.browser.h/2)+'px',
+			zIndex : params.z || 1000
 		});
 
 		this.refreshCalendar();
 
 		this.calendar.appendTo(this.parentNode);
 		if(!this.sizeSet){
-			this.calendar.style.width = this.days.getWidth()+'px';
+			this.calendar.style.width = this.days.offsetWidth+'px';
 			this.sizeSet = true;
 		}
 
-
-		this.target = target;
 	},
 
 	/**
@@ -943,3 +833,134 @@ sb.widget.datePicker.prototype = {
 		return html;
 	}
 };
+
+/**
+@Name: sb.widget.datePicker.tips
+@Description: help screen tips, could be changed overridden for other languages
+*/
+sb.widget.datePicker.tips = [
+'You can use the mouse to select a date.',
+'Clicking the arrows icons to the left and right of the title bar moves between months.',
+'You can also use the keyboard\'s arrow keys to move around the calendar, then hit enter to select the highlighted date.',
+'Hitting shift + left arrow key moves back by one month.',
+'Hitting shift + right arrow key moves forward by one month.',
+'Hitting shift + up arrow moves back by one year.',
+'Hitting shift + down arrow moves forward by one year.',
+'Alternatively, you can double-click header to bring up manual date entry box.'
+];
+
+/**
+@Name: sb.widget.datePicker.months
+@Description: Array with month names, could be overridden in other language scenarios
+*/
+sb.widget.datePicker.months = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+/**
+@Name: sb.widget.datePicker.handleKeyEvents
+@Description: used internally to handle key events for calendar manipulation
+*/
+sb.widget.datePicker.handleKeyEvents = function(){
+
+	sb.events.add('html', 'keydown', function(e){
+		if(e.target.className == 'sb_date_picker'){
+			if(e.keyCode == 9){
+				return;
+			}
+			e.preventDefault();
+		}
+	});
+	sb.events.add('html', 'keyup', function(e){
+
+		if(e.keyCode == 9){
+			return;
+		}
+
+		var i = sb.widget.datePicker.instance;
+		var showing = sb.widget.datePicker.showing;
+		if(e.target.className == 'sb_date_picker' && !showing){
+			sb.widget.datePicker.display(e);
+		}
+
+		switch(e.keyCode){
+
+			//ret
+			case 13:
+				if(e.target == i.yearInput){
+					return;
+				}
+				i.onDateSelect(i.getDate());
+				if(i.target && i.target.focus){
+					i.target.focus();
+				}
+				break;
+
+			//esc
+			case 27:
+				i.hide();
+				break;
+
+			//page up
+			case 33:
+				if(showing){
+					i.switchToMinDate();
+				}
+				break;
+
+
+			//page down
+			case 34:
+				if(showing){
+					i.switchToMaxDate();
+				}
+				break;
+
+			//up
+			case 38:
+				if(showing){
+					if(e.shiftKey){
+						i.switchToPrevYear();
+					} else {
+						i.switchToPrevRow();
+					}
+
+				}
+				break;
+			//left
+			case 37:
+				if(showing){
+					if(e.shiftKey){
+						i.switchToPrevMonth();
+					} else {
+						i.switchToPrevDay();
+					}
+				}
+				break;
+
+			//right
+			case 39:
+				if(showing){
+					if(e.shiftKey){
+						i.switchToNextMonth();
+					} else {
+						i.switchToNextDay();
+					}
+				}
+				break;
+
+			//down
+			case 40:
+				if(showing){
+					if(e.shiftKey){
+						i.switchToNextYear();
+					} else {
+						i.switchToNextRow();
+					}
+				}
+
+				break;
+		}
+	});
+
+};
+
+sb.widget.datePicker.handleKeyEvents();
