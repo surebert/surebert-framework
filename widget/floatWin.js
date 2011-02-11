@@ -10,6 +10,12 @@ sb.include('Element.prototype.hide');
 sb.include('Element.prototype.show');
 sb.include('Element.prototype.isWithin');
 
+/**
+@Name: sb.floatWin
+@Description: Used to create floating internal windows
+@Param: Object params
+@Example:
+*/
 sb.widget.floatWin = function(params){
 
 	sb.objects.infuse(params, this);
@@ -174,10 +180,10 @@ sb.widget.floatWin.prototype = {
 			this.setTitle(this.title);
 		}
 
-		this.win.appendTo('body');
 		this.win.style.zIndex = 900+sb.widget.floatWin.winCount;
 		sb.widget.floatWin.winCount++;
 		this.win.style.position = this.positionType;
+		this.win.appendTo(this.parentNode || document.body);
 
 	},
 
@@ -239,7 +245,7 @@ sb.widget.floatWin.prototype = {
 	},
 
 	show : function(e){
-		this.win.appendTo(document.body);
+		this.win.appendTo(this.parentNode || document.body);
 		this.win.show();
 		this.titleText.style.backgroundColor = this.titleBar.getStyle('backgroundColor');
 		if(e && e.pageX){
@@ -259,7 +265,7 @@ sb.widget.floatWin.prototype = {
 		if(this.win.origWidth){
 			this.win.style.width = this.win.origWidth+'px';
 		}
-		this.win.appendTo('body');
+		this.win.appendTo(this.parentNode || document.body);
 		this.win.style.position = this.positionType;
 		this.shade();
 	},
