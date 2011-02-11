@@ -25,6 +25,9 @@ sb.widget.datePicker = function(params){
 	var cal = sb.widget.datePicker.instance ? sb.widget.datePicker.instance : this;
 	sb.objects.infuse(params, cal);
 	cal.parentNode = sb.$(cal.parentNode) || document.body;
+	if(!sb.widget.datePicker.instance){
+		sb.widget.datePicker.handleKeyEvents();
+	}
 	sb.widget.datePicker.instance = cal;
 	return cal;
 };
@@ -36,25 +39,32 @@ sb.widget.datePicker.showing = false;
 
 /**
 @Name: sb.widget.datePicker.listen
-@Description: Sets up global event listeners for click and keydown.
-listens for clicks on sb_date_picker add {listen : false} as param
+@Description: Sets up global event listeners for click and keydown on .sb_date_picker elements
+@Param: param object Same arguments as sb.widget.datePicker constructor e.g.
+.onDateSelect(date) optional function - default fills in target of event
+.onClick(e)
+.onHeaderClick(e)
+
 @Example:
 <input class="sb_date_picker" value ="01/22/1977"/>
 
 //listens for any sb_date_picker actions
 sb.widget.datePicker.listen();
 */
-sb.widget.datePicker.listen = function(){
+sb.widget.datePicker.listen = function(params){
 	this.display = function(e){
 			var target = e.target;
 			if(e.target.hasClassName('sb_date_picker')){
 				e.preventDefault();
-				var cal = new sb.widget.datePicker({
+				var args = {
 					date : e.target.value || sb.$(e.target.attr('sb_date_target')).value,
 					target : e.target,
 					minDate : e.target.attr('sb_min_date'),
 					maxDate : e.target.attr('sb_max_date')
-				});
+				};
+
+				sb.objects.infuse(params, args);
+				var cal = new sb.widget.datePicker(args);
 
 				cal.show({
 					x : e.target.getX(),
@@ -319,6 +329,13 @@ sb.widget.datePicker.prototype = {
 
 	},
 
+	skipToDate : function(date){
+		var date = this.getDate(date);
+		
+		this.setDate(date);
+		this.refreshCalendar();
+	},
+
 	/**
 	@Name: sb.widget.datePicker.prototype.switchToPrevRow
 	@Description: switches to the prev row
@@ -545,6 +562,7 @@ sb.widget.datePicker.prototype = {
 	refreshCalendar : function(){
 		this.currentYear.innerHTML = sb.widget.datePicker.months[parseInt(this.calendarMonth)]+' '+ this.calendarYear;
 		this.days.innerHTML = this._drawCalendar();
+		this._setSliderYear(this.calendarYear);
 	},
 
 	/**
@@ -569,9 +587,15 @@ sb.widget.datePicker.prototype = {
 	 myPicker.show({x : 100, y : 100, z : 100});
 	*/
 	show : function(params){
+		params = params || {};
 		var self = this;
 		sb.widget.datePicker.showing = true;
 
+		if(!params.x && this.target){
+			console.log('g');
+			params.x = this.target.getX();
+			params.y = this.target.getY();
+		}
 		this._createCalendar();
 		this.setDate(this.date);
 		this.calendar.styles({
@@ -584,11 +608,50 @@ sb.widget.datePicker.prototype = {
 		this.refreshCalendar();
 
 		this.calendar.appendTo(this.parentNode);
+		var year = this.date.getFullYear();
 		if(!this.sizeSet){
 			this.calendar.style.width = this.days.offsetWidth+'px';
 			this.sizeSet = true;
-		}
+			var div = new sb.el('div');
+			div.style.backgroundColor = 'red';
+			div.style.width = this.calendar.style.width;
+			div.appendBefore(this.days);
+			
+			this.slider = new sb.widget.slider({
+				name : ' year',
+				min : this.minYear || year-10,
+				max : this.maxYear || year+30,
+				id : 'sb_datepicker_year',
+				defaultValue : year,
+				allowFloats : 0,
+				onStopSlide : function(){
+					self.skipToDate((self.calendarMonth+1)+'/01/'+this.value);
+				},
+				onClickValue : function(){
+					self.skipToDate((self.calendarMonth+1)+'/01/'+this.value);
+				}
+			});
 
+			this.slider.appendTo(div);
+			this._setSliderYear(year);
+		}
+		
+
+	},
+
+	/**
+	@Name: sb.widget.datePicker.prototype._setSliderYear
+	@Description: used internally to set the year on the slider
+	*/
+	_setSliderYear : function(year){
+		if(this.slider){
+			this.slider.defaultValue = year;
+			this.slider.min = this.minYear || year-10;
+			this.slider.max = this.maxYear || year+30;
+			this.slider.calibrate();
+			this.slider.setValue(year);
+		}
+		
 	},
 
 	/**
@@ -635,7 +698,7 @@ sb.widget.datePicker.prototype = {
 						}
 					},
 					click : function(e){
-						
+					
 						var target = e.target;
 						e.preventDefault();
 						if(target.className == 'sb_datep_tip'){
@@ -677,12 +740,17 @@ sb.widget.datePicker.prototype = {
 							if(day < 10){
 								day ='0'+day;
 							}
-							if(self.setDate(month+'/'+day+'/'+self.calendarYear) !== false && typeof self.onDateSelect === 'function'){
-								self.onDateSelect(self.getDate());
-								if(self.target && self.target.focus){
-									self.target.focus();
+							
+							if(self.setDate(month+'/'+day+'/'+self.calendarYear) !== false){
+								
+								if(typeof self.onDateSelect === 'function'){
+									self.onDateSelect(self.getDate());
+									if(self.target && self.target.focus){
+										self.target.focus();
+									}
 								}
 							}
+							
 						}
 
 					}
@@ -715,7 +783,8 @@ sb.widget.datePicker.prototype = {
 			this.currentYear.title = 'Double-click to manually enter date';
 			this.currentYear.disableSelection();
 			this.currentYear.styles({
-				cursor : 'pointer'
+				cursor : 'pointer',
+				textAlign: 'center'
 			});
 			this.nextMonthBtn = sb.$(this.tr.insertCell(2));
 			this.nextMonthBtn.innerHTML = '&raquo;';
@@ -726,14 +795,6 @@ sb.widget.datePicker.prototype = {
 			});
 			this.nextMonthBtn.disableSelection();
 
-			this.days = new sb.element({
-				tag : 'div',
-				className : 'sb_datepicker_days',
-				innerHTML : 'days'
-			});
-
-			this.days.appendTo(this.calendar);
-			this.days.disableSelection();
 
 			this.yearInput = new sb.element({
 				tag : 'input',
@@ -746,7 +807,18 @@ sb.widget.datePicker.prototype = {
 				}
 			});
 
-			this.yearInput.appendBefore(this.days);
+			this.yearInput.appendTo(this.calendar);
+			
+
+			this.days = new sb.element({
+				tag : 'div',
+				className : 'sb_datepicker_days',
+				innerHTML : 'days'
+			});
+
+			this.days.appendTo(this.calendar);
+			this.days.disableSelection();
+
 			this.help = new sb.element({
 				tag : 'div',
 				innerHTML : '?',
@@ -841,7 +913,9 @@ sb.widget.datePicker.prototype = {
 sb.widget.datePicker.tips = [
 'You can use the mouse to select a date.',
 'Clicking the arrows icons to the left and right of the title bar moves between months.',
+'Use the slider below the header to quickly drag/click between years',
 'You can also use the keyboard\'s arrow keys to move around the calendar, then hit enter to select the highlighted date.',
+'Hit esc key to hide the date picker.',
 'Hitting shift + left arrow key moves back by one month.',
 'Hitting shift + right arrow key moves forward by one month.',
 'Hitting shift + up arrow moves back by one year.',
@@ -866,6 +940,14 @@ sb.widget.datePicker.handleKeyEvents = function(){
 			if(e.keyCode == 9){
 				return;
 			}
+
+			e.preventDefault();
+		}
+		var i = sb.widget.datePicker.instance;
+		var showing = sb.widget.datePicker.showing;
+		if(i && showing){
+
+			e.stopPropagation();
 			e.preventDefault();
 		}
 	});
@@ -903,6 +985,7 @@ sb.widget.datePicker.handleKeyEvents = function(){
 			case 33:
 				if(showing){
 					i.switchToMinDate();
+					e.preventDefault();
 				}
 				break;
 
@@ -911,6 +994,7 @@ sb.widget.datePicker.handleKeyEvents = function(){
 			case 34:
 				if(showing){
 					i.switchToMaxDate();
+					e.preventDefault();
 				}
 				break;
 
@@ -922,6 +1006,7 @@ sb.widget.datePicker.handleKeyEvents = function(){
 					} else {
 						i.switchToPrevRow();
 					}
+					e.preventDefault();
 
 				}
 				break;
@@ -933,6 +1018,7 @@ sb.widget.datePicker.handleKeyEvents = function(){
 					} else {
 						i.switchToPrevDay();
 					}
+					e.preventDefault();
 				}
 				break;
 
@@ -944,17 +1030,20 @@ sb.widget.datePicker.handleKeyEvents = function(){
 					} else {
 						i.switchToNextDay();
 					}
+					e.preventDefault();
 				}
 				break;
 
 			//down
 			case 40:
 				if(showing){
+					
 					if(e.shiftKey){
 						i.switchToNextYear();
 					} else {
 						i.switchToNextRow();
 					}
+					
 				}
 
 				break;
@@ -962,5 +1051,3 @@ sb.widget.datePicker.handleKeyEvents = function(){
 	});
 
 };
-
-sb.widget.datePicker.handleKeyEvents();
