@@ -142,12 +142,14 @@ sb.widget.slider.prototype = {
 	
 		sb.events.add(t.nob, 'mousedown',  
 			function(e){
-				
 				t.draggable=1;
 				t.events.mousemove = sb.events.add(document, 'mousemove', function(e){t.drag(e);return false;});
 				
 				t.events.onmouseup = sb.events.add(document, 'mouseup', function(e){
+					
 					if(typeof t.onmouseup =='function'){t.onmouseup();}
+					t.events.onmouseup.remove();
+					t.events.mousemove.remove();
 					t.dragStop();
 					return false;
 				});
