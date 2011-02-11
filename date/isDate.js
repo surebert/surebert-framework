@@ -11,6 +11,10 @@ sb.date.isDate = function(txtDate, params){
 	if(!params){
 		params = {};
 	}
+
+	if(!txtDate){
+		return false;
+	}
 	var currentYear = new Date().getFullYear();
 	var minYear = params.minYear || false;
 	var maxYear = params.maxYear || false;
