@@ -9,11 +9,12 @@ sb.include('Element.prototype.makeDraggable');
 @Description: used to create a datepicker widget.  Always
 returns the current reference to the only instance
 @Example:
-var dp = new sb.widget.datePicker();
-dp.onDateSelect = function(date){
-	alert(date);
-	this.hide();
-};
+var dp = new sb.widget.datePicker({
+	onDateSelect : function(date){
+		alert(date);
+		this.hide();
+	}
+});
 dp.show({
 	x: 200,
 	y : 200,
@@ -551,7 +552,7 @@ sb.widget.datePicker.prototype = {
 	 myPicker.cycleTips();
 	*/
 	cycleTips : function(){
-		this.days.innerHTML = '<div style="height:200px;"><p>'+sb.widget.datePicker.tips.cycle()+'</p><div><a href="#" class="sb_datep_tip_exit" style="margin-right:20px;">exit help</a> <a href="#" class="sb_datep_tip">next tip</a></div></div>';
+		this.days.innerHTML = '<div style="height:100px;"><div><a href="#" class="sb_datep_tip_exit" style="margin-right:20px;">exit help</a> <a href="#" class="sb_datep_tip">next tip</a></div><p>'+sb.widget.datePicker.tips.cycle()+'</p></div>';
 	},
 
 	/**
