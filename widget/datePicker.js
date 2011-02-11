@@ -1,6 +1,7 @@
 sb.include('Element.prototype.disableSelection');
 sb.include('Array.prototype.iteration');
 sb.include('date.isDate');
+sb.include('Element.prototype.makeDraggable');
 
 /**
 @Name: sb.widget.datePicker
@@ -550,7 +551,7 @@ sb.widget.datePicker.prototype = {
 	 myPicker.cycleTips();
 	*/
 	cycleTips : function(){
-		this.days.innerHTML = '<p>'+sb.widget.datePicker.tips.cycle()+'</p><div><a href="#" class="sb_datep_tip_exit" style="margin-right:20px;">exit help</a> <a href="#" class="sb_datep_tip">next tip</a></div>';
+		this.days.innerHTML = '<div style="height:200px;"><p>'+sb.widget.datePicker.tips.cycle()+'</p><div><a href="#" class="sb_datep_tip_exit" style="margin-right:20px;">exit help</a> <a href="#" class="sb_datep_tip">next tip</a></div></div>';
 	},
 
 	/**
@@ -592,7 +593,6 @@ sb.widget.datePicker.prototype = {
 		sb.widget.datePicker.showing = true;
 
 		if(!params.x && this.target){
-			console.log('g');
 			params.x = this.target.getX();
 			params.y = this.target.getY();
 		}
@@ -634,9 +634,17 @@ sb.widget.datePicker.prototype = {
 
 			this.slider.appendTo(div);
 			this._setSliderYear(year);
+
+			this.calendar.makeDraggable();
+			this.currentYear.addClassName('dragHandle');
 		}
 		
+		if(this.prevMonthBtn.getStyle('backgroundImage')){
+			this.prevMonthBtn.innerHTML = '';
+			this.nextMonthBtn.innerHTML =  '';
+		}
 
+		
 	},
 
 	/**
@@ -758,17 +766,23 @@ sb.widget.datePicker.prototype = {
 			});
 
 			this.header = new sb.element({
+				tag: 'div',
+				className : 'sb_datepicker_header'
+			});
+
+			this.headerTable = new sb.element({
 				tag: 'table',
-				className : 'sb_datepicker_header',
 				styles : {
 					width : '100%'
 				},
 				innerHTML: ''
 			});
 
+			this.headerTable.appendTo(this.header);
+
 			this.header.appendTo(this.calendar);
 			this.tbody = new sb.el('tbody');
-			this.tbody.appendTo(this.header);
+			this.tbody.appendTo(this.headerTable);
 			this.tr = this.tbody.insertRow(0);
 
 			this.prevMonthBtn = sb.$(this.tr.insertCell(0));
@@ -786,6 +800,7 @@ sb.widget.datePicker.prototype = {
 				cursor : 'pointer',
 				textAlign: 'center'
 			});
+
 			this.nextMonthBtn = sb.$(this.tr.insertCell(2));
 			this.nextMonthBtn.innerHTML = '&raquo;';
 			this.nextMonthBtn.className = 'sb_datepicker_next_month';
@@ -834,7 +849,6 @@ sb.widget.datePicker.prototype = {
 			});
 
 			this.help.appendTo(this.calendar);
-
 		}
 	},
 
