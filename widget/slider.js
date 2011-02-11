@@ -135,7 +135,18 @@ sb.widget.slider.prototype = {
 	},
 	
 	events : [],
-	
+
+	removeEvents : function(){
+		if(this.events.onmouseup){
+			this.events.onmouseup.remove();
+			delete this.events.onmouseup;
+		}
+		if(this.events.mousemove){
+			this.events.mousemove.remove();
+			delete this.events.mousemove;
+		}
+	},
+
 	dragStart : function(){
 		var t=this;
 		this.origX=this.getX();
@@ -143,13 +154,13 @@ sb.widget.slider.prototype = {
 		sb.events.add(t.nob, 'mousedown',  
 			function(e){
 				t.draggable=1;
+				t.removeEvents();
 				t.events.mousemove = sb.events.add(document, 'mousemove', function(e){t.drag(e);return false;});
 				
 				t.events.onmouseup = sb.events.add(document, 'mouseup', function(e){
 					
 					if(typeof t.onmouseup =='function'){t.onmouseup();}
-					t.events.onmouseup.remove();
-					t.events.mousemove.remove();
+					t.removeEvents();
 					t.dragStop();
 					return false;
 				});
