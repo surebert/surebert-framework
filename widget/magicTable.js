@@ -197,7 +197,7 @@ sb.widget.magicTable.prototype = {
 			}
 		}
 		
-		this.table.$('tbody tr').forEach(function(v,k){
+		this.body.$('tr').forEach(function(v,k){
 			
 			if(rows.inArray(k) ){
 				v.remove();
@@ -302,7 +302,7 @@ sb.widget.magicTable.prototype = {
 			}
 		});
 
-		var trs = this.table.$('tbody tr');
+		var trs = this.body.$('tr');
 		trs.forEach(function(tr,k,a){
 			
 			rows.push({
@@ -322,7 +322,7 @@ sb.widget.magicTable.prototype = {
 			rows.reverse();
 		}
 		
-		var tbody = this.table.$('tbody').nodes[0];
+		var tbody = this.body;
 		rows.forEach(function(row,k,a){
 			var tr = row.tr;
 			
@@ -416,7 +416,7 @@ sb.widget.magicTable.prototype = {
 	@Example:
 	myTable.onAfterSort = function(th){
 	   //renumber the first td in each row after sort
-		var rows = this.table.$('tbody tr');
+		var rows = this.body.$('tr');
 		var x = 1;
 		rows.forEach(function(v){
 			v.firstChild.innerHTML = x;
