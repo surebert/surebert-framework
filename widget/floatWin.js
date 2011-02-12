@@ -109,19 +109,21 @@ sb.widget.floatWin.prototype = {
 
 			},
 			dblclick : function(e){
-				var target = e.target;
+				if(self.minimizable){
+					var target = e.target;
 
-				self.onDblClick(e);
-				
-				if(target.isWithin(self.titleBar)){
-					if(self.onTitleBarDblClick(e) !== false){
-						if(self.minimized){
-							self.restore();
-						} else {
-							self.minimize();
+					self.onDblClick(e);
+
+					if(target.isWithin(self.titleBar)){
+						if(self.onTitleBarDblClick(e) !== false){
+							if(self.minimized){
+								self.restore();
+							} else {
+								self.minimize();
+							}
 						}
+
 					}
-					
 				}
 
 			}
