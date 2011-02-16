@@ -74,6 +74,7 @@ sb.widget.floatWin.prototype = {
 			},
 			unselectable : "on",
 			styles : {
+				cursor: 'e-resize',
 				MozUserSelect : 'none'
 			}
 		});
@@ -309,7 +310,7 @@ sb.widget.floatWin.prototype = {
 			this.win.style.position = 'static';
 			this.win.style.width = '100%';
 			this.win.style.height = '100%';
-
+			this.win.makeUnDraggable();
 			sb.widget.floatWin.fullScreen.style.display = 'block';
 			$('html').style.overflow = 'hidden';
 			this.isFullScreen = true;
@@ -327,6 +328,7 @@ sb.widget.floatWin.prototype = {
 		$('html').style.overflow = '';
 		
 		this.restore();
+		this.win.makeDraggable();
 		sb.widget.floatWin.fullScreen.style.display = 'none';
 		this.win.style.width = '';
 		this.win.style.height = '';
