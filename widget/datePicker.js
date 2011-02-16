@@ -59,7 +59,7 @@ sb.widget.datePicker.listen = function(params){
 			if(e.target.hasClassName('sb_date_picker')){
 				e.preventDefault();
 				var args = {
-					date : e.target.value || sb.$(e.target.attr('sb_date_target')).value,
+					date : typeof(e.target.value) == 'string' || sb.$(e.target.attr('sb_date_target')).value,
 					target : e.target,
 					minDate : e.target.attr('sb_min_date'),
 					maxDate : e.target.attr('sb_max_date')
@@ -960,7 +960,7 @@ sb.widget.datePicker.handleKeyEvents = function(){
 		}
 		var i = sb.widget.datePicker.instance;
 		var showing = sb.widget.datePicker.showing;
-		if(i && showing){
+		if(i && showing && !e.ctrlKey && !e.metaKey){
 
 			e.stopPropagation();
 			e.preventDefault();
