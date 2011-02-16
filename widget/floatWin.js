@@ -35,9 +35,23 @@ sb.widget.floatWin.createHub = function(){
 		position : 'fixed',
 		bottom : '0px',
 		right : '0px',
-		zIndex : 999
+		zIndex : 30001
 	});
 	this.hub.appendTo('body');
+
+	this.fullScreen = new sb.element({
+		tag : 'div',
+		styles : {
+			position:'fixed',
+			top : '0px',
+			left : '0px',
+			width : '100%',
+			height : '100%',
+			display : 'none',
+			zIndex : 9999
+		}
+	});
+	this.fullScreen.appendTo('body');
 };
 
 sb.widget.floatWin.prototype = {
@@ -77,8 +91,7 @@ sb.widget.floatWin.prototype = {
 		this.titleText = new sb.element({
 			tag : 'div',
 			className : 'sb_floatWinTitleText dragHandle',
-			innerHTML : 'title',
-			shaded : 0
+			innerHTML : 'title'
 		});
 
 		this.content = new sb.element({
@@ -115,14 +128,7 @@ sb.widget.floatWin.prototype = {
 					self.onDblClick(e);
 
 					if(target.isWithin(self.titleBar)){
-						if(self.onTitleBarDblClick(e) !== false){
-							if(self.minimized){
-								self.restore();
-							} else {
-								self.minimize();
-							}
-						}
-
+						self.onTitleBarDblClick(e);
 					}
 				}
 
@@ -134,10 +140,12 @@ sb.widget.floatWin.prototype = {
 		this.titleText.appendTo(this.titleBar);
 		this.content.appendTo(this.win);
 		this.win.makeDraggable();
-
 		this.win.ondragstop = function(e, pos){
 			if(e.clientY < 0){
 				self.win.style.top = 0;
+			}
+			if(typeof self.onDragStop === 'function'){
+				self.onDragStop(e);
 			}
 		};
 
@@ -192,18 +200,16 @@ sb.widget.floatWin.prototype = {
 	closeButton : true,
 
 	shade : function(){
-		if(this.win.shaded){
+		
+		if(this.shaded){
 
-			this.win.style.height = '';
-			this.win.style.overflow = 'auto';
-			this.win.shaded=0;
+			this.content.style.display = '';
+			this.shaded=0;
 
 		} else {
 
-			this.win.oldHeight = this.win.style.height;
-			this.win.style.height = this.titleBar.offsetHeight+'px';
-			this.win.style.overflow ='hidden';
-			this.win.shaded=1;
+			this.content.style.display = 'none';
+			this.shaded=1;
 		}
 	},
 
@@ -247,6 +253,9 @@ sb.widget.floatWin.prototype = {
 	},
 
 	show : function(e){
+		if(this.win.isFullScreen){
+			return;
+		}
 		this.win.appendTo(this.parentNode || document.body);
 		this.win.show();
 		this.titleText.style.backgroundColor = this.titleBar.getStyle('backgroundColor');
@@ -263,25 +272,72 @@ sb.widget.floatWin.prototype = {
 
 	restore : function(){
 		
-		this.minimized = false;
-		if(this.win.origWidth){
-			this.win.style.width = this.win.origWidth+'px';
+		if(!this.minimized && !this.isFullScreen){
+			this.fullScreen();
+			return;
 		}
+		this.win.makeDraggable();
+		this.minimized = false;
 		this.win.appendTo(this.parentNode || document.body);
 		this.win.style.position = this.positionType;
-		this.shade();
+		if(this.shaded){
+			this.shade();
+		}
+
+		if(typeof this.onAfterRestore === 'function'){
+			this.onAfterRestore();
+		}
 	},
 	
 	minimize : function(){
+		if(this.isFullScreen){
+			this.unFullScreen();
+		}
 		this.win.appendTo(sb.widget.floatWin.hub);
+		this.win.makeUnDraggable();
 		this.minimized = true;
-		this.win.origWidth = this.win.getWidth();
 		this.win.style.width = '250px';
-		this.win.style.position = '';
-
+		this.win.style.position = 'static';
+		
 		this.shade();
 	},
+	fullScreen : function(){
 
+		if(sb.widget.floatWin.fullScreen.$('div').length() == 0){
+
+			this.win.appendTo(sb.widget.floatWin.fullScreen);
+			this.win.style.position = 'static';
+			this.win.style.width = '100%';
+			this.win.style.height = '100%';
+
+			sb.widget.floatWin.fullScreen.style.display = 'block';
+			$('html').style.overflow = 'hidden';
+			this.isFullScreen = true;
+			if(typeof this.onAfterFullScreen === 'function'){
+				this.onAfterFullScreen();
+			}
+			return true;
+		} else {
+			alert("Only one window can be full screen at a time");
+			return false;
+		}
+	},
+
+	unFullScreen : function(){
+		$('html').style.overflow = '';
+		
+		this.restore();
+		sb.widget.floatWin.fullScreen.style.display = 'none';
+		this.win.style.width = '';
+		this.win.style.height = '';
+		//this.win.style.overflow ='';
+		this.isFullScreen = false;
+		if(typeof this.onAfterUnFullScreen === 'function'){
+			this.onAfterUnFullScreen();
+		}
+
+	},
+	
 	mv : function(x,y,z){
 		this.win.mv(x,y,z);
 	},
@@ -304,6 +360,8 @@ sb.widget.floatWin.prototype = {
 	onIconClick : function(e){},
 	onClose : function(e){},
 	onTitleBarDblClick : function(e){},
-	onDblClick : function(e){}
+	onDblClick : function(e){},
+	onAfterFullScreen : function(){},
+	onAfterUnFullScreen : function(){}
 };
 
