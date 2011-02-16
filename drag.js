@@ -125,8 +125,8 @@ sb.drag = {
 			estart : parseInt(el.getStyle('top'), 10)
 		};
 		
-		if (isNaN(el.x.estart)) {el.x.estart = 0;}
-	  	if (isNaN(el.y.estart)) {el.y.estart = 0;}
+		if (isNaN(el.x.estart)) {el.x.estart = el.getX();}
+	  	if (isNaN(el.y.estart)) {el.y.estart = el.getY();}
 	 
 		if(el.style.zIndex < 1){
 			el.style.zIndex = ++sb.drag.zIndex;
