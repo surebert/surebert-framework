@@ -47,11 +47,12 @@ sb.drag = {
 		var scroll = sb.browser.getScrollPosition();
 		var x = e.clientX, y = e.clientY, el = sb.drag.el;
 		
-		if(typeof sb.drag.el.lockX =='undefined'){
+		if(typeof sb.drag.el.lockX === 'undefined' && !sb.drag.el.attr('sb_lock_x')){
 			x=el.x.estart + x + scroll[0] - el.x.cstart;
 			el.style.left = x+'px';
 		}
-		if(typeof sb.drag.el.lockY =='undefined'){
+		
+		if(typeof sb.drag.el.lockY === 'undefined' && !sb.drag.el.attr('sb_lock_y')){
 			y = el.y.estart + y + scroll[1] - el.y.cstart;
 			el.style.top = y+'px';
 		}
@@ -69,6 +70,7 @@ sb.drag = {
 	stop : function(e){
 		
 		e.preventDefault();
+		
 		if(sb.drag.mmove){
 			sb.events.remove(sb.drag.mmove);
 		}
@@ -133,6 +135,13 @@ sb.drag = {
 		//set as global dragable element
 		sb.drag.el = el;
 		var target = e.target;
+
+		if(sb.drag.mmove){
+			sb.events.remove(sb.drag.mmove);
+		}
+		if(sb.drag.mup){
+			sb.events.remove(sb.drag.mup);
+		}
 		
 		if(typeof target.hasClassName == 'function' && target.hasClassName('dragHandle')){
 			sb.drag.mmove = sb.events.add(document, 'mousemove', sb.drag.move);
