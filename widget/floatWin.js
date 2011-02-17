@@ -87,7 +87,8 @@ sb.widget.floatWin.prototype = {
 			styles : {
 				cssFloat : 'right',
 				styleFloat : 'right',
-				textAlign : 'right'
+				textAlign : 'right',
+				cursor : 'default'
 			}
 		});
 
@@ -333,6 +334,10 @@ sb.widget.floatWin.prototype = {
 
 			this.isFullScreen = false;
 		}
+
+		if(typeof this.onAfterStandardSize === 'function'){
+			this.onAfterStandardSize();
+		}
 	},
 	
 	collapse : function(){
@@ -342,6 +347,10 @@ sb.widget.floatWin.prototype = {
 		this.win.style.width = '250px';
 		this.win.style.position = 'static';
 		this.shade();
+
+		if(typeof this.onAfterCollapse === 'function'){
+			this.onAfterCollapse();
+		}
 	},
 
 	show : function(e){
