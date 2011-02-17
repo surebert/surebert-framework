@@ -56,15 +56,13 @@ sb.widget.floatWin.createHub = function(){
 };
 
 sb.widget.floatWin.prototype = {
-	minimized : false,
 	createBox : function(e){
 		if(!sb.widget.floatWin.hub){
 			sb.widget.floatWin.createHub();
 		}
 		var self = this;
-		this.minimized = false;
 
-		this.state = 1;
+		this.displayState = 1;
 		this.win = new sb.element({
 			tag : 'div',
 			className : 'sb_floatWin '+this.className || ''
@@ -170,11 +168,10 @@ sb.widget.floatWin.prototype = {
 				this.downButton = this.addIcon(new sb.element({
 					tag : 'img',
 					src : sb.base+'_media/down.png',
-					title : 'Click minimize',
+					title : 'larger',
 					events : {
 						click : function(e){
 							self.down(e);
-							//self.minimize(e);
 						}
 					}
 				}));
@@ -182,11 +179,10 @@ sb.widget.floatWin.prototype = {
 				this.upButton = this.addIcon(new sb.element({
 					tag : 'img',
 					src : sb.base+'_media/up.png',
-					title : 'Click restore',
+					title : 'smaller',
 					events : {
 						click : function(e){
 							self.up(e);
-							//self.restore(e);
 						}
 					}
 				}));
@@ -251,29 +247,27 @@ sb.widget.floatWin.prototype = {
 	},
 
 	up : function(e){
-		console.log('a:'+this.state);
 		//collapsed to normal
-		if(this.state === 0){
-			
-			this.state = 1;
+		if(this.displayState === 0){
+			this.displayState = 1;
 			this.goStandard();
 			//normal to full screen
-		} else if(this.state === 1){
+		} else if(this.displayState === 1){
 			//fullscreen
-			this.state = 2;
-			this.goFullScreen();
+			if(this.goFullScreen()){
+				this.displayState = 2;
+			}
 		}
 	},
 
 	down : function(e){
-		console.log('b:'+this.state);
 		//fullscreen to normal
-		if(this.state === 2){
-			this.state = 1;
+		if(this.displayState === 2){
+			this.displayState = 1;
 			this.goStandard();
 		//normal to collapsed
-		} else if(this.state === 1){
-			this.state = 0;
+		} else if(this.displayState === 1){
+			this.displayState = 0;
 			this.collapse();
 		}
 	},
@@ -289,9 +283,14 @@ sb.widget.floatWin.prototype = {
 	goFullScreen : function(){
 		if(sb.widget.floatWin.isFullScreen){
 			alert('Sorry, only one window can be fullscreen at a time');
-			return;
+			return false;
 		}
 
+		if(typeof this.onBeforeFullScreen === 'function'){
+			if(this.onBeforeFullScreen() === false){
+				return false;
+			}
+		}
 		sb.widget.floatWin.isFullScreen = true;
 		this.win.appendTo(sb.widget.floatWin.fullScreen);
 		this.win.style.position = 'static';
@@ -306,6 +305,8 @@ sb.widget.floatWin.prototype = {
 		if(typeof this.onAfterFullScreen === 'function'){
 			this.onAfterFullScreen();
 		}
+
+		return true;
 	},
 
 	goStandard : function(){
@@ -319,9 +320,12 @@ sb.widget.floatWin.prototype = {
 		this.win.appendTo(this.parentNode || document.body);
 		this.win.style.position = this.positionType;
 
-		this.isFullScreen = false;
-		if(typeof this.onAfterUnFullScreen === 'function'){
-			this.onAfterUnFullScreen();
+		if(this.isFullScreen){
+			if(typeof this.onAfterUnFullScreen === 'function'){
+				this.onAfterUnFullScreen();
+			}
+
+			this.isFullScreen = false;
 		}
 	},
 	
@@ -329,7 +333,6 @@ sb.widget.floatWin.prototype = {
 
 		this.win.appendTo(sb.widget.floatWin.hub);
 		this.win.makeUnDraggable();
-		this.minimized = true;
 		this.win.style.width = '250px';
 		this.win.style.position = 'static';
 		this.shade();
@@ -378,6 +381,7 @@ sb.widget.floatWin.prototype = {
 	onTitleBarDblClick : function(e){},
 	onDblClick : function(e){},
 	onAfterFullScreen : function(){},
+	onBeforeFullScreen : function(){},
 	onAfterUnFullScreen : function(){}
 };
 
