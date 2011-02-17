@@ -152,6 +152,12 @@ sb.widget.floatWin.prototype = {
 			}
 		};
 
+		this.win.ondragstart = function(e, pos){
+			if(typeof self.onDragStart === 'function'){
+				self.onDragStart(e);
+			}
+		};
+
 		if(this.closeButton){
 			this.closeButton = this.addIcon(new sb.element({
 				tag : 'img',
