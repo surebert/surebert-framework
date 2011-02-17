@@ -52,14 +52,19 @@ sb.widget.floatWin.createHub = function(){
 		}
 	});
 	this.fullScreen.appendTo('body');
+
 };
 
 sb.widget.floatWin.prototype = {
+	minimized : false,
 	createBox : function(e){
 		if(!sb.widget.floatWin.hub){
 			sb.widget.floatWin.createHub();
 		}
 		var self = this;
+		this.minimized = false;
+
+		this.state = 1;
 		this.win = new sb.element({
 			tag : 'div',
 			className : 'sb_floatWin '+this.className || ''
@@ -74,7 +79,6 @@ sb.widget.floatWin.prototype = {
 			},
 			unselectable : "on",
 			styles : {
-				cursor: 'e-resize',
 				MozUserSelect : 'none'
 			}
 		});
@@ -169,7 +173,8 @@ sb.widget.floatWin.prototype = {
 					title : 'Click minimize',
 					events : {
 						click : function(e){
-							self.minimize(e);
+							self.down(e);
+							//self.minimize(e);
 						}
 					}
 				}));
@@ -180,7 +185,8 @@ sb.widget.floatWin.prototype = {
 					title : 'Click restore',
 					events : {
 						click : function(e){
-							self.restore(e);
+							self.up(e);
+							//self.restore(e);
 						}
 					}
 				}));
@@ -200,20 +206,7 @@ sb.widget.floatWin.prototype = {
 
 	closeButton : true,
 
-	shade : function(){
-		
-		if(this.shaded){
-
-			this.content.style.display = '';
-			this.shaded=0;
-
-		} else {
-
-			this.content.style.display = 'none';
-			this.shaded=1;
-		}
-	},
-
+	
 	addContent : function(content){
 		var typ = sb.typeOf(content);
 		if(typ == 'string'){
@@ -248,12 +241,102 @@ sb.widget.floatWin.prototype = {
 	},
 
 	close : function(e){
+		
 		this.onClose(e);
 		this.win.hide(e);
 		this.win.remove(e);
+		$('html').style.overflow = '';
+		sb.widget.floatWin.fullScreen.style.display = 'none';
+		sb.widget.floatWin.fullScreen = false;
+	},
+
+	up : function(e){
+		console.log('a:'+this.state);
+		//collapsed to normal
+		if(this.state === 0){
+			
+			this.state = 1;
+			this.goStandard();
+			//normal to full screen
+		} else if(this.state === 1){
+			//fullscreen
+			this.state = 2;
+			this.goFullScreen();
+		}
+	},
+
+	down : function(e){
+		console.log('b:'+this.state);
+		//fullscreen to normal
+		if(this.state === 2){
+			this.state = 1;
+			this.goStandard();
+		//normal to collapsed
+		} else if(this.state === 1){
+			this.state = 0;
+			this.collapse();
+		}
+	},
+
+	shade : function(){
+		this.content.style.display = 'none';
+	},
+
+	unShade : function(){
+		this.content.style.display = '';
+	},
+
+	goFullScreen : function(){
+		if(sb.widget.floatWin.isFullScreen){
+			alert('Sorry, only one window can be fullscreen at a time');
+			return;
+		}
+
+		sb.widget.floatWin.isFullScreen = true;
+		this.win.appendTo(sb.widget.floatWin.fullScreen);
+		this.win.style.position = 'static';
+		this.win.style.width = '100%';
+		this.win.style.height = '100%';
+		this.win.makeUnDraggable();
+		this.unShade();
+		sb.widget.floatWin.fullScreen.style.display = 'block';
+		$('html').style.overflow = 'hidden';
+		this.isFullScreen = true;
+
+		if(typeof this.onAfterFullScreen === 'function'){
+			this.onAfterFullScreen();
+		}
+	},
+
+	goStandard : function(){
+		sb.widget.floatWin.isFullScreen = false;
+		$('html').style.overflow = '';
+		this.win.makeDraggable();
+		sb.widget.floatWin.fullScreen.style.display = 'none';
+		this.win.style.width = '';
+		this.win.style.height = '';
+		this.unShade();
+		this.win.appendTo(this.parentNode || document.body);
+		this.win.style.position = this.positionType;
+
+		this.isFullScreen = false;
+		if(typeof this.onAfterUnFullScreen === 'function'){
+			this.onAfterUnFullScreen();
+		}
+	},
+	
+	collapse : function(){
+
+		this.win.appendTo(sb.widget.floatWin.hub);
+		this.win.makeUnDraggable();
+		this.minimized = true;
+		this.win.style.width = '250px';
+		this.win.style.position = 'static';
+		this.shade();
 	},
 
 	show : function(e){
+		
 		if(this.win.isFullScreen){
 			return;
 		}
@@ -271,75 +354,6 @@ sb.widget.floatWin.prototype = {
 		this.onDisplay();
 	},
 
-	restore : function(){
-		
-		if(!this.minimized && !this.isFullScreen){
-			this.fullScreen();
-			return;
-		}
-		this.win.makeDraggable();
-		this.minimized = false;
-		this.win.appendTo(this.parentNode || document.body);
-		this.win.style.position = this.positionType;
-		if(this.shaded){
-			this.shade();
-		}
-
-		if(typeof this.onAfterRestore === 'function'){
-			this.onAfterRestore();
-		}
-	},
-	
-	minimize : function(){
-		if(this.isFullScreen){
-			this.unFullScreen();
-		}
-		this.win.appendTo(sb.widget.floatWin.hub);
-		this.win.makeUnDraggable();
-		this.minimized = true;
-		this.win.style.width = '250px';
-		this.win.style.position = 'static';
-		
-		this.shade();
-	},
-	fullScreen : function(){
-
-		if(sb.widget.floatWin.fullScreen.$('div').length() == 0){
-
-			this.win.appendTo(sb.widget.floatWin.fullScreen);
-			this.win.style.position = 'static';
-			this.win.style.width = '100%';
-			this.win.style.height = '100%';
-			this.win.makeUnDraggable();
-			sb.widget.floatWin.fullScreen.style.display = 'block';
-			$('html').style.overflow = 'hidden';
-			this.isFullScreen = true;
-			if(typeof this.onAfterFullScreen === 'function'){
-				this.onAfterFullScreen();
-			}
-			return true;
-		} else {
-			alert("Only one window can be full screen at a time");
-			return false;
-		}
-	},
-
-	unFullScreen : function(){
-		$('html').style.overflow = '';
-		
-		this.restore();
-		this.win.makeDraggable();
-		sb.widget.floatWin.fullScreen.style.display = 'none';
-		this.win.style.width = '';
-		this.win.style.height = '';
-		//this.win.style.overflow ='';
-		this.isFullScreen = false;
-		if(typeof this.onAfterUnFullScreen === 'function'){
-			this.onAfterUnFullScreen();
-		}
-
-	},
-	
 	mv : function(x,y,z){
 		this.win.mv(x,y,z);
 	},
