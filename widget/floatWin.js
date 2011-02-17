@@ -247,7 +247,7 @@ sb.widget.floatWin.prototype = {
 		this.win.remove(e);
 		$('html').style.overflow = '';
 		sb.widget.floatWin.fullScreen.style.display = 'none';
-		sb.widget.floatWin.fullScreen = false;
+		sb.widget.floatWin.isFullScreen = false;
 	},
 
 	up : function(e){
