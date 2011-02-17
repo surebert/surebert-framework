@@ -388,6 +388,8 @@ sb.widget.floatWin.prototype = {
 	onDblClick : function(e){},
 	onAfterFullScreen : function(){},
 	onBeforeFullScreen : function(){},
-	onAfterUnFullScreen : function(){}
+	onAfterUnFullScreen : function(){},
+	onDragStart : function(){},
+	onDragStop : function(){}
 };
 
