@@ -143,7 +143,7 @@ sb.widget.floatWin.prototype = {
 		this.titleIcons.appendTo(this.titleBar);
 		this.titleText.appendTo(this.titleBar);
 		this.content.appendTo(this.win);
-		this.win.makeDraggable();
+		this.makeDraggable();
 		this.win.ondragstop = function(e, pos){
 			if(e.clientY < 0){
 				self.win.style.top = 0;
@@ -303,7 +303,7 @@ sb.widget.floatWin.prototype = {
 		this.win.style.position = 'static';
 		this.win.style.width = '100%';
 		this.win.style.height = '100%';
-		this.win.makeUnDraggable();
+		this.makeUnDraggable();
 		this.unShade();
 		sb.widget.floatWin.fullScreen.style.display = 'block';
 		$('html').style.overflow = 'hidden';
@@ -316,10 +316,23 @@ sb.widget.floatWin.prototype = {
 		return true;
 	},
 
+	makeDraggable : function(){
+		this.win.makeDraggable();
+		if(typeof this.onMakeDraggable === 'function'){
+			this.onMakeDraggable();
+		}
+	},
+	makeUnDraggable : function(){
+
+		this.win.makeUnDraggable();
+		if(typeof this.onMakeUnDraggable === 'function'){
+			this.onMakeUnDraggable();
+		}
+	},
 	goStandard : function(){
 		sb.widget.floatWin.isFullScreen = false;
 		$('html').style.overflow = '';
-		this.win.makeDraggable();
+		this.makeDraggable();
 		sb.widget.floatWin.fullScreen.style.display = 'none';
 		this.win.style.width = '';
 		this.win.style.height = '';
@@ -343,7 +356,7 @@ sb.widget.floatWin.prototype = {
 	collapse : function(){
 
 		this.win.appendTo(sb.widget.floatWin.hub);
-		this.win.makeUnDraggable();
+		this.makeUnDraggable();
 		this.win.style.width = '250px';
 		this.win.style.position = 'static';
 		this.shade();
@@ -399,6 +412,8 @@ sb.widget.floatWin.prototype = {
 	onBeforeFullScreen : function(){},
 	onAfterUnFullScreen : function(){},
 	onDragStart : function(){},
-	onDragStop : function(){}
+	onDragStop : function(){},
+	onMakeDraggable : function(){},
+	onMakeUnDraggable : function(){}
 };
 
