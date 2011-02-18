@@ -42,7 +42,7 @@ sb.widget.notifier = {
             window.clearTimeout(this.clearing);
         }
         
-        el.style.zIndex = 999;
+        el.style.zIndex = 60000;
         var height = el.offsetHeight;
         height = height-(parseInt(el.getStyle('padding'), 10));
         height = height-(parseInt(el.getStyle('border'), 10));
@@ -168,13 +168,13 @@ sb.widget.notifier = {
             var y = t.box.getY();
             var x = parseInt(t.box.style.right, 10) || 0;
 			
-            t.box.style.zIndex = 999;
+            t.box.style.zIndex = 60000;
             t.sliding = t.box.cssTransition([{
                 prop : 'top',
                 begin : y,
                 change : pos[1]-y,
                 onEnd : function(){
-                    t.box.style.zIndex = 999;
+                    t.box.style.zIndex = 60000;
                 },
                 tween : 'inQuad'
             },{
@@ -182,7 +182,7 @@ sb.widget.notifier = {
                 begin : x,
                 change : -pos[0]-x,
                 onEnd : function(){
-                    t.box.style.zIndex = 999;
+                    t.box.style.zIndex = 60000;
                 },
                 tween : 'inQuad'
             }], 24).start();
@@ -205,7 +205,7 @@ sb.widget.notifier = {
             this.createBox();
         }
 
-        this.box.style.zIndex = 999;
+        this.box.style.zIndex = 60000;
         var t = this;
         this.box.events(this.events);
 
