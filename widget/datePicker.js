@@ -621,7 +621,7 @@ sb.widget.datePicker.prototype = {
 			this.slider = new sb.widget.slider({
 				name : ' year',
 				min : this.minYear || year-10,
-				max : this.maxYear || year+30,
+				max : this.maxYear || year+10,
 				id : 'sb_datepicker_year',
 				defaultValue : year,
 				allowFloats : 0,
@@ -837,6 +837,7 @@ sb.widget.datePicker.prototype = {
 
 			this.help = new sb.element({
 				tag : 'div',
+				className : 'sb_datepicker_help',
 				innerHTML : '?',
 				title : 'see tips',
 				styles : {
