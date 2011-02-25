@@ -59,13 +59,19 @@ sb.widget.datePicker.listen = function(params){
 			if(e.target.hasClassName('sb_date_picker')){
 				e.preventDefault();
 				var args = {
-					date : typeof(e.target.value) == 'string' || sb.$(e.target.attr('sb_date_target')).value,
 					target : e.target,
 					minDate : e.target.attr('sb_min_date'),
 					maxDate : e.target.attr('sb_max_date')
 				};
 
+				if(typeof(e.target.value) == 'string'){
+					args.date = e.target.value;
+				} else if(sb.$(e.target.attr('sb_date_target')).value){
+					args.date = sb.$(e.target.attr('sb_date_target')).value;
+				}
+
 				sb.objects.infuse(params, args);
+
 				var cal = new sb.widget.datePicker(args);
 
 				cal.show({
