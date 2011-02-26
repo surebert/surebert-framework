@@ -92,9 +92,7 @@ sb.effect.cssTransition = function(el, changes, duration){
 					this.el.style[change.prop] = sb.colors.getTweenColor(this.beginColor, this.endColor, this.value);
 					
 				} else  {
-					try{
-						this.el.setStyle(change.prop, String(this.value.toFixed(2))+this.unit);
-					} catch(e){}
+					this.el.setStyle(change.prop, String(this.value.toFixed(2))+this.unit);
 				}
 
 				if(typeof effect.onTween == 'function'){
