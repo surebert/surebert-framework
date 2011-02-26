@@ -147,7 +147,9 @@ if(!Array.prototype.forEach){
 	Array.prototype.map = function(func){
 		var n=[];
 		if(typeof func === 'function'){
-			this.forEach(function(v,k,a){n.push(func(v,k,a));});
+			this.forEach(function(v,k,a){
+				n.push(func(v,k,a));
+			});
 		}
 		return n;
 	};
@@ -459,7 +461,10 @@ var sb = {
 	*/
 	get : function(url, data, onResponse, format){
 
-		if(typeof data === 'function'){onResponse = data;data=null;}
+		if(typeof data === 'function'){
+			onResponse = data;
+			data=null;
+		}
 		return sb.ajax.shortcut(url, data, onResponse, format, 'get');
 	},
 
@@ -484,7 +489,10 @@ var sb = {
 	*/
 	post : function(url, data, onResponse, format){
 
-		if(typeof data === 'function'){onResponse = data;data=null;}
+		if(typeof data === 'function'){
+			onResponse = data;
+			data=null;
+		}
 		return sb.ajax.shortcut(url, data, onResponse, format, 'post');
 	},
 
@@ -673,7 +681,11 @@ e.g. 'p, b, #wrapper' Commas allow you to make multiple selections at once.This 
 e.g  '*:not(p)' LIMITED SUPPORT - returns all nodes that are not p tags
 */
 
-sb.$ = function(selector, root) {
+sb.$$ = function(selector, root){
+	return sb.$(selector, root, true);
+};
+
+sb.$ = function(selector, root, asNodeList) {
 
 	root = root || document;
 
@@ -709,6 +721,10 @@ sb.$ = function(selector, root) {
 		sb.$.parseSelectors(nodeList, root);
 	}
 
+	if(asNodeList){
+		return nodeList;
+	}
+	
 	if(nodeList.length() === 0 && nodeList.selector.match(/^\#[\w\-]+$/) ){
 		return null;
 	} else if(nodeList.length() === 1 && (nodeList.selector.match(/^\#[\w\-]+$/) || sb.nodeList.singleTags.some(function(v){
@@ -1246,6 +1262,7 @@ sb.browser ={
 		var safari = new RegExp("safari/(\\d{3})", "i");
 		var chrome = new RegExp("chrome/(\\d{1}\\.\\d{1})", "i");
 		var firefox = new RegExp("firefox/(\\d{1}.\\d{1})", "i");
+		var ie = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
 		var agent = window.navigator.userAgent;
 		var str;
 
@@ -1254,14 +1271,24 @@ sb.browser ={
 			str = agent.match(opera);
 			this.version = str[1];
 
-		} else if (document.all && !window.XMLHttpRequest && document.compatMode){
+		} else if (document.all){
+			var dbs=document.body.style;
 			this.agent = 'ie';
-			this.version = 6;
-			sb.browser.ie6 =1;
-		} else if (document.all && window.XMLHttpRequest && document.compatMode){
-			this.agent = 'ie';
-			this.version = 7;
-
+			if(dbs.opacity!=undefined) {
+				this.version = 9;
+			} else if(dbs.msBlockProgression!=undefined){
+				this.version = 8;
+				if (ie.exec(agent) != null){
+					this.version = parseFloat(RegExp.$1);
+				}
+			} else if(dbs.msInterpolationMode!=undefined){
+				this.version = 7;
+			} else if(dbs.textOverflow!=undefined){
+				this.version = 6;
+				sb.browser.ie6 =1;
+			} else {
+				this.version = 5;
+			}
 		} else if(agent.match(firefox)){
 			this.agent = 'ff';
 			str = agent.match(firefox);
@@ -1430,7 +1457,9 @@ sb.objects = {
 	hardcopy : function(o){
 		var c = {},p;
 		for(p in o){
-			try{c[p] = o[p];}catch(e){}
+			try{
+				c[p] = o[p];
+			}catch(e){}
 		}
 		return c;
 	},
@@ -1641,6 +1670,23 @@ sb.nodeList.prototype = {
 	},
 
 	/**
+	@Name: sb.nodeList.prototype.firePerNode()
+	@Description: Return the func passing the node as first argument as any addition args as arguments
+	@Example:
+	var nodeList = $('li,p');
+	nodeList.firePerNode(Element.prototype.flashBg);
+	*/
+	firePerNode : function(func){
+		var args = sb.toArray(arguments);
+		var func = args.shift();
+		var f = function(v){
+			return func.apply(v, args);
+		};
+		this.nodes.forEach(f);
+		return this;
+	},
+
+	/**
 	@Name: sb.nodeList.prototype.styles(o)
 	@Description: Runs the style method of each node in the nodeList and pass the o style object
 	@Example:
@@ -1654,7 +1700,7 @@ sb.nodeList.prototype = {
 	styles : function(styles){
 		return this.firePerNode(Element.prototype.styles, styles);
 	},
-
+	
 	/**
 	@Name: sb.nodeList.prototype.typeOf
 	@Description: Used Internally for sb.typeOf
@@ -2396,7 +2442,7 @@ sb.events = {
 					type:type,
 					fn:f,
 					remove : sb.events.removeThis
-					};
+				};
 				el.attachEvent('on'+type, f);
 				return sb.events.record(evt);
 			};
@@ -2763,7 +2809,9 @@ Element.prototype.appendAfter = function(after){
 	var a = sb.$(after);
 	var b = a,nxtSib = false;
 	if(a.nextSibling){
-		while((a = a.nextSibling) && a.nodeType === 3){nxtSib = a;}
+		while((a = a.nextSibling) && a.nodeType === 3){
+			nxtSib = a;
+		}
 	}
 
 	if(nxtSib){
@@ -2838,7 +2886,7 @@ var str = myElement.html(); //hello world
 
 */
 Element.prototype.html = function(html){
-	if(!html){
+	if(typeof html === 'undefined'){
 		return this.innerHTML;
 	} else if(typeof html === 'function'){
 		this.innerHTML = html.call(this);
@@ -3168,6 +3216,14 @@ sb.dom.onReady({
 	}
 });
 
+if(sb.browser.agent == 'ie' && sb.browser.version >= 8){
+	sb.events.add('html', 'keydown', function(e){
+		if(e.target.nodeName === 'INPUT' && e.keyCode === 13){
+			e.preventDefault();
+		}
+	});
+}
+
 sb.events.add(window, 'resize', sb.browser.measure);
 sb.events.add(window, 'unload', function(e){
 
@@ -3178,7 +3234,9 @@ sb.events.add(window, 'unload', function(e){
 	});
 	sb.events.removeAll();
 });
+
 window.sb = document.sb = sb;
 if(typeof sbNo$ === 'undefined'){
 	var $ = sb.$;
+	var $$ = sb.$$;
 }
