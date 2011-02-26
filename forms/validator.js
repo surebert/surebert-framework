@@ -61,6 +61,7 @@ sb.forms.validator.prototype= {
 	validate : function(){
 		var self = this;
 		var formValid = true;
+		var firstInvalidInput = false;
 		this.form.$('input').forEach(function(input){
 
 			if(input.type == 'text'){
@@ -104,6 +105,9 @@ sb.forms.validator.prototype= {
 						self.onInputValid(input);
 					} else {
 						self.onInputInvalid(input);
+						if(!firstInvalidInput){
+							firstInvalidInput = input;
+						}
 						formValid = false;
 					}
 					
@@ -116,7 +120,7 @@ sb.forms.validator.prototype= {
 		if(formValid){
 			this.onFormValid(this.form);
 		} else {
-			this.onFormInvalid(this.form);
+			this.onFormInvalid(this.form, firstInvalidInput);
 		}
 
 		return formValid;
@@ -145,7 +149,7 @@ sb.forms.validator.prototype= {
 		input.style.backgroundColor = 'red';
 	},
 
-	onFormInvalid : function(form){},
+	onFormInvalid : function(form, firstInvalidInput){},
 
 	onFormValid : function(form){},
 
