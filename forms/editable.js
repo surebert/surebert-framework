@@ -375,7 +375,7 @@ sb.forms.editable.field.prototype = {
 
 			this.editBar = new sb.element({
 				tag : 'editbar',
-				innerHTML : '<button class="cancel">cancel</button><button class="save">save</button>',
+				innerHTML : '<button class="sb_cancel">cancel</button><button class="sb_save">save</button>',
 				className : this.type,
 				events : {
 					mousedown : function(e){
