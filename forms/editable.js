@@ -271,7 +271,7 @@ sb.forms.editable.field.prototype = {
 	editor.addButton('email');
 	*/
 	addButton : function(str, title, appendAfter){
-		var btn = '<button title="'+title+'">'+str+'</button>';
+		var btn = '<a href="javascript:void(0);" title="'+title+'">'+str+'</a>';
 		if(appendAfter){
 			this.editBar.innerHTML += btn;
 		} else {
@@ -307,7 +307,7 @@ sb.forms.editable.field.prototype = {
 				this.editor.title += ' or enter ';
 			}
 
-			this.editor.title += 'to save';
+			this.editor.title += ' to save';
 
 			this.textField = new sb.element({
 				tag : this.type,
@@ -375,12 +375,12 @@ sb.forms.editable.field.prototype = {
 
 			this.editBar = new sb.element({
 				tag : 'editbar',
-				innerHTML : '<button class="sb_cancel">cancel</button><button class="sb_save">save</button>',
+				innerHTML : '<a href="javascript:void(0);" class="sb_cancel">cancel</a><a href="javascript:void(0);" class="sb_save">save</a>',
 				className : this.type,
 				events : {
 					mousedown : function(e){
 						var target = e.target;
-						if(target.nodeName == 'BUTTON'){
+						if(target.nodeName == 'A'){
 							if(self.onButtonPress.call(self, e) === false){
 								return false;
 							}
@@ -402,7 +402,7 @@ sb.forms.editable.field.prototype = {
 					},
 					mouseup : function(e){
 						var target = e.target;
-						if(target.nodeName == 'BUTTON'){
+						if(target.nodeName == 'A'){
 							if(self.onButtonUp.call(self, e) === false){
 								return false;
 							}
