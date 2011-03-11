@@ -85,7 +85,8 @@ sb.forms.textarea.textBling.prototype = {
 	addButton : function(bling, title){
 	
 		var btn = new sb.element({
-			tag : 'button',
+			tag : 'a',
+			href: 'javascript:void(0);',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
 			title : title || ''
 		});
@@ -99,7 +100,9 @@ sb.forms.textarea.textBling.prototype = {
 	addPromptButton : function(bling, title, question){
 	
 		var btn = new sb.element({
-			tag : 'button',
+			tag : 'a',
+
+			href: 'javascript:void(0);',
 			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
 			title : title
 		});

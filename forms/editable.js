@@ -380,19 +380,17 @@ sb.forms.editable.field.prototype = {
 				events : {
 					mousedown : function(e){
 						var target = e.target;
-						if(target.nodeName == 'A'){
-							if(self.onButtonPress.call(self, e) === false){
-								return false;
-							}
-							switch(target.innerHTML){
-								case 'save':
-									self.onSave(self.textField.value);
-									break;
+						if(self.onButtonPress.call(self, e) === false){
+							return false;
+						}
+						switch(target.innerHTML){
+							case 'save':
+								self.onSave(self.textField.value);
+								break;
 
-								case 'cancel':
-									self.editStop(e);
-									break;
-							}
+							case 'cancel':
+								self.editStop(e);
+								break;
 						}
 						e.preventDefault();
 						e.stopPropagation();
