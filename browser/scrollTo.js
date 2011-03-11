@@ -48,7 +48,7 @@ sb.browser.scrollTo = function(o){
 
 	};
 	var time = 0;
-	var duration = o.duration || 45;
+	var duration = o.duration || 15;
 	var beginX = x
 	var changeX = o.x-x;
 	var tweenX = changeX < 1 ? 'outQuart': 'inQuart';
