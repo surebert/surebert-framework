@@ -228,7 +228,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 		return $str;
 	}
 
-	public function mp3_to_audio($str){
+	public static function mp3_to_audio($str){
 		$path = self::$content_path;
 		return  preg_replace_callback("~\[mp3\](.*?)\[\/mp3\]~s", function($match) use ($path){
 		$uniqid = 'mp3'.uniqid();
