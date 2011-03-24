@@ -437,6 +437,16 @@ class Gateway {
 	public static $logger;
 
 	/**
+	 * Turn data into an appropriate json AJAX response
+	 * @param mixed $data
+	 */
+	public function json_response($data){
+		$response = new sb_Ajax_Response();
+		$response->set_content($data);
+		$response->dispatch();
+	}
+	
+	/**
 	 * Loads a view for rendering
 	 * @param mixed $request Either an instance of sb_Request or a string with the path to the view e.g. /user/run
 	 * @param object $model Optional The model used in the view
@@ -459,7 +469,7 @@ class Gateway {
 		$controller = $request->path_array[0];
 
 		if($controller == 'surebert'){
-			$controller = new sb_Controller_Toolkit();
+			$controller_class = 'sb_Controller_Toolkit';
 		} else if (!empty($controller)) {
 			$controller_class = ucwords($controller) . 'Controller';
 			$controller_file = ROOT . '/private/controllers/' . $controller_class . '.php';
@@ -468,10 +478,8 @@ class Gateway {
 			$controller_file = ROOT . '/private/controllers/IndexController.php';
 		}
 
-		if(!$controller){
-			$controller_class = (is_file($controller_file)) ? $controller_class : Gateway::$default_controller_type;
-			$controller = new $controller_class();
-		}
+		$controller_class = (is_file($controller_file)) ? $controller_class : Gateway::$default_controller_type;
+		$controller = new $controller_class();
 
 		$controller->model = $model;
 
