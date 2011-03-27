@@ -198,7 +198,10 @@ class sb_Controller {
 		return $this->filter_output($output);
 	}
 
-
+	/**
+	 * Include an arbitrary .view template within the $this of the view
+	 * @param string $view_path  e.g. .interface/cp
+	 */
 	public function render_view($view_path){
 
 		$pwd = ROOT.'/private/views/'.$view_path.'.view';
