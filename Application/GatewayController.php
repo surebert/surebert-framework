@@ -111,10 +111,9 @@ class sb_Controller {
 	/**
 	 * Fires before the .view template is rendered allowing you to make decisions, check input args, etc before the output is rendered.
 	 * If you return false from this method then no output is rendered.
-	 * @param $template The .view template requested.  e.g. for /user/dance $template would be dance
 	 * @return boolean determines if the view should render anything or not, false == no render
 	 */
-	protected function on_before_render($template) {
+	protected function on_before_render() {
 		return true;
 	}
 
@@ -129,6 +128,40 @@ class sb_Controller {
 	 * @todo are we still going with this->request->get or do we just want this get?;(
 	 */
 	public function render($template='') {
+
+		$output = '';
+
+		//capture view to buffer
+		ob_start();
+
+		$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : 'index';
+
+		$on_before_render = $this->on_before_render() !== false;
+
+		if(!$on_before_render){
+			return false;
+		}
+
+		if(method_exists($this, $method)){
+			$reflection = new ReflectionMethod($this, $method);
+
+			//check for phpdocs
+			$docs = $reflection->getDocComment();
+			$servable = false;
+			if (!empty($docs)) {
+				if (preg_match("~@servable (true|false)~", $docs, $match)) {
+					$servable = $match[1] == 'true' ? true : false;
+				}
+			}
+
+			if($servable){
+				return $this->filter_output($this->$method());
+			} else {
+				return $this->filter_output($this->not_found($method));
+			}
+
+		}
+
 
 		//set default path
 		$path = $this->request->path;
@@ -150,13 +183,6 @@ class sb_Controller {
 		}
 
 		$pwd = ROOT . '/private/views' . $path . '.view';
-
-		$output = '';
-
-		//capture view to buffer
-		ob_start();
-
-		$on_before_render = $this->on_before_render($template) !== false;
 
 		$this->template = $template;
 
@@ -452,7 +478,7 @@ class Gateway {
 	 * Turn data into an appropriate json AJAX response
 	 * @param mixed $data
 	 */
-	public function json_response($data){
+	public function json_encode($data){
 		$response = new sb_Ajax_Response();
 		$response->set_content($data);
 		$response->dispatch();
