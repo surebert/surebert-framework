@@ -4,7 +4,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4 10-01-2008 03-23-2011
+ * @version 4 10-01-2008 03-26-2011
  * @package sb_Application
  *
  */
@@ -40,7 +40,7 @@ class sb_Controller {
 	 * The argument delimeter e.g. the comma in: /view/action/1,2,3
 	 * @var string
 	 */
-	protected $input_args_delimiter = ',';
+	protected $input_args_delimiter = '/';
 	/**
 	 * Set to true if the view is loaded from within another view via Gateway::render_request, otherwise false
 	 *
@@ -170,6 +170,18 @@ class sb_Controller {
 		$output = ob_get_clean();
 
 		return $this->filter_output($output);
+	}
+
+
+	public function render_view($view_path){
+
+		$pwd = ROOT.'/private/views/'.$view_path.'.view';
+		if(is_file($pwd)){
+			$this->included = 1;
+			require($pwd);
+		} else {
+			$this->not_found($view_path);
+		}
 	}
 
 }
@@ -470,15 +482,19 @@ class Gateway {
 
 		if($controller == 'surebert'){
 			$controller_class = 'sb_Controller_Toolkit';
-		} else if (!empty($controller)) {
-			$controller_class = ucwords($controller) . 'Controller';
-			$controller_file = ROOT . '/private/controllers/' . $controller_class . '.php';
 		} else {
-			$controller_class = 'IndexController';
-			$controller_file = ROOT . '/private/controllers/IndexController.php';
+			if (!empty($controller)) {
+				$controller_class = ucwords($controller) . 'Controller';
+				
+				$controller_file = ROOT . '/private/controllers/' . $controller_class . '.php';
+			} else {
+				$controller_class = 'IndexController';
+				$controller_file = ROOT . '/private/controllers/IndexController.php';
+			}
+			
+			$controller_class = (is_file($controller_file)) ? $controller_class : Gateway::$default_controller_type;
 		}
-
-		$controller_class = (is_file($controller_file)) ? $controller_class : Gateway::$default_controller_type;
+		
 		$controller = new $controller_class();
 
 		$controller->model = $model;
