@@ -133,9 +133,12 @@ class sb_Controller {
 
 		//capture view to buffer
 		ob_start();
-
-		$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : 'index';
-
+		
+		if(get_class($this) == 'IndexController' && isset($this->request->path_array[0])){
+			$method = $this->request->path_array[0];
+		} else {
+			$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : 'index';
+		}
 		$on_before_render = $this->on_before_render() !== false;
 
 		if(!$on_before_render){
@@ -525,7 +528,7 @@ class Gateway {
 		}
 		
 		$controller = new $controller_class();
-
+		
 		$controller->model = $model;
 
 		if ($request != Gateway::$request) {
