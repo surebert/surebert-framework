@@ -401,6 +401,12 @@ class sb_Config {
 class Gateway {
 
 	/**
+	 * The main controller being served by the request
+	 * @var sb_Controller
+	 */
+	public static $controller;
+
+	/**
 	 * The request path being requested
 	 * @var sb_Request
 	 */
@@ -528,7 +534,7 @@ class Gateway {
 		}
 		
 		$controller = new $controller_class();
-		
+		Gateway::$controller = $controller;
 		$controller->model = $model;
 
 		if ($request != Gateway::$request) {
