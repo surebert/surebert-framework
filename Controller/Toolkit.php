@@ -134,6 +134,7 @@ class sb_Controller_Toolkit extends sb_Controller_MethodServer{
 	 * @return string The file data
 	 */
 	protected function grab_file($file, $root){
+		$data = '';
 		if(is_file($root.'/'.$file)){
 
 			$this->loaded_files[] = $file;
@@ -245,7 +246,10 @@ class sb_Controller_Toolkit extends sb_Controller_MethodServer{
 			"css.styleSheet",
 			"events.observer",
 			"events.classListener",
-			"events.idListener"
+			"events.idListener",
+			"widget.notifier",
+			"json.rpc2"
+
 		);
 
 		echo "var sbBase = 'http://".Gateway::$http_host."/surebert/load/';\n";
