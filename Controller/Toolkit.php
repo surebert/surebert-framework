@@ -7,6 +7,8 @@
  */
 class sb_Controller_Toolkit extends sb_Controller{
 
+    public $input_args_delimiter = ',';
+    
 	/**
 	 * Determines if caching is used
 	 * @var boolean
@@ -161,7 +163,7 @@ class sb_Controller_Toolkit extends sb_Controller{
 
 		} else {
 
-			echo"\nthrow('ERROR: Surebert module \"".basename($file)."\" could not be located by /surebert/load ');";
+			echo"\nthrow('ERROR: ".$file." Surebert module \"".basename($file)."\" could not be located by /surebert/load ');";
 		}
 
 		return $data;
