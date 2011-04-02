@@ -5,7 +5,7 @@
  * @version 05/20/2008 03/23/2011
  *
  */
-class sb_Controller_Toolkit extends sb_Controller_MethodServer{
+class sb_Controller_Toolkit extends sb_Controller{
 
 	/**
 	 * Determines if caching is used
