@@ -7,27 +7,23 @@
  * @package sb_JSON_RPC2
  *
  */
+class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 
-class sb_Controller_JSON_RPC2_Server extends sb_Controller{
-
-/**
- * The transport method to listen for data on
- * @var string post or get or both
- */
+	/**
+	 * The transport method to listen for data on
+	 * @var string post or get or both
+	 */
 	public $method = 'post';
-
 	/**
 	 * Determines if objects passed as params are converted to hashes instead of objects
 	 * @var boolean
 	 */
 	public $json_decode_assoc_array = true;
-
 	/**
 	 * If set to true then HTTP status headers 200, 400, 404, 500 are not send with response as some clients cannot parse 404 or 500 responses.
 	 * @var boolean
 	 */
 	public $suppress_http_status = false;
-
 	/**
 	 * Determines if the response body is first serialized as php format before
 	 * being json encoded to preserve hash array data that would otherwise
@@ -36,13 +32,11 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 	 * @var boolean
 	 */
 	public $php_serialize_response = false;
-
 	/**
 	 * The sb_logger to write to
 	 * @var sb_Logger
 	 */
 	protected $logger;
-
 	/**
 	 * The gz encoding level to use when transferring data
 	 * @var integer
@@ -75,7 +69,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 	 * </code>
 	 */
 	public function __construct($methods=Array()) {
-		if(isset($_SERVER) && isset($_SERVER['HTTP_PHP_SERIALIZE_RESPONSE'])) {
+		if (isset($_SERVER) && isset($_SERVER['HTTP_PHP_SERIALIZE_RESPONSE'])) {
 			$this->php_serialize_response = true;
 		}
 	}
@@ -97,7 +91,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 		$this->encryption_key = $key;
 
 		//decrypt cookies if sent
-		foreach(Gateway::$cookie as $k=>$v) {
+		foreach (Gateway::$cookie as $k => $v) {
 			Gateway::$cookie[$k] = $this->encryptor->decrypt($v);
 		}
 	}
@@ -123,36 +117,36 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 		$input = '';
 
 		//DEBUGGING
-		if(!empty($debug_request)) {
+		if (!empty($debug_request)) {
 			$request = new sb_JSON_RPC2_Request($debug_request);
 			$input = $debug_request;
 
-		//FROM POST DATA
-		} else if($this->method == 'post' || $this->method == 'both') {
-				$post = file_get_contents("php://input");
+			//FROM POST DATA
+		} else if ($this->method == 'post' || $this->method == 'both') {
+			$post = file_get_contents("php://input");
 
-				if(isset($this->encryption_key)) {
-					$post = $this->encryptor->decrypt($post);
-				}
-
-				$request = new sb_JSON_RPC2_Request($post);
-				$input = $post;
+			if (isset($this->encryption_key)) {
+				$post = $this->encryptor->decrypt($post);
 			}
+
+			$request = new sb_JSON_RPC2_Request($post);
+			$input = $post;
+		}
 
 		$get = Gateway::$request->get;
 
 		//FROM GET DATA
-		if(is_null($request)
-			&& ($this->method == 'get' || $this->method == 'both')
-			&& isset($get['method']) && isset($get['params']) && isset($get['id'])
+		if (is_null($request)
+				&& ($this->method == 'get' || $this->method == 'both')
+				&& isset($get['method']) && isset($get['params']) && isset($get['id'])
 		) {
 
 			$request = new sb_JSON_RPC2_Request();
 			$request->method = $get['method'];
 
-			$params =$get['params'];
+			$params = $get['params'];
 
-			if(!preg_match("~[\[\{]~", substr($params, 0, 1))) {
+			if (!preg_match("~[\[\{]~", substr($params, 0, 1))) {
 
 				$params = base64_decode($params);
 			}
@@ -162,19 +156,19 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 			$request->id = $get['id'];
 			$input = json_encode($request);
 		}
-		
-		if(is_null($request)) {
-			$response->error = new sb_JSON_RPC2_Error(-32700, 'Parse Error', "Data Received: ".$input);
+
+		if (is_null($request)) {
+			$response->error = new sb_JSON_RPC2_Error(-32700, 'Parse Error', "Data Received: " . $input);
 		} else {
 			$response->id = $request->id;
 		}
 
-		if($this->logger instanceof sb_Logger) {
+		if ($this->logger instanceof sb_Logger) {
 			$this->logger->add_log_types(Array('sb_json_rpc2_server'));
-			$this->logger->sb_json_rpc2_server("--> ". $input);
+			$this->logger->sb_json_rpc2_server("--> " . $input);
 		}
-		$servable= false;
-		if(method_exists($this, $request->method)){
+		$servable = false;
+		if (method_exists($this, $request->method)) {
 			$reflection = new ReflectionMethod($this, $request->method);
 
 			//check for phpdocs
@@ -185,36 +179,35 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 					$servable = $match[1] == 'true' ? true : false;
 				}
 			}
-
 		}
 		//check for requested remote procedure
-		if($servable) {
+		if ($servable) {
 
-			if(is_object($request->params)) {
+			if (is_object($request->params)) {
 				$answer = call_user_func(Array($this, $request->method), $request->params);
-			} else if(is_array($request->params)) {
-					$answer = call_user_func_array(Array($this, $request->method), $request->params);
-				}
+			} else if (is_array($request->params)) {
+				$answer = call_user_func_array(Array($this, $request->method), $request->params);
+			}
 
 			//if they return an error from the method call, return that
-			if($answer instanceof sb_JSON_RPC2_Error) {
+			if ($answer instanceof sb_JSON_RPC2_Error) {
 				$response->error = $answer;
-
 			} else {
-			//otherwise return the answer
+				//otherwise return the answer
 				$response->result = $answer;
 			}
 		} else {
+
 			$response->error = new sb_JSON_RPC2_Error();
 			$response->error->code = -32601;
 			$response->error->message = "Procedure not found";
 		}
 
 		//remove unnecessary properties
-		if($response->error instanceof sb_JSON_RPC2_Error) {
+		if ($response->error instanceof sb_JSON_RPC2_Error) {
 
 			unset($response->result);
-			if(is_null($response->error->data)) {
+			if (is_null($response->error->data)) {
 				unset($response->error->data);
 			}
 		} else {
@@ -222,10 +215,10 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 		}
 
 		//log the final response
-		if($this->logger instanceof sb_Logger) {
-			$this->logger->sb_json_rpc2_server('<-- '.json_encode($response));
-
+		if ($this->logger instanceof sb_Logger) {
+			$this->logger->sb_json_rpc2_server('<-- ' . json_encode($response));
 		}
+
 
 		return $response;
 	}
@@ -238,50 +231,52 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 	public function handle($json_request = null) {
 
 		$response = $this->parse_request($json_request);
-		
+
 		$message = 'OK';
 		$status = 200;
 		//headers from spec here http://json-rpc.googlegroups.com/web/json-rpc-over-http.html
-		if(isset($response->error) && $response->error instanceof sb_JSON_RPC2_Error) {
+		if (isset($response->error) && $response->error instanceof sb_JSON_RPC2_Error) {
 			$code = $response->error->code;
 
-			if(
-			in_array($code, Array(-32700, -3260, -32603))
+			if (in_array($code, Array(-32700, -3260, -32603))
 				|| ($code <= -32000 && $code >= -32099)) {
 				$status = 500;
 				$message = 'Internal Server Error';
-			} else if($code == -32600) {
-					$message = 'Bad Request';
-					$status = 400;
-				} else if ($code == -32601) {
-						$message = 'Not Found';
-						$status = 404;
-					}
+			} else if ($code == -32600) {
+				$message = 'Bad Request';
+				$status = 400;
+			} else if ($code == -32601) {
 
+				$override = $this->not_found();
+				if(!is_null($override)){
+					return $override;
+				}
+				$message = 'Not Found';
+				$status = 404;
+			}
 		}
 
-		if(!$this->suppress_http_status) {
+		if (!$this->suppress_http_status) {
 			header("Content-Type: application/json-rpc");
-			header("HTTP/1.1 ".$status." ".$message);
+			header("HTTP/1.1 " . $status . " " . $message);
 		}
 
 		//serialize PHP to preserve format of hashes if client requests it in headers
-		if($this->php_serialize_response) {
+		if ($this->php_serialize_response) {
 			$json_response = serialize($response);
 		} else {
-			$json_response =  json_encode($response);
+			$json_response = json_encode($response);
 		}
 
-		if(!empty($this->encryption_key)) {
+		if (!empty($this->encryption_key)) {
 			$json_response = $this->encryptor->encrypt($json_response);
 		}
 
-		if($this->gz_encode_level !== false) {
+		if ($this->gz_encode_level !== false) {
 			$json_response = gzencode($json_response, $this->gz_encode_level);
 		}
 
 		return $json_response;
-
 	}
 
 	/**
@@ -292,12 +287,12 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 	protected function get_methods($html = true) {
 
 		$arr = Array();
-		
-		foreach(get_class_methods($this) as $method) {
 
-			$reflect =  new ReflectionMethod($this, $method);
+		foreach (get_class_methods($this) as $method) {
 
-			if($reflect) {
+			$reflect = new ReflectionMethod($this, $method);
+
+			if ($reflect) {
 				$docs = $reflect->getDocComment();
 				$servable = false;
 				if (!empty($docs)) {
@@ -305,29 +300,28 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 						$servable = $match[1] == 'true' ? true : false;
 					}
 				}
-				if(!$servable){
+				if (!$servable) {
 					continue;
 				}
 
 				$params = $reflect->getParameters();
 				$ps = Array();
-				foreach($params as $param) {
-					$ps[] = '$'.$param->getName();
+				foreach ($params as $param) {
+					$ps[] = '$' . $param->getName();
 				}
 
-				$key = $method.'('.implode(', ', $ps).')';
+				$key = $method . '(' . implode(', ', $ps) . ')';
 
 				$arr[$key] = $reflect->getDocComment();
 			}
 		}
 
-		if($html == false) {
+		if ($html == false) {
 			return $arr;
 		} else {
 			return $this->methods_to_html($arr);
 		}
 	}
-
 
 	/**
 	 * Get php doc and return_type for method by name
@@ -337,7 +331,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 	 */
 	protected function get_phpdoc($method) {
 
-		if(method_exists($this, $method)){
+		if (method_exists($this, $method)) {
 			$reflect = new ReflectionMethod($this, $method);
 		} else {
 			$response->error = new sb_JSON_RPC2_Error();
@@ -345,11 +339,11 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 			$response->error->message = "Invalid method parameters";
 			return $response;
 		}
-		
+
 		$response = new stdClass();
 		$response->phpdoc = $reflect->getDocComment();
 
-		if(preg_match("~@return (.*?) (.*?)\*/$~s", $response->phpdoc, $match)) {
+		if (preg_match("~@return (.*?) (.*?)\*/$~s", $response->phpdoc, $match)) {
 			$response->return_type = $match[1];
 		} else {
 			$response->return_type = 'n/a';
@@ -366,8 +360,8 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 	protected function methods_to_html($methods) {
 
 		$html = '<style type="text/css">li{background-color:#c8c8d4;}h1{font-size:1.0em;padding:3px 0 3px 10px;color:white;background-color:#8181bd;}pre{color:#1d1d4d;}</style><ol>';
-		foreach($methods as $method=>$comments) {
-			$html .= '<li><h1>$server->'.$method.';</h1><pre>'."\t".$comments.'</pre></li>';
+		foreach ($methods as $method => $comments) {
+			$html .= '<li><h1>$server->' . $method . ';</h1><pre>' . "\t" . $comments . '</pre></li>';
 		}
 
 		$html .= '</ol>';
@@ -375,9 +369,14 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller{
 		return $html;
 	}
 
-	public function render(){
+	public function render() {
 		return $this->handle();
 	}
 
+	public function not_found() {
+		return 'nf';
+	}
+
 }
+
 ?>
