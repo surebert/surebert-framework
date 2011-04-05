@@ -165,7 +165,6 @@ class sb_Controller {
 
 		}
 
-
 		//set default path
 		$path = $this->request->path;
 
@@ -206,7 +205,9 @@ class sb_Controller {
 	 * @param string $view_path  e.g. .interface/cp
 	 */
 	public function render_view($view_path){
-
+		
+		//capture view to buffer
+		ob_start();
 		$pwd = ROOT.'/private/views/'.$view_path.'.view';
 		if(is_file($pwd)){
 			$this->included = 1;
@@ -214,6 +215,7 @@ class sb_Controller {
 		} else {
 			$this->not_found($view_path);
 		}
+		return ob_get_clean();
 	}
 
 }
