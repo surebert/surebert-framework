@@ -370,11 +370,13 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	}
 
 	public function render() {
-		return $this->handle();
+		if($this->on_before_render() !== false){
+			return $this->handle();
+		}
 	}
 
 	public function not_found() {
-		return 'nf';
+		return true;
 	}
 
 }
