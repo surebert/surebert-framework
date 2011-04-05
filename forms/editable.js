@@ -271,7 +271,7 @@ sb.forms.editable.field.prototype = {
 	editor.addButton('email');
 	*/
 	addButton : function(str, title, appendAfter){
-		var btn = '<a href="javascript:void(0);" title="'+title+'">'+str+'</a>';
+		var btn = '<a href="javascript:void(0);" onclick="return false;" title="'+title+'">'+str+'</a>';
 		if(appendAfter){
 			this.editBar.innerHTML += btn;
 		} else {
@@ -375,7 +375,7 @@ sb.forms.editable.field.prototype = {
 
 			this.editBar = new sb.element({
 				tag : 'editbar',
-				innerHTML : '<a href="javascript:void(0);" class="sb_cancel">cancel</a><a href="javascript:void(0);" class="sb_save">save</a>',
+				innerHTML : '<a href="javascript:void(0);" class="sb_cancel" onclick="return false;">cancel</a><a href="javascript:void(0);" class="sb_save" onclick="return false;">save</a>',
 				className : this.type,
 				events : {
 					mousedown : function(e){

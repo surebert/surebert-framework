@@ -47,6 +47,12 @@ sb.forms.textarea.textBling.prototype = {
 					target=target.parentNode;
 				}
 
+
+				//e.preventDefault();
+				//e.stopPropagation();
+				//return false;
+
+
 				if(typeof target.onPress == 'function'){
 					target.onPress(e);
 				}
@@ -82,16 +88,20 @@ sb.forms.textarea.textBling.prototype = {
 			});
 	},
 
-	addButton : function(bling, title){
+	addButton : function(bling, title, custom){
 	
 		var btn = new sb.element({
 			tag : 'a',
 			href: 'javascript:void(0);',
-			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
+			onclick : function(){return false;},
+			innerHTML : bling,
 			title : title || ''
 		});
-		btn.setAttribute('bling', bling);
-		btn.setAttribute('kind', 'basic');
+
+		if(!custom){
+			btn.setAttribute('bling', bling);
+			btn.setAttribute('kind', 'basic');
+		}
 		
 		btn.appendTo(this.editBar);
 		
@@ -101,9 +111,9 @@ sb.forms.textarea.textBling.prototype = {
 	
 		var btn = new sb.element({
 			tag : 'a',
-
+			onclick : function(){return false;},
 			href: 'javascript:void(0);',
-			innerHTML : '<span class="tb_'+bling+'">'+bling+'</span>',
+			innerHTML : bling,
 			title : title
 		});
 

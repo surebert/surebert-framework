@@ -13,6 +13,7 @@ sb.browser.onBeforeExit.checks.push(function(){
 	}
 });
 */
+
 sb.browser.onBeforeExit = {
 	checks : [],
 	check : function(){
