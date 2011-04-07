@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4 10-01-2008 03-26-2011
+ * @version 4.01 10-01-2008 04-07-2011
  * @package sb_Application
  *
  */
@@ -133,7 +132,7 @@ class sb_Controller {
 
 		//capture view to buffer
 		ob_start();
-		
+
 		if(get_class($this) == 'IndexController' && isset($this->request->path_array[0])){
 			$method = $this->request->path_array[0];
 		} else {
@@ -205,7 +204,7 @@ class sb_Controller {
 	 * @param string $view_path  e.g. .interface/cp
 	 */
 	public function render_view($view_path){
-		
+
 		//capture view to buffer
 		ob_start();
 		$pwd = ROOT.'/private/views/'.$view_path.'.view';
@@ -497,7 +496,7 @@ class Gateway {
 		$response->set_content($data);
 		$response->dispatch();
 	}
-	
+
 	/**
 	 * Loads a view for rendering
 	 * @param mixed $request Either an instance of sb_Request or a string with the path to the view e.g. /user/run
@@ -520,21 +519,20 @@ class Gateway {
 
 		$controller = $request->path_array[0];
 
-		if($controller == 'surebert'){
+		if (!empty($controller)) {
+			$controller_class = ucwords($controller) . 'Controller';
+
+			$controller_file = ROOT . '/private/controllers/' . $controller_class . '.php';
+		} else if($controller == 'surebert'){
 			$controller_class = 'sb_Controller_Toolkit';
 		} else {
-			if (!empty($controller)) {
-				$controller_class = ucwords($controller) . 'Controller';
-				
-				$controller_file = ROOT . '/private/controllers/' . $controller_class . '.php';
-			} else {
-				$controller_class = 'IndexController';
-				$controller_file = ROOT . '/private/controllers/IndexController.php';
-			}
-			
-			$controller_class = (is_file($controller_file)) ? $controller_class : Gateway::$default_controller_type;
+			$controller_class = 'IndexController';
+			$controller_file = ROOT . '/private/controllers/IndexController.php';
 		}
-		
+
+		$controller_class = (is_file($controller_file)) ? $controller_class : Gateway::$default_controller_type;
+
+
 		$controller = new $controller_class();
 		Gateway::$controller = $controller;
 		$controller->model = $model;
