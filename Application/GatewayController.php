@@ -519,19 +519,22 @@ class Gateway {
 
 		$controller = $request->path_array[0];
 
-		if (!empty($controller)) {
-			$controller_class = ucwords($controller) . 'Controller';
-
-			$controller_file = ROOT . '/private/controllers/' . $controller_class . '.php';
-		} else if($controller == 'surebert'){
-			$controller_class = 'sb_Controller_Toolkit';
+		if(empty($controller)){
+			$controller_class = Gateway::$default_controller_type;
 		} else {
-			$controller_class = 'IndexController';
-			$controller_file = ROOT . '/private/controllers/IndexController.php';
+			$controller_class = ucwords($controller) . 'Controller';
+			
+			if(!is_file(ROOT . '/private/controllers/' . $controller_class . '.php')){
+				$controller_class = null;
+				if($controller == 'surebert'){
+					$controller_class = 'sb_Controller_Toolkit';
+				}
+			}
 		}
 
-		$controller_class = (is_file($controller_file)) ? $controller_class : Gateway::$default_controller_type;
-
+		if(!isset($controller_class)){
+			$controller_class = Gateway::$default_controller_type;;
+		}
 
 		$controller = new $controller_class();
 		Gateway::$controller = $controller;
@@ -750,9 +753,6 @@ class Gateway {
 		} else if (substr($class_name, 0, 3) == 'rp/') {
 			$class_name = substr_replace($class_name, "", 0, 3);
 			require(SUREBERT_FRAMEWORK_RP_PATH . '/' . $class_name . '.php');
-		} else if ($class_name == 'IndexController') {
-
-			require(ROOT . '/private/controllers/IndexController.php');
 		} else if (preg_match('~Controller$~', $class_name)) {
 			$d = preg_replace("~[A-Z][a-z]+$~", "", $class_name);
 			require(ROOT . '/private/controllers/' . $class_name . '.php');
