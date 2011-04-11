@@ -371,7 +371,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 
 	public function render() {
 		if($this->on_before_render() !== false){
-			return $this->handle();
+			return $this->filter_output($this->handle());
 		}
 	}
 
