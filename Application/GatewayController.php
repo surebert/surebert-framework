@@ -138,7 +138,7 @@ class sb_Controller {
 		} else {
 			$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : 'index';
 		}
-		$on_before_render = $this->on_before_render() !== false;
+		$on_before_render = $this->on_before_render($method) !== false;
 
 		if(!$on_before_render){
 			return false;
@@ -523,7 +523,7 @@ class Gateway {
 			$controller_class = Gateway::$default_controller_type;
 		} else {
 			$controller_class = ucwords($controller) . 'Controller';
-			
+
 			if(!is_file(ROOT . '/private/controllers/' . $controller_class . '.php')){
 				$controller_class = null;
 				if($controller == 'surebert'){
@@ -581,8 +581,10 @@ class Gateway {
 
 			$action = $p[1];
 
-			if (class_exists($model) && in_array('sb_Magic_Model', class_implements($model, true))) {
-
+			if (class_exists($model)
+				&& in_array('sb_Magic_Model', class_implements($model, true))
+				&& (method_exists($model, $action) || method_exists($model, '__call'))
+			) {
 				return self::render_magic_model($model, $action);
 			}
 		}
@@ -624,79 +626,6 @@ class Gateway {
 
 			$action == '__call';
 			$servable = true;
-		}if (in_array('sb_Magic_Model', class_implements($model, true))) {
-
-			//get class default method
-			$http_method = 'post';
-
-			//determine how args are passed to method
-			$input_as_array = false;
-
-			$servable = false;
-			if (method_exists($model, $action)) {
-				$reflection = new ReflectionMethod($model, $action);
-
-				//check for phpdocs
-				$docs = $reflection->getDocComment();
-
-
-				if (!empty($docs)) {
-					if (preg_match("~@http_method (get|post)~", $docs, $match)) {
-						$http_method = $match[1];
-					}
-
-					if (preg_match("~@input_as_array (true|false)~", $docs, $match)) {
-						$input_as_array = $match[1] == 'true' ? true : false;
-					}
-
-					if (preg_match("~@servable (true|false)~", $docs, $match)) {
-
-						$servable = $match[1] == 'true' ? true : false;
-					}
-				}
-			} else if (method_exists($model, '__call')) {
-
-				$action == '__call';
-				$servable = true;
-			}
-
-			if ($servable) {
-				//notify which model is being served
-				Gateway::$magic_model = $model;
-
-				//explode input args
-				self::$request->set_input_args_delimiter('/');
-
-				//create instance of model
-				$instance = new $model(self::$request->args);
-
-				//set up arguments to pass to function
-				$args = self::$request->{$http_method};
-
-				//pass thru input filter if it exists
-				if (method_exists($instance, 'filter_input')) {
-					$args = $instance->filter_input($args);
-				}
-
-				if ($input_as_array) {
-					$data = $instance->$action($args);
-				} else {
-					$data = call_user_func_array(array($instance, $action), array_values($args));
-				}
-
-				if (isset($instance->logger) && $instance->logger instanceof sb_Logger_Base) {
-					$instance->logger->add_log_types(Array($model));
-
-					if ($input_as_array) {
-						$args = json_encode($args);
-					} else {
-						$args = implode(",", $args);
-					}
-					$instance->logger->{$model}($action . "(" . $args . ');');
-				}
-
-				return $instance->filter_output($data);
-			}
 		}
 
 		if ($servable) {
