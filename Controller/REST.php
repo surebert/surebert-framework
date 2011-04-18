@@ -40,7 +40,10 @@ class sb_Controller_REST extends sb_Controller{
 	 * @return string
 	 */
 	public function render(){
-		
+		if($this->on_before_render() === false){
+			return $this->not_found();
+		}
+
 		$method = Gateway::$request_method;
 		if(method_exists($this, $method)){
 			$reflection = new ReflectionMethod($this, $method);
