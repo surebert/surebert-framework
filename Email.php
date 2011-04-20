@@ -231,6 +231,13 @@ class sb_Email{
      */
     protected static $outbox;
 
+	/**
+	 * Fires before sending, if returns false, then sending does not occur
+	 * @return boolean
+	 */
+	public function on_before_send(){
+		return true;
+	}
     /**
      * Uses sb_Email_Writer to send the email
      */
@@ -241,11 +248,13 @@ class sb_Email{
         } else if(!self::$outbox){
             self::$outbox = new sb_Email_Writer();
         }
-        
-        self::$outbox->add_email_to_outbox($this);
 
-        //return if sent
-        return self::$outbox->send();
+		if($this->on_before_send($this) !== false){
+			self::$outbox->add_email_to_outbox($this);
+
+			//return if sent
+			return self::$outbox->send();
+		}
 
     }
 
