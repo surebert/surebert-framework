@@ -1,9 +1,11 @@
 <?php
+//require_once('/var/www/sbf/sb/trunk/Application/GatewayController.php');
+
 /**
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4.01 10-01-2008 04-07-2011
+ * @version 4.1 10-01-2008 04-21-2011
  * @package sb_Application
  *
  */
@@ -59,13 +61,20 @@ class sb_Controller {
 	protected $args;
 
 	/**
+	 * Determines which file is loaded in the view directory if one is not specified.  When not set renders index.view.  To set just use template name minus the .view extension e.g. $this->default-file = index;
+	 *
+	 * @var string
+	 */
+	protected $default_file = 'index';
+
+	/**
 	 * Filters the output after the view is rendered but before
 	 * it is displayed so that you can filter the output
 	 *
 	 * @param $output
 	 * @return string
 	 */
-	protected function filter_output($output) {
+	public function filter_output($output) {
 		return $output;
 	}
 
@@ -89,30 +98,11 @@ class sb_Controller {
 	}
 
 	/**
-	 * Default request not fullfilled
-	 */
-	public function not_found(){
-		$file = ROOT . '/private/views/errors/404.view';
-		if (is_file($file)) {
-			include_once($file);
-		} else {
-			header("HTTP/1.0 404 Not Found");
-		}
-	}
-
-	/**
-	 * Determines which file is loaded in the view directory if one is not specified.  When not set renders index.view.  To set just use template name minus the .view extension e.g. $this->default-file = index;
-	 *
-	 * @var string
-	 */
-	protected $default_file = 'index';
-
-	/**
 	 * Fires before the .view template is rendered allowing you to make decisions, check input args, etc before the output is rendered.
 	 * If you return false from this method then no output is rendered.
 	 * @return boolean determines if the view should render anything or not, false == no render
 	 */
-	protected function on_before_render() {
+	public function on_before_render($method='') {
 		return true;
 	}
 
@@ -138,30 +128,10 @@ class sb_Controller {
 		} else {
 			$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : 'index';
 		}
-		$on_before_render = $this->on_before_render($method) !== false;
 
-		if(!$on_before_render){
-			return false;
-		}
-
-		if(method_exists($this, $method)){
-			$reflection = new ReflectionMethod($this, $method);
-
-			//check for phpdocs
-			$docs = $reflection->getDocComment();
-			$servable = false;
-			if (!empty($docs)) {
-				if (preg_match("~@servable (true|false)~", $docs, $match)) {
-					$servable = $match[1] == 'true' ? true : false;
-				}
-			}
-
-			if($servable){
-				return $this->filter_output($this->$method());
-			} else {
-				return $this->filter_output($this->not_found($method));
-			}
-
+		$data = Gateway::process_class_method($this, $method);
+		if($data !== false){
+			return $data;
 		}
 
 		//set default path
@@ -183,38 +153,47 @@ class sb_Controller {
 			$path .='/' . $this->default_file;
 		}
 
-		$pwd = ROOT . '/private/views' . $path . '.view';
-
 		$this->template = $template;
 
-		//use template not found if view not found
-		if (!is_file($pwd)) {
-			$this->not_found(basename($path));
-		} else if ($on_before_render) {
-			require($pwd);
-		}
-
+		$this->get_view($path);
 		$output = ob_get_clean();
 
 		return $this->filter_output($output);
+	}
+
+	protected function get_view($path, $included = 0){
+		$pwd = ROOT.'/private/views/'.$path.'.view';
+		if(is_file($pwd)){
+			$this->included = $included;
+			require($pwd);
+		} else {
+			return $this->not_found($path);
+		}
 	}
 
 	/**
 	 * Include an arbitrary .view template within the $this of the view
 	 * @param string $view_path  e.g. .interface/cp
 	 */
-	public function render_view($view_path){
+	public function render_view($path){
 
 		//capture view to buffer
 		ob_start();
-		$pwd = ROOT.'/private/views/'.$view_path.'.view';
-		if(is_file($pwd)){
-			$this->included = 1;
-			require($pwd);
-		} else {
-			$this->not_found($view_path);
-		}
+		$this->get_view($path, 1);
 		return ob_get_clean();
+	}
+
+
+	/**
+	 * Default request not fullfilled
+	 */
+	public function not_found(){
+		$file = ROOT . '/private/views/errors/404.view';
+		if (is_file($file)) {
+			include_once($file);
+		} else {
+			header("HTTP/1.0 404 Not Found");
+		}
 	}
 
 }
@@ -517,6 +496,44 @@ class Gateway {
 			trigger_error('$request must be a sb_Request instance');
 		}
 
+		$p = $request->path_array;
+
+		//see if there is an model/action possibility
+		if (isset($p[0]) && isset($p[1])) {
+
+			if (strstr($p[0], '_')) {
+				$p[0] = explode("_", $p[0]);
+				$arr = Array();
+				foreach ($p[0] as $s) {
+					$arr[] = ucwords($s);
+				}
+				$model = implode("_", $arr);
+				unset($arr);
+			} else {
+				$model = ucwords($p[0]);
+			}
+
+			$action = $p[1];
+
+			if (class_exists($model)
+				&& in_array('sb_Magic_Model', class_implements($model, true))
+				&& (method_exists($model, $action) || method_exists($model, '__call'))
+			) {
+				//notify which model is being served
+				Gateway::$magic_model = $model;
+
+				//explode input args
+				$request->set_input_args_delimiter('/');
+
+				//create instance of model
+				$instance = new $model($request->args);
+				$data = self::process_class_method($instance, $action);
+				if($data !== false){
+					return $data;
+				}
+			}
+		}
+
 		$controller = $request->path_array[0];
 
 		if(empty($controller)){
@@ -555,60 +572,26 @@ class Gateway {
 		return $controller->render();
 	}
 
-	/**
-	 * Loads the main request
-	 * @author visco
-	 *
-	 */
-	public static function render_main_request() {
+	public static function process_class_method($class, $method){
 
-		$p = self::$request->path_array;
+		$servable = false;
+		$http_method = 'post';
+		$input_as_array = false;
+		$args = Array();
 
-		//see if there is an model/action possibility
-		if (isset($p[0]) && isset($p[1])) {
-
-			if (strstr($p[0], '_')) {
-				$p[0] = explode("_", $p[0]);
-				$arr = Array();
-				foreach ($p[0] as $s) {
-					$arr[] = ucwords($s);
-				}
-				$model = implode("_", $arr);
-				unset($arr);
-			} else {
-				$model = ucwords($p[0]);
-			}
-
-			$action = $p[1];
-
-			if (class_exists($model)
-				&& in_array('sb_Magic_Model', class_implements($model, true))
-				&& (method_exists($model, $action) || method_exists($model, '__call'))
-			) {
-				return self::render_magic_model($model, $action);
+		if(method_exists($class, 'on_before_render')){
+			if($class->on_before_render($method) === false){
+				return false;
 			}
 		}
 
-		//otherwise assume controller and render accordingly
-		return self::render_request(self::$request);
-	}
-
-	public static function render_magic_model($model, $action) {
-
-		//get class default method
-		$http_method = 'post';
-
-		//determine how args are passed to method
-		$input_as_array = false;
-
-		$servable = false;
-		if (method_exists($model, $action)) {
-			$reflection = new ReflectionMethod($model, $action);
+		if (method_exists($class, $method)) {
+			$reflection = new ReflectionMethod($class, $method);
 
 			//check for phpdocs
 			$docs = $reflection->getDocComment();
-
 			if (!empty($docs)) {
+
 				if (preg_match("~@http_method (get|post)~", $docs, $match)) {
 					$http_method = $match[1];
 				}
@@ -618,53 +601,40 @@ class Gateway {
 				}
 
 				if (preg_match("~@servable (true|false)~", $docs, $match)) {
-
 					$servable = $match[1] == 'true' ? true : false;
 				}
 			}
-		} else if (method_exists($model, '__call')) {
 
-			$action == '__call';
+
+			//set up arguments to pass to function
+			if(!isset($class->request)){
+				$class->request = Gateway::$request;
+			}
+
+			$args = $class->request->{$http_method};
+
+			//pass thru input filter if it exists
+			if (method_exists($class, 'filter_input')) {
+				$args = $class->filter_input($args);
+			}
+		} else if (method_exists($class, '__call')) {
 			$servable = true;
 		}
 
-		if ($servable) {
-			//notify which model is being served
-			Gateway::$magic_model = $model;
-
-			//explode input args
-			self::$request->set_input_args_delimiter('/');
-
-			//create instance of model
-			$instance = new $model(self::$request->args);
-
-			//set up arguments to pass to function
-			$args = self::$request->{$http_method};
-
-			//pass thru input filter if it exists
-			if (method_exists($instance, 'filter_input')) {
-				$args = $instance->filter_input($args);
-			}
+		if($servable){
 
 			if ($input_as_array) {
-				$data = $instance->$action($args);
+
+				$data = $class->$action($args);
 			} else {
-				$data = call_user_func_array(array($instance, $action), array_values($args));
+
+				$data = call_user_func_array(array($class, $method), array_values($args));
 			}
 
-			if (isset($instance->logger) && $instance->logger instanceof sb_Logger_Base) {
-				$instance->logger->add_log_types(Array($model));
-
-				if ($input_as_array) {
-					$args = json_encode($args);
-				} else {
-					$args = implode(",", $args);
-				}
-				$instance->logger->{$model}($action . "(" . $args . ');');
-			}
-
-			return $instance->filter_output($data);
+			return $class->filter_output($data);
 		}
+
+		return false;
 	}
 
 	/**
@@ -841,7 +811,7 @@ Gateway::set_main_request((isset($argv) ? $argv : null));
 Gateway::file_require('/private/config/definitions.php');
 
 //load the main request as view or magic model
-$output = Gateway::render_main_request();
+$output = Gateway::render_request(Gateway::$request);
 
 //filter the output if required and display it
 if (method_exists('App', "filter_all_output")) {
@@ -856,7 +826,6 @@ if (ob_get_level ()) {
 
 if (Gateway::$logger instanceof sb_Logger_Base) {
 
-	Gateway::$logger->add_log_types(Array('gateway'));
 	Gateway::$logger->gateway(((microtime(true) - $sb_start) * 1000) . "ms\t" . (memory_get_usage() / 1024) . "kb\n" . print_r(Gateway::$request, 1));
 }
 ?>
