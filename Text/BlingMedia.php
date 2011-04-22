@@ -318,7 +318,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 	 */
 	public static function nonflash_media_to_html($str){
 		
-		preg_match_all( "~\[(wav|mid|amr|3gp|mp4|avi)\](.*?)\[\/(wav|mid|amr|3gp|mp4|avi)\]~s", $str, $matches );
+		preg_match_all( "~\[(wav|mid|amr|3gp|mp4|avi|ogg)\](.*?)\[\/(wav|mid|amr|3gp|mp4|avi|ogg)\]~s", $str, $matches );
 
 		$count = count($matches[0]);
 		
@@ -328,10 +328,15 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			$qt = '';
 			if(!self::$mobile) {
 				
-				if($matches[1][$x] == "avi"){
+				if($matches[1][$x] == "ogg"){
+                    $qt .='<audio controls="true" src="'.self::$content_path.'/'.$matches[2][$x].'" height="35" width="460" tabindex="0"></audio>';
+                } else if($matches[1][$x] == "avi"){
 
 					$qt .= '<embed src="'.$media.'" width="400" height="300" scale="aspect" controller="true" autoplay="true" />';
-				} else {
+				
+                    
+                    $qt .= '<a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
+                } else {
 					$w = ($matches[1][$x] == "3gp" || $matches[1][$x] == "mp4") ? "320" : "150";
 
 					$h =  ($matches[1][$x] == "3gp" || $matches[1][$x] == "mp4") ? "256" : "16";
@@ -339,11 +344,12 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 					$qt = '<div style="background-color:black;border:2px solid black;width:'.$w.'px;height:'.$h.'px"><object  classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="'.$w.'" height="'.$h.'" codebase="http://www.apple.com/qtactivex/qtplugin.cab" ><param name="src" value="'.self::$content_path.'/'.$matches[2][$x].'" /><param name="conroller" value="true" /><param name="autoplay" value="false" />';
 					$qt .= '<object data="'.self::$content_path.'/'.$matches[2][$x].'" width="'.$w.'" height="'.$h.'" class="qt"><param name="controller" value="true" /><param name="autoplay" value="false" />No</object>';
 					$qt .='</object></div>';
+                    
+                    $qt .= '<a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
 				}
 				
 			}
 
-			$qt .= '<a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
 
 			//replace media in the journal
 			$str = str_replace($matches[0][$x], $qt, $str);
