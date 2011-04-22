@@ -335,7 +335,6 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 					$qt .= '<embed src="'.$media.'" width="400" height="300" scale="aspect" controller="true" autoplay="true" />';
 				
                     
-                    $qt .= '<a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
                 } else {
 					$w = ($matches[1][$x] == "3gp" || $matches[1][$x] == "mp4") ? "320" : "150";
 
@@ -345,11 +344,11 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 					$qt .= '<object data="'.self::$content_path.'/'.$matches[2][$x].'" width="'.$w.'" height="'.$h.'" class="qt"><param name="controller" value="true" /><param name="autoplay" value="false" />No</object>';
 					$qt .='</object></div>';
                     
-                    $qt .= '<a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
 				}
 				
 			}
-
+            
+            $qt .= '<br /><a class="blank" href="'.$media.'" >::DOWNLOAD MEDIA::</a> ';
 
 			//replace media in the journal
 			$str = str_replace($matches[0][$x], $qt, $str);
