@@ -393,7 +393,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 		for($x=0;$x<$num_images;$x++){
 			$center = ($matches[2][$x] =='center') ? 1: 0;
 			
-			$className = ($matches[2][$x] =='left' || $matches[2][$x] =='right') ? 'tb_img_'.$matches[2][$x] : '';
+			$className = ($matches[2][$x] =='left' || $matches[2][$x] =='right') ? 'tb_img_'.$matches[2][$x] : 'tb_img';
 			
 			$alt = 'image';
 			$caption = '';
