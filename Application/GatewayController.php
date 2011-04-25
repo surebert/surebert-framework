@@ -554,8 +554,7 @@ class Gateway {
 
 		$controller = new $controller_class();
 		Gateway::$controller = $controller;
-		$controller->model = $model;
-
+		
 		if ($request != Gateway::$request) {
 
 			$request->get = array_merge(Gateway::$request->get, $request->get);
