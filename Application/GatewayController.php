@@ -479,10 +479,9 @@ class Gateway {
 	/**
 	 * Loads a view for rendering
 	 * @param mixed $request Either an instance of sb_Request or a string with the path to the view e.g. /user/run
-	 * @param object $model Optional The model used in the view
 	 * @return string The rendered view data
 	 */
-	public static function render_request($request, $model='') {
+	public static function render_request($request) {
 
 		if ($request instanceof sb_Request && method_exists('App', 'filter_all_input')) {
 
