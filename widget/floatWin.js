@@ -175,7 +175,7 @@ sb.widget.floatWin.prototype = {
 				this.downButton = this.addIcon(new sb.element({
 					tag : 'img',
 					src : sb.base+'_media/down.png',
-					title : 'larger',
+					title : 'smaller',
 					events : {
 						click : function(e){
 							self.down(e);
@@ -186,7 +186,7 @@ sb.widget.floatWin.prototype = {
 				this.upButton = this.addIcon(new sb.element({
 					tag : 'img',
 					src : sb.base+'_media/up.png',
-					title : 'smaller',
+					title : 'larger',
 					events : {
 						click : function(e){
 							self.up(e);
