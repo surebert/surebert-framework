@@ -254,10 +254,13 @@ class sb_Controller_Toolkit extends sb_Controller{
 
 		);
 
-		echo "var sbBase = 'http://".Gateway::$http_host."/surebert/load/';\n";
+		$protocol = isset($_SERVER['SERVER_PORT']) &&  $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http';
+		
+		$str = "var sbBase = '".$protocol."://".Gateway::$http_host."/surebert/load/';\n";
 
 		$surebert = array_merge($surebert, $this->request->args);
-		echo $this->concat_files($surebert, $version);
+		$str .= $this->concat_files($surebert, $version);
+		return $str;
 	}
 }
 ?>
