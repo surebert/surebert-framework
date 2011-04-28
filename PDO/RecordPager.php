@@ -126,10 +126,7 @@ class sb_PDO_RecordPager {
 			$ret->record_count = $res[0]->count;
 		
 			//page count
-			$temp = round($ret->record_count / $this->pagesize);
-			$temp2 = $temp * $this->pagesize;
-			$round_up = ($temp2 < $ret->record_count)?1:0;
-			$ret->page_count = round($ret->record_count / $this->pagesize) + $round_up;
+			$ret->page_count = floor($ret->record_count / $this->pagesize);
 			$ret->page_count = ($ret->page_count < 1)?1:$ret->page_count;
 
 
