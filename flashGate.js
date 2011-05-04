@@ -13,6 +13,7 @@ sb.flashGate = new sb.swf({
 	bgColor : '#FF0000',
 	id : 'Flashgate',
 	wmode: 'transparent',
+	"swLiveConnect" : "true",
 	flashvars : {
 		debug : true
 	}
@@ -50,19 +51,3 @@ sb.dom.onReady({
 		}
 	}
 });
-
-/**
- * @Name sb_onFlashGateLoad
- * @Description: Used Internally
- */
-sb_onFlashGateLoad = function(){
-
-	if(sb_onFlashGateLoaded && sb_onFlashGateLoaded.forEach ){
-		sb_onFlashGateLoaded.forEach(function(v){
-			if(typeof v == 'function'){
-				v();
-			}
-		});
-	}
-	
-};
