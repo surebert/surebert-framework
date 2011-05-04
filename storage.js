@@ -3,6 +3,8 @@
 @Author: Paul Visco
 @Description: used to store data clientside.  Uses localStorage if it exists 
 Safari, Chrome, Firefox, IE 8+ or UserData IE 6,7 or cookies if neither is available
+When using IE6/7 data is restricted to the folder it was set in, otherwise it is only 
+restricted to the hostname.
 @Example: var s = new sb.storage();
 s.set('name', 'paul');
 s.get('name');
