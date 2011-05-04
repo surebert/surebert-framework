@@ -10,7 +10,7 @@ sb.storage = function(params){
 
 	if('localStorage' in window && window['localStorage'] !== null){
 		this.storage = new sb.storage.local(window.location.host);
-	} else if(sb.browser.agent == 'ie'){
+	} else if(typeof document.body.style.behavior == 'string'){
 		this.storage = new sb.storage.userData(this.name);
 	} else {
 		sb.include('cookies');
@@ -134,7 +134,7 @@ sb.storage.prototype = {
 */
 sb.storage.userData = function(name){
 	this.name = name || 'sb_storage';
-	if(sb.browser.agent != 'ie'){
+	if(typeof document.body.style.behavior != 'string'){
 		throw('sb.storage.userData only works in IE');
 	} else {
 		this.storage = new sb.element({
