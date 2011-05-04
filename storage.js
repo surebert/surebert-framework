@@ -3,6 +3,9 @@
 @Author: Paul Visco
 @Description: used to store data clientside.  Uses localStorage if it exists 
 Safari, Chrome, Firefox, IE 8+ or UserData IE 6,7 or cookies if neither is available
+var s = new sb.storage();
+s.set('name', 'paul');
+s.get('name');
 */
 sb.storage = function(params){
 	sb.objects.infuse(params, this);
