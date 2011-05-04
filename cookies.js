@@ -63,15 +63,25 @@ sb.cookies ={
 	
 	/**
 	@Name: sb.cookies.forget
-	@Description: Used to make the clients computer forget a cookie
+	@Description: Alias for sb.cookies.clear to maintain backwards compat
 	@Param: String name The name (key) of the cookie which will be forgotten
 	@Example:
 	sb.cookies.forget('myCookie');
 	*/
 	forget : function(name){
-		this.set(name, "", -1);
+		return this.clear(name);
 	},
 	
+	/**
+	@Name: sb.cookies.clear
+	@Description: Used to make the clients computer forget a cookie
+	@Param: String name The name (key) of the cookie which will be forgotten
+	@Example:
+	sb.cookies.clear('myCookie');
+	*/
+	clear : function(name){
+		this.set(name, "", -1);
+	},
 	
 	/**
 	@Name: sb.cookies.forgetAll
@@ -80,7 +90,16 @@ sb.cookies ={
 	sb.cookies.forgetAll();
 	*/
 	forgetAll : function(){
+		return this.clearAll();
+	},
 	
+	/**
+	@Name: sb.cookies.clearAll
+	@Description: Clears all cookies stored for your domain
+	@Example:
+	sb.cookies.clearAll();
+	*/
+	clearAll : function(){
 		var n,i,deleted =[], parts = document.cookie.split(';');
 		for(i=0;i<parts.length;i++){
 			n = parts[i].split('=');
@@ -105,6 +124,10 @@ sb.cookies ={
 		}
 		
 		return list;
+	},
+	
+	typeOf : function(){
+		return 'sb.cookies';
 	}
 	
 };
