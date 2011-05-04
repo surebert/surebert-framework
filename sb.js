@@ -2406,35 +2406,45 @@ sb.events = {
 				
 				var f = function() {
 					var e = window.event,tar = null,d= document.documentElement,b=document.body;
-					e.pageX = e.clientX+d.scrollLeft+b.scrollLeft;
-					e.pageY = e.clientY+d.scrollTop+b.scrollTop;
+					if(e){
+						e.pageX = e.clientX+d.scrollLeft+b.scrollLeft;
+						e.pageY = e.clientY+d.scrollTop+b.scrollTop;
+						switch(e.type){
+							case 'mouseout':
+								tar = e.relatedTarget || e.toElement;
+								break;
 
-					switch(e.type){
-						case 'mouseout':
-							tar = e.relatedTarget || e.toElement;
-							break;
+							case 'mouseover':
+								tar = e.relatedTarget || e.fromElement;
+								break;
+						}
 
-						case 'mouseover':
-							tar = e.relatedTarget || e.fromElement;
-							break;
+						if(tar){
+							e.relatedTarget = sb.events.distillTarget(tar);
+						}
+
+						if(e.srcElement){
+							e.target = sb.events.distillTarget(e.srcElement);
+						}
+
+						e.preventDefault = function(){
+							e.returnValue = false;
+						};
+
+						e.stopPropagation = function(){
+							e.cancelBubble = true;
+						};
+					} else {
+						e = {
+							pageX : 0,
+							pageY : 0,
+							clientX : 0,
+							clientY : 0,
+							type : 'unknown'
+						};
+						
 					}
-
-					if(tar){
-						e.relatedTarget = sb.events.distillTarget(tar);
-					}
-
-					if(e.srcElement){
-						e.target = sb.events.distillTarget(e.srcElement);
-					}
-
-					e.preventDefault = function(){
-						e.returnValue = false;
-					};
-
-					e.stopPropagation = function(){
-						e.cancelBubble = true;
-					};
-
+					
 					fn.call(el, e);
 				};
 				var evt = {
