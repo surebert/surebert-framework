@@ -375,8 +375,13 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		}
 	}
 
+	/**
+	 * If this returns null when method not found, then deault JSON error object
+	 * is returned.  Otherwise, the string or object returned from not_found is returned.
+	 * @return type 
+	 */
 	public function not_found() {
-		return true;
+		return NULL;
 	}
 
 }
