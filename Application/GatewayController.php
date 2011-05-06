@@ -1,11 +1,9 @@
 <?php
-//require_once('/var/www/sbf/sb/trunk/Application/GatewayController.php');
-
 /**
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4.1 10-01-2008 04-21-2011
+ * @version 4.11 10-01-2008 05-05-2011
  * @package sb_Application
  *
  */
@@ -385,6 +383,13 @@ class Gateway {
 	 * @var sb_Controller
 	 */
 	public static $controller;
+	
+	/**
+	 * An array of command line options if provided
+	 * --request = the request to render
+	 * @var array
+	 */
+	public static $cmd_options = null;
 
 	/**
 	 * The request path being requested
@@ -666,36 +671,8 @@ class Gateway {
 	 * Grabs the request from the REQUEST_URI or the command line argv
 	 * @param $argv array Command line arguments
 	 */
-	public static function set_main_request($argv) {
+	public static function set_main_request($request) {
 
-		//Calculates the path based on REQUEST_URI or the command line args
-		if (!empty($_SERVER['REQUEST_URI'])) {
-			$request = $_SERVER['REQUEST_URI'];
-		} else if (isset($argv)) {
-
-			$request = $argv[1];
-		} else {
-			die("Path not found! Application cannot run in this context");
-		}
-
-		//requires variable $_GET, $_POST, $_COOKIE, $_FILES, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']
-		if (isset($argv[2])) {
-
-			//if argv3 set POST OR GET based on argv2
-			if (isset($argv[3])) {
-				if (strcasecmp($argv[2], 'post') == 0) {
-					parse_str($argv[3], $_POST);
-				} else {
-					$request.='?' . $argv[3];
-				}
-
-				//otherwise load file
-			} else if (is_file($argv[2])) {
-
-				require_once($argv[2]);
-				$request.='?' . http_build_query($_GET);
-			}
-		}
 
 		//allow user to override determination of remote_addr, e.g. using proxy X-FORWARDED-FOR etc
 		if (method_exists('App', 'set_remote_addr')) {
@@ -775,26 +752,46 @@ class Gateway {
 
 }
 
-if (isset($argv)) {
-	Gateway::$command_line = true;
-	Gateway::$html_errors = false;
-}
-
-//get root
-if (Gateway::$command_line) {
+$request = null;
+if (defined('STDIN')) {
 	$root = $argv[0];
 	if ($root == 'gateway.php') {
 		$root = dirname(getcwd());
 	}
+	
+	Gateway::$cmd_options = getopt('', Array('request:', 'config:'));
+	if(Gateway::$cmd_options){
+		if(isset(Gateway::$cmd_options['request'])){
+			$request = Gateway::$cmd_options['request'];
+		}
+		if(isset(Gateway::$cmd_options['config'])){
+			require(Gateway::$cmd_options['config']);
+			if(isset($_GET)){
+				$request.='?' . http_build_query($_GET);
+			}
+		}
+		
+	} else if(isset($argv[1])){
+		Gateway::$cmd_options['request'] = $argv[1];
+	}
+	
+	Gateway::$command_line = true;
+	Gateway::$html_errors = false;
 } else {
 	$root = $_SERVER['DOCUMENT_ROOT'];
+}
+
+if(isset($_SERVER['REQUEST_URI'])){
+	$request = $_SERVER['REQUEST_URI'];
+}
+
+if(!($request)){
+	die("Request Path not found! Application cannot run in this context");
 }
 
 $root = str_replace("\\", "/", $root);
 $root = preg_replace('~/public.*$~', '', $root);
 define("ROOT", $root);
-unset($root);
-
 
 //initialize the gateway
 Gateway::init();
@@ -803,7 +800,10 @@ Gateway::init();
 Gateway::file_require('/private/config/App.php');
 
 //set the main request and filter the input if required
-Gateway::set_main_request((isset($argv) ? $argv : null));
+Gateway::set_main_request($request);
+
+unset($root);
+unset($request);
 
 //include site based definitions/global functions
 Gateway::file_require('/private/config/definitions.php');
