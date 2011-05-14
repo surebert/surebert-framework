@@ -202,7 +202,7 @@ class sb_Email_Writer {
         $email->body .= "\n\nFor security purposes the following information was recorded: \nSending IP: ".$this->remote_addr." \nSending Host: ".$this->http_host;
 
         if(!empty($email->body_HTML)) {
-            $email->body_HTML .= '<br /><br /><span style="font-size:10px;color:#ff0000;margin-top:20px;">For security purposes the following information was recorded: <br />Sending IP:'.$this->remote_addr.' <br />Sending Host: '.$this->http_host.'</span>';
+            $email->body_HTML .= '<br /><br /><span style="font-size:10px;color:#BCBCBC;margin-top:20px;">For security purposes the following information was recorded: <br />Sending IP:'.$this->remote_addr.' <br />Sending Host: '.$this->http_host.'</span>';
         }
     }
 
