@@ -628,7 +628,7 @@ class Gateway {
 
 			if ($input_as_array) {
 
-				$data = $class->$action($args);
+				$data = $class->$method($args);
 			} else {
 
 				$data = call_user_func_array(array($class, $method), array_values($args));
