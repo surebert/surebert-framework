@@ -3,7 +3,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4.11 10-01-2008 05-05-2011
+ * @version 4.12 10-01-2008 05-18-2011
  * @package sb_Application
  *
  */
@@ -656,8 +656,9 @@ class Gateway {
 			$class_name = substr_replace($class_name, "", 0, 3);
 			require(SUREBERT_FRAMEWORK_RP_PATH . '/' . $class_name . '.php');
 		} else if (preg_match('~Controller$~', $class_name)) {
-			$d = preg_replace("~[A-Z][a-z]+$~", "", $class_name);
 			require(ROOT . '/private/controllers/' . $class_name . '.php');
+		} else if (substr($class_name, 0, 4) == 'mod/') {
+			require(ROOT .'/'.$class_name.'.php');
 		} else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
 
 			require(ROOT . '/private/models/' . $class_name . '.php');
@@ -667,6 +668,10 @@ class Gateway {
 		}
 	}
 
+	public static function require_mod($name){
+		Gateway::file_require('/mod/'.$name.'/init.php');
+	}
+	
 	/**
 	 * Grabs the request from the REQUEST_URI or the command line argv
 	 * @param $argv array Command line arguments

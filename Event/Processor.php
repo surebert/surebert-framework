@@ -1,8 +1,7 @@
 <?php 
 class sb_Event_Processor{
 	protected $events = array();
-	
-	protected $logger = true;
+	protected $global_listeners = array();
 	
 	public $function_root;
 	public function __construct(){
@@ -39,16 +38,24 @@ class sb_Event_Processor{
 		return $this->events = Array();
 	}
 	
+	public function global_listener_add($class){
+		$this->global_listeners[] = $class;
+	}
+	
+	public function global_listener_remove($class){
+		if (isset($this->global_listeners[$class])){
+			array_splice($this->global_listeners, array_search($class, $this->global_listeners), 1);
+		}
+	}
 	public  function dispatch(){
 		$args = func_get_args();
 		$event_name = array_shift($args);
 		if (isset($this->events[$event_name])) {
 			foreach ($this->events[$event_name] as $listener) {
 				if(!is_callable($listener)){
-					if(method_exists($listener, $event_name)){
-						$listener = array($listener, $event_name);
-					} else if(is_string($listener) && !is_callable($listener)){
-						require_once($this->function_root.$listener.'.php');
+					$class = array($listener, $event_name);
+					if(is_callable($class)){
+						$listener = $class;
 					}
 				}
 				
