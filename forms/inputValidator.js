@@ -151,8 +151,9 @@ sb.forms.inputValidator.prototype = {
 		var validate = input.attr('validate');
 		var required = input.attr('required') || '0';
 
-		if(validate){
-			if(required && validate === ''){
+		if(validate || required){
+
+			if(required && typeof validate != 'null'){
 				validate = '_required';
 				this.validations['_required'] = new sb.validation({
 					validator : /.*/,
