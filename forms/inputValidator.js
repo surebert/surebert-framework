@@ -149,10 +149,9 @@ sb.forms.inputValidator.prototype = {
 		}
 
 		var validate = input.attr('validate');
-		var required = input.attr('required') || '0';
-
+		var required = input.attr('required');
+		
 		if(validate || required){
-
 			if(required && typeof validate != 'null'){
 				validate = '_required';
 				this.validations['_required'] = new sb.validation({
@@ -170,7 +169,7 @@ sb.forms.inputValidator.prototype = {
 			input.valid = false;
 			//if optional
 
-			if(input.value === '' && required === '0'){
+			if(input.value === '' && !required){
 				input.valid = true;
 			} else if(input.value !== ''){
 				if(validation){
