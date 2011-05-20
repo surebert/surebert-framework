@@ -3,7 +3,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4.12 10-01-2008 05-18-2011
+ * @version 4.13 10-01-2008 05-19-2011
  * @package sb_Application
  *
  */
@@ -161,12 +161,25 @@ class sb_Controller {
 
 	protected function get_view($path, $included = 0){
 		$pwd = ROOT.'/private/views/'.$path.'.view';
-		if(is_file($pwd)){
+		
+		if(!is_file($pwd)){
+			$pwd = false;
+			foreach(Gateway::$mods as $mod){
+				$m = ROOT . '/mod/'.$mod.'/views/'.$path.'.view';
+				if(is_file($m)){
+					$pwd = $m;
+					break;
+				}
+			}
+		}
+		
+		if($pwd){
 			$this->included = $included;
 			require($pwd);
-		} else {
-			return $this->not_found($path);
+			return;
 		}
+		
+		return $this->not_found($path);
 	}
 
 	/**
@@ -470,6 +483,12 @@ class Gateway {
 	 * @var sb_Logger_Base
 	 */
 	public static $logger;
+	
+	/**
+	 * An array of modules names loaded
+	 * @var type array
+	 */
+	public static $mods = Array();
 
 	/**
 	 * Turn data into an appropriate json AJAX response
@@ -546,9 +565,22 @@ class Gateway {
 			$controller_class = ucwords($controller) . 'Controller';
 
 			if(!is_file(ROOT . '/private/controllers/' . $controller_class . '.php')){
-				$controller_class = null;
+				
 				if($controller == 'surebert'){
 					$controller_class = 'sb_Controller_Toolkit';
+				} else {
+					$found = false;
+					foreach(Gateway::$mods as $mod){
+						$p = ROOT . '/mod/'.$mod.'/controllers/' . $controller_class . '.php';
+						if(is_file($p)){
+							require_once($p);
+							$found = true;
+							break;
+						}
+					}
+					if(!$found){
+						$controller_class = null;
+					}
 				}
 			}
 		}
@@ -568,7 +600,7 @@ class Gateway {
 		}
 
 		if (!$controller instanceof sb_Controller) {
-			trigger_error("Your custom view " . $controller_class . " must extend sb_Controller");
+			trigger_error("Your custom controller " . $controller_class . " must extend sb_Controller");
 		}
 
 		$controller->set_request($request);
@@ -607,7 +639,6 @@ class Gateway {
 					$servable = $match[1] == 'true' ? true : false;
 				}
 			}
-
 
 			//set up arguments to pass to function
 			if(!isset($class->request)){
@@ -660,16 +691,33 @@ class Gateway {
 		} else if (substr($class_name, 0, 4) == 'mod/') {
 			require(ROOT .'/'.$class_name.'.php');
 		} else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
-
 			require(ROOT . '/private/models/' . $class_name . '.php');
 		} else if (strstr($class_name, 'PHPUnit') && defined('PHPUNIT_PATH')) {
 
 			require(PHPUNIT_PATH . $class_name . '.php');
+		} else {
+			foreach(Gateway::$mods as $mod){
+				$m = ROOT . '/mod/'.$mod.'/models/'.$class_name.'.php';
+				if(is_file($m)){
+					require($m);
+					break;
+				}
+			}
 		}
 	}
 
-	public static function require_mod($name){
-		Gateway::file_require('/mod/'.$name.'/init.php');
+	/**
+	 * Require a new mod.  Will load the init.php if it exists
+	 * @param type $mod_name 
+	 */
+	public static function require_mod($mod_name){
+		if(!in_array($mod_name, Gateway::$mods)){
+			Gateway::$mods[] = $mod_name;
+		}
+		$init = ROOT . '/mod/'.$mod_name.'/init.php';
+		if(is_file($init)){
+			require($init);
+		}
 	}
 	
 	/**
