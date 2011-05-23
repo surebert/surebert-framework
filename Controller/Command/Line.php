@@ -19,6 +19,13 @@ class sb_Controller_Command_Line extends sb_Controller{
 			die('You can only use this command from the terminal');
 		}
 
+		$this->start();
+	}
+	
+	/**
+	 * Sets teh start time etc,
+	 */
+	protected function start(){
 		$this->start_time = microtime(true);
 		$this->log(date('Y/m/d H:i:s')." - Begin Process ".__CLASS__);
 		$this->set_memory_limit();
