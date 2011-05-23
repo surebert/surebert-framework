@@ -186,7 +186,13 @@ sb.storage.local = function(){
 
 sb.storage.local.prototype = {
 	set : function(key, val){
-		window.localStorage.setItem(key, val);
+		try{
+			window.localStorage.setItem(key, val);
+			return true;
+		} catch(e){
+			return false;
+		}
+		
 	},
 	get : function(key){
 		return window.localStorage.getItem(key);
