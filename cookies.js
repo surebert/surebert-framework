@@ -71,6 +71,17 @@ sb.cookies ={
 	forget : function(name){
 		return this.clear(name);
 	},
+        
+        /**
+	@Name: sb.cookies.unset
+	@Description: Alias for sb.cookies.clear to maintain backwards compat
+	@Param: String name The name (key) of the cookie which will be forgotten
+	@Example:
+	sb.cookies.forget('myCookie');
+	*/
+        unset : function(name){
+		return this.clear(name);
+	},
 	
 	/**
 	@Name: sb.cookies.clear

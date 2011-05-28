@@ -106,6 +106,18 @@ sb.storage.prototype = {
 		}
 		return false;
 	},
+        
+        /**
+	@Name: sb.storage.prototype.unset
+	@Description: get a value by key
+	@Return: String Return value of the key
+	@Example:
+	var s = new sb.storage();
+	s.unset('name');
+	*/
+        unset : function(key){
+            this.storage.unset(key);
+        },
 	
 	/**
 	@Name: sb.storage.prototype.clearAll
@@ -169,6 +181,9 @@ sb.storage.userData.prototype = {
 		this.storage.load(this.name);
 		return this.storage.getAttribute(key);
 	},
+        unset : function(key){
+            this.set(key, null);
+        },
 	typeOf : function(){
 		return 'sb.storage.userData';
 	}
@@ -195,10 +210,28 @@ sb.storage.local.prototype = {
 		
 	},
 	get : function(key){
-		return window.localStorage.getItem(key);
+            try{
+                return window.localStorage.getItem(key);
+            } catch(e){
+                return false;
+            }
+		
 	},
+        unset : function(key){
+            try{
+                window.localStorage.removeItem(key);
+                return true;
+            } catch(e){
+                return false;
+            }
+        },
 	clearAll : function(key){
-		return window.localStorage.clear();
+            try{
+		window.localStorage.clear();
+                return true;
+            } catch(e){
+                return false;
+            }
 	},
 	typeOf : function(){
 		return 'sb.storage.local';
