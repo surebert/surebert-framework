@@ -322,7 +322,7 @@ class sb_Request {
 	public function set_input_args_delimiter($input_args_delimiter) {
 
 		//parse arguments by removing path
-		$args = preg_replace("~^" . $this->path . "/?~", "", $this->request);
+		$args = preg_replace("~^.{".strlen($this->path)."}/?~", "", $this->request);
 
 		//remove $_GET string
 		$args = preg_replace("~\?.*?$~", "", $args);
