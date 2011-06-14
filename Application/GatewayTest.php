@@ -4,7 +4,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4.14 10-01-2008 06-10-2011
+ * @version 4.16 10-01-2008 06-14-2011
  * @package sb_Application
  *
  */
@@ -552,20 +552,21 @@ class Gateway {
         }
 
         $controller = $request->path_array[0];
-
+		
         if (empty($controller)) {
             $controller_class = Gateway::$default_controller_type;
         } else {
-            $controller_class = ucwords($controller) . 'Controller';
-
-            if (!is_file(ROOT . '/private/controllers/' . $controller_class . '.php')) {
+           $controller_class = str_replace(' ', '_', ucwords(str_replace('_', ' ', $controller))) . 'Controller';
+		   
+		   $path = str_replace('_', '/', $controller_class).'.php';
+		   if (!is_file(ROOT . '/private/controllers/' . $path)) {
 
                 if ($controller == 'surebert') {
                     $controller_class = 'sb_Controller_Toolkit';
                 } else {
                     $found = false;
                     foreach (Gateway::$mods as $mod) {
-                        $p = ROOT . '/mod/' . $mod . '/controllers/' . $controller_class . '.php';
+                        $p = ROOT . '/mod/' . $mod . '/controllers/' . $path;
                         if (is_file($p)) {
                             require_once($p);
                             $found = true;
@@ -581,7 +582,6 @@ class Gateway {
 
         if (!isset($controller_class)) {
             $controller_class = Gateway::$default_controller_type;
-            ;
         }
 
         $controller = new $controller_class();
@@ -683,7 +683,7 @@ class Gateway {
             require(SUREBERT_FRAMEWORK_RP_PATH . '/' . $class_name . '.php');
         } else if (preg_match('~Controller$~', $class_name)) {
             require(ROOT . '/private/controllers/' . $class_name . '.php');
-        } else if (substr($class_name, 0, 4) == 'mod/') {
+		} else if (substr($class_name, 0, 4) == 'mod/') {
             require(ROOT . '/' . $class_name . '.php');
         } else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
             require(ROOT . '/private/models/' . $class_name . '.php');
@@ -696,6 +696,8 @@ class Gateway {
                 }
             }
         }
+		
+	
     }
 
     /**
@@ -710,48 +712,6 @@ class Gateway {
         if (is_file($init)) {
             require($init);
         }
-    }
-
-    /**
-     * Grabs the request from the REQUEST_URI or the command line argv
-     * @param $argv array Command line arguments
-     */
-    public static function set_main_request($request) {
-
-
-        //allow user to override determination of remote_addr, e.g. using proxy X-FORWARDED-FOR etc
-        if (method_exists('App', 'set_remote_addr')) {
-            self::$remote_addr = App::set_remote_addr();
-        } else {
-            self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
-        }
-
-        self::$agent = (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] != 'command line') ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
-
-        self::$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : self::$http_host;
-
-        self::$request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::$http_host;
-
-        if (method_exists('App', 'filter_all_input')) {
-            App::filter_all_input($_POST);
-        }
-
-        //$_GET is handled by sb_Request constructor so to allow included views to use ? GET syntax
-        self::$post = $_POST;
-        self::$cookie = $_COOKIE;
-        self::$files = $_FILES;
-
-        if (self::$request_method == 'PUT' || self::$request_method == 'DELETE') {
-            parse_str(file_get_contents("php://input"), self::$data);
-        } else {
-            self::$data = self::$post;
-        }
-
-        //empty the input data so as to prevent its use
-        $_GET = $_POST = $_FILES = $_REQUEST = Array();
-
-        //convert REQUEST into an array and define Controller which loads view
-        self::$request = new sb_Request($request);
     }
 
     /**
@@ -793,6 +753,43 @@ class Gateway {
     public static function init($argv = null) {
         spl_autoload_extensions('.php');
         spl_autoload_register("Gateway::sb_autoload");
+        
+        //allow user to override determination of remote_addr, e.g. using proxy X-FORWARDED-FOR etc
+        if (method_exists('App', 'set_remote_addr')) {
+            self::$remote_addr = App::set_remote_addr();
+        } else {
+            self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
+        }
+
+        self::$agent = (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] != 'command line') ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
+
+        if(isset(Gateway::$cmd_options['http_host'])){
+            self::$http_host = Gateway::$cmd_options['http_host'];
+        } else {
+           self::$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : self::$http_host;
+
+        }
+        
+        self::$request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::$request_method;
+
+        if (method_exists('App', 'filter_all_input')) {
+            App::filter_all_input($_POST);
+        }
+
+        //$_GET is handled by sb_Request constructor so to allow included views to use ? GET syntax
+        self::$post = $_POST;
+        self::$cookie = $_COOKIE;
+        self::$files = $_FILES;
+
+        if (self::$request_method == 'PUT' || self::$request_method == 'DELETE') {
+            parse_str(file_get_contents("php://input"), self::$data);
+        } else {
+            self::$data = self::$post;
+        }
+
+        //empty the input data so as to prevent its use
+        $_GET = $_POST = $_FILES = $_REQUEST = Array();
+
     }
 
 }
@@ -818,8 +815,8 @@ if (!defined('ROOT')) {
             if ($root == 'gateway.php') {
                 $root = dirname(getcwd());
             }
-
-            Gateway::$cmd_options = getopt('', Array('request:', 'config:'));
+            
+            Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
             if (Gateway::$cmd_options) {
                 if (isset(Gateway::$cmd_options['request'])) {
                     $request = Gateway::$cmd_options['request'];
@@ -833,7 +830,6 @@ if (!defined('ROOT')) {
                 }
             }
         }
-
         Gateway::$command_line = true;
         Gateway::$html_errors = false;
     } else if (isset($_SERVER['DOCUMENT_ROOT'])) {
@@ -862,7 +858,7 @@ $output = '';
 if ($request) {
 
     //set the main request and filter the input if required
-    Gateway::set_main_request($request);
+    Gateway::$request = new sb_Request($request);
 }
 
 //include site based definitions/global functions
@@ -875,6 +871,13 @@ if ($request) {
     unset($request);
 }
 
+if(isset(Gateway::$cmd_options)){
+    if(isset(Gateway::$cmd_options['install'])){
+        require_once(ROOT.'/mod/'.Gateway::$cmd_options['install'].'/install.php');
+    } else if(isset(Gateway::$cmd_options['uninstall'])){
+        require_once(ROOT.'/mod/'.Gateway::$cmd_options['uninstall'].'/uninstall.php');
+    }
+}
 
 //filter the output if required and display it
 if (method_exists('App', "filter_all_output")) {
