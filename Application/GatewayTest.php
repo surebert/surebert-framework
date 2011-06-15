@@ -138,7 +138,6 @@ class sb_Controller {
         //if there is a template render that
         if (!empty($template)) {
 
-            $this->included = true;
             if (isset($this->request->path_array[1])) {
                 $path = preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
             } else {
@@ -159,7 +158,7 @@ class sb_Controller {
         return $this->filter_output($output);
     }
 
-    protected function get_view($path, $included = 0) {
+    protected function get_view($path) {
         $pwd = ROOT . '/private/views/' . $path . '.view';
 
         if (!is_file($pwd)) {
@@ -174,7 +173,6 @@ class sb_Controller {
         }
 
         if ($pwd) {
-            $this->included = $included;
             require($pwd);
             return;
         }
@@ -198,6 +196,7 @@ class sb_Controller {
      * Default request not fullfilled
      */
     public function not_found() {
+		
         $file = ROOT . '/private/views/errors/404.view';
         if (is_file($file)) {
             include_once($file);
@@ -499,7 +498,7 @@ class Gateway {
      * @param mixed $request Either an instance of sb_Request or a string with the path to the view e.g. /user/run
      * @return string The rendered view data
      */
-    public static function render_request($request) {
+    public static function render_request($request, $included=true) {
 
         if ($request instanceof sb_Request && method_exists('App', 'filter_all_input')) {
 
@@ -559,6 +558,7 @@ class Gateway {
            $controller_class = str_replace(' ', '_', ucwords(str_replace('_', ' ', $controller))) . 'Controller';
 		   
 		   $path = str_replace('_', '/', $controller_class).'.php';
+		   
 		   if (!is_file(ROOT . '/private/controllers/' . $path)) {
 
                 if ($controller == 'surebert') {
@@ -585,13 +585,13 @@ class Gateway {
         }
 
         $controller = new $controller_class();
-        Gateway::$controller = $controller;
-
+		
+		$controller->included = $included;
+		if(!$included){
+			Gateway::$controller = $controller;
+		}
         if ($request != Gateway::$request) {
-
             $request->get = array_merge(Gateway::$request->get, $request->get);
-
-            $controller->included = true;
         }
 
         if (!$controller instanceof sb_Controller) {
@@ -682,7 +682,7 @@ class Gateway {
             $class_name = substr_replace($class_name, "", 0, 3);
             require(SUREBERT_FRAMEWORK_RP_PATH . '/' . $class_name . '.php');
         } else if (preg_match('~Controller$~', $class_name)) {
-            require(ROOT . '/private/controllers/' . $class_name . '.php');
+			require(ROOT . '/private/controllers/' . $class_name . '.php');
 		} else if (substr($class_name, 0, 4) == 'mod/') {
             require(ROOT . '/' . $class_name . '.php');
         } else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
@@ -866,7 +866,7 @@ Gateway::file_require('/private/config/definitions.php');
 
 if ($request) {
     //load the main request as view or magic model
-    $output = Gateway::render_request(Gateway::$request);
+    $output = Gateway::render_request(Gateway::$request, false);
 
     unset($request);
 }
