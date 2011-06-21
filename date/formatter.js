@@ -4,7 +4,7 @@ sb.include('String.prototype.numpad');
 @Name: sb.date.formatter
 @Description: A constructor used to format date strings, based on PHP date function
 @Param: integer timestamp A unix timestamp to specify a date other than now
-@Return: sb.date object with the follwoing properties
+@Return: object with the follwoing properties
 
 Experiment with it:
 .m = month as two digit padded string e.g. 03
@@ -36,14 +36,14 @@ var myDate = new sb.date.formatter(1174337641);
 alert(myDate.i);
 
 //alerts a formatted date string based on your date object
-var myDate = new sb.date();
+var myDate = new sb.date.formatter();
 alert(myDate.format('/m/d/y H:i:s');
 */
 sb.date.formatter = function(timestamp, offset){
 
 	this.timestamp = timestamp || false;
 	offset = offset || 0;
-	if(timestamp && timestamp.match(/T/)){
+	if(timestamp && typeof timestamp.match =='function' && timestamp.match(/T/)){
 		var d = timestamp.replace(/[ZT\-]/g, ':').split(':');
 		this.date = new Date(d[0], d[1]-1, d[2], d[3]-offset, d[4], d[5]);
 	} else {
@@ -100,7 +100,7 @@ sb.date.formatter.prototype= {
 
 	/**
 	@Name: sb.date.formatter.prototype.format
-	@Description: Can be used on any sb.date insatnce to return another formatted date string.  See formatting options in sb.date.
+	@Description: used to format the date similar to PHP date
 	@Param: String format The string format of the desired date format
 	Experiment with it:
 	m = month as two digit padded string e.g. 03
@@ -124,9 +124,7 @@ sb.date.formatter.prototype= {
 	@Param: String timestamp A unix timestamp to specify a date other than now
 	@Example:
 	//get a formatted date string of the current date/time
-	var myDate = new sb.date('m/d/y H:i:s');
-	//myDate.toString = 10/29/06 01:41:33
-
+	var myDate = new sb.date.formatter();
 	//use the format method of the instance to switch date formats
 	myDate.format('d/m/y');
 
