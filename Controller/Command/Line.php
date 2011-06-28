@@ -27,7 +27,8 @@ class sb_Controller_Command_Line extends sb_Controller{
 	 */
 	protected function start(){
 		$this->start_time = microtime(true);
-		$this->log(date('Y/m/d H:i:s')." - Begin Process ".__CLASS__);
+		$this->log(date('Y/m/d H:i:s')." - Begin Process ".  get_called_class());
+		
 		$this->set_memory_limit();
 		$this->set_max_execution_time();
 
