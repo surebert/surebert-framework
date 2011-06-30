@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4.16 10-01-2008 06-14-2011
+ * @version 4.17 10-01-2008 06-30-2011
  * @package sb_Application
  *
  */
@@ -682,7 +681,18 @@ class Gateway {
             $class_name = substr_replace($class_name, "", 0, 3);
             require(SUREBERT_FRAMEWORK_RP_PATH . '/' . $class_name . '.php');
         } else if (preg_match('~Controller$~', $class_name)) {
-			require(ROOT . '/private/controllers/' . $class_name . '.php');
+			$f = ROOT . '/private/controllers/' . $class_name . '.php';
+			if(is_file($f)){
+				require($f);
+			} else {
+				foreach (Gateway::$mods as $mod) {
+                $f = ROOT . '/mod/' . $mod . '/controllers/' . $class_name . '.php';
+                if (is_file($f)) {
+                    require($f);
+                }
+            }
+			}
+			
 		} else if (substr($class_name, 0, 4) == 'mod/') {
             require(ROOT . '/' . $class_name . '.php');
         } else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
