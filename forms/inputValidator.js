@@ -1,5 +1,5 @@
 sb.include('Element.prototype.rollUp');
-/**
+/**	
 @Name: sb.validation
 @Description: Used to validate inputs
 @Param: Object
@@ -78,7 +78,6 @@ var validator = new sb.forms.inputValidator({
 			errorMessage :  'You must select at least one'
 		})
 	},
-
 	validateOnKeyUp : true,
 
 	onKeyDown : function(e) {
@@ -95,6 +94,8 @@ var verified = validator.validateNamedChildrenWithin('#wrapper');
 sb.forms.inputValidator = function(o){
 	var self = this;
 	sb.objects.infuse(o, this);
+	this.validateAttr = this.validateAttr || 'sb_validate';
+	this.requiredAttr = this.requiredAttr || 'sb_required';
 	this.validateOnKeyUp = this.validateOnKeyUp === false ? this.validateOnKeyUp : true;
 	this.validateOnClick = this.validateOnClick === false ? this.validateOnClick : true;
 	this.onKeyUpEvt = sb.events.add(document, 'keyup', function(e){
@@ -148,9 +149,9 @@ sb.forms.inputValidator.prototype = {
 			}
 		}
 
-		var validate = input.attr('validate');
-		var required = input.attr('required');
-		
+		var validate = input.attr(this.validateAttr);
+		var required = input.attr(this.requiredAttr);
+	
 		if(validate || required){
 			if(required && typeof validate != 'null'){
 				validate = '_required';
