@@ -244,6 +244,7 @@ sb.widget.notifier.init({
 sb.notify('hello world', 'success');
 */
 sb.notify = function(message, type, stay, effect){
+	if(typeof sb.widget.notifier.box == 'null'){sb.widget.notifier();}
 	type = type || 'message';
 	return sb.widget.notifier.notify('<div class="sb_close"></div> '+message, type, stay, effect);
 };
