@@ -24,6 +24,15 @@ sb.include('String.prototype.md5');
     font-size:1.5em;
 }
 
+.sb_notify .sb_close{
+	background-image:url('/surebert/load/_media/x.png');
+	background-repeat:no-repeat;
+	font-size:0px;
+	width:20px;
+	height:20px;
+	margin:-15px 0 0 -20px
+}
+
 //then
 sb.widget.notifier.init();
 */
@@ -33,7 +42,7 @@ sb.widget.notifier = {
 
     moveCounter : 0,
 
-	timeout : 6000,
+	timeout : 15000,
 
     clearMethod : function(){
 
@@ -215,4 +224,26 @@ sb.widget.notifier = {
         });
 
     }
+};
+
+sb.widget.notifier.init({
+	events : {
+		click : function(e){
+			var parent = e.target.parentNode;
+			if(parent && typeof parent.clear == 'function'){
+				parent.clear();
+			}
+		}
+	}
+});
+
+/**
+@Name: rp.notify
+@Description: All user notifications feedback goes through this function.
+@Example:
+sb.notify('hello world', 'success');
+*/
+sb.notify = function(message, type, stay, effect){
+	type = type || 'message';
+	return sb.widget.notifier.notify('<div class="sb_close"></div> '+message, type, stay, effect);
 };
