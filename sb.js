@@ -470,8 +470,8 @@ var sb = {
 			data = null;
 		}
 		params = params || {};
-		params.method = 'post';
-		return sb.ajax.shortcut(url, data, onResponse, format, 'get');
+		params.method = 'get';
+		return sb.ajax.shortcut(url, data, onResponse, params);
 	},
 
 
