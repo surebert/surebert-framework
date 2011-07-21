@@ -448,7 +448,7 @@ var sb = {
 	@Param: string url The address to send to
 	@Param: object data The data to send as object or string
 	@Param: function onResponse The callback function or #id of node to replace innerHTML of
-	@Param: string format The ajax return format json, xml, text, js, etc
+	@Param: object params Any additional properties for the ajax object e.g. format, target, etc
 	@Return: sb.ajax The sb.ajax instance created
 	@Example:
 	sb.get('/some/url', {a: 'b'}, function(r){alert(r);});
@@ -459,12 +459,18 @@ var sb = {
 	or
 	sb.get('/some/url', '#myDiv');
 	*/
-	get : function(url, data, onResponse, format){
+	get : function(url, data, onResponse, params){
 
 		if(typeof data === 'function'){
+			params = onResponse;
 			onResponse = data;
 			data=null;
+		} else if(typeof data === 'string'){
+			onResponse = data;
+			data = null;
 		}
+		params = params || {};
+		params.method = 'post';
 		return sb.ajax.shortcut(url, data, onResponse, format, 'get');
 	},
 
@@ -475,7 +481,7 @@ var sb = {
 	@Param: string url The address to send to
 	@Param: object data The data to send as object or string
 	@Param: function onResponse The callback function or #id of node to replace innerHTML of
-	@Param: string format The ajax return format json, xml, text, js, etc
+	@Param: object params Any additional properties for the ajax object e.g. format, target, etc
 	@Return: sb.ajax The sb.ajax instance created
 	@Example:
 	sb.post('/some/url', {a: 'b'}, function(r){alert(r);});
@@ -487,13 +493,20 @@ var sb = {
 	sb.post('/some/url', '#myDiv');
 
 	*/
-	post : function(url, data, onResponse, format){
+	post : function(url, data, onResponse, params){
 
 		if(typeof data === 'function'){
+			params = onResponse;
 			onResponse = data;
 			data=null;
+		} else if(typeof data === 'string'){
+			onResponse = data;
+			data = null;
 		}
-		return sb.ajax.shortcut(url, data, onResponse, format, 'post');
+		
+		params = params || {};
+		params.method = 'post';
+		return sb.ajax.shortcut(url, data, onResponse, params);
 	},
 
 	/**
@@ -1777,7 +1790,7 @@ sb.ajax = function (params){
 	
 	sb.objects.infuse(params, this);
 
-	if(sb.typeOf(params.data) === 'object'){
+	if(params.data && sb.typeOf(params.data) != 'string'){
 		this.data = sb.objects.serialize(params.data);
 	}
 
@@ -1815,15 +1828,15 @@ sb.ajax.defaultFormat = 'text';
 @Name: sb.ajax.shortcut
 @Description: Used internally for sb.post and sb.get
 */
-sb.ajax.shortcut = function(url, data, onResponse, format, method){
-
+sb.ajax.shortcut = function(url, data, onResponse, params){
+	params = params || {};
 	var aj = new sb.ajax({
 		url : url,
-		method : method,
-		format : format,
 		data : data
 	});
-
+	
+	sb.objects.infuse(params, aj);
+	
 	if(typeof onResponse === 'function'){
 		aj.onResponse = onResponse;
 	} else if (typeof onResponse === 'string'){
@@ -1970,10 +1983,9 @@ sb.ajax.prototype = {
 		if(js !==''){
 
 			try{
-				eval(js);
-
+				(new Function(js)).call(this);
 			} catch(e2){
-				this.log('Could not eval javascript from server');
+				this.log('Could not eval javascript from server: '+js);
 			}
 		}
 		if(typeof this.onResponse === 'function'){
@@ -2043,9 +2055,10 @@ sb.ajax.prototype = {
 		var url = this.url;
 
 		this.completed = 0;
-
-		this.data = sb.typeOf(this.data) === 'object' ? sb.objects.serialize(this.data) : this.data;
-
+		if(this.data && sb.typeOf(this.data) != 'string'){
+			this.data = sb.objects.serialize(this.data)
+		}
+		
 		//This must be set to tru or false as IE 8 does not understand 0 or 1
 		if(this.async === 0){
 			this.async = false;
@@ -2127,18 +2140,14 @@ sb.ajax.prototype = {
 	onResponse : function(){},
 
 	/**
-	@Name: sb.ajax.prototype.onHeaders
+	@Name: sb.ajax.prototype.onTimeout
     @Type: function
-	@Description: Fires when the ajax request gets it headers back
+	@Description: Fires when the ajax request timesout
 	@Example:
 	var myAjax = new sb.ajax({
 		url : 'process.php',
-		onHeaders : function(status, statusText){
-			//alert 400 if file not found
-			alert(status);
-			//you also have access to other headers
-			alert(this.ajax.getResponseHeader('Content-Type'));
-		}
+		timeout : 5000,
+		onTimeout : function(){}
 	});
 
 	*/
@@ -2147,7 +2156,8 @@ sb.ajax.prototype = {
 	/**
 	@Name: sb.ajax.prototype.onHeaders
     @Type: function
-	@Description: Fires when the ajax request gets it headers back
+	@Description: Fires when the ajax request gets it headers back, by default 
+	it executes sb_on_response headers, you can override this
 	@Example:
 	var myAjax = new sb.ajax({
 		url : 'process.php',
@@ -2160,7 +2170,20 @@ sb.ajax.prototype = {
 	});
 
 	*/
-	onHeaders : function(status, statusText){},
+	onHeaders : function(status, statusText){
+		var self = this;
+		var headers = this.ajax.getAllResponseHeaders();
+		headers.split(/\r?\n/).forEach(function(h){
+			var m = h.match(/^sb_on_response\d+: (.*)/);
+			if(m && m[1]){
+					try{(new Function(m[1])).call(self);}
+				catch(e){
+					self.log('Cannot eval sb_on_headers js: '+m[1]);
+				}
+				
+			}
+		});
+	},
 
 	/**
 	@Name: sb.ajax.prototype.abort
