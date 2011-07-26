@@ -854,16 +854,16 @@ if (!defined('ROOT')) {
     unset($root);
 }
 
-
 if (isset($_SERVER['REQUEST_URI'])) {
     $request = $_SERVER['REQUEST_URI'];
 }
 
+//require the App class for static global vars
+Gateway::file_require('/private/config/App.php');
+
 //initialize the gateway
 Gateway::init();
 
-//require the App class for static global vars
-Gateway::file_require('/private/config/App.php');
 $output = '';
 if ($request) {
 
