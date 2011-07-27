@@ -853,11 +853,11 @@ if (isset($_SERVER['REQUEST_URI'])) {
     $request = $_SERVER['REQUEST_URI'];
 }
 
-//initialize the gateway
-Gateway::init();
-
 //require the App class for static global vars
 Gateway::file_require('/private/config/App.php');
+
+//initialize the gateway
+Gateway::init();
 
 $output = '';
 if ($request) {
