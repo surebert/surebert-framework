@@ -17,7 +17,8 @@ class sb_JS{
 	 * @return string
 	 */
 	public static function set_html($id, $html){
-		return self::exec_header('$("'.$id.'").html('.json_encode($html).');');
+		$js = '$("'.$id.'").html('.json_encode($html).');';
+		return self::exec_header($js);
 	}
 	
 	/**
