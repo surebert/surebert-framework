@@ -764,12 +764,7 @@ class Gateway {
         spl_autoload_extensions('.php');
         spl_autoload_register("Gateway::sb_autoload");
         
-        //allow user to override determination of remote_addr, e.g. using proxy X-FORWARDED-FOR etc
-        if (method_exists('App', 'set_remote_addr')) {
-            self::$remote_addr = App::set_remote_addr();
-        } else {
-            self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
-        }
+        self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
         self::$agent = (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] != 'command line') ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
 
@@ -858,11 +853,11 @@ if (isset($_SERVER['REQUEST_URI'])) {
     $request = $_SERVER['REQUEST_URI'];
 }
 
-//require the App class for static global vars
-Gateway::file_require('/private/config/App.php');
-
 //initialize the gateway
 Gateway::init();
+
+//require the App class for static global vars
+Gateway::file_require('/private/config/App.php');
 
 $output = '';
 if ($request) {
