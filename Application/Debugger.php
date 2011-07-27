@@ -12,6 +12,11 @@ class sb_Application_Debugger{
      * @param integer $line The line the error occurred on
      */
     public static function error_handler($code, $message, $file, $line) {
+        
+        if (error_reporting() === 0) {
+            // This error code is not included in error_reporting
+            return false;
+        }
         throw new sb_Exception($code, $message, $file, $line);
     }
 
@@ -20,7 +25,7 @@ class sb_Application_Debugger{
      * @param Exception $e
      */
     public static function exception_handler(Exception $e){
-
+    
         $s = Gateway::$html_errors ? '<br />' : "\n";
         $m = 'Code: '.$e->getCode()."\n".
             'Message: '.$e->getMessage()."\n".
