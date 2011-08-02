@@ -16,7 +16,7 @@ sb.events.listener.prototype = {
 	adding new events.  Not required if just adding new classname to manage.
 	@Return: object The event observer
 	@Example:
-	myListener.unobserve();
+	myListener.observe();
 	*/
 	observe : function(){
 		var self = this;

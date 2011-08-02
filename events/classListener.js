@@ -21,19 +21,6 @@ var myListener = new sb.events.classListener({
 });
 
 */
-
-/**
-@Name: sb.events.listener
-@Description: Used Internally for other event listeners
-@Param: object params Used to preseed the listener with class listeners
-@Return: object
-*/
-/**
-@Name: sb.events.listener
-@Description: Used Internally for other event listeners
-@Param: object params Used to preseed the listener with class listeners
-@Return: object
-*/
 sb.events.classListener = function(params){
 	return sb.events.listener.apply(this, arguments);
 };
