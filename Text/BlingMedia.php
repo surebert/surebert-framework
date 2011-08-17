@@ -259,7 +259,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 			if(strstr($match[1], 'v=')){
 				preg_match("~v=(.*)~", $match[1], $swf);
 				$swf = $swf[1];
-			} else if(preg_match("~\w{11}~", $match[1], $swf)){
+			} else if(preg_match("~[\w-]{11}~", $match[1], $swf)){
 				$swf = $swf[0];
 			}
 
