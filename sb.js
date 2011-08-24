@@ -2840,13 +2840,14 @@ myElement.appendAfter('#myDiv');
 */
 Element.prototype.appendAfter = function(after){
 	var a = sb.$(after);
-	var b = a,nxtSib = false;
-	if(a.nextSibling){
+	var b = a,nxtSib = a.nextSibling || false;
+	
+	if(a.nextSibling && a.nodeType !== 3){
 		while((a = a.nextSibling) && a.nodeType === 3){
 			nxtSib = a;
 		}
 	}
-
+	
 	if(nxtSib){
 		return nxtSib.parentNode.insertBefore(this, nxtSib);
 	} else {
