@@ -123,7 +123,7 @@ class sb_PDO_RecordPager {
 			$count_sql = "SELECT COUNT(*) AS 'count' FROM (".$sql.") sb65a";
 			
 			$res = $this->db->s2o($count_sql, $this->values);
-			$ret->record_count = $res[0]->count;
+			$ret->record_count = isset($res[0]) ? $res[0]->count : 0;
 		
 			//page count
 			$temp = round($ret->record_count / $this->pagesize);
