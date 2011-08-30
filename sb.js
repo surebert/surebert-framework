@@ -2663,7 +2663,7 @@ sb.element = function(o){
 	//copy additional props from o
 	sb.objects.infuse(o, el);
 
-	if(sb.browser.agent === 'ie' && sb.browser.version < 8){
+	if(sb.browser.agent === 'ie'){
 		
 		//remove attributes for ie's sake
 		el.removeAttribute('tag');
