@@ -38,7 +38,7 @@ class sb_JSON_RPC2_Client {
 	 * The user agent to send with the request
 	 * @var string
 	 */
-	public $user_agent = 'sb_JSON_RPC2_Client';
+	public $agent = 'sb_JSON_RPC2_Client';
 
 	/**
 	 * The sb_logger to write to
@@ -162,7 +162,7 @@ class sb_JSON_RPC2_Client {
 		if(isset($content_length)) {
 			$out[] = $content_length;
 		}
-		$out[] = "User Agent: ".$this->user_agent;
+		$out[] = "User Agent: ".$this->agent;
 
 		if($this->php_serialize_response) {
 			$out[] = "Php_Serialize_Response: ".$this->php_serialize_response;

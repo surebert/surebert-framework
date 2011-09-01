@@ -248,11 +248,11 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		} else {
 			$response->id = $request->id;
 		}
-
-		if ($this->logger instanceof sb_Logger) {
-			$this->logger->add_log_types(Array('sb_json_rpc2_server'));
-			$this->logger->sb_json_rpc2_server("--> " . $json_request_str);
+		
+		if ($this->logger instanceof sb_Logger_Base) {
+			$this->logger->{get_class($this)}(Gateway::$agent." --> " . $json_request_str);
 		}
+		
 		$servable = false;
 		
 		if (method_exists($this, $request->method)) {
