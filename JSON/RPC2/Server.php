@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to response to JSON_RPC2 requests as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
- * @version 1.21 02/06/09 05/12/09
+ * 
  * @author visco
  * @package sb_JSON_RPC2
  *
@@ -91,13 +91,13 @@ class sb_JSON_RPC2_Server {
 	 * method you can use to log the json request
 	 * @param string $json_request The input json
 	 */
-	protected function log_input($json_request){}
+	protected function log_request($json_request){}
 	
 	/**
 	 * method you can use to log the json response
 	 * @param string $json_request The output json
 	 */
-	protected function log_output($json_response){}
+	protected function log_response($json_response){}
 	
 	/**
 	 * Determines is gzencoding is used
@@ -288,7 +288,7 @@ class sb_JSON_RPC2_Server {
 		}
 
 		//log the incoming request
-		$this->log_input($json_request_str);
+		$this->log_request($json_request_str);
 
 		//check for requested remote procedure
 		if(!isset($this->methods[$request->method]) || !is_callable($this->methods[$request->method])) {
@@ -327,7 +327,7 @@ class sb_JSON_RPC2_Server {
 		}
 
 		//log the final response
-		$this->log_output(json_encode($response));
+		$this->log_response(json_encode($response));
 
 		return $response;
 	}

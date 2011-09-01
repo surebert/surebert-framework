@@ -2,7 +2,6 @@
 /**
  * The JSON_RPC2_Client used to send the request
  *
- * @version 1.22
  * @author visco
  * @package sb_JSON_RPC2
  */
@@ -41,12 +40,6 @@ class sb_JSON_RPC2_Client {
 	public $agent = 'sb_JSON_RPC2_Client';
 
 	/**
-	 * The sb_logger to write to
-	 * @var sb_Logger
-	 */
-	protected $logger;
-
-	/**
 	 * The sb_JSON_RPC2_Request to dispatch
 	 * @var sb_JSON_RPC2_Request
 	 */
@@ -57,8 +50,7 @@ class sb_JSON_RPC2_Client {
 	 *
 	 * <code>
 	 * $client = new sb_JSON_RPC2_Client('http://service.roswellpark.org/my/service');
-	 * //add optional logger
-	 * //$client->set_logger(new sb_Logger_FileSystem());
+	 * 
 	 * $x = $client->add(1,2);
 	 *
 	 * var_dump($response);
@@ -70,7 +62,7 @@ class sb_JSON_RPC2_Client {
 	 * @return sb_JSON_RPC2_Response
 	 */
 	public function __construct($url, $timeout=10, $port=null) {
-
+		
 		$data = parse_url($url);
 
 		if(!is_null($port)){
@@ -86,12 +78,16 @@ class sb_JSON_RPC2_Client {
 	}
 
 	/**
-	 * Sets the logger for the client
-	 * @param $logger sb_Logger
+	 * method you can use to log the json request
+	 * @param string $json_request The input json
 	 */
-	public function set_logger(sb_Logger_Base $logger) {
-		$this->logger = $logger;
-	}
+	protected function log_request($json_request){}
+	
+	/**
+	 * method you can use to log the json response
+	 * @param string $json_request The output json
+	 */
+	protected function log_response($json_response){}
 
 	/**
 	 * Sets the key that data is encrypted with and turns on encryption, the server must use the same key
@@ -134,10 +130,7 @@ class sb_JSON_RPC2_Client {
 
 		$json = json_encode($request);
 
-		if($this->logger instanceOf sb_Logger) {
-			$this->logger->add_log_types(Array('sb_json_rpc2_client'));
-			$this->logger->sb_json_rpc2_client("--> ".$json);
-		}
+		$this->log_request($json);
 
 		if($this->debug == true) {
 			echo "--> ".$json;
@@ -198,7 +191,7 @@ class sb_JSON_RPC2_Client {
 			$response_str .= fread($fp, 8192);
 		}
 		fclose($fp);
-
+		
 		return $this->process_response($response_str);
 	}
 
@@ -230,10 +223,8 @@ class sb_JSON_RPC2_Client {
 			$body = $this->encryptor->decrypt($body);
 		}
 
-		if($this->logger instanceOf sb_Logger) {
-			$this->logger->sb_json_rpc2_client("<-- ".$body);
-		}
-
+		$this->log_response($body);
+		
 		//check if response body is serialized json_response object and just unserialize and return if it is
 		if($this->php_serialize_response && !empty($body)) {
 

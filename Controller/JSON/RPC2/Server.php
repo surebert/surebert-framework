@@ -187,13 +187,13 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	 * method you can use to log the json request
 	 * @param string $json_request The input json
 	 */
-	protected function log_input($json_request){}
+	protected function log_request($json_request){}
 	
 	/**
 	 * method you can use to log the json response
 	 * @param string $json_request The output json
 	 */
-	protected function log_output($json_response){}
+	protected function log_response($json_response){}
 	
 	/**
 	 * Parses the request
@@ -249,7 +249,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 			$response->id = $request->id;
 		}
 		//log the incoming request
-		$this->log_input($json_request_str);
+		$this->log_request($json_request_str);
 
 		$servable = false;
 		
@@ -300,7 +300,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		}
 
 		//log the final response
-		$this->log_output(json_encode($response));
+		$this->log_response(json_encode($response));
 		
 		return $response;
 	}
