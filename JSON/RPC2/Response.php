@@ -8,6 +8,12 @@
 class sb_JSON_RPC2_Response{
 	
 	/**
+	 * The same id as in the Request it is responding to. If there was an error before detecting the id in the Request, it MUST be Null.
+	 * @var string
+	 */
+	public $id;
+	
+	/**
 	 * Required on success, omitted on failure.
 	 * The Value that was returned by the procedure. Its contents is entirely defined by the procedure.
 	 * This member MUST be entirely omitted if there was an error invoking the procedure.
@@ -22,12 +28,6 @@ class sb_JSON_RPC2_Response{
 	 * @var sb_JSON_RPC2_Error
 	 */
 	public $error;
-	
-	/**
-	 * The same id as in the Request it is responding to. If there was an error before detecting the id in the Request, it MUST be Null.
-	 * @var string
-	 */
-	public $id;
 	
 	/**
 	 * Popultes the properties from json recieved

@@ -37,12 +37,6 @@ class sb_JSON_RPC2_Server {
 	public $php_serialize_response = false;
 
 	/**
-	 * The sb_logger to write to
-	 * @var sb_Logger
-	 */
-	protected $logger;
-
-	/**
 	 * An array of methods to serve, can be references to function or statically called class methods, can be from mixed origin.
 	 * The key should match the method called by the remote sb_JSON_RPC2_Request
 	 * @var array
@@ -94,6 +88,18 @@ class sb_JSON_RPC2_Server {
 	}
 
 	/**
+	 * method you can use to log the json request
+	 * @param string $json_request The input json
+	 */
+	protected function log_input($json_request){}
+	
+	/**
+	 * method you can use to log the json response
+	 * @param string $json_request The output json
+	 */
+	protected function log_output($json_response){}
+	
+	/**
 	 * Determines is gzencoding is used
 	 * @param $level Integer A number between 0-9, the compression level, higher takes longer
 	 */
@@ -113,14 +119,6 @@ class sb_JSON_RPC2_Server {
 		foreach(Gateway::$cookie as $k=>$v) {
 			Gateway::$cookie[$k] = $this->encryptor->decrypt($v);
 		}
-	}
-
-	/**
-	 * Sets the logger for the client
-	 * @param $logger sb_Logger
-	 */
-	public function set_logger(sb_Logger_Base $logger) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -289,10 +287,8 @@ class sb_JSON_RPC2_Server {
 			$response->id = $request->id;
 		}
 
-		if($this->logger instanceof sb_Logger_Base) {
-			$this->logger->add_log_types(Array('sb_json_rpc2_server'));
-			$this->logger->sb_json_rpc2_server("--> ". $input);
-		}
+		//log the incoming request
+		$this->log_input($json_request_str);
 
 		//check for requested remote procedure
 		if(!isset($this->methods[$request->method]) || !is_callable($this->methods[$request->method])) {
@@ -331,10 +327,7 @@ class sb_JSON_RPC2_Server {
 		}
 
 		//log the final response
-		if($this->logger instanceof sb_Logger) {
-			$this->logger->sb_json_rpc2_server('<-- '.json_encode($response));
-
-		}
+		$this->log_output(json_encode($response));
 
 		return $response;
 	}
