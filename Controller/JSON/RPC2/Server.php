@@ -32,11 +32,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	 * @var boolean
 	 */
 	public $php_serialize_response = false;
-	/**
-	 * The sb_logger to write to
-	 * @var sb_Logger
-	 */
-	protected $logger;
+
 	/**
 	 * The gz encoding level to use when transferring data
 	 * @var integer
@@ -95,14 +91,6 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		foreach (Gateway::$cookie as $k => $v) {
 			Gateway::$cookie[$k] = $this->encryptor->decrypt($v);
 		}
-	}
-
-	/**
-	 * Sets the logger for the client
-	 * @param $logger sb_Logger
-	 */
-	public function set_logger(sb_Logger_Base $logger) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -195,6 +183,17 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		return $html;
 	}
 
+	/**
+	 * method you can use to log the json request
+	 * @param string $json_request The input json
+	 */
+	protected function log_input($json_request){}
+	
+	/**
+	 * method you can use to log the json response
+	 * @param string $json_request The output json
+	 */
+	protected function log_output($json_response){}
 	
 	/**
 	 * Parses the request
@@ -219,6 +218,8 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 					&& (isset($this->request->get['method']) && isset($this->request->get['params']) && isset($this->request->get['id']))){
 				
 					$request = new sb_JSON_RPC2_Request();
+					
+					$request->id = $this->request->get['id'];
 					$request->method = $this->request->get['method'];
 
 					$params = $this->request->get['params'];
@@ -230,7 +231,6 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 
 					$request->params = json_decode($params);
 
-					$request->id = $this->request->get['id'];
 					$json_request_str = json_encode($request);
 			}
 		}
@@ -248,11 +248,9 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		} else {
 			$response->id = $request->id;
 		}
-		
-		if ($this->logger instanceof sb_Logger_Base) {
-			$this->logger->{get_class($this)}(Gateway::$agent." --> " . $json_request_str);
-		}
-		
+		//log the incoming request
+		$this->log_input($json_request_str);
+
 		$servable = false;
 		
 		if (method_exists($this, $request->method)) {
@@ -302,11 +300,8 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		}
 
 		//log the final response
-		if ($this->logger instanceof sb_Logger) {
-			$this->logger->sb_json_rpc2_server('<-- ' . json_encode($response));
-		}
-
-
+		$this->log_output(json_encode($response));
+		
 		return $response;
 	}
 	
