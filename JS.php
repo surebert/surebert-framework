@@ -22,6 +22,24 @@ class sb_JS{
 	}
 	
 	/**
+	 * Executes a script at a certain path
+	 * @param string $script_path full path
+	 */
+	public static function exec_script($script_path, $context=null){
+		header('Content-type: text/javascript');
+		if(!is_null($context)){
+			if(is_object($context)){
+				$context = get_object_vars($context);
+			}
+			if(is_array($context)){
+				extract($context);
+			}
+			
+		}
+		require($script_path);
+	}
+	
+	/**
 	 *
 	 * @param string $message The message to notify
 	 * @param string $class The class to use for the notification 'error', 'success', etc
