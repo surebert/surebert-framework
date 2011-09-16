@@ -35,12 +35,7 @@ interface sb_Magic_Model {
  */
 class sb_Controller {
 
-    /**
-     * The argument delimeter e.g. the comma in: /view/action/1,2,3
-     * @var string
-     */
-    protected $input_args_delimiter = '/';
-    /**
+	/**
      * Set to true if the view is loaded from within another view via Gateway::render_request, otherwise false
      *
      * @var boolean
@@ -51,6 +46,20 @@ class sb_Controller {
      * @var sb_Request
      */
     public $request;
+	
+    /**
+     * The argument delimeter e.g. the comma in: /view/action/1,2,3
+     * @var string
+     */
+    protected $input_args_delimiter = '/';
+	
+	/**
+	 * Determines if the controller's public properties become
+	 * local vars in the views or not
+	 * @var boolean 
+	 */
+    protected $extract = false;
+	
     /**
      * Left in for backwards compat with v1.0
      * @todo depreciate this and use $this->request->args instead
