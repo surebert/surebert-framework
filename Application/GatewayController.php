@@ -157,26 +157,37 @@ class sb_Controller {
         return $this->filter_output($output);
     }
 
-    protected function get_view($path) {
-        $pwd = ROOT . '/private/views/' . $path . '.view';
-
-        if (!is_file($pwd)) {
-            $pwd = false;
+	/**
+	 * Renders the actual .view template
+	 * @param string $view_path The path to the template e.g. /blah/foo
+	 * @return string 
+	 */
+    protected function get_view($_view_path) {
+		
+		//extract class vars to local vars for view
+		if($this->extract){
+			extract(get_object_vars($this));
+		}
+		
+        $_pwd = ROOT . '/private/views/' . $_view_path . '.view';
+		
+        if (!is_file($_pwd)) {
+            $_pwd = false;
             foreach (Gateway::$mods as $mod) {
-                $m = ROOT . '/mod/' . $mod . '/views/' . $path . '.view';
+                $m = ROOT . '/mod/' . $mod . '/views/' . $_view_path . '.view';
                 if (is_file($m)) {
-                    $pwd = $m;
+                    $_pwd = $m;
                     break;
                 }
             }
         }
 
-        if ($pwd) {
-            require($pwd);
+        if ($_pwd) {
+            require($_pwd);
             return;
         }
 
-        return $this->not_found($path);
+        return $this->not_found($_view_path);
     }
 
     /**
