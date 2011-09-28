@@ -181,9 +181,8 @@ class sb_PDO_Logger extends sb_PDO_Debugger {
 
 		if($logger instanceOf sb_Logger_Base) {
 			$this->logger = $logger;
-			$this->logger->add_log_type($this->log_str);
 		} else {
-			$this->logger = new sb_Logger_FileSystem(Array($this->log_str));
+			$this->logger = new sb_Logger_FileSystem();
 		}
 	}
 
