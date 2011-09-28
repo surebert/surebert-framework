@@ -14,8 +14,19 @@ class sb_Controller_Command_Line extends sb_Controller{
 	 */
 	protected $number_of_errors = 0;
 
-	public function __construct(){
-		if(!Gateway::$command_line){
+	/**
+	 * Determines if it is allowed to run from anywhere or only command line
+	 * @var boolean false default
+	 */
+	protected $allow_from_anywhere = false;
+	
+	/**
+	 * Blocks non command line calls unless overridden
+	 * @param boolean $allow_from_anywhere Allows connections from elsewhere if true
+	 */
+	public function __construct($allow_from_anywhere=false){
+		$this->allow_from_anywhere = $allow_from_anywhere;
+		if(!Gateway::$command_line && !$allow_from_anywhere){
 			die('You can only use this command from the terminal');
 		}
 
@@ -94,8 +105,9 @@ class sb_Controller_Command_Line extends sb_Controller{
 			default:
 				$message = "\n".$type.': '.$message;
 		}
-
 		file_put_contents("php://stdout", $message);
+		
+		return $message;
 	}
 
 	/**
