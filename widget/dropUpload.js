@@ -192,8 +192,8 @@ sb.widget.dropUpload.prototype = {
 				self.onFileUploaded(file);
 			}
 
-			xhr.setRequestHeader('X_FILE_NAME', file.fileName);
-			xhr.setRequestHeader('X_FILE_SIZE', file.fileSize);
+			xhr.setRequestHeader('X_FILE_NAME', file.fileName || file.name);
+			xhr.setRequestHeader('X_FILE_SIZE', file.fileSize || file.size);
 			xhr.send(file);
 
 		});
