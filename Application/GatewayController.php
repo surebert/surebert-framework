@@ -358,6 +358,79 @@ class sb_Request {
             }
         }
     }
+    
+     /**
+     * Gets a get variable value or returns the default value (null unless overridden)
+     * @param string $key The $_GET var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null 
+     */
+    public function get_get($key, $default_val=null){
+        
+        if(isset($this->get[$key])){
+            return $this->get[$key];
+        }
+        
+        return $default_val;
+    }
+    
+    /**
+     * Gets a post variable value or returns the default value (null unless overridden)
+     * @param string $key The $_POST var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null 
+     */
+    public function get_post($key, $default_val=null){
+        if(isset($this->post[$key])){
+            return $this->post[$key];
+        }
+        
+        return $default_val;
+    }
+    
+     /**
+     * Gets a cookie value if set, otherwise returns null
+     * 
+     * @param string $key The key to look for
+     * @return mixed the string value or null if not found
+     */
+    public function get_cookie($key, $default_val=null){
+        if(isset($this->cookie[$key])){
+            return $this->cookie[$key];
+        }
+        
+        return $default_val;
+    }
+
+    
+    /**
+     * Gets a get variable value or returns the default value (null unless overridden)
+     * @param string $key The $_SESSION var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null 
+     */
+    public function get_session($key, $default_val=null){
+        
+        if(isset($_SESSION[$key])){
+            return $_SESSION[$key];
+        }
+        
+        return $default_val;
+    }
+    
+    /**
+     * Gets a args variable value or returns the default value (null unless overridden)
+     * @param integer $arg_num The numeric arg value
+     * @param mixed $default_val null by default
+     * @return mixed string value or null 
+     */
+    public function get_arg($arg_num, $default_val=null){
+        if(isset($this->args[$arg_num])){
+            return $this->args[$arg_num];
+        }
+        
+        return $default_val;
+    }
 
 }
 
