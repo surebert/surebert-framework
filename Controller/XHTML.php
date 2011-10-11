@@ -3,10 +3,9 @@
 /**
  * An ControllerClass that all HTML views could/should extend
  * @author visco
- * @version 1.15 12/05/08 03/22/11
  * @package sb_Controller
  */
-class sb_Controller_XHTML extends sb_Controller{
+class sb_Controller_XHTML extends sb_Controller_HTTP{
 
 	/**
 	 * Assigns the sb_HTML_HeadMeta property

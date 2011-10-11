@@ -2,7 +2,7 @@
 /**
  * Used to process REST requests, methods must have @servable true to be accessible
  */
-class sb_Controller_REST extends sb_Controller{
+class sb_Controller_REST extends sb_Controller_HTTP{
 
 	/**
 	 * An incomming put request handler

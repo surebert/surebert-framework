@@ -3,10 +3,9 @@
 /**
  * A ControllerClass that all HTML Controllers could/should extend
  * @author visco
- * @version 12/05/08 03/23/11
- * @package sb_View
+ * @package sb_Controller
  */
-class sb_Controller_HTML5 extends sb_Controller{
+class sb_Controller_HTML5 extends sb_Controller_HTTP{
 
 	/**
 	 * Assigns the sb_HTML_HeadMeta property
@@ -14,7 +13,7 @@ class sb_Controller_HTML5 extends sb_Controller{
 	public function __construct(){
 		$this->meta = new sb_HTML_HeadMeta();
 	}
-
+    
 	/**
 	 * The doc type of the HTML page
 	 *
@@ -112,6 +111,7 @@ class sb_Controller_HTML5 extends sb_Controller{
 		$html.= "</head>\n";
 		return $html;
 	}
+
 }
 
 ?>
