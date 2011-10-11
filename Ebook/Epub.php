@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Used to model an Epub document
  * $cssData = "body {\n  margin-left: .5em;\n  margin-right: .5em;\n  text-align: justify;\n}\n\np {\n  font-family: serif;\n  font-size: 10pt;\n  text-align: justify;\n  text-indent: 1em;\n  margin-top: 0px;\n  margin-bottom: 1ex;\n}\n\nh1, h2 {\n  font-family: sans-serif;\n  font-style: italic;\n  text-align: center;\n  background-color: #6b879c;\n  color: white;\n  width: 100%;\n}\n\nh1 {\n    margin-bottom: 2px;\n}\n\nh2 {\n    margin-top: -2px;\n    margin-bottom: 2px;\n}\n";
  *
  * $ebook = new sb_Ebook_Epub('hello world', 'Visco, Paul');
@@ -15,6 +15,8 @@ $ebook->add_chapter(new sb_Ebook_Epub_Chapter('chapter 3', '<h1>Chapter 3</h1><p
 $ebook->add_chapter(new sb_Ebook_Epub_Chapter('chapter 4', '<h1>Chapter 4</h1><p>blah blah</p>'));
 $ebook->output();
 ?>
+ * @author visco
+ * @package Epub
  */
 class sb_Ebook_Epub{
 

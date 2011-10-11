@@ -1,5 +1,6 @@
 <?php
 /**
+ * Used to model and Epub Chapter
  * . "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
 	. "<head>"
 	. "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
@@ -7,6 +8,8 @@
 	. "<title>Test Book</title>\n"
 	. "</head>\n"
 	. "<body>\n";
+ * @author visco
+ * @package sb_Epub
  */
 class sb_Ebook_Epub_Chapter{
 

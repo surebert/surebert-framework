@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Used to model an epub OPF
+ * @author visco
+ * @package Epub
+ */
 class sb_Ebook_Epub_OPF extends DOMDocument{
 
 	/**

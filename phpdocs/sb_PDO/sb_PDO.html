@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_PDO</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_PDO</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+							<a href="#sec-descendents">Descendents</a>
+			|													<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-consts">Constants</a>
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Extends native PDO class for logging and debugging</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.9 09/27/2007 04/01/2009</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_PDO.php.html">/PDO.php</a> (line <span class="field">10</span>)
+		</p>
+		
+				
+		<pre>PDO
+   |
+   --sb_PDO</pre>
+	
+			</div>
+</div>
+
+	<a name="sec-descendents"></a>
+	<div class="info-box">
+		<div class="info-box-title">Direct descendents</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+			<span class="disabled">Descendents</span>
+			|															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+															<a href="#sec-consts">Constants</a>
+							
+					</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../sb_PDO/sb_PDO_Debugger.html">sb_PDO_Debugger</a></td>
+					<td>
+											Extends native PDO class for logging and debugging
+										</td>
+				</tr>
+							</table>
+		</div>
+	</div>
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+															<a href="#sec-consts">Constants</a>
+							
+									<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																				<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#paramify" title="details" class="method-name">paramify</a>
+											(<span class="var-type">array/object</span>&nbsp;<span class="var-name">$data</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$omit</span> = <span class="var-default">array()</span>])
+									</div>
+																								
+												<div class="method-definition">
+											<span class="method-result">sb_PDO</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$connection</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$user</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$pass</span> = <span class="var-default">''</span>])
+									</div>
+																								<div class="method-definition">
+											<span class="method-result">PDOStatement</span>
+										<a href="#prepare" title="details" class="method-name">prepare</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$driver_options</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#s2o" title="details" class="method-name">s2o</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type">Array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">null</span>], [<span class="var-type">Object</span>&nbsp;<span class="var-name">$class_name</span> = <span class="var-default">''</span>], <span class="var-type">Array</span>&nbsp;<span class="var-name">3</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+																		<a href="#sec-consts">Constants</a>
+							
+										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodparamify" id="paramify"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method paramify</span> (line <span class="line-number">138</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts an array into a bound params hash</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The input data as an array designed for passing to pdo's execute or bindParams</li>
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.0  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$question&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Question</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$question</span><span class="src-sym">-&gt;</span><span class="src-id">qid&nbsp;</span>=&nbsp;<span class="src-num">1</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$question</span><span class="src-sym">-&gt;</span><span class="src-id">answer&nbsp;</span>=&nbsp;<span class="src-str">'grape'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$params&nbsp;</span>=&nbsp;<span class="src-id"><a href="../sb_PDO/sb_PDO.html">sb_PDO</a></span><span class="src-sym">::</span><a href="../sb_PDO/sb_PDO.html#methodparamify">paramify</a><span class="src-sym">(</span><span class="src-var">$question</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//returns&nbsp;$params&nbsp;as&nbsp;Array&nbsp;(&nbsp;[:qid]&nbsp;=&gt;&nbsp;1&nbsp;[:answer]&nbsp;=&gt;&nbsp;'grape'&nbsp;)</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$params&nbsp;</span>=&nbsp;<span class="src-id"><a href="../sb_PDO/sb_PDO.html">sb_PDO</a></span><span class="src-sym">::</span><a href="../sb_PDO/sb_PDO.html#methodparamify">paramify</a><span class="src-sym">(</span><span class="src-key">Array</span><span class="src-sym">(</span><span class="src-str">'qid'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1</span><span class="src-sym">,&nbsp;</span><span class="src-str">'answer'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'grape'</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//returns&nbsp;$params&nbsp;as&nbsp;Array&nbsp;(&nbsp;[:qid]&nbsp;=&gt;&nbsp;1&nbsp;[:answer]&nbsp;=&gt;&nbsp;'grape'&nbsp;)</span></div></li>
+</ol></div></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			paramify
+		</span>
+					(<span class="var-type">array/object</span>&nbsp;<span class="var-name">$data</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$omit</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array/object</span>
+				<span class="var-name">$data</span><span class="var-description">: The object/hash to convert to a bindParams compatible hash with the colon in front of each key so that it can be used as a bid param array</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$omit</span><span class="var-description">: An simple array of key names to omit from the array</span>			</li>
+				</ul>
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../sb_PDO/sb_PDO_Debugger.html#methodparamify">sb_PDO_Debugger::paramify()</a>
+							</li>
+				</ul>
+	</div>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">32</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates am extended PDO object</p>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_PDO</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$connection</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$user</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$pass</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$connection</span><span class="var-description">: The pdo connection string</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$user</span><span class="var-description">: Username if required</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$pass</span><span class="var-description">: <p>Password for connection if required</p><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$db</span>=<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_PDO/sb_PDO.html">sb_PDO</a></span><span class="src-sym">(</span><span class="src-str">&quot;mysql:dbname=xxx;host=xxx&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">'username'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'pass'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$db</span>=<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_PDO/sb_PDO.html">sb_PDO</a></span><span class="src-sym">(</span><span class="src-str">&quot;</span><span class="src-str">sqlite:myfile.db3');</span></div></li>
+</ol></div></p></span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt>PDO::constructor __construct ( $dsn, $username, $passwd, [$options = ] )</dt>
+					</dl>
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../sb_PDO/sb_PDO_Debugger.html#method__construct">sb_PDO_Debugger::__construct()</a>
+								: Creates am extended PDO object
+							</li>
+					<li>
+				<a href="../sb_PDO/sb_PDO_Logger.html#method__construct">sb_PDO_Logger::__construct()</a>
+								: Creates am extended PDO object that logs
+							</li>
+				</ul>
+	</div>
+<a name="methodprepare" id="prepare"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">prepare</span> (line <span class="line-number">163</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used to prepare and store sql statements for value binding</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A PDO_statment instance</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">PDOStatement</span>
+		<span class="method-name">
+			prepare
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$driver_options</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$sql</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$driver_options</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt>PDO::prepare ( $statment, [$options = ] )</dt>
+					</dl>
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../sb_PDO/sb_PDO_Logger.html#methodprepare">sb_PDO_Logger::prepare()</a>
+								: Used to prepare sql statements for value binding
+							</li>
+				</ul>
+	</div>
+<a name="methods2o" id="s2o"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">s2o</span> (line <span class="line-number">73</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Turn a sql query into an array of objects representing each row returned</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> An array of objects representing rows returned  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//without&nbsp;prepared&nbsp;statements</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$results&nbsp;</span>=&nbsp;<span class="src-id">App</span><span class="src-sym">::</span><span class="src-var">$db</span><span class="src-sym">-&gt;</span><span class="src-id">s2o</span><span class="src-sym">(</span><span class="src-str">&quot;SELECT&nbsp;*&nbsp;FROM&nbsp;pages&nbsp;WHERE&nbsp;pid&nbsp;=1&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//with&nbsp;prepared&nbsp;statement&nbsp;and&nbsp;params&nbsp;array</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$results&nbsp;</span>=&nbsp;<span class="src-id">App</span><span class="src-sym">::</span><span class="src-var">$db</span><span class="src-sym">-&gt;</span><span class="src-id">s2o</span><span class="src-sym">(</span><span class="src-str">&quot;SELECT&nbsp;*&nbsp;FROM&nbsp;pages&nbsp;WHERE&nbsp;pid&nbsp;=:pid&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-key">Array</span><span class="src-sym">(</span><span class="src-str">&quot;:pid&quot;</span>=&gt;<span class="src-num">1</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//with&nbsp;prepared&nbsp;statement&nbsp;and&nbsp;params&nbsp;object</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$params&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">stdClass</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$params</span><span class="src-sym">-&gt;</span><span class="src-id">pid&nbsp;</span>=&nbsp;<span class="src-num">1</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$results&nbsp;</span>=&nbsp;<span class="src-id">App</span><span class="src-sym">::</span><span class="src-var">$db</span><span class="src-sym">-&gt;</span><span class="src-id">s2o</span><span class="src-sym">(</span><span class="src-str">&quot;SELECT&nbsp;*&nbsp;FROM&nbsp;pages&nbsp;WHERE&nbsp;pid&nbsp;=:pid&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-var">$params</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//with&nbsp;prepared&nbsp;statement&nbsp;and&nbsp;params&nbsp;array&nbsp;plus&nbsp;class_name</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$results&nbsp;</span>=&nbsp;<span class="src-id">App</span><span class="src-sym">::</span><span class="src-var">$db</span><span class="src-sym">-&gt;</span><span class="src-id">s2o</span><span class="src-sym">(</span><span class="src-str">&quot;SELECT&nbsp;*&nbsp;FROM&nbsp;pages&nbsp;WHERE&nbsp;pid&nbsp;=:pid&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-key">Array</span><span class="src-sym">(</span><span class="src-str">&quot;:pid&quot;&nbsp;</span>=&gt;&nbsp;<span class="src-num">1</span><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-str">'Page'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;*&nbsp;<span class="src-comm">//without&nbsp;prepared&nbsp;statement&nbsp;and&nbsp;plus&nbsp;class_name,&nbsp;fetches&nbsp;rows&nbsp;from&nbsp;the&nbsp;pages&nbsp;table&nbsp;into&nbsp;Page&nbsp;instances</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$results&nbsp;</span>=&nbsp;<span class="src-id">App</span><span class="src-sym">::</span><span class="src-var">$db</span><span class="src-sym">-&gt;</span><span class="src-id">s2o</span><span class="src-sym">(</span><span class="src-str">&quot;SELECT&nbsp;*&nbsp;FROM&nbsp;pages&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-id">null</span><span class="src-sym">,&nbsp;</span><span class="src-str">'Page'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			s2o
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type">Array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">null</span>], [<span class="var-type">Object</span>&nbsp;<span class="var-name">$class_name</span> = <span class="var-default">''</span>], <span class="var-type">Array</span>&nbsp;<span class="var-name">3</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$sql</span><span class="var-description">: A sql string, can be used with :prop to create a prepared statement</span>			</li>
+					<li>
+				<span class="var-type">Array</span>
+				<span class="var-name">3</span><span class="var-description">: class_name Here you can specify a class_name, so that rows returned are instances of that class_name instead of standard objects</span>			</li>
+					<li>
+				<span class="var-type">Array</span>
+				<span class="var-name">$params</span><span class="var-description">: params An array hash of values to match with properties inside prepared statement</span>			</li>
+					<li>
+				<span class="var-type">Object</span>
+				<span class="var-name">$class_name</span><span class="var-description">: params An object whose properties match with properties inside prepared statement.</span>			</li>
+				</ul>
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../sb_PDO/sb_PDO_Debugger.html#methods2o">sb_PDO_Debugger::s2o()</a>
+								: Additionally Logs the errors
+							</li>
+					<li>
+				<a href="../sb_PDO/sb_PDO_Logger.html#methods2o">sb_PDO_Logger::s2o()</a>
+								: Additionally Logs the errors
+							</li>
+				</ul>
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname">PDO (Internal Class)</span></p>
+					<blockquote>
+													<span class="method-name">constructor __construct ( $dsn, $username, $passwd, [$options = ] )</span><br>
+													<span class="method-name">beginTransaction (  )</span><br>
+													<span class="method-name">commit (  )</span><br>
+													<span class="method-name">errorCode (  )</span><br>
+													<span class="method-name">errorInfo (  )</span><br>
+													<span class="method-name">exec ( $query )</span><br>
+													<span class="method-name">getAttribute ( $attribute )</span><br>
+													<span class="method-name">getAvailableDrivers (  )</span><br>
+													<span class="method-name">inTransaction (  )</span><br>
+													<span class="method-name">lastInsertId ( [$seqname = ] )</span><br>
+													<span class="method-name">prepare ( $statment, [$options = ] )</span><br>
+													<span class="method-name">query (  )</span><br>
+													<span class="method-name">quote ( $string, [$paramtype = ] )</span><br>
+													<span class="method-name">rollBack (  )</span><br>
+													<span class="method-name">setAttribute ( $attribute, $value )</span><br>
+													<span class="method-name">__sleep (  )</span><br>
+													<span class="method-name">__wakeup (  )</span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendants</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+										<h4>Inherited Constants</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname">PDO (Internal Class)</span></p>
+					<blockquote>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_AUTOCOMMIT = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_CASE = 8</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_CLIENT_VERSION = 5</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_CONNECTION_STATUS = 7</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_CURSOR = 10</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_CURSOR_NAME = 9</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_DEFAULT_FETCH_MODE = 19</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_DRIVER_NAME = 16</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_EMULATE_PREPARES = 20</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_ERRMODE = 3</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_FETCH_CATALOG_NAMES = 15</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_FETCH_TABLE_NAMES = 14</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_MAX_COLUMN_LEN = 18</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_ORACLE_NULLS = 11</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_PERSISTENT = 12</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_PREFETCH = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_SERVER_INFO = 6</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_SERVER_VERSION = 4</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_STATEMENT_CLASS = 13</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_STRINGIFY_FETCHES = 17</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ATTR_TIMEOUT = 2</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">CASE_LOWER = 2</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">CASE_NATURAL = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">CASE_UPPER = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">CURSOR_FWDONLY = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">CURSOR_SCROLL = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ERRMODE_EXCEPTION = 2</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ERRMODE_SILENT = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ERRMODE_WARNING = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">ERR_NONE = '00000'</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_ASSOC = 2</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_BOTH = 4</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_BOUND = 6</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_CLASS = 8</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_CLASSTYPE = 262144</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_COLUMN = 7</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_FUNC = 10</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_GROUP = 65536</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_INTO = 9</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_KEY_PAIR = 12</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_LAZY = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_NAMED = 11</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_NUM = 3</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_OBJ = 5</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_ORI_ABS = 4</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_ORI_FIRST = 2</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_ORI_LAST = 3</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_ORI_NEXT = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_ORI_PRIOR = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_ORI_REL = 5</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_PROPS_LATE = 1048576</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_SERIALIZE = 524288</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">FETCH_UNIQUE = 196608</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">NULL_EMPTY_STRING = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">NULL_NATURAL = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">NULL_TO_STRING = 2</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_BOOL = 5</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_EVT_ALLOC = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_EVT_EXEC_POST = 3</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_EVT_EXEC_PRE = 2</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_EVT_FETCH_POST = 5</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_EVT_FETCH_PRE = 4</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_EVT_FREE = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_EVT_NORMALIZE = 6</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_INPUT_OUTPUT = 2147483648</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_INT = 1</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_LOB = 3</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_NULL = 0</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_STMT = 4</span><br>
+							</span>
+													<img src="../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name">PARAM_STR = 2</span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:33 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

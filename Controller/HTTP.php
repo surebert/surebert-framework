@@ -1,4 +1,10 @@
 <?php 
+/**
+ * Used to handle http requests
+ * 
+ * @author visco
+ * @package sb_Controller
+ */
 class sb_Controller_HTTP extends sb_Controller{
   
      /**

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Email_Writer</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Email_Writer</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used to send plain text emails, HTML emails, or plain text and html emails with attachments both inline and not REQUIRES sb_Email.php and sb_Files (&lt;-unless you specify the mime types on attachments manually)</p>
+<p class="description"><p>If DEBUG_EMAIL constant is defined, then all email goes to that address.</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 2.25 06/08/03 06/16/09</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Email---Writer.php.html">/Email/Writer.php</a> (line <span class="field">14</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																								<div class="var-title">
+					<span class="var-type"><a href="../sb_Email/sb_Email.html">sb_Email</a></span>
+					<a href="#$emails" title="details" class="var-name">$emails</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$http_host" title="details" class="var-name">$http_host</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">sb_Logger</span>
+					<a href="#$logger" title="details" class="var-name">$logger</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$log_body" title="details" class="var-name">$log_body</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$remote_addr" title="details" class="var-name">$remote_addr</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																												
+												<div class="method-definition">
+											<span class="method-result">sb_Email_Writer</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type">sb_Logger</span>&nbsp;<span class="var-name">$logger</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$remote_addr</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$http_host</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#add_email_to_outbox" title="details" class="method-name">add_email_to_outbox</a>
+											(<span class="var-type"><a href="../sb_Email/sb_Email.html">sb_Email</a></span>&nbsp;<span class="var-name">$email</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#send" title="details" class="method-name">send</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$email</span> = <span class="var-default">0</span>])
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$emails" id="$emails"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../sb_Email/sb_Email.html">sb_Email</a></span>
+			<span class="var-name">$emails</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">33</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">An instance of sb_Email which describes the email being sent</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$http_host" id="$http_host"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$http_host</span>
+			 = <span class="var-default"> 'localhost'</span>			(line <span class="line-number">45</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The http host of the server sending the email, defaults to php_uname('n') if $_SERVER['HTTP_HOST'] is not set</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$logger" id="$logger"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">sb_Logger</span>
+			<span class="var-name">$logger</span>
+						(line <span class="line-number">20</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">An instance of sb_Logger for logging the emails sent</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$log_body" id="$log_body"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$log_body</span>
+			 = <span class="var-default"> true</span>			(line <span class="line-number">26</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if the body of the emails are logged in the log</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$remote_addr" id="$remote_addr"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$remote_addr</span>
+			 = <span class="var-default"> '127.0.0.1'</span>			(line <span class="line-number">39</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The ip address of the sender</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">65</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates a new outbox to send from</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_Email_Writer</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type">sb_Logger</span>&nbsp;<span class="var-name">$logger</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$remote_addr</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$http_host</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">sb_Logger</span>
+				<span class="var-name">$logger</span><span class="var-description">: <p>optional</p><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//instanciate&nbsp;the&nbsp;email&nbsp;writer</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$myEmailWriter&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_Email/sb_Email_Writer.html">sb_Email_Writer</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//add&nbsp;an&nbsp;instance&nbsp;of&nbsp;sb_Email&nbsp;to&nbsp;the&nbsp;outbox,&nbsp;you&nbsp;can&nbsp;add&nbsp;as&nbsp;many&nbsp;as&nbsp;you&nbsp;want</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$myEmailWriter</span><span class="src-sym">-&gt;</span><a href="../sb_Email/sb_Email_Writer.html#methodadd_email_to_outbox">add_email_to_outbox</a><span class="src-sym">(</span><span class="src-var">$myMail</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//then&nbsp;send,&nbsp;you&nbsp;could&nbsp;add&nbsp;more&nbsp;emails&nbsp;before&nbsp;sending</span></div></li>
+<li><div class="src-line">&nbsp;<a href="http://www.php.net/var_dump">var_dump</a><span class="src-sym">(</span><span class="src-var">$myEmailWriter</span><span class="src-sym">-&gt;</span><a href="../sb_Email/sb_Email_Writer.html#methodsend">send</a><span class="src-sym">(</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></div></p></span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$remote_addr</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$http_host</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodadd_email_to_outbox" id="add_email_to_outbox"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">add_email_to_outbox</span> (line <span class="line-number">148</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Adds an email to the outbox which is sent with the send method</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> false if it has injectors, true if added to outbox</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			add_email_to_outbox
+		</span>
+					(<span class="var-type"><a href="../sb_Email/sb_Email.html">sb_Email</a></span>&nbsp;<span class="var-name">$email</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../sb_Email/sb_Email.html">sb_Email</a></span>
+				<span class="var-name">$email</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsend" id="send"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">send</span> (line <span class="line-number">83</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sends the emails in the $emails array that were attached using add_email_to_outbox, logs progress if log file is specified</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			send
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$email</span> = <span class="var-default">0</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$email</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:39 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

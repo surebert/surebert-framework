@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Graph_Point</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Graph_Point</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used to plot simple point and line graphs.  Requires sb_Math_RangeMapper</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.6  11/19/07</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Graph---Point.php.html">/Graph/Point.php</a> (line <span class="field">10</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																<div class="var-title">
+					<span class="var-type">integer</span>
+					<a href="#$axis_offset" title="details" class="var-name">$axis_offset</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$connect_points" title="details" class="var-name">$connect_points</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">GD</span>
+					<a href="#$im" title="details" class="var-name">$im</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">integer</span>
+					<a href="#$precision" title="details" class="var-name">$precision</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$x_axis_hints" title="details" class="var-name">$x_axis_hints</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$y_axis_hints" title="details" class="var-name">$y_axis_hints</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																				
+												<div class="method-definition">
+											<span class="method-result">sb_Graph_Point</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$width</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$height</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$values</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#add_horizontal_line" title="details" class="method-name">add_horizontal_line</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$y</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$color</span> = <span class="var-default">'red'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$label</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#draw" title="details" class="method-name">draw</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">unknown</span>
+										<a href="#output" title="details" class="method-name">output</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_axis_color" title="details" class="method-name">set_axis_color</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_background_color" title="details" class="method-name">set_background_color</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$r</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$g</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$b</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_line_color" title="details" class="method-name">set_line_color</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_point_color" title="details" class="method-name">set_point_color</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_text_color" title="details" class="method-name">set_text_color</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_y_axis_label_increment" title="details" class="method-name">set_y_axis_label_increment</a>
+											([<span class="var-type">float</span>&nbsp;<span class="var-name">$increment</span> = <span class="var-default">''</span>])
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$axis_offset" id="$axis_offset"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">integer</span>
+			<span class="var-name">$axis_offset</span>
+			 = <span class="var-default"> 30</span>			(line <span class="line-number">38</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The offset for each axis labels</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$connect_points" id="$connect_points"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$connect_points</span>
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">17</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if plotted points are connected by a line</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$im" id="$im"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">GD</span>
+			<span class="var-name">$im</span>
+						(line <span class="line-number">51</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The image resource that is being drawn</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> resource</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$precision" id="$precision"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">integer</span>
+			<span class="var-name">$precision</span>
+			 = <span class="var-default"> 2</span>			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The number of decimal places to use for rounding</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$x_axis_hints" id="$x_axis_hints"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$x_axis_hints</span>
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">31</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if the hinted x axis is shown</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$y_axis_hints" id="$y_axis_hints"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$y_axis_hints</span>
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">24</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if the hinted y axis is shown</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">105</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create the blank graph image</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_Graph_Point</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$width</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$height</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$values</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$width</span><span class="var-description">: The total width of the graph in pixels</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$height</span><span class="var-description">: The total height of the graph in pixels</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$values</span><span class="var-description">: A line resturn delimted, comma-delimited value pair decribing the label and value for each point plotted.  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//set&nbsp;the&nbsp;graph&nbsp;width&nbsp;and&nbsp;height&nbsp;plus&nbsp;values&nbsp;and&nbsp;labels</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//set&nbsp;the&nbsp;graph&nbsp;width&nbsp;and&nbsp;height&nbsp;plus&nbsp;values&nbsp;and&nbsp;labels</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_Graph/sb_Graph_Point.html">sb_Graph_Point</a></span><span class="src-sym">(</span><span class="src-num">600</span><span class="src-sym">,&nbsp;</span><span class="src-num">300</span><span class="src-sym">,&nbsp;&nbsp;</span><span class="src-key">Array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'A'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1.27</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'B'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1.45</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'C'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1.20</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'D'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1.55</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'E'&nbsp;</span>=&gt;&nbsp;<span class="src-id">null</span><span class="src-sym">,&nbsp;</span><span class="src-comm">//graphs&nbsp;nothing&nbsp;for&nbsp;that&nbsp;column&nbsp;but&nbsp;still&nbsp;adds&nbsp;the&nbsp;column</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'F'&nbsp;</span>=&gt;&nbsp;<span class="src-num">2.55</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'G'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1.45</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'H'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1.35</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'I'&nbsp;</span>=&gt;&nbsp;<span class="src-num">1.33</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'J'&nbsp;</span>=&gt;&nbsp;<span class="src-num">0.98</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//these&nbsp;all&nbsp;have&nbsp;defaults,&nbsp;optional</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodset_y_axis_label_increment">set_y_axis_label_increment</a><span class="src-sym">(</span><span class="src-num">0.5</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_Graph/sb_Graph_Point.html#var$connect_points">connect_points</a>&nbsp;</span>=&nbsp;<span class="src-num">1</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_Graph/sb_Graph_Point.html#var$x_axis_hints">x_axis_hints</a>&nbsp;</span>=&nbsp;<span class="src-num">1</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_Graph/sb_Graph_Point.html#var$y_axis_hints">y_axis_hints</a>&nbsp;</span>=&nbsp;<span class="src-num">1</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//setting&nbsp;the&nbsp;colors,&nbsp;optional</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodset_background_color">set_background_color</a><span class="src-sym">(</span><span class="src-num">25</span><span class="src-sym">,&nbsp;</span><span class="src-num">45</span><span class="src-sym">,&nbsp;</span><span class="src-num">65</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodset_text_color">set_text_color</a><span class="src-sym">(</span><span class="src-num">255</span><span class="src-sym">,&nbsp;</span><span class="src-num">255</span><span class="src-sym">,&nbsp;</span><span class="src-num">255</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodset_axis_color">set_axis_color</a><span class="src-sym">(</span><span class="src-num">95</span><span class="src-sym">,&nbsp;</span><span class="src-num">95</span><span class="src-sym">,&nbsp;</span><span class="src-num">95</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodset_point_color">set_point_color</a><span class="src-sym">(</span><span class="src-num">223</span><span class="src-sym">,&nbsp;</span><span class="src-num">65</span><span class="src-sym">,&nbsp;</span><span class="src-num">15</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodset_line_color">set_line_color</a><span class="src-sym">(</span><span class="src-num">145</span><span class="src-sym">,&nbsp;</span><span class="src-num">45</span><span class="src-sym">,&nbsp;</span><span class="src-num">45</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//add&nbsp;additional&nbsp;horizontal&nbsp;lines,&nbsp;optional</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodadd_horizontal_line">add_horizontal_line</a><span class="src-sym">(</span><span class="src-num">1.54</span><span class="src-sym">,&nbsp;</span><span class="src-str">'red'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'average'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodadd_horizontal_line">add_horizontal_line</a><span class="src-sym">(</span><span class="src-num">2.0</span><span class="src-sym">,&nbsp;</span><span class="src-str">'purple'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'otherLine'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//draw&nbsp;the&nbsp;chart</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methoddraw">draw</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<a href="http://www.php.net/header">header</a><span class="src-sym">(</span><span class="src-str">&quot;Content-type:&nbsp;image/gif&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//&nbsp;return&nbsp;the&nbsp;image&nbsp;using&nbsp;imagepng&nbsp;or&nbsp;imagejpeg.</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">imagegif</span><span class="src-sym">(</span><span class="src-var">$chart</span><span class="src-sym">-&gt;</span><a href="../sb_Graph/sb_Graph_Point.html#methodoutput">output</a><span class="src-sym">(</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></div></span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodadd_horizontal_line" id="add_horizontal_line"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">add_horizontal_line</span> (line <span class="line-number">403</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a horizontal line</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			add_horizontal_line
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$y</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$color</span> = <span class="var-default">'red'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$label</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$y</span><span class="var-description">: The y value</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$color</span><span class="var-description">: red, orange, yellow, green, blue, purple</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$label</span><span class="var-description">: The line label</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddraw" id="draw"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">draw</span> (line <span class="line-number">348</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Draw the basic graph and plot the points</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			draw
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodoutput" id="output"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">output</span> (line <span class="line-number">420</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Output the graph image resouce for use with imagegif, imagepng, imagejpg</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">unknown</span>
+		<span class="method-name">
+			output
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodset_axis_color" id="set_axis_color"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_axis_color</span> (line <span class="line-number">173</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the axis color in rgb format - axis</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_axis_color
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$r</span><span class="var-description">: The red value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$g</span><span class="var-description">: The green value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$b</span><span class="var-description">: The blue value 0-255</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_background_color" id="set_background_color"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_background_color</span> (line <span class="line-number">177</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_background_color
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$r</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$g</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$b</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$r</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$g</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$b</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_line_color" id="set_line_color"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_line_color</span> (line <span class="line-number">150</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the line color in rgb format</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_line_color
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$r</span><span class="var-description">: The red value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$g</span><span class="var-description">: The green value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$b</span><span class="var-description">: The blue value 0-255</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_point_color" id="set_point_color"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_point_color</span> (line <span class="line-number">138</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the point color in rgb format</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_point_color
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$r</span><span class="var-description">: The red value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$g</span><span class="var-description">: The green value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$b</span><span class="var-description">: The blue value 0-255</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_text_color" id="set_text_color"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_text_color</span> (line <span class="line-number">162</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the text color in rgb format - labels</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_text_color
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$r</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$g</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$b</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$r</span><span class="var-description">: The red value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$g</span><span class="var-description">: The green value 0-255</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$b</span><span class="var-description">: The blue value 0-255</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_y_axis_label_increment" id="set_y_axis_label_increment"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_y_axis_label_increment</span> (line <span class="line-number">124</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the spacing increment inteval for the y axis legend</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_y_axis_label_increment
+		</span>
+					([<span class="var-type">float</span>&nbsp;<span class="var-name">$increment</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">float</span>
+				<span class="var-name">$increment</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:33 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

@@ -5,7 +5,7 @@
  *
  * @author Paul Visco
  * @version 3.14 10-01-2008 02-24-2010
- * @package sb_Application
+ * @package Gateway
  *
  */
 
@@ -339,7 +339,7 @@ class sb_Request {
 /**
  * The main gateway
  * @author paul.visco@roswellpark.org
- * @package sb_Application
+ * @package Gateway
  *
  */
 class Gateway {

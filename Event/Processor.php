@@ -1,4 +1,10 @@
 <?php 
+/**
+ * Processes events in a non linear fashion by creating and executing listeners
+ * 
+ * @author visco
+ * @package sb_Event
+ */
 class sb_Event_Processor{
 	protected $events = array();
 	protected $global_listeners = array();

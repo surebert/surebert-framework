@@ -1,6 +1,8 @@
 <?php
 /**
  * Used to respond to javascript requests
+ * @author visco
+ * @package sb_JS
  */
 class sb_JS{
 	

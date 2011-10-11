@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Validate_ContactInfo</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Validate_ContactInfo</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used to validate various strings</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.2 03/18/2008</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Validate---ContactInfo.php.html">/Validate/ContactInfo.php</a> (line <span class="field">12</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+												<div class="method-definition">
+					static 						<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+										<a href="#email" title="details" class="method-name">email</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$email</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$check_mx_records</span> = <span class="var-default">true</span>])
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+										<a href="#phone" title="details" class="method-name">phone</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$phone</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+										<a href="#province" title="details" class="method-name">province</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$province</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+										<a href="#state" title="details" class="method-name">state</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$state</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+										<a href="#url" title="details" class="method-name">url</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$check_url</span> = <span class="var-default">true</span>])
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+										<a href="#zip" title="details" class="method-name">zip</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$zip</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$check_usps</span> = <span class="var-default">true</span>])
+									</div>
+								
+																																																				</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodemail" id="email"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method email</span> (line <span class="line-number">24</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Validates an email address format and checks DNS record.  Does not include the whole spec for vlid emails, only accepts one @ symbol, letters, numbers, and . _ - + ! as special characters</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.2 13/18/2008</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+		<span class="method-name">
+			email
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$email</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$check_mx_records</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$email</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$check_mx_records</span><span class="var-description">: Check the MX record at the dns to make sure the mail host exists</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodphone" id="phone"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method phone</span> (line <span class="line-number">106</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Validates a phone number.  Without a modem we can only validate format ;(</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.2 13/18/2008</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+		<span class="method-name">
+			phone
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$phone</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$phone</span><span class="var-description">: The phone number to validate shoudl be in  xxx-xxx-xxxx format</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodprovince" id="province"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method province</span> (line <span class="line-number">209</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Validates canadian province two character abbr</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.2 13/18/2008</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+		<span class="method-name">
+			province
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$province</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$province</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodstate" id="state"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method state</span> (line <span class="line-number">181</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Validates state two character abbr</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.2 13/18/2008</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+		<span class="method-name">
+			state
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$state</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$state</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodurl" id="url"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method url</span> (line <span class="line-number">132</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Validates a url.  Also checks to make sure the page is reachable and has HTML Tag</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.2 13/18/2008</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+		<span class="method-name">
+			url
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$check_url</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: The url to validate should</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$check_url</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodzip" id="zip"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method zip</span> (line <span class="line-number">57</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Validates a zip code</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The message property includes the city if it exists</li>
+				<li><span class="field">author:</span> Paul Visco</li>
+				<li><span class="field">version:</span> 1.2 13/18/2008</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../sb_Validate/sb_Validate_Results.html">sb_Validate_Results</a></span>
+		<span class="method-name">
+			zip
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$zip</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$check_usps</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$zip</span><span class="var-description">: The zip code to validate in xxxxx or xxxxx-xxxx format</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$check_usps</span><span class="var-description">: check_usps Check the usps sie look for validation</span>			</li>
+				</ul>
+		
+			
+	</div>
+
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:26 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

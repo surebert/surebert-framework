@@ -5,7 +5,7 @@
  *
  * @author Paul Visco
  * @version 4.16 10-01-2008 06-14-2011
- * @package sb_Application
+ * @package Gateway
  *
  */
 #####################################################################
@@ -384,7 +384,7 @@ class sb_Config {
 /**
  * The main gateway
  * @author paul.visco@roswellpark.org
- * @package sb_Application
+ * @package Gateway
  *
  */
 class Gateway {

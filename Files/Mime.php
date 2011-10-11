@@ -1,4 +1,10 @@
 <?php
+/**
+ * Handles mime types for files
+ * 
+ * @author visco
+ * @package sb_Files
+ */
 class sb_Files_Mime{
 
 	public $mime_types = <<<'MIME'

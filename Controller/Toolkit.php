@@ -2,8 +2,7 @@
 /**
  * Creates concatenated javascript files for the surebert toolkit from the arguments it is fed
  * @author visco
- * @version 05/20/2008 03/23/2011
- *
+ * @package sb_Controller
  */
 class sb_Controller_Toolkit extends sb_Controller{
 

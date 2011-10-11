@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_SFTP_Client</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_SFTP_Client</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+                <p class="implements">
+            Implements interfaces:
+            <ul>
+                <li><a href="../sb_FTP/sb_FTP_Base.html">sb_FTP_Base</a></li>            </ul>
+        </p>
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Uses the pecl ssh2 extension in order  based on code sample from php manual http://www.php.net/manual/en/ref.ssh2.php  requires php-pecl-ssh2 extension</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;try<span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$client&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_SFTP/sb_SFTP_Client.html">sb_SFTP_Client</a></span><span class="src-sym">(</span><span class="src-str">&quot;server.com&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-num">1027</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$client</span><span class="src-sym">-&gt;</span><a href="../sb_SFTP/sb_SFTP_Client.html#methodlogin">login</a><span class="src-sym">(</span><span class="src-str">&quot;uname&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;pass&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">OR</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$client</span><span class="src-sym">-&gt;</span><a href="../sb_SFTP/sb_SFTP_Client.html#methodlogin_with_key">login_with_key</a><span class="src-sym">(</span><span class="src-str">'uname'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'id_rsa.pub'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'id_rsa'</span><span class="src-sym">,&nbsp;</span><span class="src-str">''</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$client</span><span class="src-sym">-&gt;</span><a href="../sb_SFTP/sb_SFTP_Client.html#methodput">put</a><span class="src-sym">(</span><span class="src-str">&quot;/tmp/to_be_sent&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;/tmp/to_be_received&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$client</span><span class="src-sym">-&gt;</span><a href="../sb_SFTP/sb_SFTP_Client.html#methodget">get</a><span class="src-sym">(</span><span class="src-str">&quot;/tmp/to_be_received&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;/tmp/to_be_sent_new&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">}&nbsp;</span>catch&nbsp;<span class="src-sym">(</span><span class="src-id">Exception&nbsp;</span><span class="src-var">$e</span><span class="src-sym">)</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;<span class="src-var">$e</span><span class="src-sym">-&gt;</span><span class="src-id">getMessage</span><span class="src-sym">(</span><span class="src-sym">)&nbsp;</span>.&nbsp;<span class="src-str">&quot;\n&quot;</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">}</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> paul.visco@roswellpark.org</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_SFTP---Client.php.html">/SFTP/Client.php</a> (line <span class="field">22</span>)
+		</p>
+		
+				
+		<pre><a href="../sb_SSH2/sb_SSH2_Client.html">sb_SSH2_Client</a>
+   |
+   --sb_SFTP_Client</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																								<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$sftp" title="details" class="var-name">$sftp</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																												
+												<div class="method-definition">
+											<span class="method-result">sb_SFTP_Client</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$port</span> = <span class="var-default">22</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#chmod" title="details" class="method-name">chmod</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$file</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$mode</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$recursive</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#delete" title="details" class="method-name">delete</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#get" title="details" class="method-name">get</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$local_file</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Array</span>
+										<a href="#get_file_stats" title="details" class="method-name">get_file_stats</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#login" title="details" class="method-name">login</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$uname</span>, <span class="var-type"><type></span>&nbsp;<span class="var-name">$pass</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#login_with_key" title="details" class="method-name">login_with_key</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$uname</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$public_key_file</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$private_key_file</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$pass</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Array</span>
+										<a href="#ls" title="details" class="method-name">ls</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_dir</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#mkdir" title="details" class="method-name">mkdir</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#put" title="details" class="method-name">put</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$local_file</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$mode</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#readlink" title="details" class="method-name">readlink</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#rename_remote_file" title="details" class="method-name">rename_remote_file</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$from</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$to</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#rmdir" title="details" class="method-name">rmdir</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#scp_send" title="details" class="method-name">scp_send</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$local_path</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$remote_path</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$mode</span> = <span class="var-default">0644</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#sftp_connect" title="details" class="method-name">sftp_connect</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">integer</span>
+										<a href="#size" title="details" class="method-name">size</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#ssh2_sftp_symlink" title="details" class="method-name">ssh2_sftp_symlink</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$orig_path</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$symlink_path</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$sftp" id="$sftp"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$sftp</span>
+						(line <span class="line-number">24</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../sb_SSH2/sb_SSH2_Client.html">sb_SSH2_Client</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../sb_SSH2/sb_SSH2_Client.html#var$connection">sb_SSH2_Client::$connection</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">31</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Instantiates the ssh2 connection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_SFTP_Client</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$port</span> = <span class="var-default">22</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$host</span><span class="var-description">: The host server to connect to</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$port</span><span class="var-description">: The port to connect on</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../sb_SSH2/sb_SSH2_Client.html#method__construct">sb_SSH2_Client::__construct()</a></dt>
+						<dd>Instantiates the ssh2 connection</dd>
+					</dl>
+			
+	</div>
+<a name="methodchmod" id="chmod"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">chmod</span> (line <span class="line-number">251</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			chmod
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$file</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$mode</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$recursive</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$file</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$mode</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$recursive</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddelete" id="delete"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">delete</span> (line <span class="line-number">207</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Removes a remote file - be careful!</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			delete
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span><span class="var-description">: Delete remote path</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget" id="get"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get</span> (line <span class="line-number">114</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get a file from the remote machine</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			get
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$local_file</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_file</span><span class="var-description">: The path to the remote file to read</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$local_file</span><span class="var-description">: The path to the local file to write</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_file_stats" id="get_file_stats"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_file_stats</span> (line <span class="line-number">216</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets remote file stats</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> with size, gid, uid, atime, mtime, mode keys</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Array</span>
+		<span class="method-name">
+			get_file_stats
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span><span class="var-description">: The path to the file to get stats for</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlogin" id="login"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">login</span> (line <span class="line-number">51</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Login to a remote server with uname and pass based credentials</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			login
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$uname</span>, <span class="var-type"><type></span>&nbsp;<span class="var-name">$pass</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$uname</span><span class="var-description">: The user name to log in with</span>			</li>
+					<li>
+				<span class="var-type"><type></span>
+				<span class="var-name">$pass</span><span class="var-description">: The password to login in with</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../sb_SSH2/sb_SSH2_Client.html#methodlogin">sb_SSH2_Client::login()</a></dt>
+						<dd>Login to a remote server with uname and pass based credentials</dd>
+					</dl>
+			
+	</div>
+<a name="methodlogin_with_key" id="login_with_key"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">login_with_key</span> (line <span class="line-number">67</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Login with public key</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			login_with_key
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$uname</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$public_key_file</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$private_key_file</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$pass</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$uname</span><span class="var-description">: The username to login in as</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$public_key_file</span><span class="var-description">: The path to the public key file to use (id_rsa.pub), make sure it is readible by your script</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$private_key_file</span><span class="var-description">: The private key file to use id (id_rsa), make sure it is readible by your script</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$pass</span><span class="var-description">: The passphrase of the keyfile to use if one is required</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../sb_SSH2/sb_SSH2_Client.html#methodlogin_with_key">sb_SSH2_Client::login_with_key()</a></dt>
+						<dd>Login with public key</dd>
+					</dl>
+			
+	</div>
+<a name="methodls" id="ls"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">ls</span> (line <span class="line-number">141</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Lists the contents of a remote directory</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The array of files</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Array</span>
+		<span class="method-name">
+			ls
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_dir</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_dir</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodmkdir" id="mkdir"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">mkdir</span> (line <span class="line-number">183</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates a remote directory</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			mkdir
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span><span class="var-description">: Delete remote path</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodput" id="put"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">put</span> (line <span class="line-number">82</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Put a file on the remote machine</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			put
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$local_file</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$mode</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$local_file</span><span class="var-description">: The path to the local file to read</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_file</span><span class="var-description">: The path to the remote file to write</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$mode</span><span class="var-description">: File permission mode, if is set, uses scp which is slower</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodreadlink" id="readlink"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">readlink</span> (line <span class="line-number">229</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Return the target of a symbolic link</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> the real path to the file</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			readlink
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrename_remote_file" id="rename_remote_file"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">rename_remote_file</span> (line <span class="line-number">171</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Renames remote files</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			rename_remote_file
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$from</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$to</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$from</span><span class="var-description">: The old path/file name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$to</span><span class="var-description">: The new path/file name</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrmdir" id="rmdir"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">rmdir</span> (line <span class="line-number">195</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Removes a remote directory - be careful!</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			rmdir
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span><span class="var-description">: Delete remote path</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodscp_send" id="scp_send"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">scp_send</span> (line <span class="line-number">269</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Use scp to send, slower than $this-&gt;get which uses sftp but allows mode change</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			scp_send
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$local_path</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$remote_path</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$mode</span> = <span class="var-default">0644</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$local_path</span><span class="var-description">: The local file path</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_path</span><span class="var-description">: The remote file path</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$mode</span><span class="var-description">: The file mode to set for the remote file</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsftp_connect" id="sftp_connect"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">sftp_connect</span> (line <span class="line-number">38</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Connects to the SFTP subsystem</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			sftp_connect
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodsize" id="size"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">size</span> (line <span class="line-number">162</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets the size of a remote file</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The size of the file in bytes</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">integer</span>
+		<span class="method-name">
+			size
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_file</span><span class="var-description">: path to remote file</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodssh2_sftp_symlink" id="ssh2_sftp_symlink"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">ssh2_sftp_symlink</span> (line <span class="line-number">243</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create a symlink on the remote system</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> success or failure</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			ssh2_sftp_symlink
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$orig_path</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$symlink_path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$orig_path</span><span class="var-description">: The path to the original remote file</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$symlink_path</span><span class="var-description">: The path to the symlink you want to create</span>			</li>
+				</ul>
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../sb_SSH2/sb_SSH2_Client.html">sb_SSH2_Client</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../sb_SSH2/sb_SSH2_Client.html#method__construct">sb_SSH2_Client::__construct()</a></span><br>
+													<span class="method-name"><a href="../sb_SSH2/sb_SSH2_Client.html#methodexec">sb_SSH2_Client::exec()</a></span><br>
+													<span class="method-name"><a href="../sb_SSH2/sb_SSH2_Client.html#methodlogin">sb_SSH2_Client::login()</a></span><br>
+													<span class="method-name"><a href="../sb_SSH2/sb_SSH2_Client.html#methodlogin_with_key">sb_SSH2_Client::login_with_key()</a></span><br>
+													<span class="method-name"><a href="../sb_SSH2/sb_SSH2_Client.html#methodtunnel">sb_SSH2_Client::tunnel()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:24 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

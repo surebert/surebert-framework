@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Samba_Connection</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Samba_Connection</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used to connect to and interact with windows machines from php code on a linux machine 	maps the smbclient command line executable to a local PHP object.</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Anthony Cashaw, Paul Visco</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Samba---Connection.php.html">/Samba/Connection.php</a> (line <span class="field">9</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																				<div class="var-title">
+					static <span class="var-type"><a href="../sb_Logger/sb_Logger_Base.html">sb_Logger_Base</a></span>
+					<a href="#$log" title="details" class="var-name">$log</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">boolean</span>
+					<a href="#$logls" title="details" class="var-name">$logls</a>
+				</div>
+																				<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$debug" title="details" class="var-name">$debug</a>
+				</div>
+																											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																				<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#winslashes" title="details" class="method-name">winslashes</a>
+											(<span class="var-type">$str</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+								
+												<div class="method-definition">
+											<span class="method-result">sb_Samba_Connection</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">$uname</span>&nbsp;<span class="var-name">$host</span>, <span class="var-type">$pass</span>&nbsp;<span class="var-name">$share</span>, <span class="var-type">$path</span>&nbsp;<span class="var-name">$uname</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$pass</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$domain</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">unknown_type</span>
+										<a href="#dir" title="details" class="method-name">dir</a>
+											([<span class="var-type">$subdir</span>&nbsp;<span class="var-name">$subdir</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#execute" title="details" class="method-name">execute</a>
+											(<span class="var-type">$command</span>&nbsp;<span class="var-name">$command</span>, [<span class="var-type">$output</span>&nbsp;<span class="var-name">&$output</span> = <span class="var-default">null</span>], <span class="var-type">$log</span>&nbsp;<span class="var-name">2</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#get" title="details" class="method-name">get</a>
+											(<span class="var-type">$getpath</span>&nbsp;<span class="var-name">$remotepath</span>, [<span class="var-type">$putpath</span>&nbsp;<span class="var-name">$localfile</span> = <span class="var-default">'.'</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">unknown_type</span>
+										<a href="#ls" title="details" class="method-name">ls</a>
+											([<span class="var-type">$subdir</span>&nbsp;<span class="var-name">$subdir</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#mkdir" title="details" class="method-name">mkdir</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_dir</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$output</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#mput" title="details" class="method-name">mput</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$local_dir</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$remote_dir</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$file_pattern</span> = <span class="var-default">'*'</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$output</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#put" title="details" class="method-name">put</a>
+											(<span class="var-type">$localfile</span>&nbsp;<span class="var-name">$localfile</span>, [<span class="var-type">$remotefile</span>&nbsp;<span class="var-name">$remotefile</span> = <span class="var-default">&quot;.&quot;</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#rename" title="details" class="method-name">rename</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file_path</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$new_remote_file_path</span>)
+									</div>
+																</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$log" id="$log"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type"><a href="../sb_Logger/sb_Logger_Base.html">sb_Logger_Base</a></span>
+			<span class="var-name">$log</span>
+						(line <span class="line-number">33</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Object to log with</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$logls" id="$logls"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">boolean</span>
+			<span class="var-name">$logls</span>
+			 = <span class="var-default"> 0</span>			(line <span class="line-number">39</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Weather to log the ls transactions</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$debug" id="$debug"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$debug</span>
+			 = <span class="var-default"> false</span>			(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if commands executed and raw results are echoed in stdout</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodwinslashes" id="winslashes"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method winslashes</span> (line <span class="line-number">257</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts all slashes in a string to be windows readable slashes</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			winslashes
+		</span>
+					(<span class="var-type">$str</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$str</span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">73</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Class constructor for the rp_WindowsShare class.</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$win&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_Samba/sb_Samba_Connection.html">sb_Samba_Connection</a></span><span class="src-sym">(</span><span class="src-str">'Compy'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'c$'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'fella'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'supasecrect'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'Workspace'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$win</span><span class="src-sym">-&gt;</span><a href="../sb_Samba/sb_Samba_Connection.html#methodls">ls</a><span class="src-sym">(</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_Samba_Connection</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">$uname</span>&nbsp;<span class="var-name">$host</span>, <span class="var-type">$pass</span>&nbsp;<span class="var-name">$share</span>, <span class="var-type">$path</span>&nbsp;<span class="var-name">$uname</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$pass</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$domain</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$uname</span>
+				<span class="var-name">$host</span>			</li>
+					<li>
+				<span class="var-type">$pass</span>
+				<span class="var-name">$share</span>			</li>
+					<li>
+				<span class="var-type">$path</span>
+				<span class="var-name">$uname</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$pass</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$domain</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddir" id="dir"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">dir</span> (line <span class="line-number">178</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a list of the contents of the root of the share, or what ever directory is requested in $subdir</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">unknown_type</span>
+		<span class="method-name">
+			dir
+		</span>
+					([<span class="var-type">$subdir</span>&nbsp;<span class="var-name">$subdir</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$subdir</span>
+				<span class="var-name">$subdir</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$raw</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodexecute" id="execute"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">execute</span> (line <span class="line-number">134</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Executes the command line function that completes the remote windows operations</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			execute
+		</span>
+					(<span class="var-type">$command</span>&nbsp;<span class="var-name">$command</span>, [<span class="var-type">$output</span>&nbsp;<span class="var-name">&$output</span> = <span class="var-default">null</span>], <span class="var-type">$log</span>&nbsp;<span class="var-name">2</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$log</span>
+				<span class="var-name">2</span><span class="var-description">: boolean weather to log this transaction</span>			</li>
+					<li>
+				<span class="var-type">$command</span>
+				<span class="var-name">$command</span><span class="var-description">: string the command to issue to the smbclient</span>			</li>
+					<li>
+				<span class="var-type">$output</span>
+				<span class="var-name">&$output</span><span class="var-description">: array what the command line returns</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget" id="get"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get</span> (line <span class="line-number">88</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">gets files from the windows machine to the linux machine</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> the raw command line output for smbclient</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			get
+		</span>
+					(<span class="var-type">$getpath</span>&nbsp;<span class="var-name">$remotepath</span>, [<span class="var-type">$putpath</span>&nbsp;<span class="var-name">$localfile</span> = <span class="var-default">'.'</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$getpath</span>
+				<span class="var-name">$remotepath</span><span class="var-description">: the file path at the windows machine</span>			</li>
+					<li>
+				<span class="var-type">$putpath</span>
+				<span class="var-name">$localfile</span><span class="var-description">: the file path on the local linux box where the file will be placed</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodls" id="ls"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">ls</span> (line <span class="line-number">161</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a list of the contents of the root of the share, or what ever directory is requested in $subdir</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">unknown_type</span>
+		<span class="method-name">
+			ls
+		</span>
+					([<span class="var-type">$subdir</span>&nbsp;<span class="var-name">$subdir</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$subdir</span>
+				<span class="var-name">$subdir</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$raw</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodmkdir" id="mkdir"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">mkdir</span> (line <span class="line-number">246</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">return:</span> was it successful or not</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			mkdir
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_dir</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$output</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_dir</span><span class="var-description">: The remote directory to make e.g. \windows\share\files</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$output</span><span class="var-description">: The raw out as a reference in array if passed</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$raw</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodmput" id="mput"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">mput</span> (line <span class="line-number">233</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">return:</span> was it successful or not</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			mput
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$local_dir</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$remote_dir</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$file_pattern</span> = <span class="var-default">'*'</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">&$raw</span> = <span class="var-default">NULL</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$output</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$local_dir</span><span class="var-description">: The local directory  e.g. /blah/foo/</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_dir</span><span class="var-description">: The remote directory  e.g. \windows\share\files</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$output</span><span class="var-description">: The raw out as a reference in array if passed</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$file_pattern</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$raw</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodput" id="put"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">put</span> (line <span class="line-number">103</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Allows the placent of files from the local system to the remote windows system</p>
+	<ul class="tags">
+				<li><span class="field">todo:</span> fix the remote file portion of the command string</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			put
+		</span>
+					(<span class="var-type">$localfile</span>&nbsp;<span class="var-name">$localfile</span>, [<span class="var-type">$remotefile</span>&nbsp;<span class="var-name">$remotefile</span> = <span class="var-default">&quot;.&quot;</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$localfile</span>
+				<span class="var-name">$localfile</span>			</li>
+					<li>
+				<span class="var-type">$remotefile</span>
+				<span class="var-name">$remotefile</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrename" id="rename"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">rename</span> (line <span class="line-number">120</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">rename a remote file</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			rename
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$remote_file_path</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$new_remote_file_path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$remote_file_path</span><span class="var-description">: The original file path/name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$new_remote_file_path</span><span class="var-description">: The new file path/name</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:25 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

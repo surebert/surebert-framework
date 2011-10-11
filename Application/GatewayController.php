@@ -3,8 +3,8 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 4.17 10-01-2008 06-30-2011
- * @package sb_Application
+ * @version 10-01-2008 10-11-2011
+ * @package Gateway
  *
  */
 #####################################################################
@@ -476,7 +476,7 @@ class sb_Config {
 /**
  * The main gateway
  * @author paul.visco@roswellpark.org
- * @package sb_Application
+ * @package Gateway
  *
  */
 class Gateway {

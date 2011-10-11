@@ -1,4 +1,10 @@
 <?php
+/**
+ * Used to create command line utilities
+ * 
+ * @author visco
+ * @package sb_Controller
+ */
 class sb_Controller_Command_Line extends sb_Controller{
 
 	/**

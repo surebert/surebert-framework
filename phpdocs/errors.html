@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>phpDocumentor Parser Errors and Warnings</title>
+			<link rel="stylesheet" href="media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+						<a href="#Post-parsing">Post-parsing</a><br>
+<a href="#APC.php">APC.php</a><br>
+<a href="#Attachment.php">Attachment.php</a><br>
+<a href="#Attendee.php">Attendee.php</a><br>
+<a href="#Backend.php">Backend.php</a><br>
+<a href="#BackupMysql.php">BackupMysql.php</a><br>
+<a href="#Bar3D.php">Bar3D.php</a><br>
+<a href="#Base.php">Base.php</a><br>
+<a href="#BlackHole.php">BlackHole.php</a><br>
+<a href="#Bling.php">Bling.php</a><br>
+<a href="#BlingMedia.php">BlingMedia.php</a><br>
+<a href="#Captcha.php">Captcha.php</a><br>
+<a href="#Chapter.php">Chapter.php</a><br>
+<a href="#Client.php">Client.php</a><br>
+<a href="#Cloud.php">Cloud.php</a><br>
+<a href="#Connection.php">Connection.php</a><br>
+<a href="#ContactInfo.php">ContactInfo.php</a><br>
+<a href="#Debugger.php">Debugger.php</a><br>
+<a href="#Diff.php">Diff.php</a><br>
+<a href="#Email.php">Email.php</a><br>
+<a href="#Epub.php">Epub.php</a><br>
+<a href="#Error.php">Error.php</a><br>
+<a href="#Event.php">Event.php</a><br>
+<a href="#Exception.php">Exception.php</a><br>
+<a href="#Feed.php">Feed.php</a><br>
+<a href="#Files.php">Files.php</a><br>
+<a href="#FileSystem.php">FileSystem.php</a><br>
+<a href="#FileUpload.php">FileUpload.php</a><br>
+<a href="#ForceDownload.php">ForceDownload.php</a><br>
+<a href="#ForTransmission.php">ForTransmission.php</a><br>
+<a href="#Gateway.php">Gateway.php</a><br>
+<a href="#GatewayController.php">GatewayController.php</a><br>
+<a href="#GatewayTest.php">GatewayTest.php</a><br>
+<a href="#Hash.php">Hash.php</a><br>
+<a href="#HeadMeta.php">HeadMeta.php</a><br>
+<a href="#Helper.php">Helper.php</a><br>
+<a href="#History.php">History.php</a><br>
+<a href="#HTML.php">HTML.php</a><br>
+<a href="#HTML5.php">HTML5.php</a><br>
+<a href="#HTTP.php">HTTP.php</a><br>
+<a href="#Image.php">Image.php</a><br>
+<a href="#Item.php">Item.php</a><br>
+<a href="#ItemEnclosure.php">ItemEnclosure.php</a><br>
+<a href="#JS.php">JS.php</a><br>
+<a href="#Line.php">Line.php</a><br>
+<a href="#Listing.php">Listing.php</a><br>
+<a href="#Loader.php">Loader.php</a><br>
+<a href="#Logger.php">Logger.php</a><br>
+<a href="#Memcache.php">Memcache.php</a><br>
+<a href="#Message.php">Message.php</a><br>
+<a href="#Mime.php">Mime.php</a><br>
+<a href="#Mysql.php">Mysql.php</a><br>
+<a href="#Native.php">Native.php</a><br>
+<a href="#NCX.php">NCX.php</a><br>
+<a href="#Numbers.php">Numbers.php</a><br>
+<a href="#OPF.php">OPF.php</a><br>
+<a href="#Organizer.php">Organizer.php</a><br>
+<a href="#Packet.php">Packet.php</a><br>
+<a href="#PDO.php">PDO.php</a><br>
+<a href="#Point.php">Point.php</a><br>
+<a href="#Presence.php">Presence.php</a><br>
+<a href="#Process.php">Process.php</a><br>
+<a href="#Processor.php">Processor.php</a><br>
+<a href="#Random.php">Random.php</a><br>
+<a href="#RangeMapper.php">RangeMapper.php</a><br>
+<a href="#Reader.php">Reader.php</a><br>
+<a href="#RecordPage.php">RecordPage.php</a><br>
+<a href="#RecordPager.php">RecordPager.php</a><br>
+<a href="#Request.php">Request.php</a><br>
+<a href="#Response.php">Response.php</a><br>
+<a href="#REST.php">REST.php</a><br>
+<a href="#Results.php">Results.php</a><br>
+<a href="#Robot.php">Robot.php</a><br>
+<a href="#Server.php">Server.php</a><br>
+<a href="#Session.php">Session.php</a><br>
+<a href="#Shell.php">Shell.php</a><br>
+<a href="#Signature.php">Signature.php</a><br>
+<a href="#SMS.php">SMS.php</a><br>
+<a href="#StdOut.php">StdOut.php</a><br>
+<a href="#StreamingClient.php">StreamingClient.php</a><br>
+<a href="#Strings.php">Strings.php</a><br>
+<a href="#Syslog.php">Syslog.php</a><br>
+<a href="#TableToModel.php">TableToModel.php</a><br>
+<a href="#TalkBox.php">TalkBox.php</a><br>
+<a href="#Terminal.php">Terminal.php</a><br>
+<a href="#ToImage.php">ToImage.php</a><br>
+<a href="#Toolkit.php">Toolkit.php</a><br>
+<a href="#User.php">User.php</a><br>
+<a href="#UUID.php">UUID.php</a><br>
+<a href="#VCard.php">VCard.php</a><br>
+<a href="#Visitor.php">Visitor.php</a><br>
+<a href="#Visitors.php">Visitors.php</a><br>
+<a href="#Weather.php">Weather.php</a><br>
+<a href="#WeatherFeed.php">WeatherFeed.php</a><br>
+<a href="#WeatherGov.php">WeatherGov.php</a><br>
+<a href="#Workbook.php">Workbook.php</a><br>
+<a href="#Writer.php">Writer.php</a><br>
+<a href="#XHTML.php">XHTML.php</a><br>
+<a href="#YoutubeScrape.php">YoutubeScrape.php</a><br>
+<a name="Post-parsing"></a>
+<h1>Post-parsing</h1>
+<h2>Warnings:</h2><br>
+<b>Warning</b> - 
+duplicate class element "sb_Magic_Model" in file /var/www/sbf/sb/trunk/Application/Gateway.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "sb_Controller" in file /var/www/sbf/sb/trunk/Application/GatewayTest.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "sb_Request" in file /var/www/sbf/sb/trunk/Application/GatewayTest.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "sb_Magic_Model" in file /var/www/sbf/sb/trunk/Application/GatewayTest.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class sb_Excel_Reader parent sb_Excel_ReaderBackend not found<br>
+<b>Warning</b> - Class sb_Controller_JSON_RPC2_Server in file /var/www/sbf/sb/trunk/Controller/JSON/RPC2/Server.php has multiple possible parents named sb_Controller.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class sb_Socket_StreamingClient parent sb_Socket_Client not found<br>
+<b>Warning</b> - 
+duplicate class element "sb_Config" in file /var/www/sbf/sb/trunk/Application/GatewayTest.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "sb_Request" in file /var/www/sbf/sb/trunk/Application/Gateway.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - {@inheritdoc} can only be used in the docblock of a child class<br>
+<b>Warning</b> - {@inheritdoc} can only be used in the docblock of a child class<br>
+<b>Warning</b> - 
+duplicate class element "Gateway" in file /var/www/sbf/sb/trunk/Application/GatewayTest.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "ROOT" in file /var/www/sbf/sb/trunk/Application/Gateway.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "ROOT" in file /var/www/sbf/sb/trunk/Application/GatewayTest.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "Gateway" in file /var/www/sbf/sb/trunk/Application/Gateway.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<a name="Abstract.php"></a>
+<h1>Abstract.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Session_Abstract", use another DocBlock to document the file<br>
+<a name="APC.php"></a>
+<h1>APC.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Cache_APC", use another DocBlock to document the file<br>
+<a name="Attachment.php"></a>
+<h1>Attachment.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Email_Attachment", use another DocBlock to document the file<br>
+<a name="Attendee.php"></a>
+<h1>Attendee.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_ICalendar_Attendee", use another DocBlock to document the file<br>
+<a name="Backend.php"></a>
+<h1>Backend.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Excel_Reader_Backend", use another DocBlock to document the file<br>
+<a name="BackupMysql.php"></a>
+<h1>BackupMysql.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "sb_PDO_BackupMysql", use another DocBlock to document the file<br>
+<a name="Bar3D.php"></a>
+<h1>Bar3D.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "sb_Graph_Bar3D", use another DocBlock to document the file<br>
+<a name="Base.php"></a>
+<h1>Base.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Command_Base", use another DocBlock to document the file<br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_FTP_Base", use another DocBlock to document the file<br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Cache_Base", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Logger_Base", use another DocBlock to document the file<br>
+<a name="BlackHole.php"></a>
+<h1>BlackHole.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Logger_BlackHole", use another DocBlock to document the file<br>
+<b>Warning on line 15</b> - DocBlock would be page-level, but precedes class "sb_Cache_BlackHole", use another DocBlock to document the file<br>
+<a name="Bling.php"></a>
+<h1>Bling.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "sb_Text_Bling", use another DocBlock to document the file<br>
+<a name="BlingMedia.php"></a>
+<h1>BlingMedia.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "sb_Text_BlingMedia", use another DocBlock to document the file<br>
+<a name="Captcha.php"></a>
+<h1>Captcha.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "sb_Web_Captcha", use another DocBlock to document the file<br>
+<a name="Chapter.php"></a>
+<h1>Chapter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "sb_Ebook_Epub_Chapter", use another DocBlock to document the file<br>
+<a name="Client.php"></a>
+<h1>Client.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_JSON_RPC2_Client", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_FTP_Client", use another DocBlock to document the file<br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "sb_SSH2_Client", use another DocBlock to document the file<br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "sb_SFTP_Client", use another DocBlock to document the file<br>
+<b>Warning on line 27</b> - DocBlock would be page-level, but precedes class "sb_XMPP_Client", use another DocBlock to document the file<br>
+<b>Warning on line 150</b> - File "/var/www/sbf/sb/trunk/Socket/Client.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Cloud.php"></a>
+<h1>Cloud.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "sb_RSS_Cloud", use another DocBlock to document the file<br>
+<a name="Connection.php"></a>
+<h1>Connection.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Samba_Connection", use another DocBlock to document the file<br>
+<a name="ContactInfo.php"></a>
+<h1>ContactInfo.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "sb_Validate_ContactInfo", use another DocBlock to document the file<br>
+<a name="Debugger.php"></a>
+<h1>Debugger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - DocBlock would be page-level, but precedes class "sb_Application_Debugger", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_PDO_Debugger", use another DocBlock to document the file<br>
+<a name="Diff.php"></a>
+<h1>Diff.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Text_Diff", use another DocBlock to document the file<br>
+<a name="Email.php"></a>
+<h1>Email.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Email", use another DocBlock to document the file<br>
+<a name="Epub.php"></a>
+<h1>Epub.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - DocBlock would be page-level, but precedes class "sb_Ebook_Epub", use another DocBlock to document the file<br>
+<a name="Error.php"></a>
+<h1>Error.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_JSON_RPC2_Error", use another DocBlock to document the file<br>
+<a name="Event.php"></a>
+<h1>Event.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 39</b> - DocBlock would be page-level, but precedes class "sb_ICalendar_Event", use another DocBlock to document the file<br>
+<a name="Exception.php"></a>
+<h1>Exception.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_PDO_Exception", use another DocBlock to document the file<br>
+<a name="Feed.php"></a>
+<h1>Feed.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_RSS_Feed", use another DocBlock to document the file<br>
+<a name="Files.php"></a>
+<h1>Files.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Files", use another DocBlock to document the file<br>
+<a name="FileSystem.php"></a>
+<h1>FileSystem.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Cache_FileSystem", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Logger_FileSystem", use another DocBlock to document the file<br>
+<a name="FileUpload.php"></a>
+<h1>FileUpload.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Flash_FileUpload", use another DocBlock to document the file<br>
+<a name="ForceDownload.php"></a>
+<h1>ForceDownload.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Files_ForceDownload", use another DocBlock to document the file<br>
+<a name="ForTransmission.php"></a>
+<h1>ForTransmission.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "sb_Encryption_ForTransmission", use another DocBlock to document the file<br>
+<a name="Gateway.php"></a>
+<h1>Gateway.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 23</b> - no @package tag was used in a DocBlock for interface sb_Magic_Model<br>
+<a name="GatewayController.php"></a>
+<h1>GatewayController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - no @package tag was used in a DocBlock for interface sb_Magic_Model<br>
+<b>Warning on line 439</b> - no @package tag was used in a DocBlock for class sb_Config<br>
+<a name="GatewayTest.php"></a>
+<h1>GatewayTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - no @package tag was used in a DocBlock for interface sb_Magic_Model<br>
+<b>Warning on line 347</b> - no @package tag was used in a DocBlock for class sb_Config<br>
+<a name="Hash.php"></a>
+<h1>Hash.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - Page-level DocBlock precedes "require_once 'Base.php'", use another DocBlock to document the source element<br>
+<b>Warning on line 19</b> - no @package tag was used in a DocBlock for class sb_Cache_Hash<br>
+<a name="HeadMeta.php"></a>
+<h1>HeadMeta.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_HTML_HeadMeta", use another DocBlock to document the file<br>
+<a name="Helper.php"></a>
+<h1>Helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 27</b> - DocBlock would be page-level, but precedes class "sb_XMPP_Bot_Helper", use another DocBlock to document the file<br>
+<b>Warning on line 67</b> - Unknown tag "@secret" used<br>
+<a name="History.php"></a>
+<h1>History.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 30</b> - DocBlock would be page-level, but precedes class "sb_Search_History", use another DocBlock to document the file<br>
+<a name="HTML.php"></a>
+<h1>HTML.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Excel_Reader_HTML", use another DocBlock to document the file<br>
+<a name="HTML5.php"></a>
+<h1>HTML5.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Controller_HTML5", use another DocBlock to document the file<br>
+<a name="HTTP.php"></a>
+<h1>HTTP.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Controller_HTTP", use another DocBlock to document the file<br>
+<a name="Image.php"></a>
+<h1>Image.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_RSS_Image", use another DocBlock to document the file<br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "sb_Image", use another DocBlock to document the file<br>
+<a name="Item.php"></a>
+<h1>Item.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_RSS_Item", use another DocBlock to document the file<br>
+<a name="ItemEnclosure.php"></a>
+<h1>ItemEnclosure.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_RSS_ItemEnclosure", use another DocBlock to document the file<br>
+<a name="JS.php"></a>
+<h1>JS.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_JS", use another DocBlock to document the file<br>
+<a name="Line.php"></a>
+<h1>Line.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Controller_Command_Line", use another DocBlock to document the file<br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Chat_Line", use another DocBlock to document the file<br>
+<a name="Listing.php"></a>
+<h1>Listing.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Samba_Listing", use another DocBlock to document the file<br>
+<a name="Loader.php"></a>
+<h1>Loader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Zend_Loader", use another DocBlock to document the file<br>
+<a name="Logger.php"></a>
+<h1>Logger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_PDO_Statement_Logger", use another DocBlock to document the file<br>
+<a name="Memcache.php"></a>
+<h1>Memcache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Session_Memcache", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Cache_Memcache", use another DocBlock to document the file<br>
+<a name="Message.php"></a>
+<h1>Message.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_XMPP_Message", use another DocBlock to document the file<br>
+<a name="Mime.php"></a>
+<h1>Mime.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Files_Mime", use another DocBlock to document the file<br>
+<a name="Mysql.php"></a>
+<h1>Mysql.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "sb_Session_Mysql", use another DocBlock to document the file<br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "sb_Cache_Mysql", use another DocBlock to document the file<br>
+<a name="Native.php"></a>
+<h1>Native.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 5</b> - no @package tag was used in a DocBlock for class sb_Mssql_Native<br>
+<b>Warning on line 95</b> - File "/var/www/sbf/sb/trunk/Mssql/Native.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="NCX.php"></a>
+<h1>NCX.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Ebook_Epub_NCX", use another DocBlock to document the file<br>
+<a name="Numbers.php"></a>
+<h1>Numbers.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Validate_Numbers", use another DocBlock to document the file<br>
+<a name="OPF.php"></a>
+<h1>OPF.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Ebook_Epub_OPF", use another DocBlock to document the file<br>
+<a name="Organizer.php"></a>
+<h1>Organizer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "sb_ICalendar_Organizer", use another DocBlock to document the file<br>
+<a name="Packet.php"></a>
+<h1>Packet.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_XMPP_Packet", use another DocBlock to document the file<br>
+<a name="PDO.php"></a>
+<h1>PDO.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_PDO", use another DocBlock to document the file<br>
+<a name="Point.php"></a>
+<h1>Point.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Graph_Point", use another DocBlock to document the file<br>
+<a name="Presence.php"></a>
+<h1>Presence.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_XMPP_Presence", use another DocBlock to document the file<br>
+<a name="Process.php"></a>
+<h1>Process.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Linux_Process", use another DocBlock to document the file<br>
+<a name="Processor.php"></a>
+<h1>Processor.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Event_Processor", use another DocBlock to document the file<br>
+<a name="Random.php"></a>
+<h1>Random.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Password_Random", use another DocBlock to document the file<br>
+<a name="RangeMapper.php"></a>
+<h1>RangeMapper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "sb_Math_RangeMapper", use another DocBlock to document the file<br>
+<a name="Reader.php"></a>
+<h1>Reader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Excel_Reader", use another DocBlock to document the file<br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Email_Reader", use another DocBlock to document the file<br>
+<b>Warning on line 18</b> - example file "<code>
+ $data = new sb_Excel_Reader('/path/to/excelfile.xls');
+ </code>" does not exist<br>
+<b>Warning on line 62</b> - example file "<code>
+ $data = new sb_Excel_Reader('/path/to/excelfile.xls');
+ $data->read_cells(function($val, $row, $col) use($data) {
+   echo $data->rowheight($row, 0);
+ });
+ </code>" does not exist<br>
+<a name="RecordPage.php"></a>
+<h1>RecordPage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_PDO_RecordPage", use another DocBlock to document the file<br>
+<a name="RecordPager.php"></a>
+<h1>RecordPager.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_PDO_RecordPager", use another DocBlock to document the file<br>
+<a name="Request.php"></a>
+<h1>Request.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_JSON_RPC2_Request", use another DocBlock to document the file<br>
+<a name="Response.php"></a>
+<h1>Response.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_JSON_RPC2_Response", use another DocBlock to document the file<br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Ajax_Response", use another DocBlock to document the file<br>
+<a name="REST.php"></a>
+<h1>REST.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Controller_REST", use another DocBlock to document the file<br>
+<a name="Results.php"></a>
+<h1>Results.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Validate_Results", use another DocBlock to document the file<br>
+<a name="Robot.php"></a>
+<h1>Robot.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Web_Robot", use another DocBlock to document the file<br>
+<a name="Server.php"></a>
+<h1>Server.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Controller_JSON_RPC2_Server", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_JSON_RPC2_Server", use another DocBlock to document the file<br>
+<b>Warning on line 100</b> - Unknown tag "@servable" used<br>
+<b>Warning on line 145</b> - Unknown tag "@servable" used<br>
+<a name="Session.php"></a>
+<h1>Session.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Session", use another DocBlock to document the file<br>
+<a name="Shell.php"></a>
+<h1>Shell.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - DocBlock would be page-level, but precedes class "sb_SSH2_Shell", use another DocBlock to document the file<br>
+<a name="Signature.php"></a>
+<h1>Signature.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 47</b> - DocBlock would be page-level, but precedes class "sb_Flash_Signature", use another DocBlock to document the file<br>
+<a name="SMS.php"></a>
+<h1>SMS.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "sb_Mobile_SMS", use another DocBlock to document the file<br>
+<a name="StdOut.php"></a>
+<h1>StdOut.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "sb_Logger_StdOut", use another DocBlock to document the file<br>
+<a name="StreamingClient.php"></a>
+<h1>StreamingClient.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Socket_StreamingClient", use another DocBlock to document the file<br>
+<a name="Strings.php"></a>
+<h1>Strings.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Strings", use another DocBlock to document the file<br>
+<a name="Syslog.php"></a>
+<h1>Syslog.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - DocBlock would be page-level, but precedes class "sb_Logger_Syslog", use another DocBlock to document the file<br>
+<a name="TableToModel.php"></a>
+<h1>TableToModel.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "sb_Application_TableToModel", use another DocBlock to document the file<br>
+<a name="TalkBox.php"></a>
+<h1>TalkBox.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 35</b> - DocBlock would be page-level, but precedes class "sb_Chat_TalkBox", use another DocBlock to document the file<br>
+<a name="Terminal.php"></a>
+<h1>Terminal.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Magic_Terminal", use another DocBlock to document the file<br>
+<b>Warning on line 15</b> - Unknown tag "@servable" used<br>
+<a name="ToImage.php"></a>
+<h1>ToImage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Text_ToImage", use another DocBlock to document the file<br>
+<a name="Toolkit.php"></a>
+<h1>Toolkit.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Controller_Toolkit", use another DocBlock to document the file<br>
+<b>Warning on line 187</b> - Unknown tag "@servable" used<br>
+<b>Warning on line 205</b> - Unknown tag "@servable" used<br>
+<a name="User.php"></a>
+<h1>User.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_User", use another DocBlock to document the file<br>
+<a name="UUID.php"></a>
+<h1>UUID.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Identifiers_UUID", use another DocBlock to document the file<br>
+<a name="VCard.php"></a>
+<h1>VCard.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Microformats_VCard", use another DocBlock to document the file<br>
+<a name="Visitor.php"></a>
+<h1>Visitor.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Web_Visitor", use another DocBlock to document the file<br>
+<a name="Visitors.php"></a>
+<h1>Visitors.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 33</b> - DocBlock would be page-level, but precedes class "sb_Web_Visitors", use another DocBlock to document the file<br>
+<b>Warning on line 266</b> - no @package tag was used in a DocBlock for class sb_Web_VisitorCount<br>
+<a name="Weather.php"></a>
+<h1>Weather.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "sb_Web_Weather", use another DocBlock to document the file<br>
+<a name="WeatherFeed.php"></a>
+<h1>WeatherFeed.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "sb_Web_WeatherFeed", use another DocBlock to document the file<br>
+<a name="WeatherGov.php"></a>
+<h1>WeatherGov.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - DocBlock would be page-level, but precedes class "sb_Web_SOAP_WeatherGovParametersType", use another DocBlock to document the file<br>
+<a name="Workbook.php"></a>
+<h1>Workbook.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Excel_Workbook", use another DocBlock to document the file<br>
+<a name="Writer.php"></a>
+<h1>Writer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Excel_Writer", use another DocBlock to document the file<br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "sb_Email_Writer", use another DocBlock to document the file<br>
+<b>Warning on line 38</b> - example file "<code>
+ $excel = new sb_Excel_Writer();
+ $excel->set_cell('A1', 'Hello World!');
+ $excel->set_cell('D1', 'Hello World!');
+ $excel->set_column('C', Array(1,2,3,4));
+ $excel->output_with_headers('hello.xls');
+ </code>" does not exist<br>
+<a name="XHTML.php"></a>
+<h1>XHTML.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - DocBlock would be page-level, but precedes class "sb_Controller_XHTML", use another DocBlock to document the file<br>
+<a name="YoutubeScrape.php"></a>
+<h1>YoutubeScrape.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "sb_Web_YoutubeScrape", use another DocBlock to document the file<br>
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:39 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</body>
+</html>

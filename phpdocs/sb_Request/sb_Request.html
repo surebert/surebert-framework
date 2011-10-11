@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Request</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Request</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Models an incoming request's path and data e.g. /_surebert/custom</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> paul.visco@roswellpark.org</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Application---GatewayController.php.html">/Application/GatewayController.php</a> (line <span class="field">235</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																																																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$args" title="details" class="var-name">$args</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$cookie" title="details" class="var-name">$cookie</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$data" title="details" class="var-name">$data</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$files" title="details" class="var-name">$files</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$get" title="details" class="var-name">$get</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$method" title="details" class="var-name">$method</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$path" title="details" class="var-name">$path</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$path_array" title="details" class="var-name">$path_array</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$post" title="details" class="var-name">$post</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$request" title="details" class="var-name">$request</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																				
+												<div class="method-definition">
+											<span class="method-result">sb_Request</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">$request</span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#get_arg" title="details" class="method-name">get_arg</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$arg_num</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#get_cookie" title="details" class="method-name">get_cookie</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#get_get" title="details" class="method-name">get_get</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#get_post" title="details" class="method-name">get_post</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#get_session" title="details" class="method-name">get_session</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_input" title="details" class="method-name">set_input</a>
+											(<span class="var-type">$post</span>&nbsp;<span class="var-name">&$post</span>, <span class="var-type">$cookie</span>&nbsp;<span class="var-name">&$cookie</span>, <span class="var-type">$files</span>&nbsp;<span class="var-name">&$files</span>, <span class="var-type"></span>&nbsp;<span class="var-name">&$data</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_input_args_delimiter" title="details" class="method-name">set_input_args_delimiter</a>
+											(<span class="var-type">$input_args_delimiter</span>&nbsp;<span class="var-name">$input_args_delimiter</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$args" id="$args"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$args</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">256</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The framework path args in e.g. /view/action/1,2,3 it would be 1,2,3</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$cookie" id="$cookie"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$cookie</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">276</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The cookies with the request</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$data" id="$data"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$data</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">271</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Any incoming data not specified in post e.g. PUT, DELETE, command line etc</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$files" id="$files"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$files</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">281</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">A copy of the global $_FILES array, can be used to simulate file uploads</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$get" id="$get"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$get</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">261</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The &quot;get&quot; based input arguments from the request e.g. ?dog=cat as an array of key value pairs</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$method" id="$method"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$method</span>
+			 = <span class="var-default"> 'GET'</span>			(line <span class="line-number">286</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The method</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> The request method</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$path" id="$path"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$path</span>
+						(line <span class="line-number">241</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path as a string eg. /surebert/load</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$path_array" id="$path_array"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$path_array</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">251</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path as an array /view/action Array('view', 'action')</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$post" id="$post"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$post</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">266</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The post based input from the request - used to pass or similate $_POST</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$request" id="$request"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$request</span>
+						(line <span class="line-number">246</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path requested e.g. /user/dance</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">292</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates a new request instance</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_Request</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">$request</span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$request</span>
+				<span class="var-name">$request</span><span class="var-description">: The string request with args e.g. /_surebert/custom/strings.numPad</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_arg" id="get_arg"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_arg</span> (line <span class="line-number">427</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets a args variable value or returns the default value (null unless overridden)</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> string value or null</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			get_arg
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$arg_num</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$arg_num</span><span class="var-description">: The numeric arg value</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$default_val</span><span class="var-description">: null by default</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_cookie" id="get_cookie"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_cookie</span> (line <span class="line-number">397</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets a cookie value if set, otherwise returns null</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> the string value or null if not found</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			get_cookie
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span><span class="var-description">: The key to look for</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$default_val</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_get" id="get_get"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_get</span> (line <span class="line-number">368</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets a get variable value or returns the default value (null unless overridden)</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> string value or null</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			get_get
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span><span class="var-description">: The $_GET var key to look for</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$default_val</span><span class="var-description">: null by default</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_post" id="get_post"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_post</span> (line <span class="line-number">383</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets a post variable value or returns the default value (null unless overridden)</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> string value or null</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			get_post
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span><span class="var-description">: The $_POST var key to look for</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$default_val</span><span class="var-description">: null by default</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_session" id="get_session"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_session</span> (line <span class="line-number">412</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets a get variable value or returns the default value (null unless overridden)</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> string value or null</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			get_session
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$default_val</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span><span class="var-description">: The $_SESSION var key to look for</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$default_val</span><span class="var-description">: null by default</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_input" id="set_input"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_input</span> (line <span class="line-number">327</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the input for the request</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_input
+		</span>
+					(<span class="var-type">$post</span>&nbsp;<span class="var-name">&$post</span>, <span class="var-type">$cookie</span>&nbsp;<span class="var-name">&$cookie</span>, <span class="var-type">$files</span>&nbsp;<span class="var-name">&$files</span>, <span class="var-type"></span>&nbsp;<span class="var-name">&$data</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$post</span>
+				<span class="var-name">&$post</span>			</li>
+					<li>
+				<span class="var-type">$cookie</span>
+				<span class="var-name">&$cookie</span>			</li>
+					<li>
+				<span class="var-type">$files</span>
+				<span class="var-name">&$files</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">&$data</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_input_args_delimiter" id="set_input_args_delimiter"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_input_args_delimiter</span> (line <span class="line-number">339</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the input argument delimeter and parses it</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_input_args_delimiter
+		</span>
+					(<span class="var-type">$input_args_delimiter</span>&nbsp;<span class="var-name">$input_args_delimiter</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$input_args_delimiter</span>
+				<span class="var-name">$input_args_delimiter</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:28 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

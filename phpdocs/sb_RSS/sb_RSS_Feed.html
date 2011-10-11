@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_RSS_Feed</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_RSS_Feed</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Describes and creates RSS 2.0 feeds. Remember to validate http://feedvalidator.org/check.cgi</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_RSS---Feed.php.html">/RSS/Feed.php</a> (line <span class="field">9</span>)
+		</p>
+		
+				
+		<pre>DOMDocument
+   |
+   --sb_RSS_Feed</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																																																																																																								<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$categories" title="details" class="var-name">$categories</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">rp_RSS_Cloud</span>
+					<a href="#$cloud" title="details" class="var-name">$cloud</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$copyright" title="details" class="var-name">$copyright</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$description" title="details" class="var-name">$description</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type"><a href="../sb_RSS/sb_RSS_Image.html">sb_RSS_Image</a></span>
+					<a href="#$image" title="details" class="var-name">$image</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$items" title="details" class="var-name">$items</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$language" title="details" class="var-name">$language</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$lastBuildDate" title="details" class="var-name">$lastBuildDate</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$link" title="details" class="var-name">$link</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$managingEditor" title="details" class="var-name">$managingEditor</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$pubDate" title="details" class="var-name">$pubDate</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string?</span>
+					<a href="#$rating" title="details" class="var-name">$rating</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$skipDays" title="details" class="var-name">$skipDays</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$skipHours" title="details" class="var-name">$skipHours</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$title" title="details" class="var-name">$title</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">integer</span>
+					<a href="#$ttl" title="details" class="var-name">$ttl</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$webMaster" title="details" class="var-name">$webMaster</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																												
+												<div class="method-definition">
+											<span class="method-result">sb_RSS_Feed</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$link</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$description</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>
+										<a href="#add_item" title="details" class="method-name">add_item</a>
+											(<span class="var-type"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>&nbsp;<span class="var-name">&$item</span>, <span class="var-type"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#display" title="details" class="method-name">display</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$categories" id="$categories"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$categories</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">97</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Categories that describe the feed, this is an array, all categories get their own categry tag as a feed can have multiple categories</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$cloud" id="$cloud"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">rp_RSS_Cloud</span>
+			<span class="var-name">$cloud</span>
+						(line <span class="line-number">105</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Allows processes to register with a cloud to be notified of updates to the channel, implementing a lightweight publish-subscribe protocol for RSS feeds.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$copyright" id="$copyright"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$copyright</span>
+						(line <span class="line-number">58</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Copyright notice for content in the channel.</p>
+<p class="description"><p>e.g. Copyright 2002, Spartanburg Herald-Journal</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$description" id="$description"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$description</span>
+						(line <span class="line-number">31</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Phrase or sentence describing the channel e.g. The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$image" id="$image"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../sb_RSS/sb_RSS_Image.html">sb_RSS_Image</a></span>
+			<span class="var-name">$image</span>
+						(line <span class="line-number">119</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The image of the feed</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> object</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$items" id="$items"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$items</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">38</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The sb_RSS_Items for the feed</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$language" id="$language"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$language</span>
+			 = <span class="var-default"> 'en-us'</span>			(line <span class="line-number">49</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The language the feed is in</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Default is english</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$lastBuildDate" id="$lastBuildDate"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$lastBuildDate</span>
+						(line <span class="line-number">90</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The last time the content of the channel changed.</p>
+<p class="description"><p>e.g. Sat, 07 Sep 2002 09:42:31 GMT</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$link" id="$link"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$link</span>
+						(line <span class="line-number">24</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The URL to the HTML website corresponding to the channel  e.g. http://www.goupstate.com/</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$managingEditor" id="$managingEditor"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$managingEditor</span>
+						(line <span class="line-number">67</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Email address for person responsible for editorial content.</p>
+<p class="description"><p>e.g. geo@herald.com (George Matesky)</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$pubDate" id="$pubDate"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$pubDate</span>
+						(line <span class="line-number">83</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The publication date for the content in the channel. For example, the New York Times publishes on a daily basis, the publication date flips once every 24 hours.</p>
+<p class="description"><p>e.g. Sat, 07 Sep 2002 00:00:01 GMT</p></p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Defaults to date('r') which is now in rss time format</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$rating" id="$rating"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string?</span>
+			<span class="var-name">$rating</span>
+						(line <span class="line-number">148</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The PICS rating for the channel.</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Not sure on this more info here http://www.w3.org/PICS/</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$skipDays" id="$skipDays"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$skipDays</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">141</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">An XML element that contains up to seven &lt;day&gt; sub-elements whose value is Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday. Aggregators may not read the channel during days listed in the skipDays element.</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$skipDays">skipDays</a>&nbsp;</span>=&nbsp;<span class="src-key">Array</span><span class="src-sym">(</span><span class="src-str">'Sunday'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'Tuesday'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$skipHours" id="$skipHours"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$skipHours</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">131</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">A hint for aggregators telling them which hours they can skip. In 24 hour time.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$title" id="$title"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$title</span>
+						(line <span class="line-number">16</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The title of the feed e.g. GoUpstate.com News Headlines</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$ttl" id="$ttl"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">integer</span>
+			<span class="var-name">$ttl</span>
+						(line <span class="line-number">112</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">ttl stands for time to live. e.g. 60 It's a number of minutes that indicates how long a channel can be cached before refreshing from the source.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$webMaster" id="$webMaster"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$webMaster</span>
+						(line <span class="line-number">75</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Email address for person responsible for technical issues relating to channel.</p>
+<p class="description"><p>e.g. betty@herald.com (Betty Guernsey)</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">223</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates a new sb_RSSFeed, youc an either pass the required paramters to the contructor or add them afterwards to the result of the constructor</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//set&nbsp;content&nbsp;type&nbsp;as&nbsp;xml//set&nbsp;content&nbsp;type&nbsp;as&nbsp;xml</span></div></li>
+<li><div class="src-line">&nbsp;<a href="http://www.php.net/header">header</a><span class="src-sym">(</span><span class="src-str">&quot;Content-Type:&nbsp;application/xml&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//create&nbsp;a&nbsp;new&nbsp;feed</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$feed&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html">sb_RSS_Feed</a></span><span class="src-sym">(</span><span class="src-str">&quot;My&nbsp;Test&nbsp;Feed&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;http://www.test.com&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;A&nbsp;test&nbsp;feed&nbsp;for&nbsp;test.com&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//add&nbsp;optional&nbsp;image</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$image">image</a></span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Image.html">sb_RSS_Image</a></span><span class="src-sym">(</span><span class="src-str">&quot;Test's&nbsp;Feed&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;http://test.com/test.gif&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//optional&nbsp;RSS&nbsp;cloud</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$cloud">cloud</a></span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Cloud.html">sb_RSS_Cloud</a></span><span class="src-sym">(</span><span class="src-str">&quot;rpc.sys.com&quot;</span><span class="src-sym">,</span><span class="src-num">80</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;/RPC2&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;myCloud.rssPleaseNotify&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;xml-rpc&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//add&nbsp;some&nbsp;optional&nbsp;categories</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$categories">categories</a></span><span class="src-sym">[</span><span class="src-sym">]&nbsp;</span>=&nbsp;<span class="src-str">'dancing'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$categories">categories</a></span><span class="src-sym">[</span><span class="src-sym">]&nbsp;</span>=&nbsp;<span class="src-str">'swimming'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//add&nbsp;optional&nbsp;skipHours&nbsp;and&nbsp;skipDays</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$skipHours">skipHours</a>&nbsp;</span>=&nbsp;<span class="src-key">Array</span><span class="src-sym">(</span><span class="src-num">0</span><span class="src-sym">,</span><span class="src-num">3</span><span class="src-sym">,</span><span class="src-num">5</span><span class="src-sym">,</span><span class="src-num">7</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$skipDays">skipDays</a>&nbsp;</span>=&nbsp;<span class="src-key">Array</span><span class="src-sym">(</span><span class="src-str">'Monday'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'Tuesday'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//add&nbsp;an&nbsp;item&nbsp;to&nbsp;the&nbsp;rss&nbsp;feed&nbsp;-&nbsp;the&nbsp;constructor&nbsp;takes&nbsp;the&nbsp;required&nbsp;properties,&nbsp;they&nbsp;can&nbsp;also&nbsp;be&nbsp;added&nbsp;afterwards,&nbsp;as&nbsp;with&nbsp;author&nbsp;below</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$item_one&nbsp;</span>=&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><a href="../sb_RSS/sb_RSS_Feed.html#methodadd_item">add_item</a><span class="src-sym">(</span><span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span><span class="src-sym">(</span><span class="src-str">&quot;Test's&nbsp;First&nbsp;Article&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;http://test.com?a=1&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;&lt;h1&gt;Here&nbsp;is&nbsp;a&nbsp;simple&nbsp;HTML&nbsp;feed&lt;/h1&gt;&lt;p&gt;With&nbsp;a&nbsp;list&lt;/p&gt;&lt;ol&gt;&lt;li&gt;one&lt;/li&gt;&lt;li&gt;two&lt;/li&gt;&lt;li&gt;three&lt;/li&gt;&lt;/ol&gt;&quot;</span><span class="src-sym">,&nbsp;</span><a href="http://www.php.net/date">date</a><span class="src-sym">(</span><span class="src-str">'r'</span><span class="src-sym">)))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//properties&nbsp;can&nbsp;also&nbsp;be&nbsp;added&nbsp;to&nbsp;the&nbsp;item&nbsp;afterwards,&nbsp;here&nbsp;are&nbsp;some&nbsp;optional&nbsp;ones</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$item_one</span><span class="src-sym">-&gt;</span><span class="src-id">author</span>=<span class="src-str">'paul@test.com'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$item_one</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Feed.html#var$categories">categories</a></span><span class="src-sym">[</span><span class="src-sym">]&nbsp;</span>=&nbsp;<span class="src-str">'swimming'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//for&nbsp;podcasts&nbsp;add&nbsp;an&nbsp;enclose,&nbsp;remember&nbsp;file&nbsp;size&nbsp;is&nbsp;required</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$item_one</span><span class="src-sym">-&gt;</span><span class="src-id">enclosure&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_ItemEnclosure.html">sb_RSS_ItemEnclosure</a></span><span class="src-sym">(</span><span class="src-str">'http://www.surebert.com/song.mp3'</span><span class="src-sym">,&nbsp;</span><span class="src-num">2279344</span><span class="src-sym">,&nbsp;</span><span class="src-str">'audio/mpeg'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//add&nbsp;second&nbsp;item&nbsp;to&nbsp;the&nbsp;feed</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$item_two&nbsp;</span>=&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><a href="../sb_RSS/sb_RSS_Feed.html#methodadd_item">add_item</a><span class="src-sym">(</span><span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span><span class="src-sym">(</span><span class="src-str">&quot;Test's&nbsp;Second&nbsp;Article&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;http://test.com?a=2&quot;</span><span class="src-sym">,&nbsp;</span><span class="src-str">&quot;This&nbsp;is&nbsp;just&nbsp;a&nbsp;plain&nbsp;text&nbsp;feed.&nbsp;&nbsp;Hello&nbsp;World&quot;</span><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><a href="http://www.php.net/date">date</a><span class="src-sym">(</span><span class="src-str">'r'</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//echo&nbsp;out&nbsp;the&nbsp;RSS&nbsp;feed</span></div></li>
+<li><div class="src-line">&nbsp;echo&nbsp;<span class="src-var">$feed</span><span class="src-sym">-&gt;</span><a href="../sb_RSS/sb_RSS_Feed.html#methoddisplay">display</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_RSS_Feed</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$link</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$description</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$title</span><span class="var-description">: The title of the feed</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$link</span><span class="var-description">: The link to the feed</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$description</span><span class="var-description">: A description of the feed</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt>DOMDocument::constructor __construct ( [$version = ], [$encoding = ] )</dt>
+					</dl>
+			
+	</div>
+<a name="methodadd_item" id="add_item"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">add_item</span> (line <span class="line-number">242</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Adds a sb_RSS_Item instance to a a sb_RSSFeed instance</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> the reference to the item</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>
+		<span class="method-name">
+			add_item
+		</span>
+					(<span class="var-type"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>&nbsp;<span class="var-name">&$item</span>, <span class="var-type"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>
+				<span class="var-name">$item</span>			</li>
+					<li>
+				<span class="var-type"><a href="../sb_RSS/sb_RSS_Item.html">sb_RSS_Item</a></span>
+				<span class="var-name">&$item</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddisplay" id="display"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">display</span> (line <span class="line-number">256</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts the sb_RSSFeed instance into XML for display</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;echo&nbsp;<span class="src-var">$myFeed</span><span class="src-sym">-&gt;</span><a href="../sb_RSS/sb_RSS_Feed.html#methoddisplay">display</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			display
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname">DOMDocument (Internal Class)</span></p>
+					<blockquote>
+													<span class="method-name">constructor __construct ( [$version = ], [$encoding = ] )</span><br>
+													<span class="method-name">adoptNode ( $source )</span><br>
+													<span class="method-name">appendChild ( $newChild )</span><br>
+													<span class="method-name">C14N ( [$exclusive = ], [$with_comments = ], [$xpath = ], [$ns_prefixes = ] )</span><br>
+													<span class="method-name">C14NFile ( $uri, [$exclusive = ], [$with_comments = ], [$xpath = ], [$ns_prefixes = ] )</span><br>
+													<span class="method-name">cloneNode ( $deep )</span><br>
+													<span class="method-name">compareDocumentPosition ( $other )</span><br>
+													<span class="method-name">createAttribute ( $name )</span><br>
+													<span class="method-name">createAttributeNS ( $namespaceURI, $qualifiedName )</span><br>
+													<span class="method-name">createCDATASection ( $data )</span><br>
+													<span class="method-name">createComment ( $data )</span><br>
+													<span class="method-name">createDocumentFragment (  )</span><br>
+													<span class="method-name">createElement ( $tagName, [$value = ] )</span><br>
+													<span class="method-name">createElementNS ( $namespaceURI, $qualifiedName, [$value = ] )</span><br>
+													<span class="method-name">createEntityReference ( $name )</span><br>
+													<span class="method-name">createProcessingInstruction ( $target, $data )</span><br>
+													<span class="method-name">createTextNode ( $data )</span><br>
+													<span class="method-name">getElementById ( $elementId )</span><br>
+													<span class="method-name">getElementsByTagName ( $tagName )</span><br>
+													<span class="method-name">getElementsByTagNameNS ( $namespaceURI, $localName )</span><br>
+													<span class="method-name">getFeature ( $feature, $version )</span><br>
+													<span class="method-name">getLineNo (  )</span><br>
+													<span class="method-name">getNodePath (  )</span><br>
+													<span class="method-name">getUserData ( $key )</span><br>
+													<span class="method-name">hasAttributes (  )</span><br>
+													<span class="method-name">hasChildNodes (  )</span><br>
+													<span class="method-name">importNode ( $importedNode, $deep )</span><br>
+													<span class="method-name">insertBefore ( $newChild, [$refChild = ] )</span><br>
+													<span class="method-name">isDefaultNamespace ( $namespaceURI )</span><br>
+													<span class="method-name">isEqualNode ( $arg )</span><br>
+													<span class="method-name">isSameNode ( $other )</span><br>
+													<span class="method-name">isSupported ( $feature, $version )</span><br>
+													<span class="method-name">load ( $source, [$options = ] )</span><br>
+													<span class="method-name">loadHTML ( $source )</span><br>
+													<span class="method-name">loadHTMLFile ( $source )</span><br>
+													<span class="method-name">loadXML ( $source, [$options = ] )</span><br>
+													<span class="method-name">lookupNamespaceUri ( $prefix )</span><br>
+													<span class="method-name">lookupPrefix ( $namespaceURI )</span><br>
+													<span class="method-name">normalize (  )</span><br>
+													<span class="method-name">normalizeDocument (  )</span><br>
+													<span class="method-name">registerNodeClass ( $baseClass, $extendedClass )</span><br>
+													<span class="method-name">relaxNGValidate ( $filename )</span><br>
+													<span class="method-name">relaxNGValidateSource ( $source )</span><br>
+													<span class="method-name">removeChild ( $oldChild )</span><br>
+													<span class="method-name">renameNode ( $node, $namespaceURI, $qualifiedName )</span><br>
+													<span class="method-name">replaceChild ( $newChild, $oldChild )</span><br>
+													<span class="method-name">save ( $file )</span><br>
+													<span class="method-name">saveHTML (  )</span><br>
+													<span class="method-name">saveHTMLFile ( $file )</span><br>
+													<span class="method-name">saveXML ( [$node = ] )</span><br>
+													<span class="method-name">schemaValidate ( $filename )</span><br>
+													<span class="method-name">schemaValidateSource ( $source )</span><br>
+													<span class="method-name">setUserData ( $key, $data, $handler )</span><br>
+													<span class="method-name">validate (  )</span><br>
+													<span class="method-name">xinclude ( [$options = ] )</span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:27 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

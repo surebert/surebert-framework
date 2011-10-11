@@ -1,8 +1,11 @@
 <?php
 
 /**
- * 
+ * Used to diff between two texts
  * Adapted from https://github.com/paulgb/simplediff/blob/5bfe1d2a8f967c7901ace50f04ac2d9308ed3169/simplediff.php
+ * 
+ * @author visco
+ * @package sb_Text
  */
 class sb_Text_Diff {
 

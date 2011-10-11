@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_JSON_RPC2_Server</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_JSON_RPC2_Server</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used to response to JSON_RPC2 requests as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> visco</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_JSON---RPC2---Server.php.html">/JSON/RPC2/Server.php</a> (line <span class="field">10</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																<div class="var-title">
+					<span class="var-type">integer</span>
+					<a href="#$gz_encode_level" title="details" class="var-name">$gz_encode_level</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$json_decode_assoc_array" title="details" class="var-name">$json_decode_assoc_array</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$method" title="details" class="var-name">$method</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$methods" title="details" class="var-name">$methods</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$php_serialize_response" title="details" class="var-name">$php_serialize_response</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$suppress_http_status" title="details" class="var-name">$suppress_http_status</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																												
+												<div class="method-definition">
+											<span class="method-result">sb_JSON_RPC2_Server</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$methods</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Array</span>
+										<a href="#get_methods" title="details" class="method-name">get_methods</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$html</span> = <span class="var-default">true</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Object</span>
+										<a href="#get_phpdoc" title="details" class="method-name">get_phpdoc</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">ReflectionMethod/ReflectionFunction</span>
+										<a href="#get_reflection" title="details" class="method-name">get_reflection</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#handle" title="details" class="method-name">handle</a>
+											([<span class="var-type">$json_request</span>&nbsp;<span class="var-name">$json_request</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#log_request" title="details" class="method-name">log_request</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$json_request</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#log_response" title="details" class="method-name">log_response</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$json_response</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json_request</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#methods_to_html" title="details" class="method-name">methods_to_html</a>
+											(<span class="var-type">$arr</span>&nbsp;<span class="var-name">$methods</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#parse_request" title="details" class="method-name">parse_request</a>
+											([<span class="var-type">$json_request</span>&nbsp;<span class="var-name">$debug_request</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#remove_method" title="details" class="method-name">remove_method</a>
+											(<span class="var-type">$method</span>&nbsp;<span class="var-name">$method</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#remove_methods" title="details" class="method-name">remove_methods</a>
+											([<span class="var-type">$methods</span>&nbsp;<span class="var-name">$methods</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#serve_class" title="details" class="method-name">serve_class</a>
+											(<span class="var-type">$class</span>&nbsp;<span class="var-name">$class</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#serve_function" title="details" class="method-name">serve_function</a>
+											(<span class="var-type">$function</span>&nbsp;<span class="var-name">$function</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#serve_instance" title="details" class="method-name">serve_instance</a>
+											(<span class="var-type">$instance
+
+<code></span>&nbsp;<span class="var-name">$instance</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#serve_methods" title="details" class="method-name">serve_methods</a>
+											(<span class="var-type">$methods</span>&nbsp;<span class="var-name">$methods</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#use_encryption" title="details" class="method-name">use_encryption</a>
+											(<span class="var-type">$key</span>&nbsp;<span class="var-name">$key</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#use_gz_encoding" title="details" class="method-name">use_gz_encoding</a>
+											(<span class="var-type">$level</span>&nbsp;<span class="var-name">$level</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$gz_encode_level" id="$gz_encode_level"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">integer</span>
+			<span class="var-name">$gz_encode_level</span>
+			 = <span class="var-default"> false</span>			(line <span class="line-number">50</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The gz encoding level to use when transferring data</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$json_decode_assoc_array" id="$json_decode_assoc_array"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$json_decode_assoc_array</span>
+			 = <span class="var-default"> true</span>			(line <span class="line-number">22</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if objects passed as params are converted to hashes instead of objects</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$method" id="$method"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$method</span>
+			 = <span class="var-default"> 'post'</span>			(line <span class="line-number">16</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The transport method to listen for data on</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> post or get or both</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$methods" id="$methods"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$methods</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">An array of methods to serve, can be references to function or statically called class methods, can be from mixed origin.</p>
+<p class="description"><p>The key should match the method called by the remote sb_JSON_RPC2_Request</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$php_serialize_response" id="$php_serialize_response"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$php_serialize_response</span>
+			 = <span class="var-default"> false</span>			(line <span class="line-number">37</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if the response body is first serialized as php format before  being json encoded to preserve hash array data that would otherwise  be converted to objects.  This is set by the client and is set to true  if the client passes a php_serialize_response HTTP header.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$suppress_http_status" id="$suppress_http_status"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$suppress_http_status</span>
+			 = <span class="var-default"> false</span>			(line <span class="line-number">28</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">If set to true then HTTP status headers 200, 400, 404, 500 are not send with response as some clients cannot parse 404 or 500 responses.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">77</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create an instance</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//a&nbsp;function&nbsp;to&nbsp;serve</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-key">function&nbsp;</span><span class="src-id">add</span><span class="src-sym">(</span><span class="src-var">$x</span><span class="src-sym">,&nbsp;</span><span class="src-var">$y</span><span class="src-sym">)</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">return&nbsp;</span><span class="src-var">$x</span>+<span class="src-var">$y</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">}</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//create&nbsp;the&nbsp;server</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$server&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_JSON_RPC2/sb_JSON_RPC2_Server.html">sb_JSON_RPC2_Server</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//methods&nbsp;you&nbsp;are&nbsp;allowing&nbsp;the&nbsp;server&nbsp;to&nbsp;serve</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$server</span><span class="src-sym">-&gt;</span><a href="../sb_JSON_RPC2/sb_JSON_RPC2_Server.html#methodserve_methods">serve_methods</a><span class="src-sym">(</span><span class="src-key">Array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'add'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'add'</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//debug&nbsp;one&nbsp;of&nbsp;the&nbsp;methods</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//echo&nbsp;$server-&gt;handle('{&quot;method&quot;:&quot;/&quot;,&quot;params&quot;:[1,2],&quot;id&quot;:&quot;abc123&quot;}');</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//serve&nbsp;the&nbsp;methods&nbsp;requested&nbsp;in&nbsp;Gateway::$request-&gt;post[];&nbsp;which&nbsp;is&nbsp;sent&nbsp;by&nbsp;a&nbsp;sb_JSON_RPC2_Request's&nbsp;dispatch&nbsp;method</span></div></li>
+<li><div class="src-line">&nbsp;echo&nbsp;<span class="src-var">$server</span><span class="src-sym">-&gt;</span><a href="../sb_JSON_RPC2/sb_JSON_RPC2_Server.html#methodhandle">handle</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_JSON_RPC2_Server</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$methods</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$methods</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_methods" id="get_methods"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_methods</span> (line <span class="line-number">393</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the methods available for this sb_JSON_RPC2_Server instance</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> - Object once json_encoded</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Array</span>
+		<span class="method-name">
+			get_methods
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$html</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$html</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_phpdoc" id="get_phpdoc"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_phpdoc</span> (line <span class="line-number">467</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get php doc and return_type for method by name</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> with return_type and phpdoc property</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Object</span>
+		<span class="method-name">
+			get_phpdoc
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span><span class="var-description">: The name of the method to grab the docs for</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget_reflection" id="get_reflection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_reflection</span> (line <span class="line-number">443</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get reflection from php doc of method</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> depending which type of object was requested by</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">ReflectionMethod/ReflectionFunction</span>
+		<span class="method-name">
+			get_reflection
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span><span class="var-description">: The name of the method to grab the docs for</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodhandle" id="handle"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">handle</span> (line <span class="line-number">340</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Serves data based on the json_request if set, otherwise based on Gateway::$request-&gt;post['sb_JSON_RPC2_Request']</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON encoded sb_JSON_RPC2_Response</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			handle
+		</span>
+					([<span class="var-type">$json_request</span>&nbsp;<span class="var-name">$json_request</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$json_request</span>
+				<span class="var-name">$json_request</span><span class="var-description">: String This optional argument can be used for debugging the server.  A sb_JSON_RPC2_Request formatted JSON string e.g. {&quot;method&quot;:&quot;add&quot;,&quot;params&quot;:[1,2],&quot;id&quot;:&quot;abc123&quot;}</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlog_request" id="log_request"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">log_request</span> (line <span class="line-number">94</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">method you can use to log the json request</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			log_request
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$json_request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json_request</span><span class="var-description">: The input json</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlog_response" id="log_response"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">log_response</span> (line <span class="line-number">100</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">method you can use to log the json response</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			log_response
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$json_response</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json_request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json_request</span><span class="var-description">: The output json</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$json_response</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodmethods_to_html" id="methods_to_html"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">methods_to_html</span> (line <span class="line-number">426</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Coverts the methods served into an HTML string</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> HTML</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			methods_to_html
+		</span>
+					(<span class="var-type">$arr</span>&nbsp;<span class="var-name">$methods</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$arr</span>
+				<span class="var-name">$methods</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparse_request" id="parse_request"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">parse_request</span> (line <span class="line-number">234</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Parses the request</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			parse_request
+		</span>
+					([<span class="var-type">$json_request</span>&nbsp;<span class="var-name">$debug_request</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$json_request</span>
+				<span class="var-name">$debug_request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodremove_method" id="remove_method"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">remove_method</span> (line <span class="line-number">140</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Removes a method from service</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			remove_method
+		</span>
+					(<span class="var-type">$method</span>&nbsp;<span class="var-name">$method</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$method</span>
+				<span class="var-name">$method</span><span class="var-description">: string The name of the method to remove from service</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodremove_methods" id="remove_methods"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">remove_methods</span> (line <span class="line-number">128</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Removes multiple methods from service</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			remove_methods
+		</span>
+					([<span class="var-type">$methods</span>&nbsp;<span class="var-name">$methods</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$methods</span>
+				<span class="var-name">$methods</span><span class="var-description">: Array An array of method names to remove from service</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodserve_class" id="serve_class"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">serve_class</span> (line <span class="line-number">187</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Serves all the methods of a class</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			serve_class
+		</span>
+					(<span class="var-type">$class</span>&nbsp;<span class="var-name">$class</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$class</span>
+				<span class="var-name">$class</span><span class="var-description">: <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//methods&nbsp;you&nbsp;are&nbsp;allowing&nbsp;the&nbsp;server&nbsp;to&nbsp;serve</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$server</span><span class="src-sym">-&gt;</span><a href="../sb_JSON_RPC2/sb_JSON_RPC2_Server.html#methodserve_class">serve_class</a><span class="src-sym">(</span><span class="src-str">'Math'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodserve_function" id="serve_function"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">serve_function</span> (line <span class="line-number">170</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Serves a function</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			serve_function
+		</span>
+					(<span class="var-type">$function</span>&nbsp;<span class="var-name">$function</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$function</span>
+				<span class="var-name">$function</span><span class="var-description">: String The name of the function to serve</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodserve_instance" id="serve_instance"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">serve_instance</span> (line <span class="line-number">211</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Serves all the methods of an object instance</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			serve_instance
+		</span>
+					(<span class="var-type">$instance
+
+<code></span>&nbsp;<span class="var-name">$instance</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$instance
+
+<code></span>
+				<span class="var-name">$instance</span><span class="var-description">: <p>//methods you are allowing the server to serve  $instance = new SomeClass();  $server-&gt;serve_instance($instance);</p><p>&lt;/code&gt;</p></span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodserve_methods" id="serve_methods"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">serve_methods</span> (line <span class="line-number">159</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add methods to serve</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			serve_methods
+		</span>
+					(<span class="var-type">$methods</span>&nbsp;<span class="var-name">$methods</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$methods</span>
+				<span class="var-name">$methods</span><span class="var-description">: <p>Array An named hash of methods to serve, key is name to serve as, value is the user callable function name.  To serve method of objects pass the value as an array with the first value being the object and the second, the method to call.</p><p>The example substract below would call a class named Math's substract method e.g. Math::subtract</p><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//methods&nbsp;you&nbsp;are&nbsp;allowing&nbsp;the&nbsp;server&nbsp;to&nbsp;serve</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$server</span><span class="src-sym">-&gt;</span><a href="../sb_JSON_RPC2/sb_JSON_RPC2_Server.html#methodserve_methods">serve_methods</a><span class="src-sym">(</span><span class="src-key">Array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'subtract'&nbsp;</span>=&gt;&nbsp;<span class="src-key">Array</span><span class="src-sym">(</span><span class="src-str">'Math'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'substract'</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'+'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'add'</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></div></p></span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoduse_encryption" id="use_encryption"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">use_encryption</span> (line <span class="line-number">114</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the key that data is encrypted with and turns on encryption, the client must use the same key</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			use_encryption
+		</span>
+					(<span class="var-type">$key</span>&nbsp;<span class="var-name">$key</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$key</span>
+				<span class="var-name">$key</span><span class="var-description">: String</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoduse_gz_encoding" id="use_gz_encoding"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">use_gz_encoding</span> (line <span class="line-number">106</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines is gzencoding is used</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			use_gz_encoding
+		</span>
+					(<span class="var-type">$level</span>&nbsp;<span class="var-name">$level</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$level</span>
+				<span class="var-name">$level</span><span class="var-description">: Integer A number between 0-9, the compression level, higher takes longer</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:35 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

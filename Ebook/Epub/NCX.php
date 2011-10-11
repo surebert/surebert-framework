@@ -1,10 +1,12 @@
 <?php
 /**
- * @todo
+ * Models an Epub doc
  * 		. "\t\t<meta name=\"dtb:uid\" content=\"" . $this->identifier . "\" />\n"
 			. "\t\t<meta name=\"dtb:depth\" content=\"2\" />\n"
 			. "\t\t<meta name=\"dtb:totalPageCount\" content=\"0\" />\n"
 			. "\t\t<meta name=\"dtb:maxPageNumber\" content=\"0\" />\n"
+ * @author visco
+ * @package sb_Epub
  */
 class sb_Ebook_Epub_NCX extends DOMDocument{
 

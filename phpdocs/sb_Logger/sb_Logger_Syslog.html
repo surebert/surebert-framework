@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Logger_Syslog</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Logger_Syslog</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">As described by syslog RFC3164 http://tools.ietf.org/html/rfc3164</p>
+<p class="description"><p>e.g. &lt;34&gt;Oct 11 22:14:15 mymachine su: 'su root' failed for lonvick on /dev/pts/8</p><p>Used to create syslog compatible logs</p><p>$syslog = new sb_Logger_Syslog('myprocess');  $syslog-&gt;set_message('hello log', 1, 11)-&gt;save()  //OR  $syslog-&gt;set_message('hello log', 1, 11)-&gt;send('mylogserver.com');</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Logger---Syslog.php.html">/Logger/Syslog.php</a> (line <span class="field">16</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																								<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$agent" title="details" class="var-name">$agent</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$hostname" title="details" class="var-name">$hostname</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">integer</span>
+					<a href="#$max_length" title="details" class="var-name">$max_length</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$message" title="details" class="var-name">$message</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">integer</span>
+					<a href="#$port" title="details" class="var-name">$port</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$process" title="details" class="var-name">$process</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$server" title="details" class="var-name">$server</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																												
+												<div class="method-definition">
+											<span class="method-result">sb_Logger_Syslog</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$process</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$hostname</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#check_length" title="details" class="method-name">check_length</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$max_length</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span> = <span class="var-default">'packet'</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#debug" title="details" class="method-name">debug</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#get_tstamp" title="details" class="method-name">get_tstamp</a>
+											([<span class="var-type">The</span>&nbsp;<span class="var-name">$time</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#save" title="details" class="method-name">save</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$log_dir</span> = <span class="var-default">''</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$log_type</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#send" title="details" class="method-name">send</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span> = <span class="var-default">''</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$port</span> = <span class="var-default">514</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$timeout</span> = <span class="var-default">0</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_agent" title="details" class="method-name">set_agent</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$ip</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$identifier</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$agent</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">object This</span>
+										<a href="#set_message" title="details" class="method-name">set_message</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$content</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$severity</span> = <span class="var-default">5</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$facility</span> = <span class="var-default">16</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$time</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">object This</span>
+										<a href="#set_raw_message" title="details" class="method-name">set_raw_message</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$message</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$agent" id="$agent"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$agent</span>
+			 = <span class="var-default">''</span>			(line <span class="line-number">60</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The agent string if needed, represents the user who generated the message</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$hostname" id="$hostname"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$hostname</span>
+			 = <span class="var-default">''</span>			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">(Optional) By default is hostname of machine logging, can override if logging for other machine</p>
+<p class="description"><p>no embedded space, no domain name, only a-z A-Z 0-9 and other authorized characters</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$max_length" id="$max_length"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">integer</span>
+			<span class="var-name">$max_length</span>
+			 = <span class="var-default"> 1024</span>			(line <span class="line-number">48</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The maximum packet length</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$message" id="$message"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$message</span>
+			 = <span class="var-default">''</span>			(line <span class="line-number">54</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The current line being logged</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$port" id="$port"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">integer</span>
+			<span class="var-name">$port</span>
+			 = <span class="var-default"> 514</span>			(line <span class="line-number">42</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The port to send on</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$process" id="$process"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$process</span>
+						(line <span class="line-number">30</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Process used to generate the message</p>
+<p class="description"><p>e.g. ls, su, php limit to alphnum &lt; 32 chars, details can go in contents if longer is required</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$server" id="$server"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$server</span>
+						(line <span class="line-number">36</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The server to send to when sending, can also be passed as argument to -&gt;send()</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">69</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create a new log to send or save</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_Logger_Syslog</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$process</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$hostname</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$process</span><span class="var-description">: The process used to create the log e.g. ls, su - limit to alphnum &lt; 32 chars - truncates access</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$hostname</span><span class="var-description">: The hostname of the machine t1024hat generated the log messages  *  e.g. ls, su, php limit to alphnum &lt; 32 chars, details can go in contents if longer is required</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcheck_length" id="check_length"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">check_length</span> (line <span class="line-number">243</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Checks to make sure the length of something is expected or warn and truncate</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The string truncated to max length</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			check_length
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$max_length</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span> = <span class="var-default">'packet'</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span><span class="var-description">: The string to check</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$max_length</span><span class="var-description">: The maximun length to check for, -1 means infinite length</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$type</span><span class="var-description">: The type of thing to check packet or process</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddebug" id="debug"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">debug</span> (line <span class="line-number">199</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the current message for debugging</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			debug
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodget_tstamp" id="get_tstamp"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">get_tstamp</span> (line <span class="line-number">159</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets the BSD syslog style timestamp Nov 17 12:30:19</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			get_tstamp
+		</span>
+					([<span class="var-type">The</span>&nbsp;<span class="var-name">$time</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">The</span>
+				<span class="var-name">$time</span><span class="var-description">: optional time to use, any format that strtotime understands</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsave" id="save"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">save</span> (line <span class="line-number">183</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Saves data to local logs dir when syslog server is not available</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> If the data was written or not</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			save
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$log_dir</span> = <span class="var-default">''</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$log_type</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$log_dir</span><span class="var-description">: The log dir the data is written to</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$log_type</span><span class="var-description">: The log_type being written to</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsend" id="send"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">send</span> (line <span class="line-number">209</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">return:</span> message returned or error string</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			send
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span> = <span class="var-default">''</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$port</span> = <span class="var-default">514</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$timeout</span> = <span class="var-default">0</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$server</span><span class="var-description">: The server to send syslog info to</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$port</span><span class="var-description">: default port is 514</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$timeout</span><span class="var-description">: The timeout on the udp connection</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_agent" id="set_agent"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_agent</span> (line <span class="line-number">79</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_agent
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$ip</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$identifier</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$agent</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$agent</span><span class="var-description">: Sets the user agent that produced the message within the system</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$ip</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$identifier</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_message" id="set_message"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_message</span> (line <span class="line-number">128</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set the message to send or save</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> so you can chain -&gt;send or -&gt;save</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">object This</span>
+		<span class="method-name">
+			set_message
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$content</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$severity</span> = <span class="var-default">5</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$facility</span> = <span class="var-default">16</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$time</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$content</span><span class="var-description">: The plain text log message, must be under 1024  Anything over 1024 will be truncated remember to allow space for the  header which is ~40 chars</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$severity</span><span class="var-description">: The severity of the message <ol><li>Emergency: system is unusable</li><li>Alert: action must be taken immediately</li><li>Critical: critical conditions</li><li>Error: error conditions</li><li>Warning: warning conditions</li><li>Notice: normal but significant condition (default value)</li><li>Informational: informational messages</li><li>Debug: debug-level messages</li></ol></span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$facility</span><span class="var-description">: <ol></ol><ol><li>user-level messages</li><li>mail system</li><li>system daemons</li><li>security/authorization messages</li><li>messages generated internally by syslogd</li><li>line printer subsystem</li><li>network news subsystem</li><li>UUCP subsystem</li></ol>     10 security/authorization messages      11 FTP daemon      12 NTP subsystem      13 log audit      14 log alert      15 clock daemon      16 local user 0 (local0) (default value)      17 local user 1 (local1)      18 local user 2 (local2)      19 local user 3 (local3)      20 local user 4 (local4)      21 local user 5 (local5)Syslog      22 local user 6 (local6)      23 local user 7 (local7)</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$time</span><span class="var-description">: The tstamp to override the current time</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_raw_message" id="set_raw_message"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_raw_message</span> (line <span class="line-number">172</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">return:</span> so you can chain -&gt;send or -&gt;save</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">object This</span>
+		<span class="method-name">
+			set_raw_message
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$message</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$message</span><span class="var-description">: The raw message to send</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:36 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

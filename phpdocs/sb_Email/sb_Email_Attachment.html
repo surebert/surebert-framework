@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Email_Attachment</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Email_Attachment</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Describes an email attachment, when found they are attached to sb_Email objects</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco and James Buczkowski</li>
+				<li><span class="field">version:</span> 2.2 07/09/2007 06/17/09</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Email---Attachment.php.html">/Email/Attachment.php</a> (line <span class="field">9</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																																								<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$contents" title="details" class="var-name">$contents</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$encoding" title="details" class="var-name">$encoding</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$extension" title="details" class="var-name">$extension</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$filepath" title="details" class="var-name">$filepath</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$mime_type" title="details" class="var-name">$mime_type</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$name" title="details" class="var-name">$name</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">float</span>
+					<a href="#$sizeK" title="details" class="var-name">$sizeK</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$subtype" title="details" class="var-name">$subtype</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">interger</span>
+					<a href="#$type" title="details" class="var-name">$type</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																				
+												<div class="method-definition">
+											<span class="method-result">sb_Email_Attachment</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type">String</span>&nbsp;<span class="var-name">$filepath</span> = <span class="var-default">null</span>], [<span class="var-type">String</span>&nbsp;<span class="var-name">$mime_type</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#pgp_encrypt" title="details" class="method-name">pgp_encrypt</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$pgp_encrypt_key</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$gnupg_path</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set_encoding" title="details" class="method-name">set_encoding</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$encoding</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#zip" title="details" class="method-name">zip</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$contents" id="$contents"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$contents</span>
+						(line <span class="line-number">71</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The binary content of the attachment</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$encoding" id="$encoding"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$encoding</span>
+			 = <span class="var-default"> 'base64'</span>			(line <span class="line-number">39</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The encoding type of the attchment</p>
+<p class="description"><p>//when read from sb_Email_Reader 0 = 7bit, 1= 8bit, 2=binary, 3=base64, 4=quoted prinatble, 5=other  //otherwise use full name</p></p>
+	<ul class="tags">
+				<li><span class="field">var:</span> string/integer</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$extension" id="$extension"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$extension</span>
+			 = <span class="var-default">''</span>			(line <span class="line-number">16</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The extension of the attachment file</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$filepath" id="$filepath"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$filepath</span>
+			 = <span class="var-default">''</span>			(line <span class="line-number">30</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path to the attachment on the local drive after reading or before writing</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$mime_type" id="$mime_type"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$mime_type</span>
+						(line <span class="line-number">78</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The mime type of the attachment, used when sending</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> e.g. image/jpeg</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$name" id="$name"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$name</span>
+			 = <span class="var-default">''</span>			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The file name of the file attachment e.g. gif, jpg, png, wav, mp3, etc</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$sizeK" id="$sizeK"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">float</span>
+			<span class="var-name">$sizeK</span>
+						(line <span class="line-number">64</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The file size in K</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$subtype" id="$subtype"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$subtype</span>
+						(line <span class="line-number">48</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The subtype of the attachment</p>
+<p class="description"><p>JPEG, WAV, HTML, PLAIN, etc</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$type" id="$type"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">interger</span>
+			<span class="var-name">$type</span>
+			 = <span class="var-default"> 5</span>			(line <span class="line-number">57</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The type of the attachment</p>
+<p class="description"><p>type 0 = text, 1 = multipart, 2 = message, 3 = application, 4 = audio, 5= image, 6= video, 7 = other</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">104</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Creates an email attachment</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-var">$attachment&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_Email/sb_Email_Attachment.html">sb_Email_Attachment</a></span><span class="src-sym">(</span><span class="src-var">$filepath</span><span class="src-sym">,&nbsp;</span><span class="src-var">$mime_type</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//an&nbsp;instance&nbsp;of&nbsp;sb_Email</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$email</span><span class="src-sym">-&gt;</span><span class="src-id">add_attachment</span><span class="src-sym">(</span><span class="src-var">$attachment</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//OR&nbsp;from&nbsp;string/blob&nbsp;data</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$attachment&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../sb_Email/sb_Email_Attachment.html">sb_Email_Attachment</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$attachment</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_Email/sb_Email_Attachment.html#var$contents">contents</a>&nbsp;</span>=&nbsp;<span class="src-var">$data_from_db</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$attachment</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_Email/sb_Email_Attachment.html#var$mime_type">mime_type</a>&nbsp;</span>=&nbsp;<span class="src-str">&quot;image/jpeg&quot;</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$attachment</span><span class="src-sym">-&gt;</span><span class="src-id"><a href="../sb_Email/sb_Email_Attachment.html#var$name">name</a>&nbsp;</span>=&nbsp;<span class="src-str">&quot;picture.jpg&quot;</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$email</span><span class="src-sym">-&gt;</span><span class="src-id">add_attachment</span><span class="src-sym">(</span><span class="src-var">$attachment</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//if&nbsp;you&nbsp;wish&nbsp;to&nbsp;zip</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$attachment</span><span class="src-sym">-&gt;</span><a href="../sb_Email/sb_Email_Attachment.html#methodzip">zip</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">sb_Email_Attachment</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type">String</span>&nbsp;<span class="var-name">$filepath</span> = <span class="var-default">null</span>], [<span class="var-type">String</span>&nbsp;<span class="var-name">$mime_type</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">String</span>
+				<span class="var-name">$filepath</span><span class="var-description">: Optional The path to the file to attach</span>			</li>
+					<li>
+				<span class="var-type">String</span>
+				<span class="var-name">$mime_type</span><span class="var-description">: Optional The mime type of the file</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpgp_encrypt" id="pgp_encrypt"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">pgp_encrypt</span> (line <span class="line-number">167</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Encrypts the extension with PGP using gpg extension for php http://pecl.php.net/package/gnupg</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> James Buczkowski, Paul Visco</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			pgp_encrypt
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$pgp_encrypt_key</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$gnupg_path</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$pgp_encrypt_key</span><span class="var-description">: The key to use to encrypt</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$gnupg_path</span><span class="var-description">: Optional The path to your .gnupg directory, must be  readible by apache, by default served out of /private/resources e.g. ROOT.'/private/resources/.gnupg</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset_encoding" id="set_encoding"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set_encoding</span> (line <span class="line-number">196</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the encoding type of the attachment</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set_encoding
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$encoding</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$encoding</span><span class="var-description">: either 0-5 or the actual strings  7bit, 8bit, binary, base64, quoted prinatble</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodzip" id="zip"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">zip</span> (line <span class="line-number">122</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Zips the attachment before sending and sets the proper mime type</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			zip
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:21 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class sb_Text_BlingMedia</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class sb_Text_BlingMedia</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used to parse output text created with surebert textBling editor</p>
+<p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">//returns&nbsp;the&nbsp;&quot;cleaned&quot;&nbsp;text&nbsp;as&nbsp;a&nbsp;string</span></div></li>
+<li><div class="src-line">&nbsp;echo&nbsp;<span class="src-id"><a href="../sb_Text/sb_Text_Bling.html">sb_Text_Bling</a></span><span class="src-sym">::</span><span class="src-id">parse</span><span class="src-str">&quot;[b]here&nbsp;is&nbsp;a&nbsp;map[/b]&quot;</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//return&nbsp;the&nbsp;javascript&nbsp;for&nbsp;the&nbsp;bling&nbsp;string</span></div></li>
+<li><div class="src-line">&nbsp;echo&nbsp;<span class="src-id"><a href="../sb_Text/sb_Text_Bling.html">sb_Text_Bling</a></span><span class="src-sym">::</span><a href="../sb_Text/sb_Text_Bling.html#methodget_javascript">get_javascript</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Paul Visco  03/10/2008</li>
+				<li><span class="field">version:</span> 1.0 03/10/2008</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Text---BlingMedia.php.html">/Text/BlingMedia.php</a> (line <span class="field">17</span>)
+		</p>
+		
+				
+		<pre><a href="../sb_Text/sb_Text_Bling.html">sb_Text_Bling</a>
+   |
+   --sb_Text_BlingMedia</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+												<div class="var-title">
+					static <span class="var-type">unknown_type</span>
+					<a href="#$allow_external_images" title="details" class="var-name">$allow_external_images</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">string</span>
+					<a href="#$content_path" title="details" class="var-name">$content_path</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">string</span>
+					<a href="#$custom_flv_player" title="details" class="var-name">$custom_flv_player</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">string</span>
+					<a href="#$custom_mp3_player" title="details" class="var-name">$custom_mp3_player</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">string</span>
+					<a href="#$default_city" title="details" class="var-name">$default_city</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">string</span>
+					<a href="#$default_state" title="details" class="var-name">$default_state</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">array</span>
+					<a href="#$flash_player_size" title="details" class="var-name">$flash_player_size</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">string</span>
+					<a href="#$map_type" title="details" class="var-name">$map_type</a>
+				</div>
+																<div class="var-title">
+					static <span class="var-type">integer</span>
+					<a href="#$max_image_width" title="details" class="var-name">$max_image_width</a>
+				</div>
+																																																																																							</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+												<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#external_video_to_player" title="details" class="method-name">external_video_to_player</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#images_to_html" title="details" class="method-name">images_to_html</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#maps_to_html" title="details" class="method-name">maps_to_html</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#mp3_to_audio" title="details" class="method-name">mp3_to_audio</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#nonflash_media_to_html" title="details" class="method-name">nonflash_media_to_html</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#parse" title="details" class="method-name">parse</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#pdf_to_link" title="details" class="method-name">pdf_to_link</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#user_flash_to_swf" title="details" class="method-name">user_flash_to_swf</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+								
+																																																																				</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$allow_external_images" id="$allow_external_images"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">unknown_type</span>
+			<span class="var-name">$allow_external_images</span>
+			 = <span class="var-default"> 0</span>			(line <span class="line-number">61</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if external media is allowed inside image tags</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$content_path" id="$content_path"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">string</span>
+			<span class="var-name">$content_path</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">82</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path to the media e.g. [img]0107/test.gif[/img]  if content_path was ../content/users/paul then the image would be ../content/users/paul/0107/test.gif</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$custom_flv_player" id="$custom_flv_player"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">string</span>
+			<span class="var-name">$custom_flv_player</span>
+			 = <span class="var-default"> '/media/sb_Text_Bling_Video.swf'</span>			(line <span class="line-number">68</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path to the textBling video player used to play flv files</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$custom_mp3_player" id="$custom_mp3_player"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">string</span>
+			<span class="var-name">$custom_mp3_player</span>
+			 = <span class="var-default"> '/media/sb_Text_Bling_Audio.swf'</span>			(line <span class="line-number">75</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path to the textBling video player used to play mp3 files</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$default_city" id="$default_city"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">string</span>
+			<span class="var-name">$default_city</span>
+			 = <span class="var-default">'buffalo'</span>			(line <span class="line-number">30</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The default city for maps</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$default_state" id="$default_state"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">string</span>
+			<span class="var-name">$default_state</span>
+			 = <span class="var-default">'ny'</span>			(line <span class="line-number">37</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The default state for maps</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$flash_player_size" id="$flash_player_size"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">array</span>
+			<span class="var-name">$flash_player_size</span>
+			 = <span class="var-default">array(<br />		'width' =&gt; 465,<br />		'height' =&gt; 365<br />	)</span>			(line <span class="line-number">51</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The size of the video player's width and height</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$map_type" id="$map_type"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">string</span>
+			<span class="var-name">$map_type</span>
+			 = <span class="var-default"> 'yahoo'</span>			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The map format used, for embedded yahoo maps, set type to 'yahoo' and make sure to include yahoo map api script on your page &lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.yahooapis.com/v3.04/fl/javascript/apiloader.js?appid=YOUR_API_KEY&quot;&gt;&lt;/script&gt;, You will need to repalce YOUR_API_KEY with your own yahoo flahs map API key</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$max_image_width" id="$max_image_width"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">integer</span>
+			<span class="var-name">$max_image_width</span>
+			 = <span class="var-default"> 400</span>			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The maximum width for a flash file, otherwise resized propertionally</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../sb_Text/sb_Text_Bling.html">sb_Text_Bling</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../sb_Text/sb_Text_Bling.html#var$javascript">sb_Text_Bling::$javascript</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../sb_Text/sb_Text_Bling.html#var$mobile">sb_Text_Bling::$mobile</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodexternal_video_to_player" id="external_video_to_player"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method external_video_to_player</span> (line <span class="line-number">252</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Convert external video links to embedded flash players [youtube][/youtube] and [gvideo][/gvideo]</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			external_video_to_player
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodimages_to_html" id="images_to_html"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method images_to_html</span> (line <span class="line-number">384</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts [img][/img] and [draw][/draw] to html images. draw tags are used when the user makes a drawing with the textBling clientside sketchpad</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			images_to_html
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodmaps_to_html" id="maps_to_html"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method maps_to_html</span> (line <span class="line-number">90</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts [map][/map] to either a link to google maps or an embedded yahoo map</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			maps_to_html
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodmp3_to_audio" id="mp3_to_audio"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method mp3_to_audio</span> (line <span class="line-number">231</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			mp3_to_audio
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodnonflash_media_to_html" id="nonflash_media_to_html"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method nonflash_media_to_html</span> (line <span class="line-number">318</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts non-flash multimedia files to quicktime e.g. wav, mid, amr,3gp, mp4</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			nonflash_media_to_html
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparse" id="parse"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method parse</span> (line <span class="line-number">471</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Clean up the text according to the textBling rules</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The cleaned text</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			parse
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span><span class="var-description">: The text to clean</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpdf_to_link" id="pdf_to_link"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method pdf_to_link</span> (line <span class="line-number">365</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Convert pdf tags to pdf links</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			pdf_to_link
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoduser_flash_to_swf" id="user_flash_to_swf"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method user_flash_to_swf</span> (line <span class="line-number">164</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Converts user uploaded, flash-based multimedia content to swf [flash][/flash], [flv][/flv] and [mp3][/mp3]</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			user_flash_to_swf
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span>			</li>
+				</ul>
+		
+			
+	</div>
+
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../sb_Text/sb_Text_Bling.html">sb_Text_Bling</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodadd_searches">sb_Text_Bling::add_searches()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodclean">sb_Text_Bling::clean()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodcolorize_instant_messages">sb_Text_Bling::colorize_instant_messages()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodconvert_quotes">sb_Text_Bling::convert_quotes()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodemoticons_to_html">sb_Text_Bling::emoticons_to_html()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodget_javascript">sb_Text_Bling::get_javascript()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodlinks_to_html">sb_Text_Bling::links_to_html()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodlists_to_html">sb_Text_Bling::lists_to_html()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodmisc_tags">sb_Text_Bling::misc_tags()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodparse_css">sb_Text_Bling::parse_css()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodstrip_all">sb_Text_Bling::strip_all()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodstrip_bling">sb_Text_Bling::strip_bling()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodtables_to_html">sb_Text_Bling::tables_to_html()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodtext_styles">sb_Text_Bling::text_styles()</a></span><br>
+													<span class="method-name"><a href="../sb_Text/sb_Text_Bling.html#methodtypo_fix">sb_Text_Bling::typo_fix()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 11 Oct 2011 00:27:23 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>
