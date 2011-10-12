@@ -33,7 +33,7 @@
 		</p>
 		
 				
-		<pre>sb_Socket_Client
+		<pre><a href="../sb_Socket/sb_Socket_Client.html">sb_Socket_Client</a>
    |
    --sb_Socket_StreamingClient</pre>
 	
@@ -136,7 +136,7 @@
 					</div>
 		<div class="info-box-body">
 			<a name="var$remote_socket" id="$remote_socket"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
 		<span class="var-title">
@@ -158,7 +158,24 @@
 		
 
 </div>
-						
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../sb_Socket/sb_Socket_Client.html">sb_Socket_Client</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../sb_Socket/sb_Socket_Client.html#var$host">sb_Socket_Client::$host</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../sb_Socket/sb_Socket_Client.html#var$instances">sb_Socket_Client::$instances</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../sb_Socket/sb_Socket_Client.html#var$socket">sb_Socket_Client::$socket</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../sb_Socket/sb_Socket_Client.html#var$timeout">sb_Socket_Client::$timeout</a></span><br>
+							</span>
+											</blockquote> 
+										
 		</div>
 	</div>
 	
@@ -176,7 +193,7 @@
 			<A NAME='method_detail'></A>
 
 <a name="method__construct" id="__construct"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
 		<span class="method-title">Constructor __construct</span> (line <span class="line-number">30</span>)
@@ -185,7 +202,7 @@
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Sets up the connection</p>
 <p class="description"><p><div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-var">$conn&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">sb_Socket_StreamingConnection</span><span class="src-sym">(</span><span class="src-str">'tcp://www.google.com:80'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
-<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-var">$conn</span><span class="src-sym">-&gt;</span><span class="src-id">write</span><span class="src-sym">(</span><span class="src-str">&quot;GET&nbsp;/&nbsp;HTTP/1.1\r\nHost:&nbsp;www.example.com\r\nConnection:&nbsp;Close\r\n\r\n&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<span class="src-var">$conn</span><span class="src-sym">-&gt;</span><a href="../sb_Socket/sb_Socket_Client.html#methodwrite">write</a><span class="src-sym">(</span><span class="src-str">&quot;GET&nbsp;/&nbsp;HTTP/1.1\r\nHost:&nbsp;www.example.com\r\nConnection:&nbsp;Close\r\n\r\n&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;echo&nbsp;<span class="src-var">$conn</span><span class="src-sym">-&gt;</span><a href="../sb_Socket/sb_Socket_StreamingClient.html#methodread">read</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 </ol></div></p></p>
 	<ul class="tags">
@@ -209,10 +226,16 @@
 				<span class="var-name">$timeout</span><span class="var-description">: The timeout to wait before dropping connection e.g. 10</span>			</li>
 				</ul>
 		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../sb_Socket/sb_Socket_Client.html#method__construct">sb_Socket_Client::__construct()</a></dt>
+						<dd>Sets up the connection</dd>
+					</dl>
 			
 	</div>
 <a name="methodopen" id="open"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
 		<span class="method-title">open</span> (line <span class="line-number">44</span>)
@@ -234,10 +257,16 @@
 			</div>
 	
 		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../sb_Socket/sb_Socket_Client.html#methodopen">sb_Socket_Client::open()</a></dt>
+						<dd>Open the connection</dd>
+					</dl>
 			
 	</div>
 <a name="methodread" id="read"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
 		<span class="method-title">read</span> (line <span class="line-number">62</span>)
@@ -264,6 +293,12 @@
 				<span class="var-name">$byte_count</span><span class="var-description">: The amount of data to read, if not set, it reads until feof</span>			</li>
 				</ul>
 		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../sb_Socket/sb_Socket_Client.html#methodread">sb_Socket_Client::read()</a></dt>
+						<dd>Read data from the socket</dd>
+					</dl>
 			
 			<hr class="separator" />
 		<div class="notes">Redefined in descendants as:</div>
@@ -274,13 +309,27 @@
 							</li>
 				</ul>
 	</div>
-						
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../sb_Socket/sb_Socket_Client.html">sb_Socket_Client</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#method__construct">sb_Socket_Client::__construct()</a></span><br>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#methodclose">sb_Socket_Client::close()</a></span><br>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#methodcount_instance">sb_Socket_Client::count_instance()</a></span><br>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#methodlog">sb_Socket_Client::log()</a></span><br>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#methodopen">sb_Socket_Client::open()</a></span><br>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#methodread">sb_Socket_Client::read()</a></span><br>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#methodwrite">sb_Socket_Client::write()</a></span><br>
+													<span class="method-name"><a href="../sb_Socket/sb_Socket_Client.html#method__destruct">sb_Socket_Client::__destruct()</a></span><br>
+											</blockquote>
+										
 		</div>
 	</div>
 
 
 	<p class="notes" id="credit">
-		Documentation generated on Tue, 11 Oct 2011 00:27:36 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Tue, 11 Oct 2011 14:21:12 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
