@@ -24,9 +24,8 @@ class sb_Controller_HTTP extends sb_Controller{
      */
     public function unset_session($key){
         if(isset($_SESSION[$key])){
-            unset($_SESSION);
+            unset($_SESSION[$key]);
         }
-        $_SESSION[$key] = $value;
     }
     
     /**
@@ -57,6 +56,21 @@ class sb_Controller_HTTP extends sb_Controller{
     public function set_cookie($name, $value='', $expire=0, $path='/', $domain='', $secure=false, $httponly=false){
         setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
     }
+	
+	/**
+	 * Unsets a cookie value by setting it to expire
+	 * @param string $name The cookie name 
+	 * @param string path The path to clear, defaults to /
+	 */
+	public function unset_cookie($name, $path='/'){
+		setcookie($name , '' , time()-86400 , '/' , '' , 0 );
+		if(isset($_COOKIE) && isset($_COOKIE[$name])){
+			unset( $_COOKIE[$name] ); 
+		}
+		if(isset($this->request->cookie[$name])){
+			unset($this->request->cookie[$name]); 
+		}
+	}
     
     /**
      * Sends a content type header
