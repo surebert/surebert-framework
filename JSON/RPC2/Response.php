@@ -29,6 +29,8 @@ class sb_JSON_RPC2_Response{
 	 */
 	public $error;
 	
+	public $jsonrpc = '2.0';
+	
 	/**
 	 * Popultes the properties from json recieved
 	 * @param $json JSON encoded sb_JSON_RPC2_Response
