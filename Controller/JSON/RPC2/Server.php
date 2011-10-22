@@ -267,13 +267,15 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		}
 		//check for requested remote procedure
 		if ($servable) {
-
+			
 			if (is_object($request->params)) {
 				$answer = call_user_func(Array($this, $request->method), $request->params);
-			} else if (is_array($request->params)) {
+			} else {
+				 if (!is_array($request->params)){
+					 $request->params = Array();
+				 }
 				$answer = call_user_func_array(Array($this, $request->method), $request->params);
-			}
-
+			} 
 			//if they return an error from the method call, return that
 			if ($answer instanceof sb_JSON_RPC2_Error) {
 				$response->error = $answer;
@@ -298,7 +300,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		} else {
 			unset($response->error);
 		}
-
+		
 		//log the final response
 		$this->log_response(json_encode($response));
 		
