@@ -299,12 +299,15 @@ class sb_JSON_RPC2_Server {
 
 		if(isset($this->methods[$request->method]) && is_callable($this->methods[$request->method])) {
 
-			if(is_object($request->params)) {
+			if (is_object($request->params)) {
 				$answer = call_user_func($this->methods[$request->method], $request->params);
-			} else if(is_array($request->params)) {
-					$answer = call_user_func_array($this->methods[$request->method], $request->params);
-				}
-
+			} else {
+				 if (!is_array($request->params)){
+					 $request->params = Array();
+				 }
+				$answer = call_user_func_array($this->methods[$request->method], $request->params);
+			} 
+			
 			//if they return an error from the method call, return that
 			if($answer instanceof sb_JSON_RPC2_Error) {
 				$response->error = $answer;
