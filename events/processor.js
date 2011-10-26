@@ -15,7 +15,7 @@ sb.events.processor = {
 		var aj = new sb.ajax({
 			target : target,
 			url : url,
-			method : target.attr('method') || 'post',
+			method : target.attr('sb_method') || 'post',
 			data : data,
 			onResponse : function(html){
 				target.processing = 0;
