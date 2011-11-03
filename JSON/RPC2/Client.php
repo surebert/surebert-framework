@@ -61,7 +61,7 @@ class sb_JSON_RPC2_Client {
 	 * @param $port Integer The port to make the request on
 	 * @return sb_JSON_RPC2_Response
 	 */
-	public function __construct($url, $timeout=10, $port=null) {
+	public function __construct($url, $timeout=1, $port=null) {
 		
 		$data = parse_url($url);
 
