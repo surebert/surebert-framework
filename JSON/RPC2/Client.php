@@ -118,81 +118,89 @@ class sb_JSON_RPC2_Client {
 	 * @return sb_JSON_RPC2_Response
 	 */
 	public function dispatch(sb_JSON_RPC2_Request $request) {
-
-		if(!(is_array($request->params) || is_object($request->params))) {
-			throw(new Exception(__CLASS__."::\$params must in an array or object"));
-		}
-
-		$host = $this->host;
-		$port = $this->port;
-		$timeout = $this->timeout;
-		$uri = $this->uri;
-
-		$json = json_encode($request);
-
-		$this->log_request($json);
-
-		if($this->debug == true) {
-			echo "--> ".$json;
-		}
-
-		if($this->method == 'post') {
-			if(isset($this->encryption_key)) {
-				$json = $this->encryptor->encrypt($json);
+	
+			if(!(is_array($request->params) || is_object($request->params))) {
+				$response = new sb_JSON_RPC2_Response();
+				$response->error = new sb_JSON_RPC2_Error('-32602');
+				$response->message = 'Invalid params';
+				$response->error->data = 'Invalid method parameters: '.json_encode($request->params);
+				return $response;
 			}
-			$content_length = 'Content-Length: ' . strlen($json);
-		} else {
-			$params = base64_encode(json_encode($request->params));
-			$params = urlencode($params);
+			
+			$host = $this->host;
+			$port = $this->port;
+			$timeout = $this->timeout;
+			$uri = $this->uri;
 
-			$uri  .= (strstr($this->uri, '?') ? '&' : '?').'method='.$request->method.'&params='.$params.'&id='.$request->id;
-		}
+			$json = json_encode($request);
 
-		$out = Array();
-		$out[] = strtoupper($this->method)." ".$uri." HTTP/1.1";
-		$out[] = 'Host: '.$this->host;
+			$this->log_request($json);
 
-		if(isset($content_length)) {
-			$out[] = $content_length;
-		}
-		$out[] = "User Agent: ".$this->agent;
-
-		if($this->php_serialize_response) {
-			$out[] = "Php_Serialize_Response: ".$this->php_serialize_response;
-		}
-
-		//if there are cookies add them
-		if(!empty($this->cookies)) {
-			$cookies = '';
-			foreach($this->cookies as $key=>$val) {
-				$cookies  .= $key.'='.urlencode($val).';';
+			if($this->debug == true) {
+				echo "--> ".$json;
 			}
 
-			$out[] = "Cookie: ".$cookies;
-		}
+			if($this->method == 'post') {
+				if(isset($this->encryption_key)) {
+					$json = $this->encryptor->encrypt($json);
+				}
+				$content_length = 'Content-Length: ' . strlen($json);
+			} else {
+				$params = base64_encode(json_encode($request->params));
+				$params = urlencode($params);
 
-		$out[] = 'Connection: close';
+				$uri  .= (strstr($this->uri, '?') ? '&' : '?').'method='.$request->method.'&params='.$params.'&id='.$request->id;
+			}
 
-		$response_str = '';
+			$out = Array();
+			$out[] = strtoupper($this->method)." ".$uri." HTTP/1.1";
+			$out[] = 'Host: '.$this->host;
 
-		if($this->port == 443){
-			$host = 'ssl://'.$this->host;
-		}
-		$fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
-		if (!(get_resource_type($fp) == 'stream')) {
-			throw new Exception('Could not reach '.$this->host.": #$errno - $errstr");
-		}
+			if(isset($content_length)) {
+				$out[] = $content_length;
+			}
+			$out[] = "User Agent: ".$this->agent;
 
-		$data = implode("\r\n", $out) . "\r\n\r\n" . $json;
+			if($this->php_serialize_response) {
+				$out[] = "Php_Serialize_Response: ".$this->php_serialize_response;
+			}
 
-		fputs($fp, $data);
+			//if there are cookies add them
+			if(!empty($this->cookies)) {
+				$cookies = '';
+				foreach($this->cookies as $key=>$val) {
+					$cookies  .= $key.'='.urlencode($val).';';
+				}
 
-		while(!feof($fp)) {
-			$response_str .= fread($fp, 8192);
-		}
-		fclose($fp);
-		
-		return $this->process_response($response_str);
+				$out[] = "Cookie: ".$cookies;
+			}
+
+			$out[] = 'Connection: close';
+
+			$response_str = '';
+
+			if($this->port == 443){
+				$host = 'ssl://'.$this->host;
+			}
+			$fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
+			if (!$fp || !(get_resource_type($fp) == 'stream')) {
+				$response = new sb_JSON_RPC2_Response();
+				$response->error = new sb_JSON_RPC2_Error('-32099');
+				$response->error->message = 'Server error';
+				$response->error->data = 'Could not reach: '.$this->host.": #$errno - $errstr";
+				return $response;
+			}
+
+			$data = implode("\r\n", $out) . "\r\n\r\n" . $json;
+
+			fputs($fp, $data);
+
+			while(!feof($fp)) {
+				$response_str .= fread($fp, 8192);
+			}
+			fclose($fp);
+
+			return $this->process_response($response_str);
 	}
 
 	/**
