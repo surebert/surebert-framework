@@ -13,5 +13,5 @@ Element.prototype.flashBg = function(color, timeout){
 		t.style.backgroundColor = '';
 
 		t = null;
-	}, 1000);
+	}, timeout);
 };
