@@ -4,7 +4,6 @@
 @Author: Paul Visco
 */
 sb.include('swf');
-
 sb.flashGate = new sb.swf({
 	src : sb.base+"FlashGate.swf",
 	//src : '${swf}.swf?d='+Math.random(),
@@ -12,7 +11,6 @@ sb.flashGate = new sb.swf({
 	height : 1,
 	bgColor : '#FF0000',
 	id : 'Flashgate',
-	wmode: 'transparent',
 	"swLiveConnect" : "true",
 	flashvars : {
 		debug : true
@@ -26,8 +24,8 @@ sb.flashGateContainer = new sb.element({
 	styles : {
 		display : 'block',
 		position : 'absolute',
-		left : '-200px',
-		top : '-200px'
+		left : '-50px',
+		top : '-50px'
 	}
 });
 
