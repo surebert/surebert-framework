@@ -3,7 +3,7 @@
  * Initializes a surebert framework project - do not edit
  *
  * @author Paul Visco
- * @version 10-01-2008 10-11-2011
+ * @version 10-01-2008 11-21-2011
  * @package Gateway
  *
  */
@@ -116,13 +116,11 @@ class sb_Controller {
      * Render the view from the template file based on the request
      *
      * @param String $template the template to use e.g. /dance
-     *
-     * @todo should template render be /template or template
-     * @todo should on_before_fire for includes?
-     * @todo should path and path arrray be temporaily reset
-     * @todo are we still going with this->request->get or do we just want this get?;(
-     */
-    public function render($template='') {
+     * @param mixed $extact_vars extracts the keys of an object or array into
+	 * local variables in the view or if set to true, extracts the properties of 
+	 * the controller
+	 */
+    public function render($template='', $extract_vars=null) {
 
         $output = '';
 
@@ -160,7 +158,7 @@ class sb_Controller {
 
         $this->template = $template;
 
-        $this->get_view($path);
+        $this->get_view($path, $extract_vars);
         $output = ob_get_clean();
 
         return $this->filter_output($output);
@@ -169,13 +167,25 @@ class sb_Controller {
 	/**
 	 * Renders the actual .view template
 	 * @param string $view_path The path to the template e.g. /blah/foo
+	 * @param mixed $extact_vars extracts the keys of an object or array into
+	 * local variables in the view or if set to true, extracts the properties of 
+	 * the controller
 	 * @return string 
 	 */
-    protected function get_view($_view_path) {
+    protected function get_view($_view_path, $extract_vars=null) {
 		
 		//extract class vars to local vars for view
-		if($this->extract){
+		if($this->extract || $extract_vars === true){
 			extract(get_object_vars($this));
+		}
+		
+		if(!is_null($extract_vars)){
+			if(is_object($extract_vars)){
+				$extract_vars = get_object_vars($extract_vars);
+			}
+			if(is_array($extract_vars)){
+				extract($extract_vars);
+			}
 		}
 		
         $_pwd = ROOT . '/private/views/' . $_view_path . '.view';
@@ -202,12 +212,16 @@ class sb_Controller {
     /**
      * Include an arbitrary .view template within the $this of the view
      * @param string $view_path  e.g. .interface/cp
+	 * @param mixed $extact_vars extracts the keys of an object or array into
+	 * local variables in the view or if set to true, extracts the properties of 
+	 * the controller
      */
-    public function render_view($path) {
+    public function render_view($path, $extract_vars=null) {
 
         //capture view to buffer
         ob_start();
-        $this->get_view($path, 1);
+	
+        $this->get_view($path, $extract_vars);
         return ob_get_clean();
     }
 
