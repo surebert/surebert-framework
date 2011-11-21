@@ -117,8 +117,7 @@ class sb_Controller {
      *
      * @param String $template the template to use e.g. /dance
      * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view or if set to true, extracts the properties of 
-	 * the controller
+	 * local variables in the view
 	 */
     public function render($template='', $extract_vars=null) {
 
@@ -168,14 +167,13 @@ class sb_Controller {
 	 * Renders the actual .view template
 	 * @param string $view_path The path to the template e.g. /blah/foo
 	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view or if set to true, extracts the properties of 
-	 * the controller
+	 * local variables in the view
 	 * @return string 
 	 */
     protected function get_view($_view_path, $extract_vars=null) {
 		
 		//extract class vars to local vars for view
-		if($this->extract || $extract_vars === true){
+		if($this->extract){
 			extract(get_object_vars($this));
 		}
 		
@@ -213,8 +211,7 @@ class sb_Controller {
      * Include an arbitrary .view template within the $this of the view
      * @param string $view_path  e.g. .interface/cp
 	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view or if set to true, extracts the properties of 
-	 * the controller
+	 * local variables in the view
      */
     public function render_view($path, $extract_vars=null) {
 
