@@ -140,6 +140,19 @@ class sb_Email{
 	public $body_HTML;
 	
 	/**
+	 * The charset of the email text e.g. iso-8859-1 or UTF-8
+	 * @var string 
+	 */
+	public $charset = 'UTF-8';
+	
+	/**
+	 * Character encoding 7bit, 8bit
+	 * @var string 
+	 */
+	public $transfer_encoding = '8bit';
+	
+	
+	/**
 	 * An array of attachment objects
 	 *
 	 * @var array

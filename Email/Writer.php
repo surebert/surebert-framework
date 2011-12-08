@@ -10,7 +10,6 @@
  * @package sb_Email
  *
  */
-
 class sb_Email_Writer {
 
 /**
@@ -251,7 +250,7 @@ class sb_Email_Writer {
         
         // Add a message for peoplewithout mime
         $message = "This message has an attachment in MIME format created with surebert mail.\r\n\r\n";
-
+		
         //if there is body_HTML use it otherwise use just plain text
         if(!empty($email->body_HTML)) {
 
@@ -267,15 +266,14 @@ class sb_Email_Writer {
             $message .= ' boundary="'.$alterative_boundary.'"'."\r\n\r\n";
 
             $message .= "--".$alterative_boundary."\r\n";
-            $message .= "Content-Type: text/plain; charset=iso-8859-1; format=flowed\r\n";
-            $message .= "Content-Transfer-Encoding: 7bit\r\n";
+            $message .= "Content-Type: text/plain; charset=".$email->charset."; format=flowed\r\n";
+            $message .= "Content-Transfer-Encoding: ".$email->transfer_encoding."\r\n";
             $message .= "Content-Disposition: inline\r\n\r\n";
             $message .= $email->body . "\r\n";
-
 			
             $message .= "--".$alterative_boundary."\r\n";
-            $message .= "Content-Type: text/html; charset=iso-8859-1 \r\n";
-            $message .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+            $message .= "Content-Type: text/html; charset=".$email->charset.";\r\n";
+            $message .= "Content-Transfer-Encoding: ".$email->transfer_encoding."\r\n";
             $message .= $email->body_HTML . "\r\n";
 			
             $message .="--".$alterative_boundary."--\r\n";
@@ -283,8 +281,8 @@ class sb_Email_Writer {
         } else {
 
             $message .= "--".$mixed_boundary."\r\n";
-            $message .= "Content-Type: text/plain; charset=iso-8859-1; format=flowed\r\n";
-            $message .= "Content-Transfer-Encoding: 7bit\r\n";
+            $message .= "Content-Type: text/plain; charset=".$email->charset."; format=flowed\r\n";
+            $message .= "Content-Transfer-Encoding: ".$email->transfer_encoding."\r\n";
             $message .= "Content-Disposition: inline\r\n\r\n";
             $message .= $email->body . "\r\n";
         }
