@@ -124,11 +124,11 @@ sb.json.rpc2.client.prototype = {
 	 */
 	dispatchViaScript : function(request){
 		sb.include('String.prototype.base64Encode');
-
+		
 		var src = [this.url+'?'];
 		src.push('callback=sb.json.rpc2.callbacks('+this.id+',"'+request.id+'")');
-		src.push('method='+this.request.method);
-		src.push('params='+sb.json.encode(this.request.params).base64Encode());
+		src.push('method='+request.method);
+		src.push('params='+sb.json.encode(request.params).base64Encode());
 		src.push('id='+this.id);
 
 		var s = new sb.script({
@@ -152,7 +152,7 @@ sb.json.rpc2.client.prototype = {
 			method : 'post',
 			debug : this.debug,
 			url : this.url+'?callback=sb.json.rpc2.callbacks('+this.id+',"'+request.id+'")',
-			data : sb.json.encode(this.request),
+			data : sb.json.encode(request),
 			onResponse : function(r){
 				eval(r);
 			}
