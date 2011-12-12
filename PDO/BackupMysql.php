@@ -49,7 +49,7 @@ class sb_PDO_BackupMysql{
 	  * <code>
 	  * $backup = new sb_PDO_BackupMysql('127.0.0.1', 'root', 'abc123');
 	  * //optional
-	  * $back->max_version = 3;
+	  * $backup->max_version = 3;
 	  * $backup->backup();
 	  * </code>
 	  *
