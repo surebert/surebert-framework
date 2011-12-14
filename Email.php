@@ -288,6 +288,150 @@ class sb_Email{
     public function add_header($key, $value){
         $this->headers[$key] = $value;
     }
+	
+	/**
+	 * Convert the email to a multipart_message
+	 * @return string the raw email source
+	 */
+	public function construct_multipart_message() {
+		
+        $mixed_boundary = '__mixed_1S2U3R4E5B6E7R8T9';
+        $alterative_boundary = '__alter_1S2U3R4E5B6E7R8T9';
+
+        $this->attachments_in_HTML =0;
+
+        if(strstr($this->body_HTML, "cid:")) {
+
+            $this->attachments_in_HTML =1;
+            $related_boundary = '__relate_1S2U3R4E5B6E7R8T9';
+        }
+
+        $this->_header_text = "From: ".$this->from."\r\nReply-To: ".$this->from."\r\nReturn-Path: ".$this->from."\r\n";
+
+        foreach($this->cc as $cc) {
+            $this->_header_text .="Cc:".$cc."\r\n";
+        }
+
+        foreach($this->bcc as $bcc) {
+            $this->_header_text .="Bcc:".$bcc."\r\n";
+        }
+
+        $this->_header_text .= "MIME-Version: 1.0"."\r\n";
+        
+        foreach($this->headers as $key=>$val) {
+            $this->_header_text .= $key.":".$val."\r\n";
+        }
+        
+        $this->_header_text .= "Content-Type: multipart/mixed;"."\r\n";
+        $this->_header_text .= ' boundary="'.$mixed_boundary.'"'."\n\n";
+        
+        // Add a message for peoplewithout mime
+        $message = "This message has an attachment in MIME format created with surebert mail.\r\n\r\n";
+
+        //if there is body_HTML use it otherwise use just plain text
+        if(!empty($this->body_HTML)) {
+
+            $message .= "--".$mixed_boundary."\r\n";
+
+            if($this->attachments_in_HTML == 1) {
+                $message .= "Content-Type: multipart/related;"."\r\n";
+                $message .= ' boundary="'.$related_boundary.'"'."\r\n\r\n";
+                $message .= "--".$related_boundary."\r\n";
+            }
+
+            $message .= "Content-Type: multipart/alternative;"."\r\n";
+            $message .= ' boundary="'.$alterative_boundary.'"'."\r\n\r\n";
+
+            $message .= "--".$alterative_boundary."\r\n";
+            $message .= "Content-Type: text/plain; charset=".$this->charset."; format=flowed\r\n";
+            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding."\r\n";
+            $message .= "Content-Disposition: inline\r\n\r\n";
+            $message .= $this->body . "\r\n";
+			
+            $message .= "--".$alterative_boundary."\r\n";
+            $message .= "Content-Type: text/html; charset=".$this->charset."\r\n";
+            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding."\r\n\r\n";
+            $message .= $this->body_HTML . "\r\n";
+			
+            $message .="--".$alterative_boundary."--\r\n";
+
+        } else {
+
+            $message .= "--".$mixed_boundary."\r\n";
+            $message .= "Content-Type: text/plain; charset=".$this->charset."; format=flowed\r\n";
+            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding."\r\n";
+            $message .= "Content-Disposition: inline\r\n\r\n";
+            $message .= $this->body . "\r\n";
+        }
+
+        //add all attachments for this email
+        foreach($this->attachments as &$attachment) {
+
+        //if only filepath is set, grab name and contents from there
+            if(isset($attachment->filepath)) {
+                if(empty($attachment->name)) {
+                    $attachment->name = basename($attachment->filepath);
+                }
+
+                if(empty($attachment->contents)) {
+                    $attachment->contents = file_get_contents($attachment->filepath);
+                }
+
+                if(empty($attachment->mime_type)) {
+                    $attachment->mime_type = sb_Files::file_to_mime($attachment->filepath);
+                }
+
+            }
+            $ex = explode(".", $attachment->name);
+            $attachment->extension = strtolower(array_pop($ex));
+
+            //try and guess the mime type unless it is set
+            if(empty($attachment->mime_type)) {
+                $attachment->mime_type = sb_Files::extension_to_mime($attachment->extension);
+            }
+
+			if($attachment->encoding == 'base64'){
+				$attachment->contents = chunk_split(base64_encode($attachment->contents));
+
+			}
+           
+            // Add file attachment to the message
+
+            if($this->attachments_in_HTML == 1) {
+                $message .= "--".$related_boundary."\r\n";
+            } else {
+                $message .= "--".$mixed_boundary."\r\n";
+            }
+
+			if($attachment->mime_type == 'text/calendar'){
+				$message .= "Content-class: urn:content-classes:calendarmessage;\r\n";
+			}
+			
+			$message .= "Content-Type: ".$attachment->mime_type.";\r\n";
+            $message .= " name=".$attachment->name."\r\n";
+
+            $message .= "Content-Transfer-Encoding: ".$attachment->encoding."\r\n";
+            $message .= "Content-ID: <".$attachment->name.">\r\n\r\n";
+
+            $message .=  $attachment->contents."\r\n";
+
+        }
+
+        //end related if using body_HTML
+        if($this->attachments_in_HTML == 1) {
+            $message .= "--".$related_boundary."--\r\n";
+        }
+
+        //end message
+        $message .="--".$mixed_boundary."--\r\n";
+
+        $this->body = $message;
+		
+		$raw = "To: ".$this->to."\r\n";
+		$raw .= "Subject: ".$this->subject."\r\n";
+		$raw .= $this->_header_text .$this->body;
+		return $raw;
+	}
 
 }
 

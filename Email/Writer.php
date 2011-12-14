@@ -43,7 +43,6 @@ class sb_Email_Writer {
      */
     protected $http_host = 'localhost';
 
-
     /**
      * Creates a new outbox to send from
      *
@@ -115,7 +114,7 @@ class sb_Email_Writer {
 				}
             }
 
-            $this->construct_multipart_message($email);
+            $email->construct_multipart_message();
 
             if(mail($email->to, $email->subject, $email->body, $email->_header_text)) {
 
@@ -208,149 +207,6 @@ class sb_Email_Writer {
         if(!empty($email->body_HTML)) {
             $email->body_HTML .= '<br /><br /><span style="font-size:10px;color:#BCBCBC;margin-top:20px;">For security purposes the following information was recorded: <br />Sending IP:'.$this->remote_addr.' <br />Sending Host: '.$this->http_host.'</span>';
         }
-    }
-
-    /**
-     * Constructs multipart messages based on attachments
-     *
-     * @param sb_Email $email
-     */
-    private function construct_multipart_message(sb_Email &$email) {
-
-        $mixed_boundary = '__mixed_1S2U3R4E5B6E7R8T9';
-        $alterative_boundary = '__alter_1S2U3R4E5B6E7R8T9';
-
-
-        $email->attachments_in_HTML =0;
-
-        if(strstr($email->body_HTML, "cid:")) {
-
-            $email->attachments_in_HTML =1;
-            $related_boundary = '__relate_1S2U3R4E5B6E7R8T9';
-        }
-
-        $email->_header_text = "From: ".$email->from."\r\nReply-To: ".$email->from."\r\nReturn-Path: ".$email->from."\r\n";
-
-        foreach($email->cc as $cc) {
-            $email->_header_text .="Cc:".$cc."\r\n";
-        }
-
-        foreach($email->bcc as $bcc) {
-            $email->_header_text .="Bcc:".$bcc."\r\n";
-        }
-
-        $email->_header_text .= "MIME-Version: 1.0"."\r\n";
-        
-        foreach($email->headers as $key=>$val) {
-            $email->_header_text .= $key.":".$val."\r\n";
-        }
-        
-        $email->_header_text .= "Content-Type: multipart/mixed;"."\r\n";
-        $email->_header_text .= ' boundary="'.$mixed_boundary.'"'."\n\n";
-        
-        // Add a message for peoplewithout mime
-        $message = "This message has an attachment in MIME format created with surebert mail.\r\n\r\n";
-		
-        //if there is body_HTML use it otherwise use just plain text
-        if(!empty($email->body_HTML)) {
-
-            $message .= "--".$mixed_boundary."\r\n";
-
-            if($email->attachments_in_HTML == 1) {
-                $message .= "Content-Type: multipart/related;"."\r\n";
-                $message .= ' boundary="'.$related_boundary.'"'."\r\n\r\n";
-                $message .= "--".$related_boundary."\r\n";
-            }
-
-            $message .= "Content-Type: multipart/alternative;"."\r\n";
-            $message .= ' boundary="'.$alterative_boundary.'"'."\r\n\r\n";
-
-            $message .= "--".$alterative_boundary."\r\n";
-            $message .= "Content-Type: text/plain; charset=".$email->charset."; format=flowed\r\n";
-            $message .= "Content-Transfer-Encoding: ".$email->transfer_encoding."\r\n";
-            $message .= "Content-Disposition: inline\r\n\r\n";
-            $message .= $email->body . "\r\n";
-			
-            $message .= "--".$alterative_boundary."\r\n";
-            $message .= "Content-Type: text/html; charset=".$email->charset.";\r\n";
-            $message .= "Content-Transfer-Encoding: ".$email->transfer_encoding."\r\n";
-            $message .= $email->body_HTML . "\r\n";
-			
-            $message .="--".$alterative_boundary."--\r\n";
-
-        } else {
-
-            $message .= "--".$mixed_boundary."\r\n";
-            $message .= "Content-Type: text/plain; charset=".$email->charset."; format=flowed\r\n";
-            $message .= "Content-Transfer-Encoding: ".$email->transfer_encoding."\r\n";
-            $message .= "Content-Disposition: inline\r\n\r\n";
-            $message .= $email->body . "\r\n";
-        }
-
-        //add all attachments for this email
-        foreach($email->attachments as &$attachment) {
-
-        //if only filepath is set, grab name and contents from there
-            if(isset($attachment->filepath)) {
-                if(empty($attachment->name)) {
-                    $attachment->name = basename($attachment->filepath);
-                }
-
-                if(empty($attachment->contents)) {
-                    $attachment->contents = file_get_contents($attachment->filepath);
-                }
-
-                if(empty($attachment->mime_type)) {
-                    $attachment->mime_type = sb_Files::file_to_mime($attachment->filepath);
-                }
-
-            }
-            $ex = explode(".", $attachment->name);
-            $attachment->extension = strtolower(array_pop($ex));
-
-            //try and guess the mime type unless it is set
-            if(empty($attachment->mime_type)) {
-                $attachment->mime_type = sb_Files::extension_to_mime($attachment->extension);
-            }
-
-			if($attachment->encoding == 'base64'){
-				$attachment->contents = chunk_split(base64_encode($attachment->contents));
-
-			}
-           
-            // Add file attachment to the message
-
-            if($email->attachments_in_HTML == 1) {
-                $message .= "--".$related_boundary."\r\n";
-            } else {
-                $message .= "--".$mixed_boundary."\r\n";
-            }
-
-			if($attachment->mime_type == 'text/calendar'){
-				$message .= "Content-class: urn:content-classes:calendarmessage;\r\n";
-			}
-			
-			$message .= "Content-Type: ".$attachment->mime_type.";\r\n";
-            $message .= " name=".$attachment->name."\r\n";
-
-            $message .= "Content-Transfer-Encoding: ".$attachment->encoding."\r\n";
-            //$message .= "Content-ID: ".$attachment->name."\r\n\r\n";
-            $message .= "Content-ID: <".$attachment->name.">\r\n\r\n";
-
-            $message .=  $attachment->contents."\r\n";
-
-        }
-
-        //end related if using body_HTML
-        if($email->attachments_in_HTML == 1) {
-            $message .= "--".$related_boundary."--\r\n";
-        }
-
-        //end message
-        $message .="--".$mixed_boundary."--\r\n";
-
-        $email->body = $message;
-
     }
 
     /**
