@@ -139,14 +139,14 @@ class sb_Text_Bling{
 	 * @todo combine numlist and list into one
 	 */
 	public static function lists_to_html($str){
-
+	
 		//wiki style lists
 		$str = preg_replace_callback('/(?:^|\n)((?:\*|#)+.*?\n(?!(?:\*|#)+))/si', function($match){
 			$type = substr(trim($match[0]), 0, 1) == '#' ? 'ol' : 'ul';
 
 			$star_cnt = 1;
 			$lis = preg_replace_callback("~^([\*\#]+)(.*)$~m", function($innermatch){
-				//$star_cnt_new = strlen($innermatch[1]);
+				
 				return '<li>'.$innermatch[2].'</li>';
 			}, trim($match[1]));
 
@@ -179,6 +179,14 @@ class sb_Text_Bling{
 			}, $match[1]);
 			return '<ol class="tb">'.$lis.'</ol>';
 
+		}, $str);
+		
+		$str = preg_replace_callback('~\n{0,}\t{0,}\[(/?(ol|ul|li))\]\n*~', function($match) {
+			if (!strstr($match[1], "/")) {
+				return '<' . $match[1] . ' class="tb">';
+			} else {
+				return '<' . $match[1] . '>';
+			}
 		}, $str);
 
 		return $str;
