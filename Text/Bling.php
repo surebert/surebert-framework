@@ -85,7 +85,7 @@ class sb_Text_Bling{
 		
 		$str = self::typo_fix($str);
 		
-		$str = sb_Strings::html_escape_tags($str);
+		$str = sb_HTML::escape($str);
 		
 		$str = self::convert_quotes($str);
 
