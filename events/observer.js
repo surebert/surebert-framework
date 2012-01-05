@@ -140,7 +140,7 @@ sb.events.observer = {
 		//handle keypresses
 		this.documentKeyPress = sb.events.add(document, 'keypress', this.delegateEvents);
 		
-		if(sb.browser.agent === 'ie' && sb.browser.version < 8){
+		if(sb.browser.agent === 'ie' && sb.browser.version < 9){
 		
 			this.handleIEEventBubbles();
 		}
