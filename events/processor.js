@@ -58,7 +58,7 @@ sb.events.processor = {
 			}
 			
 			var p = sb_prompt.split('|');
-			var confirmed = prompt(p[0], '') != p[1];
+			var confirmed = prompt(p[0], '') == p[1];
 			if(typeof sb.events.processor.onAfterPrompt == 'function'){
 				sb.events.processor.onAfterPrompt(e, confirmed);
 			}
@@ -75,14 +75,15 @@ sb.events.processor = {
 	_handleConfirm : function(e){
 		var target = e.target;
 		var sb_confirm = target.attr('sb_confirm');
+	
 		if(sb_confirm){
 			if(typeof sb.events.processor.onBeforeConfirm == 'function'){
 				if(sb.events.processor.onBeforeConfirm(e) === false){
 					return false;
 				};
 			}
-			
 			var confirmed = confirm(sb_confirm);
+			
 			if(typeof sb.events.processor.onAfterConfirm == 'function'){
 				sb.events.processor.onAfterConfirm(e, confirmed);
 			}
@@ -206,7 +207,6 @@ sb.events.processor = {
 				return false;
 			};
 		}
-		
 		if(this._handleConfirm(e) === false){
 			return false;
 		}
