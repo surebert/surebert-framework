@@ -5,6 +5,7 @@
 sb.events.processor = {
 	
 	send : function(url, data, target){
+
 		target.processing = 1;
 		target.success = function(){
 			this.getParent().flashBg('lime');
@@ -22,25 +23,42 @@ sb.events.processor = {
 				if(target.editor){
 					target.editor.setHTML(html);
 				}
+				
+				if(typeof sb.events.processor.onAfterResponse == 'function'){
+					sb.events.processor.onAfterResponse(target, html);
+				}
 			}
 		}).fetch();
 	},
 	handleEvent : function(e){
-		
 		if(e.which && e.which != 1){
 			return;
 		}
+		
+		if(e.type == 'submit'){
+			e.preventDefault();
+		}
+		
 		var target = e.target;
+		
 		if(target.processing){
 			return;
 		}
 		
+		if(typeof sb.events.processor.onBeforeEvent == 'function'){
+			if(sb.events.processor.onBeforeEvent(target) === false){
+				return false;
+			};
+		}
+		
 		var self = this;
+		
 		var sb_set_url = target.attr('sb_set_url');
+		
 		if(!sb_set_url){
 			return;
 		}	
-
+		
 		var sb_confirm = target.attr('sb_confirm');
 		if(sb_confirm && !confirm(sb_confirm)){
 			return false;
@@ -48,8 +66,16 @@ sb.events.processor = {
 
 		var sb_prompt = target.attr('sb_prompt');
 		if(sb_prompt){
+			if(typeof sb.events.processor.onBeforePrompt == 'function'){
+				if(sb.events.processor.onBeforePrompt(target, sb_prompt) === false){
+					return false;
+				};
+			}
 			var p = sb_prompt.split('|');
 			 if(prompt(p[0], '') != p[1]){
+				 if(typeof sb.events.processor.onBeforePrompt == 'function'){
+					sb.events.processor.onAfterPrompt(target, sb_prompt);
+				}
 				 return false;
 			 }
 		}
@@ -103,16 +129,16 @@ sb.events.processor = {
 			});
 
 			target.editor.edit();
-			console.log('f');
 		}
 	},
+	
 	
 	init : function(){
 		var self = this;
 		sb.events.add(document, 'click', function(e){self.handleEvent(e);});
-
 		sb.events.add(document, 'dblclick', function(e){self.handleEvent(e);});
 	}
 	
-}
+};
+
 sb.events.processor.init();
