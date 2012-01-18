@@ -570,11 +570,7 @@ class Gateway {
      * @var string
      */
     public static $default_controller_type = 'IndexController';
-    /**
-     * Should errors be formatted as HTML
-     * @var boolean
-     */
-    public static $html_errors = true;
+    
     /**
      * An instance of a logger used to log all gateway requests during debugging
      * @var sb_Logger_Base
@@ -940,7 +936,6 @@ if (!defined('ROOT')) {
             }
         }
         Gateway::$command_line = true;
-        Gateway::$html_errors = false;
     } else if (isset($_SERVER['DOCUMENT_ROOT'])) {
         $root = $_SERVER['DOCUMENT_ROOT'];
     }
