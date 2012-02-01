@@ -53,7 +53,8 @@ class sb_Files_ForceDownload{
 					
 					foreach ($iterator as $file){
 					  if ($file->isFile()){
-						  $zip->addFile($file->getPath().'/'.$file->getBasename(), basename($file->getBasename()));
+						  $bn = $file->getBasename();
+						  $zip->addFile($file->getPath().'/'.$bn, $bn);
 						}
 					}
 					
