@@ -82,7 +82,7 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 			$html .= '<td>'.date('m/d/Y', intval($data['mtime'])).'</td>';
 			$html .= '<td>'.sb_Files::size_to_string($data['size']).'</td>';
 			$html .= '<td>'.$data['file_count'].'</td>';
-			$html .= '<td><a href="'.($this->get_base_url()).'?command=get_dates&log_type='.$data['name'].'">view</a> | <a href="'.(str_replace("#", "", $this->get_base_url())).'?command=export&log_type='.$data['name'].'">export</a></td>';
+			$html .= '<td><a href="'.($this->get_base_url()).'?command=get_dates&log_type='.$data['name'].'">view</a> | <a href="'.(str_replace("#", "", $this->get_base_url())).'/export?log_type='.$data['name'].'">export</a></td>';
 			$html .= '</tr>';
 			
 		}
@@ -144,7 +144,7 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 			
 			$html .= '<td>'.sb_Files::size_to_string($file['size']).'</td>';
 			$html .= '<td>';
-			$html .= '<a href="'.($this->get_base_url()).'?command=view&log_type='.$log_type.'&date_file='.$file['name'].'">view</a> | <a href="'.($this->get_base_url()).'?command=tail&n=100&log_type='.$log_type.'&date_file='.$file['name'].'">tail</a> |<a href="'.(str_replace("#", "", $this->get_base_url())).'?command=export&log_type='.$log_type.'&date_file='.$file['name'].'">export</a>';
+			$html .= '<a href="'.($this->get_base_url()).'?command=view&log_type='.$log_type.'&date_file='.$file['name'].'">view</a> | <a href="'.($this->get_base_url()).'?command=tail&n=100&log_type='.$log_type.'&date_file='.$file['name'].'">tail</a> |<a href="'.(str_replace("#", "", $this->get_base_url())).'/export?log_type='.$log_type.'&date_file='.$file['name'].'">export</a>';
 			$html .= '</td>';
 			$html .= '</tr>';
 			
@@ -260,18 +260,6 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 				}
 				break;
 				
-			case 'export':
-				$log_type = $this->get_get('log_type');
-				$date_file = $this->get_get('date_file');
-				$date_file_path = $this->get_root().$log_type.'/'.$date_file;
-				if($date_file && is_file($date_file_path)){
-					$html .= sb_Files_ForceDownload::file_to_zip($date_file_path);
-				} else if(is_dir($date_file_path)){
-					$html .= sb_Files_ForceDownload::file_to_zip($date_file_path);
-				}
-				
-				break;
-				
 			default:
 				$sort_by = $this->get_get('sort_by', 'name');
 				$reverse = $this->get_get('reverse', false);
@@ -282,6 +270,23 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 		
 		return $html;
 		
+	}
+	
+	/**
+	 * Serves to handle export requests in zip format
+	 * 
+	 * @return type 
+	 * @servable true
+	 */
+	public function export(){
+		
+		$log_type = $this->get_get('log_type');
+		$date_file = $this->get_get('date_file');
+		$date_file_path = $this->get_root().$log_type.'/'.$date_file;
+		if(($date_file && is_file($date_file_path)) || is_dir($date_file_path)){
+			return sb_Files_ForceDownload::file_to_zip($date_file_path);
+		}
+				
 	}
 	
 }
