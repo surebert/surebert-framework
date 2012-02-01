@@ -236,7 +236,36 @@ class sb_Files{
 		closedir ($handle);
 		return $stats;
 	}
+	
+		
+	/**
+	 * Get the files from a directory
+	 * @param string $dir The directory path
+	 * @param boolean $get_directories Should subdirectories be listed
+	 * @return array
+	 */
+	public static function get_files($dir, $get_directories=false){
+		$arr = Array();
+		$iterator = new DirectoryIterator($dir);
+		
+        foreach ($iterator as $file){
 
+		  if ($get_directories && $file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
+             $arr[$file->getBasename()] = Array(
+				 'path' => $file->getPath(),
+				 'size' => self::get_directory_size($file->getRealPath()),
+				 'mtime' => $file->getMTime(),
+				 'name' => $file->getBaseName());
+			 
+		  } else if (!$get_directories && $file->isFile()){
+			  $arr[] = $file->getBasename();
+			}
+		}
+		
+		$get_directories ? ksort($arr) : sort($arr);
+		return $arr;
+	}
+	
 	/**
 	 * Converts file size to string that is human readible
 	 * @param integer $size The size in bytes
