@@ -80,8 +80,8 @@ class sb_Samba_Connection {
 
 	/**
 	 * gets files from the windows machine to the linux machine
-	 * @param $getpath the file path at the windows machine
-	 * @param $putpath the file path on the local linux box where the file will be placed
+	 * @param $remotepath the file path at the windows machine
+	 * @param $localfile the file path on the local linux box where the file will be placed
      *
 	 * @return array $output the raw command line output for smbclient
 	 */
@@ -94,17 +94,14 @@ class sb_Samba_Connection {
 
 	/**
 	 * Allows the placent of files from the local system to the remote windows system
-	 * @todo  fix the remote file portion of the command string
-	 * @param $localfile
-	 * @param $remotefile
+	 * @param $localfile The local file on the linux server
+	 * @param $remotepath The remote path to use
      *
 	 * @return array $output
 	 */
-	public function put($localfile, $remotefile = ".") {
+	public function put($localfile, $remotepath = ".") {
 		$remotepath = self::winslashes($remotepath);
-		$remotefile = rtrim($remotefile, "/ \\");
-
-		$command = 'put "'.$localfile.'" "'.$remotefile.'"';
+		$command = 'put "'.$localfile.'" "'.$remotepath.'"';
 
 		$this->execute($command, $output);
 		return $output ? 0 : 1;
