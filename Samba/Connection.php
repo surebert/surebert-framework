@@ -104,7 +104,7 @@ class sb_Samba_Connection {
 		$command = 'put "'.$localfile.'" "'.$remotepath.'"';
 
 		$this->execute($command, $output);
-		return $output ? 0 : 1;
+		return $output;
 	}
 
     /**
