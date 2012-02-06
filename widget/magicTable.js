@@ -1,5 +1,6 @@
 sb.include('String.prototype.stripHTML');
 
+
 /**
 @Name: sb.widget.magicTable
 @Version: 1.31 12-08-2008 12-15-2008
@@ -186,6 +187,7 @@ sb.widget.magicTable.prototype = {
 	*/
 	
 	removeRows : function(rows){
+		var self = this;
 		if(typeof rows == 'string'){
 			
 			var matches = rows.match(/(\d)+-(\d+)/);
@@ -196,9 +198,14 @@ sb.widget.magicTable.prototype = {
 				}
 			}
 		}
-		
+		var arr = [];
 		this.body.$('tr').forEach(function(v,k){
-			
+			if(v.parentNode == self.body){
+				arr.push(v);
+			}
+		});
+		
+		arr.forEach(function(v,k){
 			if(rows.inArray(k) ){
 				v.remove();
 			}
@@ -304,12 +311,13 @@ sb.widget.magicTable.prototype = {
 
 		var trs = this.body.$('tr');
 		trs.forEach(function(tr,k,a){
-			
-			rows.push({
-				text: tr.cells[col].innerHTML.stripHTML(), 
-				td: tr.cells[col],
-				tr: tr
-			});
+			if(tr.parentNode == self.body){
+				rows.push({
+					text: tr.cells[col].innerHTML.stripHTML(), 
+					td: tr.cells[col],
+					tr: tr
+				});
+			}
 		});
 
 		var compare = sb.widget.magicTable.compare[sortRule];
@@ -676,9 +684,11 @@ sb.widget.magicTable.prototype = {
 						};
 					
 						self.body.$('tr').forEach(function(tr){
-							var td = tr.cells[target.cellIndex];
-							column.tds.add(td);
-							column.values.push(td.innerHTML.stripHTML());
+							if(tr.parentNode == self.body){
+								var td = tr.cells[target.cellIndex];
+								column.tds.add(td);
+								column.values.push(td.innerHTML.stripHTML());
+							}
 						});
 						
 						self.onColClick(column);
@@ -839,4 +849,3 @@ sb.widget.magicTable.compare = {
 		return 0;
 	}
 };
-
