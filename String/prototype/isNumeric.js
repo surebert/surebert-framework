@@ -11,5 +11,5 @@ var answer = str.isNumeric();
 //answer = true
 */
 String.prototype.isNumeric = function(){
-	return /^\d+?(\.\d+)?$/.test(this);
+	return /^\-?\d+?(\.\d+)?$/.test(this);
 };
