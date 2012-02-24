@@ -46,15 +46,44 @@ class sb_JSON_RPC2_Request{
 	 */
 	public function __construct($json = null){
 		
-		$args = func_get_args();
-		$count = count($args);
+		$num_args = func_num_args();
+		
 		//json
-		if($count == 1 && is_string($args[0])){
+		if($num_args === 1 && !empty($json)){
 		
+			if(mb_detect_encoding($json) == 'UTF-8' && mb_substr($json, 0, 1) != '{'){
+				$json = utf8_decode($json);
+				$json = mb_substr($json, mb_strpos($json, '{'));
+			}
+			
 			$o = json_decode($json);
-		
+			
+			 switch (json_last_error()) {
+				case JSON_ERROR_NONE:
+					$error = 'No errors';
+				break;
+				case JSON_ERROR_DEPTH:
+					 $error = 'Maximum stack depth exceeded';
+				break;
+				case JSON_ERROR_STATE_MISMATCH:
+					 $error = 'Underflow or the modes mismatch';
+				break;
+				case JSON_ERROR_CTRL_CHAR:
+					 $error = 'Unexpected control character found';
+				break;
+				case JSON_ERROR_SYNTAX:
+					 $error = 'Syntax error, malformed JSON';
+				break;
+				case JSON_ERROR_UTF8:
+					 $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
+				break;
+				default:
+					 $error = 'Parse error';
+				break;
+			}
+			
 			if(!is_object($o)){
-				$this->error = new sb_JSON_RPC2_Error(-32700, "Parse error");
+				$this->error = new sb_JSON_RPC2_Error(-32700, $error);
 			}
 			
 			foreach(get_object_vars($this) as $k=>$v){
@@ -64,7 +93,7 @@ class sb_JSON_RPC2_Request{
 				}
 			}
 			
-		} else if($count > 0){
+		} else if($num_args > 1){
 			$this->method = $args[0];
 			$this->params = $args[1];
 			$this->id = isset($args[2]) ? $args[2] : uniqid();

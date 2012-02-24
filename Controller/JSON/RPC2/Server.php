@@ -98,7 +98,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	 * @return Array - Object once json_encoded
 	 * @servable true
 	 */
-	protected function get_methods($html = true) {
+	public function get_methods($html = true) {
 
 		$arr = Array();
 
@@ -255,25 +255,29 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		
 		if (method_exists($this, $request->method)) {
 			$reflection = new ReflectionMethod($this, $request->method);
-
+			
 			//check for phpdocs
 			$docs = $reflection->getDocComment();
 			$servable = false;
+			$non_rpc = false;
 			if (!empty($docs)) {
 				if (preg_match("~@servable (true|false)~", $docs, $match)) {
 					$servable = $match[1] == 'true' ? true : false;
 				}
 			}
 		}
+		
 		//check for requested remote procedure
 		if ($servable) {
-
+			
 			if (is_object($request->params)) {
 				$answer = call_user_func(Array($this, $request->method), $request->params);
-			} else if (is_array($request->params)) {
+			} else {
+				 if (!is_array($request->params)){
+					 $request->params = Array();
+				 }
 				$answer = call_user_func_array(Array($this, $request->method), $request->params);
-			}
-
+			} 
 			//if they return an error from the method call, return that
 			if ($answer instanceof sb_JSON_RPC2_Error) {
 				$response->error = $answer;
@@ -282,10 +286,13 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 				$response->result = $answer;
 			}
 		} else {
-
-			$response->error = new sb_JSON_RPC2_Error();
-			$response->error->code = -32601;
-			$response->error->message = "Procedure not found";
+			if(isset($request->error) && $request->error instanceOf sb_JSON_RPC2_Error){
+				$response->error = $request->error;
+			} else {
+				$response->error = new sb_JSON_RPC2_Error();
+				$response->error->code = -32601;
+				$response->error->message = "Procedure not found";
+			}
 		}
 
 		//remove unnecessary properties
@@ -298,7 +305,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		} else {
 			unset($response->error);
 		}
-
+		
 		//log the final response
 		$this->log_response(json_encode($response));
 		
@@ -366,9 +373,18 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	/**
 	 * If this returns null when method not found, then deault JSON error object
 	 * is returned.  Otherwise, the string or object returned from not_found is returned.
+	 * Will also server get_methods/methods as HTML list of available calls
 	 * @return type 
 	 */
 	public function not_found() {
+		if (isset($this->request->path_array[1])) {
+			switch ($this->request->path_array[1]) {
+				case 'methods':
+					return $this->get_methods(true);
+					break;
+			}
+		}
+		
 		return NULL;
 	}
 
