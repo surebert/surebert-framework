@@ -66,24 +66,23 @@ class sb_Validate_ContactInfo{
 
 			if($check_usps){
 
-				$page = @file_get_contents("http://zip4.usps.com/zip4/zcl_3_results.jsp?zip5=".substr($zip, 0, 5)."&submit.x=50&submit.y=5&submit=Find+ZIP+Code");
+				$page = @file_get_contents("https://tools.usps.com/go/ZipLookupResultsAction!input.action?resultMode=2&postalCode=".substr($zip, 0, 5));
 
 				if(!$page){
 					$result->message .= ' cannot reach USPS site to validate zip code existence';
 				} else {
-					preg_match("~<b>(.*?)</b>~", $page, $city);
-					if(isset($city[1])){
+					preg_match("~<p class=\"std-address\">(.*?)</p>~", $page, $city);
+       
+                                        if(isset($city[1])){
+                                                $data = trim($city[1]);
+                                                $result->state = substr($data, -2, 2);
+                                                $result->city = ucwords(strtolower(preg_replace("~".$result->state."$~", "", $data)));
+                                                $result->message .= " for ".$result->city.','.$result->state;
 
-						$data = explode(",", strtolower($city[1]));
-
-						$result->city = ucwords(trim($data[0]));
-						$result->state = strtoupper(trim($data[1]));
-						$result->message .= " for ".$result->city.','.$result->state;
-
-					} else {
-						$result->message .= " but city not found!";
-						$result->is_valid = false;
-					}
+                                        } else {
+                                                $result->message .= " but city not found!";
+                                                $result->is_valid = false;
+                                        }
 				}
 			}
 
