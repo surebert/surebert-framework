@@ -89,6 +89,14 @@ class sb_PDO_BackupMysql{
             die("Set_ignore only accepts an array");
         }
     }
+	
+	/**
+	 * Sets the directory in which the dump files are stored
+	 * @param string $dir 
+	 */
+	public function set_dump_destination($dir='dumps/'){
+		$this->dump_dir = $dir;
+	}
 
     /**
      * Connects to the database
