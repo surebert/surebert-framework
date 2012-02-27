@@ -9,8 +9,7 @@
  * echo sb_Text_Bling::get_javascript();
  * </code>
  *
- * @author Paul Visco  03/10/2008
- * @version 1.0 03/10/2008
+ * @author Paul Visco
  * @package sb_Text
  */
 
@@ -367,9 +366,26 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 		preg_match_all( "~\[pdf\](.*?)\[/pdf\]~s", $str, $matches );
 		$count = count($matches[1]);
 		for($x=0;$x<$count;$x++){
-			$pdf = '<a href="'.self::$content_path.'/'.$matches[1][$x].'">::READ PDF::</a>';
+			$pdf = '<a target="_blank" href="'.self::$content_path.'/'.$matches[1][$x].'">::READ PDF::</a>';
 			
 			$str=str_replace($matches[0][$x], $pdf, $str);
+			
+		}
+		return $str;
+	}
+    
+    /**
+	 * Convert pdf tags to pdf links
+	 *
+	 * @param string $str
+	 * @return string
+	 */
+	public static function txt_to_link($str){
+		
+		preg_match_all( "~\[txt](.*?)\[/txt]~s", $str, $matches );
+		$count = count($matches[1]);
+		for($x=0;$x<$count;$x++){
+			$str=str_replace($matches[0][$x], '<a target="_blank" href="'.self::$content_path.'/'.$matches[1][$x].'">::READ TXT::</a>', $str);
 			
 		}
 		return $str;
@@ -471,6 +487,7 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 	public static function parse($str){
 		$str = parent::clean($str);
 		$str = self::pdf_to_link($str);
+        $str = self::txt_to_link($str);
 		$str = self::images_to_html($str);
 		$str = self::nonflash_media_to_html($str);
 
