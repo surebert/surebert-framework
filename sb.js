@@ -1,6 +1,7 @@
 /**
 @Description: All of these array prototypes are part of Javascript 1.5 and are included by defaut in sureert for browsers that do not have them (IE and Opera).  They are built in by defualt in Firefox(mozilla) and Safari (webkit)
 */
+
 if(!Array.prototype.forEach){
 
 	/**
@@ -3206,8 +3207,8 @@ myElement.setStyle('backgroundColor', blue);
 myElement.setStyle('opacity', 0.5);
 */
 Element.prototype.setStyle = function(prop, val){
-
-	if(sb.styles.pxProps.inArray(prop) && val !== '' && !val.match(/em|cm|pt|px|%/)){
+	
+	if(sb.styles.pxProps.inArray(prop) && val !== '' && val != 0 && !(val+'').match(/em|cm|pt|px|%/)){
 		val +='px';
 	}
 
