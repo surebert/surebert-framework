@@ -948,7 +948,9 @@ if (!defined('ROOT')) {
     unset($root);
 }
 
-if (isset($_SERVER['REQUEST_URI'])) {
+if (defined('REQUEST_URI')) {
+    $request = REQUEST_URI;
+} else if (isset($_SERVER['REQUEST_URI'])) {
     $request = $_SERVER['REQUEST_URI'];
 }
 
