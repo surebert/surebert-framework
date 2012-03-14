@@ -237,7 +237,7 @@ class sb_JSON_RPC2_Client {
 		if($this->php_serialize_response && !empty($body)) {
 
 			try{
-				$serialized = @unserialize($body);
+				$serialized = unserialize($body);
 				if($serialized !== false){
 					$response = $serialized;
 				}
