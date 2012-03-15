@@ -126,6 +126,8 @@ sb.widget.editor = function(id, onload){
 	if(typeof onload== 'function'){
 		onload.call(this);
 	}
+	
+	return this;
 };
 
 sb.widget.editor.styleSheets = [];
@@ -185,7 +187,6 @@ sb.widget.editor.prototype = {
 			
 		}
 	},
-	
 	dataOut : function(){
 		var str ='';
 		if(typeof this.value !='undefined'){
