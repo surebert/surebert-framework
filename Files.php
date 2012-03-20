@@ -130,6 +130,10 @@ class sb_Files{
                 case 'xls':
                     $m = 'application/vnd.ms-excel';
                     break;
+				
+				case 'xlsx':
+					$m = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+					break;
 
                 case 'zip':
                     $m = 'application/x-zip-compressed';
