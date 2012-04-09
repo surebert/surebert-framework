@@ -10,8 +10,7 @@
  * echo sb_Text_Bling::get_javascript();
  * </code>
  *
- * @author Paul Visco  12/26/2004
- * @version 2.71 11/04/2007
+ * @author Paul Visco
  * @package sb_Text
  * 
 */
