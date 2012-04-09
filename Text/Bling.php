@@ -139,8 +139,7 @@ class sb_Text_Bling{
 	 * @todo combine numlist and list into one
 	 */
 	public static function lists_to_html($str){
-	
-		//wiki style lists
+
 		$str = preg_replace_callback('/(?:(?:^|\n)[#\*].*)+\n?/m', function($match){
 			
 			$type = substr(trim($match[0]), 0, 1) == '#' ? 'ol' : 'ul';
