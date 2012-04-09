@@ -141,21 +141,19 @@ class sb_Text_Bling{
 	public static function lists_to_html($str){
 	
 		//wiki style lists
-		$str = preg_replace_callback('/(?:(?:^|\n)[#\*].*)+\n?/m', function($match){
-			
+		$str = preg_replace_callback('/(?:^|\n)((?:\*|#)+.*?\n(?!(?:\*|#)+))/si', function($match){
 			$type = substr(trim($match[0]), 0, 1) == '#' ? 'ol' : 'ul';
-			
+
 			$star_cnt = 1;
 			$lis = preg_replace_callback("~^([\*\#]+)(.*)$~m", function($innermatch){
 				
 				return '<li>'.$innermatch[2].'</li>';
-			}, trim($match[0]));
+			}, trim($match[1]));
 
 			$lis = str_replace(Array("\n</li>", "</li>\n"), "</li>", $lis);
-			return '<'.$type.' class="tb">'.$lis.'</'.$type.'>';
+			return "\n".'<'.$type.' class="tb">'.$lis.'</'.$type.'>';
 
 		}, $str);
-		return $str;
 
 		$str = preg_replace_callback("~\[list\](.*?)\[/list\]\n~s", function($match){
 
