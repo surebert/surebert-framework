@@ -152,7 +152,7 @@ class sb_Text_Bling{
 			}, trim($match[0]));
 
 			$lis = str_replace(Array("\n</li>", "</li>\n"), "</li>", $lis);
-			return "\n".'<'.$type.' class="tb">'.$lis.'</'.$type.'>';
+			return '<'.$type.' class="tb">'.$lis.'</'.$type.'>';
 
 		}, $str);
 
