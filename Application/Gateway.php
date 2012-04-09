@@ -1,9 +1,8 @@
 <?php
 /**
- * Initializes a surebert framework project - do not edit
+ * Initializes a surebert framework project
  *
  * @author Paul Visco
- * @version 10-01-2008 11-21-2011
  * @package Gateway
  *
  */
@@ -109,18 +108,27 @@ class sb_Controller {
      * @return boolean determines if the view should render anything or not, false == no render
      */
     public function on_before_render($method='') {
+		
         return true;
     }
 
     /**
      * Render the view from the template file based on the request
      *
-     * @param String $template the template to use e.g. /dance
+	 * I had to remove default arguments in order to get around issue with incompatbile
+	 * child class methods when E_STRICT is enabled.  I am keeping them in phpdoc
+     * 
+	 * @param String $template the template to use e.g. /dance
      * @param mixed $extact_vars extracts the keys of an object or array into
 	 * local variables in the view
+	 * 
 	 */
-    public function render($template='', $extract_vars=null) {
-
+    public function render() {
+		
+		$args = func_get_args();
+		$template = isset($args[0]) ? $args[0] : '';
+		$extract_vars = isset($args[1]) ? $args[1] : null;
+		
         $output = '';
 
         //capture view to buffer

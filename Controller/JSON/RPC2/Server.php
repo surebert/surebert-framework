@@ -1,7 +1,6 @@
 <?php
 /**
  * Used to response to JSON_RPC2 requests as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
- * @version 02/06/09 05/05/11
  * @author visco
  * @package sb_JSON_RPC2
  *
@@ -40,31 +39,9 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	protected $gz_encode_level = false;
 
 	/**
-	 * Create an instance
-	 *
-	 * <code>
-	 *
-	 * //a function to serve
-	 * function add($x, $y){
-	 * 	return $x+$y;
-	 * }
-	 *
-	 * //create the server
-	 * $server = new sb_JSON_RPC2_Server();
-	 *
-	 * //methods you are allowing the server to serve
-	 * $server->serve_methods(Array(
-	 * 	'add' => 'add'
-	 * ));
-	 *
-	 * //debug one of the methods
-	 * //echo $server->handle('{"method":"/","params":[1,2],"id":"abc123"}');
-	 *
-	 * //serve the methods requested in Gateway::$request->post[]; which is sent by a sb_JSON_RPC2_Request's dispatch method
-	 * echo $server->handle();
-	 * </code>
+	 * Create an instance, called by gateway
 	 */
-	public function __construct($methods=Array()) {
+	public function __construct() {
 		
 		if (isset($_SERVER) && isset($_SERVER['HTTP_PHP_SERIALIZE_RESPONSE'])) {
 			$this->php_serialize_response = true;
@@ -314,10 +291,15 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	
 	/**
 	 * Serves data based on the json_request if set, otherwise based on Gateway::$cmd_options['json_request']
+	 * Had to remove default args being listed to prevent "should be compatible with that of" when using autoload, kept them in phpdoc to make it known which exist
 	 * @param $json_request_str String This optional argument can be used for debugging the server.  A sb_JSON_RPC2_Request formatted JSON string e.g. {"method":"add","params":[1,2],"id":"abc123"}
 	 * @return string JSON encoded sb_JSON_RPC2_Response
 	 */
-	public function render($json_request_str='') {
+	public function render() {
+		$args = func_get_args();
+		
+		$json_request_str = isset($args[0]) ? $args[0] : '';
+		
 		if($this->on_before_render() !== false){
 			
 			$response = $this->get_response($json_request_str);
