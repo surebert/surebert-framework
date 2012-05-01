@@ -28,7 +28,7 @@ class sb_Event{
 	 * Has this event stopped event propagation
 	 * @var type 
 	 */
-	public $has_stopped_propagation = 0;
+	public $stopped_propagation = 0;
 	
 	/**
 	 * The event processor that dispatched the event
@@ -58,7 +58,7 @@ class sb_Event{
 	 * Stops propagation of the event by dispatcher 
 	 */
 	public function stop_propagation(){
-		$this->has_stopped_propagation = 1;
+		$this->stopped_propagation = 1;
 	}
 	
 	/**
