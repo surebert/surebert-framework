@@ -72,67 +72,94 @@ class sb_Event_Dispatcher{
 		} else {
 			$this->listeners = Array();
 		}
-		
+	}
+	
+	/**
+	 * Grab an array of all currently listened for events.
+	 * Can be helpful when trying to decide what to subscribe to
+	 * @return array 
+	 */
+	public function get_listening_events(){
+		$i = array_keys($this->listeners);
+		sort($i);
+		return $i;
 	}
 	
 	/**
 	 * Dispatches the named event to the listeners
 	 * @param string $event_name e.g. car.crash, blog.load, user.profile.update
 	 * @param sb_Event $e The event to fire
+	 * @param boolean $allow_partial_match Allows partial match of listener to fire event.
+	 * e.g. event listener for event "blog" would fire when "blog.delete" or "blog.update" is fired
 	 * @return sb_Event The event that was past to the dispatcher, after it has 
 	 * been passed through each listener where it can be altered
 	 */
-	public  function dispatch($event_name, sb_Event $e){
+	public  function dispatch($event_name, sb_Event $e, $allow_partial_match = false){
 		$e->set_dispatcher($this);
 		$e->set_name($event_name);
-		if (isset($this->listeners[$event_name])) {
-			$x=0;
-			foreach ($this->listeners[$event_name] as $listener) {
-				$e->set_last_listener($listener);
-				if(!is_callable($listener)){
-					continue;
+		$listeners = Array();
+		
+		if($allow_partial_match){
+			
+			$arr = $this->listeners;
+			
+			foreach($arr as $k=>$a){
+				if(preg_match("~^".$k."~", $event_name)){
+					$listeners = array_merge($listeners, $a);
 				}
-				$call = call_user_func($listener, $e);
-				
-				if($this->logger){
-					if(is_array($listener)){
-						$reflection = new ReflectionMethod($listener[0], $listener[1]);
-						$name = $reflection->getName();
-						if(is_string($listener[0])){
-							$name = $reflection->getDeclaringClass()->getName().'::'.$name.'($e)';
-						} else {
-							$name = 'new '.$reflection->getDeclaringClass()->getName().'()->'.$name.'($e)';
-						}
-						
-					} else {
-						$reflection = new ReflectionFunction($listener);
-						$name = $reflection->getName().'($e)';
-					}
-					
-					$this->logger->{$this->log_name.'.'.$event_name}(Array(
-						'listener' => Array(
-							'func' => $name,
-							'file' => str_replace(ROOT, '', $reflection->getFileName()), 
-							'line' => $reflection->getStartLine()
-						),
-						'event' => Array(
-							'args' => $e->get_args(),
-							'stopped_propagation' => $e->stopped_propagation
-						)
-					));
-				}
-				
-				if($call === false  || $e->stopped_propagation){
-					if($this->logger){
-						
-					}
-					break;
-				}
-				$x++;
 			}
 			
-			return $e;
+		} else if(isset($this->listeners[$event_name])){
+			$listeners = $this->listeners[$event_name];
 		}
+		
+		$x=0;
+		foreach ($listeners as $listener) {
+			$e->set_last_listener($listener);
+			if(!is_callable($listener)){
+				
+				continue;
+			}
+			$call = call_user_func($listener, $e);
+
+			if($this->logger){
+				if(is_array($listener)){
+					$reflection = new ReflectionMethod($listener[0], $listener[1]);
+					$name = $reflection->getName();
+					if(is_string($listener[0])){
+						$name = $reflection->getDeclaringClass()->getName().'::'.$name.'($e)';
+					} else {
+						$name = 'new '.$reflection->getDeclaringClass()->getName().'()->'.$name.'($e)';
+					}
+
+				} else {
+					$reflection = new ReflectionFunction($listener);
+					$name = $reflection->getName().'($e)';
+				}
+
+				$this->logger->{$this->log_name.'.'.$event_name}(Array(
+					'listener' => Array(
+						'func' => $name,
+						'file' => str_replace(ROOT, '', $reflection->getFileName()), 
+						'line' => $reflection->getStartLine()
+					),
+					'event' => Array(
+						'args' => $e->get_args(),
+						'stopped_propagation' => $e->stopped_propagation
+					)
+				));
+			}
+
+			if($call === false  || $e->stopped_propagation){
+				if($this->logger){
+
+				}
+				break;
+			}
+			$x++;
+		}
+
+		return $e;
 	}
 }
 
