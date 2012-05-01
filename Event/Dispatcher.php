@@ -11,6 +11,28 @@ class sb_Event_Dispatcher{
 	 * @var type 
 	 */
 	protected $listeners = array();
+	
+	/**
+	 * If set the logger is used for event dispatch logging
+	 * @var sb_Logger_Base 
+	 */
+	protected $logger = null;
+	
+	/**
+	 * The name of the log to write to
+	 * @var string
+	 */
+	protected $log_name = 'event_dispatcher';
+	
+	/**
+	 * Sets a logger for easy tracking of events firing and debugging
+	 * @param sb_Logger_Base $logger 
+	 * @param string $log_name The name of the log to log to
+	 */
+	public function set_logger(sb_Logger_Base $logger, $log_name='event_dispatcher'){
+		$this->log_name = $log_name;
+		$this->logger = $logger;
+	}
 
 	/**
 	 * Adds a new listener for an event
@@ -64,13 +86,49 @@ class sb_Event_Dispatcher{
 		$e->set_dispatcher($this);
 		$e->set_name($event_name);
 		if (isset($this->listeners[$event_name])) {
-		
+			$x=0;
 			foreach ($this->listeners[$event_name] as $listener) {
 				$e->set_last_listener($listener);
+				if(!is_callable($listener)){
+					continue;
+				}
+				$call = call_user_func($listener, $e);
 				
-				if(call_user_func($listener, $e) === false  || $e->has_stopped_propagation){
+				if($this->logger){
+					if(is_array($listener)){
+						$reflection = new ReflectionMethod($listener[0], $listener[1]);
+						$name = $reflection->getName();
+						if(is_string($listener[0])){
+							$name = $reflection->getDeclaringClass()->getName().'::'.$name.'($e)';
+						} else {
+							$name = 'new '.$reflection->getDeclaringClass()->getName().'()->'.$name.'($e)';
+						}
+						
+					} else {
+						$reflection = new ReflectionFunction($listener);
+						$name = $reflection->getName().'($e)';
+					}
+					
+					$this->logger->{$this->log_name.'.'.$event_name}(Array(
+						'listener' => Array(
+							'func' => $name,
+							'file' => str_replace(ROOT, '', $reflection->getFileName()), 
+							'line' => $reflection->getStartLine()
+						),
+						'event' => Array(
+							'args' => $e->get_args(),
+							'stopped_propagation' => $e->stopped_propagation
+						)
+					));
+				}
+				
+				if($call === false  || $e->stopped_propagation){
+					if($this->logger){
+						
+					}
 					break;
 				}
+				$x++;
 			}
 			
 			return $e;
