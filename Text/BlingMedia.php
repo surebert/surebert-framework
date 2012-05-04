@@ -262,49 +262,25 @@ class sb_Text_BlingMedia extends sb_Text_Bling{
 				$swf = $swf[0];
 			}
 
-			$str = '<object width="'.$width.'" height="'.$height.'"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://www.youtube.com/v/'.$swf.'" /><param name="wmode" value="transparent" /><embed src="http://www.youtube.com/v/'.$swf.'" type="application/x-shockwave-flash" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" width="'.$width.'" height="'.$height.'"></embed></object>';
+			$str = '<object width="'.$width.'" height="'.$height.'"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="https://www.youtube.com/v/'.$swf.'" /><param name="wmode" value="transparent" /><embed src="https://www.youtube.com/v/'.$swf.'" type="application/x-shockwave-flash" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" width="'.$width.'" height="'.$height.'"></embed></object>';
 			return $str;
 		}, $str);
 
 
-		### Youtube videos ###
+		### Vimeo videos ###
 		$width = self::$flash_player_size['width'];
 		$height = self::$flash_player_size['height'];
 		$str = preg_replace_callback("~\[vimeo](.*?)\[\/vimeo]~s", function($match) use ($width, $height){
-			$swf = $match[1];
-			$swf = preg_replace("~^http://vimeo.com/~", "", $swf);
-			$src = 'http://vimeo.com/moogaloop.swf?server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&color=00adef&fullscreen=1&clip_id='.$swf;
-			$str = '<object width="'.$width.'" height="'.$height.'"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="'.$src.'" /><param name="wmode" value="transparent" /><embed src="'.$src.'" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent" width="'.$width.'" height="'.$height.'"></embed></object>';
+			$movie = $match[1];
+			$movie = preg_replace("~^http://vimeo.com/~", "", $movie);
+			$str = '<iframe src="https://player.vimeo.com/video/'.$movie.'?title=0&amp;byline=0&amp;portrait=0" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 
 			return $str;
 		}, $str);
 
 		### Google Video ###
-		preg_match_all( "/\[gvideo\](.*?)\[\/gvideo\]/s", $str, $matches );
-		$count = count($matches[1]);
-		for($x=0;$x<$count;$x++){
-			if(strstr($matches[1][$x], 'v=')){
-				preg_match("~v=(.*)~", $matches[1][$x], $swf);
-				$swf = $swf[1];
-			} else {
-				$swf = $matches[1][$x];
-			}
-			
-			$uniqid = 'flash'.uniqid();
-			
-			if(self::$mobile ==1){
-				$swf = '<object width="'.self::$flash_player_size['width'].'" height="'.self::$flash_player_size['height'].'"><param name="movie" value="http://video.google.com/googleplayer.swf?docId='.$swf.'" /><param name="wmode" value="transparent" /><embed src="http://video.google.com/googleplayer.swf?docId='.$swf.'" type="application/x-shockwave-flash" wmode="transparent" width="'.self::$flash_player_size['width'].'" height="'.self::$flash_player_size['height'].'"></embed></object>';
-				
-			} else {
-				self::$javascript .='var uswf = new sb.swf({src:"http://video.google.com/googleplayer.swf?docId='.$swf.'", width:'.self::$flash_player_size['width'].', height:'.self::$flash_player_size['height'].', bgColor:"#000000"});uswf.embed("#'.$uniqid.'");uswf=null;';
-				
-				$swf = '<p id="'.$uniqid.'"></p>';
-
-			}
-			
-			$str=str_replace($matches[0][$x], $swf, $str);
-		}
-		
+		$str = preg_replace( "/\[gvideo\](.*?)\[\/gvideo\]/s", "(<strike>SORRY GOOGLE VIDEO IS NO LONGER AVAILABLE.  LINK WAS $1</strike>) ", $str );
+//		
 		return $str;	
 	}
 	
