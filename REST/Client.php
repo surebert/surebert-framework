@@ -69,6 +69,12 @@ class sb_REST_Client {
 	 * @var array e.g. 'Content-Type' => 'application/xml' 
 	 */
 	protected $headers = Array();
+	
+	/**
+	 * Auth credentials to pass to the request
+	 * @var array  ('type' => 'basic', 'uname' => 'somebody', 'pass' => 'somepass');
+	 */
+	protected $authentication = Array();
 
 	/**
 	 * The callable to call when there is a non 100, 200 HTTP header
@@ -118,7 +124,7 @@ class sb_REST_Client {
 	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
-	public function get($data, $settings = Array()) {
+	public function get($data='', $settings = Array()) {
 		return $this->process_curl('GET', $data, $settings);
 	}
 
@@ -129,7 +135,7 @@ class sb_REST_Client {
 	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
-	public function post($data, $settings = Array()) {
+	public function post($data='', $settings = Array()) {
 		return $this->process_curl('POST', $data, $settings);
 	}
 
@@ -140,7 +146,7 @@ class sb_REST_Client {
 	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
-	public function delete($data, $settings = Array()) {
+	public function delete($data='', $settings = Array()) {
 		return $this->process_curl('DELETE', $data, $settings);
 	}
 
@@ -151,7 +157,7 @@ class sb_REST_Client {
 	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
-	public function put($data, $settings = Array()) {
+	public function put($data='', $settings = Array()) {
 		return $this->process_curl('PUT', $data, $settings);
 	}
 
@@ -167,9 +173,79 @@ class sb_REST_Client {
 			}
 		}
 	}
-
+	
+	/**
+	 * Sets the authentication type used
+	 * @param string $uname The username
+	 * @param string $pass The password
+	 * @param string $type The auth type basic, ntlm, digest 
+	 */
+	public function set_authentication($uname='', $pass='', $type='basic'){
+		$this->authentication['uname'] = $uname;
+		$this->authentication['pass'] = $pass;
+		$this->authentication['type'] = $type;
+	}
+	
+	/**
+	 * Sets the timeout for the request
+	 * @param int $timeout defaults to 30 seconds
+	 */
+	public function set_timeout($timeout=30){
+		$this->timeout = is_int($timeout) ? $timeout : 30;
+	}
+	
+	/**
+	 * Sets any headers to send with the request
+	 * @param array $headers
+	 */
+	public function set_headers($headers=Array()){
+		$this->headers = is_array($headers) ? $headers : Array();
+	}
+	
+	/**
+	 * Sets the user agent for the request
+	 * @param string $agent
+	 */
+	public function set_user_agent($agent='sb_REST_Client'){
+		$this->agent = $agent;
+	}
+	
+	/**
+	 * File path to the cookie file
+	 * @param string $cookie_file
+	 */
+	public function set_cookie_file($cookie_file){
+		$this->cookie_file = $cookie_file;
+	}
+	
+	/**
+	 * Sets the debug level to use
+	 * @param int $debug
+	 */
+	public function set_debug_state($debug=2){
+		$this->debug = $debug;
+	}
+	
+	/**
+	 * Sets callbacks for the events
+	 * @param string $event on_error, on_http_error, on_body and on_headers events
+	 * @param Callable $callable any function to parse the data
+	 */
+	public function set_callback($event, Callable $callable){
+		$this->$event = $callable;
+	}
+	
+	/**
+	 * Gets an array of all of the current settings
+	 * @return array 
+	 */
+	public function get_settings(){
+		return get_object_vars($this);
+	}
+	
 	/**
 	 * Passes the request of to CURL for processing
+	 * 
 	 * @param string $method The type of method to send it with, POST, GET, PUT, DELETE
 	 * @param array $data The data to send
 	 * @param array $override_settings settings to override the default properties of 
@@ -197,6 +273,32 @@ class sb_REST_Client {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $settings['verify_ssl'] ? TRUE : FALSE);
 		curl_setopt($ch, CURLOPT_TIMEOUT, is_int($settings['debug']) ? $settings['debug'] : 30);
 
+		if(is_array($settings['authentication']) && count($settings['authentication'])){
+			$auth_type = isset($settings['authentication']['type']) ? $settings['authentication']['type'] : 'basic';
+			
+			switch($auth_type){
+				case 'ntlm':
+					$auth_type = CURLAUTH_NTLM;
+					break;
+				case 'digest':
+					curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
+					$auth_type = CURLAUTH_DIGEST;
+					break;
+				case 'any':
+					$auth_type = CURLAUTH_ANY;
+				case 'basic':
+				default:
+					$auth_type = CURLAUTH_BASIC; 
+					break;
+			}
+
+			curl_setopt($ch, CURLOPT_HTTPAUTH, $auth_type);
+			$uname = isset($settings['authentication']['uname']) ? $settings['authentication']['uname'] : '';
+			$pass = isset($settings['authentication']['pass']) ? $settings['authentication']['pass'] : '';
+			curl_setopt($ch, CURLOPT_USERPWD, $uname.':'.$pass);
+			
+		}
+		
 		if (is_array($settings['headers'])) {
 			foreach ($settings['headers'] as $key => $val) {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array($key . ": " . $val));
@@ -226,35 +328,29 @@ class sb_REST_Client {
 		curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($ch, $data) use ($settings) {
 			if (!is_null($data)) {
 
-				if (is_callable($settings['on_headers'])) {
-					if ($settings['on_headers']($data) === false) {
-						return false;
-					}
+				if (is_callable($settings['on_headers'])){
+					$settings['on_headers']($data);
 				}
 
 				if (preg_match("~^HTTP/\d+\.\d+\s(\d+)\s(.*?)[\r\n]~", $data, $match) && !in_array($match[1], Array(100, 200))) {
 					if (is_callable($settings['on_http_error'])) {
-						return $settings['on_http_error']($match[1], $match[2]);
-					} else {
-						throw(new Exception($data));
-						return false;
+						$settings['on_http_error']($match[1], $match[2]);
 					}
 				}
 
-				return strlen($data);
 			}
+
+			return strlen($data);
 		});
 				
-		if (is_callable($settings['on_body'])) {
-			curl_setopt($ch, CURLOPT_WRITEFUNCTION, function($ch, $data) use($settings) {
+		curl_setopt($ch, CURLOPT_WRITEFUNCTION, function($ch, $data) use($settings) {
 
-				if (!is_null($data)) {
-					$settings['on_body']($data);
-				}
+			if (is_callable($settings['on_body'])) {
+				$settings['on_body']($data);
+			}
 
-				return strlen($data);
-			});
-		}
+			return strlen($data);
+		});
 		
 		$response = curl_exec($ch);
 		
