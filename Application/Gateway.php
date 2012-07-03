@@ -55,6 +55,12 @@ class sb_Controller {
 	 * @var string
 	 */
 	protected $default_file = 'index';
+	
+	/**
+	 * An array of REGex to callable that routes requests that are not otherwise servable
+	 * @var array 
+	 */
+	public $routing_patterns = Array();
 
 	/**
 	 * Filters the output after the view is rendered but before
@@ -117,7 +123,7 @@ class sb_Controller {
 		} else {
 			$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
 		}
-
+		
 		//return the servable method
 		$response = Gateway::process_controller_method($this, $method);
 
@@ -142,17 +148,30 @@ class sb_Controller {
 
 				$template = $this->request->path_array[1];
 			} else {
-				$path .='/' . $this->default_file;
+				$path .= '/'.$this->default_file;
 			}
 
 			$this->template = $template;
 
-			$this->get_view($path, $extract_vars);
-			$output = ob_get_clean();
-
-			return $this->filter_output($output);
+			if($this->get_view($path, $extract_vars)){
+				$output = ob_get_clean();
+				return $this->filter_output($output);
+			}
 		}
+		
+		if(isset($this->routing_patterns)){
+			foreach($this->routing_patterns as $pattern=>$method){
+				if(preg_match($pattern, Gateway::$request->request)){
+					if(is_callable($method)){
+						return $this->filter_output(call_user_func($method, $pattern));
+					} else if(is_string($method) && is_callable(Array($this, $method))){
+						return $this->filter_output($this->$method($pattern));
+					}
 
+				}
+			}
+		}
+		
 		$this->not_found();
 	}
 
@@ -194,9 +213,9 @@ class sb_Controller {
 
 		if ($_pwd) {
 			require($_pwd);
-			return;
+			return true;
 		}
-
+		return false;
 		return $this->not_found($_view_path);
 	}
 
@@ -315,9 +334,9 @@ class sb_Request {
 			App::filter_all_input($this->get);
 		}
 
-		$this->request = $request;
+		$this->request = urldecode($request);
 
-		$arr = explode("/", substr_replace($request, "", 0, 1));
+		$arr = explode("/", substr_replace($this->request , "", 0, 1));
 
 		$this->path_array[0] = $arr[0];
 		if (isset($arr[1]) && !empty($arr[1])) {
