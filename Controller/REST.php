@@ -61,6 +61,8 @@ class sb_Controller_REST extends sb_Controller_HTTP{
 
 			if($servable){
 				return $this->filter_output($this->$method());
+			} else {
+				return $this->filter_output($this->not_found($method));
 			}
 		} else {
 			return $this->filter_output($this->not_found($method));
