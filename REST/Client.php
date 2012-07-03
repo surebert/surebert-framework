@@ -58,6 +58,12 @@ class sb_REST_Client{
 	protected $user_agent = 'sb_REST_Client';
 	
 	/**
+	 * The default timeout for connections
+	 * @var int 
+	 */
+	protected $timeout = 30;
+	
+	/**
 	 * The callable to call when there is a non 100, 200 HTTP header
 	 * Receives two arguments $status and $message
 	 * @var callable
@@ -83,7 +89,7 @@ class sb_REST_Client{
 	 * Constructs a new client
 	 * @param type $url The base url for the server e.g. http://something.com/api
 	 * @param array $default_settings settings to override the default properties of 
-	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, on_http_error, on_headers, on_body
+	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 */
 	public function __construct($url='', $default_settings= Array()){
 		$this->url = $url;
@@ -94,7 +100,7 @@ class sb_REST_Client{
 	 * Fire get request to fetch data from the REST service
 	 * @param type $data Query string vars to send
 	 * @param array $settings settings to override the default properties of 
-	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, on_http_error, on_headers, on_body
+	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
 	public function get($data, $settings=Array()){
@@ -105,7 +111,7 @@ class sb_REST_Client{
 	 * Fire get request to fetch data from the REST service
 	 * @param type $data POST data to send
 	 * @param array $settings settings to override the default properties of 
-	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, on_http_error, on_headers, on_body
+	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
 	public function post($data, $settings=Array()){
@@ -116,7 +122,7 @@ class sb_REST_Client{
 	 * Fire get request to fetch data from the REST service
 	 * @param type $data DELETE data to send
 	 * @param array $settings settings to override the default properties of 
-	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, on_http_error, on_headers, on_body
+	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
 	
@@ -128,7 +134,7 @@ class sb_REST_Client{
 	 * Fire get request to fetch data from the REST service
 	 * @param type $data PUT data to send
 	 * @param array $settings settings to override the default properties of 
-	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, on_http_error, on_headers, on_body
+	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 * @return type 
 	 */
 	public function put($data, $settings=Array()){
@@ -138,7 +144,7 @@ class sb_REST_Client{
 	/**
 	 * Overrides the default settings for all requests
 	 * @param array $default_settings settings to override the default properties of 
-	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, on_http_error, on_headers, on_body
+	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
 	 */
 	public function set_default_settings($default_settings){
 		foreach($default_settings as $setting=>$val){
@@ -153,7 +159,7 @@ class sb_REST_Client{
 	 * @param string $method The type of method to send it with, POST, GET, PUT, DELETE
 	 * @param array $data The data to send
 	 * @param array $override_settings settings to override the default properties of 
-	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, on_http_error, on_headers, on_body
+	 * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout, on_http_error, on_headers, on_body
 	 */
 	protected function process_curl($method, $data, $override_settings=Array()){
 		$settings = get_object_vars($this);
@@ -182,6 +188,8 @@ class sb_REST_Client{
 			curl_setopt($ch, CURLOPT_VERBOSE, $settings['debug'] ? TRUE : FALSE);
 		}
 		
+		curl_setopt($ch, CURLOPT_TIMEOUT, is_int($settings['debug']) ? $settings['debug'] : 30);
+		
 		if(!empty($settings['cookie_file'])){
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie_file);
 			curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_file);
@@ -192,11 +200,10 @@ class sb_REST_Client{
 			if($method == 'POST'){
 				curl_setopt($ch, CURLOPT_POST, 1);
 			} else {
-				$data = (is_array($data)) ? http_build_query($data) : $data; 
+				$data = is_array($data) ? http_build_query($data) : $data; 
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($data))); 
 				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 			}
-			
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		}
 		
