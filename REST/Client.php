@@ -204,7 +204,9 @@ class sb_REST_Client{
 			if(!is_null($data)){
 				
 				if(is_callable($settings['on_headers'])){
-					return $settings['on_headers']($data);
+					if($settings['on_headers']($data) === false){
+						return false;
+					}
 				}
 				
 				if(preg_match("~^HTTP/\d+\.\d+\s(\d+)\s(.*?)[\r\n]~", $data, $match) && !in_array($match[1], Array(100, 200))){
