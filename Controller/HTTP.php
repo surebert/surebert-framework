@@ -212,5 +212,34 @@ class sb_Controller_HTTP extends sb_Controller{
     public function get_arg($arg_num, $default_val=null){
        return $this->request->get_arg($arg_num, $default_val);
     }
+	
+	/**
+	 * Added option for requesting basic auth.  ONLY USE OVER SSL
+	 * @param callable $check_auth  the callable that determines success or not
+	 * @param string $realm the realm beings used
+	 * @return boolean  
+	 */
+	public function require_basic_auth($check_auth='', $realm='Please enter your username and password'){
+		
+		$authorized = false;
+		if (!isset($_SERVER['PHP_AUTH_USER'])) {
+			header('WWW-Authenticate: Basic realm="'.$realm.'"');
+			header('HTTP/1.0 401 Unauthorized');
+			echo 'You must authenticate to continue';
+		} else {
+			
+			if(is_callable($check_auth)){
+				$authorized = $check_auth($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+			}
+			
+			if(!$authorized){
+				session_unset();
+				unset($_SERVER['PHP_AUTH_USER']);
+				return $this->require_basic_auth($check_auth, $realm);
+			}
+		}
+		
+		return $authorized;
+	}
 }
 ?>
