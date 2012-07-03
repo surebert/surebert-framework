@@ -178,14 +178,25 @@ class sb_REST_Client{
 		
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $settings['verify_ssl'] ? TRUE : FALSE);
 		
+		if($settings['debug']){
+			curl_setopt($ch, CURLOPT_VERBOSE, $settings['debug'] ? TRUE : FALSE);
+		}
+		
 		if(!empty($settings['cookie_file'])){
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie_file);
 			curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_file);
 		
 		}
 		
-		if($method == 'POST'){
-			curl_setopt($ch, CURLOPT_POST, 1);
+		if($method != 'GET'){
+			if($method == 'POST'){
+				curl_setopt($ch, CURLOPT_POST, 1);
+			} else {
+				$data = (is_array($data)) ? http_build_query($data) : $data; 
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($data))); 
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+			}
+			
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		}
 		
