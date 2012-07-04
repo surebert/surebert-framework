@@ -16,7 +16,7 @@ class sb_Web_Weather{
 	 * @param string $feed The url to the weather feed from NOAA e.g.
 	 * @return object weather_feed
 	 * <code>
-	 * $weather = sb_Web_Weather::fetch('http://www.weather.gov/xml/current_obs/KBUF.xml');
+	 * $weather = sb_Web_Weather::fetch('http://w1.weather.gov/xml/current_obs/KBUF.xml');
 	 * print_r($weather);
 	 * </code>
 	 */
