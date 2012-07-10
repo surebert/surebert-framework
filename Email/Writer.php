@@ -124,7 +124,7 @@ class sb_Email_Writer {
                 $this->log_email($email, true);
 
             } else {
-                $this->log_error($email, false);
+                $this->log_email($email, false);
             }
 
         }
