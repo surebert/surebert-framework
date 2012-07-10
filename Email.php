@@ -3,7 +3,6 @@
  * Object to represent an email used by sb_EmailReader and sb_EmailWriter
  * 
  * @author Paul Visco
- * @version 2.21 10-15-07 - 06-21-09 added cc and bcc support
  * @package sb_Email
  *
  */
@@ -306,62 +305,64 @@ class sb_Email{
             $related_boundary = '__relate_1S2U3R4E5B6E7R8T9';
         }
 
-        $this->_header_text = "From: ".$this->from."\r\nReply-To: ".$this->from."\r\nReturn-Path: ".$this->from."\r\n";
+        $this->_header_text = "From: ".$this->from.PHP_EOL;
+		$this->_header_text .= "Reply-To: ".$this->from.PHP_EOL;
+		$this->_header_text .= "Return-Path: ".$this->from.PHP_EOL;
 
         foreach($this->cc as $cc) {
-            $this->_header_text .="Cc:".$cc."\r\n";
+            $this->_header_text .="Cc:".$cc.PHP_EOL;
         }
 
         foreach($this->bcc as $bcc) {
-            $this->_header_text .="Bcc:".$bcc."\r\n";
+            $this->_header_text .="Bcc:".$bcc.PHP_EOL;
         }
 
-        $this->_header_text .= "MIME-Version: 1.0"."\r\n";
+        $this->_header_text .= "MIME-Version: 1.0".PHP_EOL;
         
         foreach($this->headers as $key=>$val) {
-            $this->_header_text .= $key.":".$val."\r\n";
+            $this->_header_text .= $key.":".$val.PHP_EOL;
         }
         
-        $this->_header_text .= "Content-Type: multipart/mixed;"."\r\n";
-        $this->_header_text .= ' boundary="'.$mixed_boundary.'"'."\n\n";
+        $this->_header_text .= "Content-Type: multipart/mixed;".PHP_EOL;
+        $this->_header_text .= ' boundary="'.$mixed_boundary.'"'.PHP_EOL.PHP_EOL;
         
         // Add a message for peoplewithout mime
-        $message = "This message has an attachment in MIME format created with surebert mail.\r\n\r\n";
+        $message = "This message has an attachment in MIME format created with surebert mail.".PHP_EOL.PHP_EOL;
 
         //if there is body_HTML use it otherwise use just plain text
         if(!empty($this->body_HTML)) {
 
-            $message .= "--".$mixed_boundary."\r\n";
+            $message .= "--".$mixed_boundary.PHP_EOL;
 
             if($this->attachments_in_HTML == 1) {
-                $message .= "Content-Type: multipart/related;"."\r\n";
-                $message .= ' boundary="'.$related_boundary.'"'."\r\n\r\n";
-                $message .= "--".$related_boundary."\r\n";
+                $message .= "Content-Type: multipart/related;".PHP_EOL;
+                $message .= ' boundary="'.$related_boundary.'"'.PHP_EOL.PHP_EOL;
+                $message .= "--".$related_boundary.PHP_EOL;
             }
 
-            $message .= "Content-Type: multipart/alternative;"."\r\n";
-            $message .= ' boundary="'.$alterative_boundary.'"'."\r\n\r\n";
+            $message .= "Content-Type: multipart/alternative;".PHP_EOL;
+            $message .= ' boundary="'.$alterative_boundary.'"'.PHP_EOL.PHP_EOL;
 
-            $message .= "--".$alterative_boundary."\r\n";
-            $message .= "Content-Type: text/plain; charset=".$this->charset."; format=flowed\r\n";
-            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding."\r\n";
-            $message .= "Content-Disposition: inline\r\n\r\n";
-            $message .= $this->body . "\r\n";
+            $message .= "--".$alterative_boundary.PHP_EOL;
+            $message .= "Content-Type: text/plain; charset=".$this->charset."; format=flowed".PHP_EOL;
+            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding.PHP_EOL;
+            $message .= "Content-Disposition: inline".PHP_EOL.PHP_EOL;
+            $message .= $this->body . PHP_EOL;
 			
-            $message .= "--".$alterative_boundary."\r\n";
-            $message .= "Content-Type: text/html; charset=".$this->charset."\r\n";
-            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding."\r\n\r\n";
-            $message .= $this->body_HTML . "\r\n";
+            $message .= "--".$alterative_boundary.PHP_EOL;
+            $message .= "Content-Type: text/html; charset=".$this->charset.PHP_EOL;
+            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding.PHP_EOL.PHP_EOL;
+            $message .= $this->body_HTML . PHP_EOL;
 			
-            $message .="--".$alterative_boundary."--\r\n";
+            $message .="--".$alterative_boundary."--".PHP_EOL;
 
         } else {
 
-            $message .= "--".$mixed_boundary."\r\n";
-            $message .= "Content-Type: text/plain; charset=".$this->charset."; format=flowed\r\n";
-            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding."\r\n";
-            $message .= "Content-Disposition: inline\r\n\r\n";
-            $message .= $this->body . "\r\n";
+            $message .= "--".$mixed_boundary.PHP_EOL;
+            $message .= "Content-Type: text/plain; charset=".$this->charset."; format=flowed".PHP_EOL;
+            $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding.PHP_EOL;
+            $message .= "Content-Disposition: inline".PHP_EOL.PHP_EOL;
+            $message .= $this->body . PHP_EOL;
         }
 
         //add all attachments for this email
@@ -398,37 +399,37 @@ class sb_Email{
             // Add file attachment to the message
 
             if($this->attachments_in_HTML == 1) {
-                $message .= "--".$related_boundary."\r\n";
+                $message .= "--".$related_boundary.PHP_EOL;
             } else {
-                $message .= "--".$mixed_boundary."\r\n";
+                $message .= "--".$mixed_boundary.PHP_EOL;
             }
 
 			if($attachment->mime_type == 'text/calendar'){
-				$message .= "Content-class: urn:content-classes:calendarmessage;\r\n";
+				$message .= "Content-class: urn:content-classes:calendarmessage;".PHP_EOL;
 			}
 			
-			$message .= "Content-Type: ".$attachment->mime_type.";\r\n";
-            $message .= " name=".$attachment->name."\r\n";
+			$message .= "Content-Type: ".$attachment->mime_type.";".PHP_EOL;
+            $message .= " name=".$attachment->name.PHP_EOL;
 
-            $message .= "Content-Transfer-Encoding: ".$attachment->encoding."\r\n";
-            $message .= "Content-ID: <".$attachment->name.">\r\n\r\n";
+            $message .= "Content-Transfer-Encoding: ".$attachment->encoding.PHP_EOL;
+            $message .= "Content-ID: <".$attachment->name.">".PHP_EOL.PHP_EOL;
 
-            $message .=  $attachment->contents."\r\n";
+            $message .=  $attachment->contents.PHP_EOL;
 
         }
 
         //end related if using body_HTML
         if($this->attachments_in_HTML == 1) {
-            $message .= "--".$related_boundary."--\r\n";
+            $message .= "--".$related_boundary."--".PHP_EOL;
         }
 
         //end message
-        $message .="--".$mixed_boundary."--\r\n";
+        $message .="--".$mixed_boundary."--".PHP_EOL;
 
         $this->body = $message;
 		
-		$raw = "To: ".$this->to."\r\n";
-		$raw .= "Subject: ".$this->subject."\r\n";
+		$raw = "To: ".$this->to.PHP_EOL;
+		$raw .= "Subject: ".$this->subject.PHP_EOL;
 		$raw .= $this->_header_text .$this->body;
 		return $raw;
 	}
