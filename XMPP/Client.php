@@ -3,17 +3,17 @@
  * Connects to XMPP servers, tested with openfire/ichat
  *
  * <code>
- * class ClientDemo extends sb_XMPP_Client{
+ * class ClientDemo extends \sb\XMPP_Client{
  *	public $status = 'thinking';
  *	public $uname = 'your uname';
  *	public $pass = 'your pass';
  *
- *	public on_message(sb_XMPP_Message $message){
+ *	public on_message(\sb\XMPP_Message $message){
  *		//do something
  *
  *	}
  *
- * public on_presence(sb_XMPP_Message $message){
+ * public on_presence(\sb\XMPP_Message $message){
  *		//do something
  *
  *	}
@@ -22,10 +22,10 @@
  * </code>
  *
  * @author Paul Visco
- * @package sb_XMPP
+ * @package XMPP
  */
-
-class sb_XMPP_Client extends sb_Socket_StreamingClient{
+namespace sb;
+class XMPP_Client extends Socket_StreamingClient{
 
     /**
      * The host XMPP server to connect to.  You also specifiy the transport as tcp
@@ -175,10 +175,10 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 * Converts a presense request instance to XML and sends it.  It sets the from
 	 * to the bots jid for you
 	 *
-	 * @param sb_XMPP_Presence $presence The presence instance to send
+	 * @param \sb\XMPP_Presence $presence The presence instance to send
 	 * @return boolean
 	 */
-	public function send_presence(sb_XMPP_Presence $presence){
+	public function send_presence(\sb\XMPP_Presence $presence){
 
 		$presence->set_from($this->jid);
 		return $this->write($presence);
@@ -190,7 +190,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 */
 	public function set_status($status=null){
 
-		$presence = new sb_XMPP_Presence();
+		$presence = new \sb\XMPP_Presence();
 		$presence->set_status(is_string($status) ? $status : $this->status);
 
         $this->send_presence($presence);
@@ -204,7 +204,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 */
 	public function send_simple_message($to, $body){
 
-		$message = new sb_XMPP_Message();
+		$message = new \sb\XMPP_Message();
 
 		$message->set_to($to);
 		$message->set_body($body);
@@ -217,7 +217,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 * @return boolean
 	 */
 	public function send_accept_subscription_request($to){
-		$presence = new sb_XMPP_Presence();
+		$presence = new \sb\XMPP_Presence();
 		$presence->set_type('subscribed');
 		$presence->set_to($to);
 		return $this->send_presence($presence);
@@ -230,7 +230,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 */
 	public function send_subscription_request($to){
 
-		$presence = new sb_XMPP_Presence();
+		$presence = new \sb\XMPP_Presence();
 		$presence->set_to($to);
 		$presence->set_type('subscribe');
 		$presence->set_from($this->jid);
@@ -239,11 +239,11 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	}
 
 	/**
-	 * Sends a sb_XMPP_Message via the socket
-	 * @param sb_XMPP_Message $message
+	 * Sends a \sb\XMPP_Message via the socket
+	 * @param \sb\XMPP_Message $message
 	 * @return boolean
 	 */
-	public function send_message(sb_XMPP_Message $message){
+	public function send_message(\sb\XMPP_Message $message){
 		return $this->write($message);
 	}
 
@@ -258,14 +258,14 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
 	/**
 	 * Broadcasts message to all online buddies not in except array
-	 * @param mixed $message String/sb_XMPP_Message The message to send
+	 * @param mixed $message String/\sb\XMPP_Message The message to send
 	 * @param string $except An array of jids to not send to
 	 */
 	public function broadcast($message, $except=array()) {
 
-		if(!$message instanceOf sb_XMPP_Message){
+		if(!$message instanceOf \sb\XMPP_Message){
 			$body = $message;
-			$message = new sb_XMPP_Message();
+			$message = new \sb\XMPP_Message();
 			$message->set_body($body);
 		}
 
@@ -305,7 +305,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 * @param string $to The jid to send to
 	 */
 	public function composing_start($to){
-		$message = new sb_XMPP_Message();
+		$message = new \sb\XMPP_Message();
 
 		$message->set_to($to);
 		$message->set_from($this->jid);
@@ -325,7 +325,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 * @param string $to The jid to send to
 	 */
 	public function composing_stop($to){
-		$message = new sb_XMPP_Message();
+		$message = new \sb\XMPP_Message();
 
 		$message->set_to($to);
 		$message->set_from($this->jid);
@@ -387,12 +387,12 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 			}
 
             if(substr($xml, 0, 8 ) == '<message'){
-				$message = new sb_XMPP_Message($xml);
+				$message = new \sb\XMPP_Message($xml);
 				$message->client = $this;
                 $this->on_message($message);
             } else if(substr($xml, 0, 9 ) == '<presence'){
 
-				$presence = new sb_XMPP_Presence($xml);
+				$presence = new \sb\XMPP_Presence($xml);
 				$from = $presence->get_from();
 				$type = $presence->get_type();
 
@@ -421,7 +421,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
             if($x % 100 == 0){
 
-				$presence = new sb_XMPP_Presence();
+				$presence = new \sb\XMPP_Presence();
 				$presence->set_status($this->status);
 
 
@@ -442,9 +442,9 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 */
     final public function write($xml){
 
-		if($xml instanceof SimpleXMLElement){
+		if($xml instanceof \SimpleXMLElement){
 			$xml = $xml->asXML();
-		} else if($xml instanceof DOMDocument){
+		} else if($xml instanceof \DOMDocument){
 			$xml = $xml->saveXML();
 		}
 
@@ -512,9 +512,9 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
 	/**
 	 * An event handler that fires when a message is received with $this->listen
-	 * @param sb_XMPP_Message $message
+	 * @param \sb\XMPP_Message $message
 	 */
-    protected function on_message(sb_XMPP_Message $message){}
+    protected function on_message(\sb\XMPP_Message $message){}
 
     /**
      * This is an event handler for errors, you would extend it in your class that extends
@@ -528,10 +528,10 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 	 * 
 	 * By default it automatically accepts all requests
 	 * 
-	 * @param sb_XMPP_Presence $presence You can use this to determine who it is and if you want to accept
+	 * @param \sb\XMPP_Presence $presence You can use this to determine who it is and if you want to accept
 	 * @return boolean If returns true it automatically accepts the subscription, false it does not
 	 */
-	protected function on_subscription_request(sb_XMPP_Presence $presence){
+	protected function on_subscription_request(\sb\XMPP_Presence $presence){
 		return true;
 	}
 
@@ -568,7 +568,6 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
     public function __destruct(){
         $this->close();
     }
-    
     
 }
 

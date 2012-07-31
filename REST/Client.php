@@ -2,7 +2,7 @@
 
 /**
  * A CURL based REST client for fetching data from REST services
- * @author Paul.Visco@roswellpark.org
+ * @author visco
  * 
  * <code>
  * $client = new sb_REST_Client('https://some_site/api_content', Array(
@@ -14,7 +14,8 @@
  * </code>
  *  
  */
-class sb_REST_Client {
+namespace sb;
+class REST_Client {
 
 	/**
 	 * The URL being fetched

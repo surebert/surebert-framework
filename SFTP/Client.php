@@ -6,7 +6,7 @@
  *
  * <code>
  * try{
- *		$client = new sb_SFTP_Client("server.com", 1027);
+ *		$client = new \sb\SFTP_Client("server.com", 1027);
  *		$client->login("uname", "pass");
  *		OR
  *		$client->login_with_key('uname', 'id_rsa.pub', 'id_rsa', '');
@@ -17,9 +17,10 @@
  * }
  * </code>
  *
- * @package sb_SFTP
+ * @package SFTP
  */
-class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
+namespace sb;
+class SFTP_Client extends SSH2_Client implements FTP_Base{
 
 	protected $sftp;
 
@@ -38,7 +39,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	protected function sftp_connect(){
 		$this->sftp = ssh2_sftp($this->connection);
         if (!$this->sftp){
-            throw new Exception("Could not initialize SFTP subsystem.");
+            throw new \Exception("Could not initialize SFTP subsystem.");
 		}
 	}
 
@@ -88,16 +89,16 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
         $stream = @fopen("ssh2.sftp://".$this->sftp.$remote_file, 'w');
 
         if (! $stream){
-            throw new Exception("Could not open file: $remote_file");
+            throw new \Exception("Could not open file: $remote_file");
 		}
 
         $data_to_send = @file_get_contents($local_file);
         if ($data_to_send === false){
-            throw new Exception("Could not open local file: $local_file.");
+            throw new \Exception("Could not open local file: $local_file.");
 		}
 
         if (@fwrite($stream, $data_to_send) === false){
-            throw new Exception("Could not send data from file: $local_file.");
+            throw new \Exception("Could not send data from file: $local_file.");
 		}
 
         @fclose($stream);
@@ -115,7 +116,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 
         $stream = @fopen("ssh2.sftp://".$this->sftp.$remote_file, 'r');
         if (! $stream){
-            throw new Exception("Could not get remote file:". $remote_file);
+            throw new \Exception("Could not get remote file:". $remote_file);
 		}
 
         $size = $this->size($remote_file);
@@ -170,7 +171,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	 */
 	public function rename_remote_file($from, $to){
 		if(@ssh2_sftp_rename($this->sftp, $from, $to)){
-			throw new Exception("Could not rename file from $from to $to");
+			throw new \Exception("Could not rename file from $from to $to");
 		}
 
 		return true;
@@ -182,7 +183,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	 */
 	public function mkdir($path){
 		if(@ssh2_sftp_mkdir($this->sftp, $path)){
-			throw new Exception("Could not create remote directory: ".$path);
+			throw new \Exception("Could not create remote directory: ".$path);
 		}
 
 		return true;
@@ -194,7 +195,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	 */
 	public function rmdir($path){
 		if(@ssh2_sftp_rmdir($this->sftp, $path)){
-			throw new Exception("Could not remove remote directory: ".$path);
+			throw new \Exception("Could not remove remote directory: ".$path);
 		}
 
 		return true;
@@ -216,7 +217,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	public function get_file_stats($path){
 		$stats = @ssh2_sftp_stat($this->sftp, $path);
 		if(!$stats['size']){
-			throw new Exception("Could get file stat: ".$path);
+			throw new \Exception("Could get file stat: ".$path);
 		}
 		return $stats;
 	}
@@ -229,7 +230,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	public function readlink($path){
 		$result = @ssh2_sftp_readlink($this->sftp, $path);
 		if(!$result){
-			throw new Exception("Could get readlink: ".$path);
+			throw new \Exception("Could get readlink: ".$path);
 		}
 		return $result;
 	}
@@ -243,7 +244,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	public function ssh2_sftp_symlink($orig_path, $symlink_path){
 		$result = @ssh2_sftp_symlink($this->sftp, $orig_path, $symlink_path);
 		if(!$result){
-			throw new Exception("Could create symlink: ".$path);
+			throw new \Exception("Could create symlink: ".$path);
 		}
 		return $result;
 	}
@@ -268,7 +269,7 @@ class sb_SFTP_Client extends sb_SSH2_Client implements sb_FTP_Base{
 	 */
 	protected function scp_send($local_path, $remote_path, $mode=0644){
 		if(@ssh2_scp_send($connection, $remote_path, $remote_path, $mode)){
-			throw new Exception("Could send file with scp: ".$local_path.' to '.$remote_path);
+			throw new \Exception("Could send file with scp: ".$local_path.' to '.$remote_path);
 		}
 	}
 

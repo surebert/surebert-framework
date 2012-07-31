@@ -3,13 +3,13 @@
 /**
  * Based on the description of an RSS 2.0 item at http://cyber.law.harvard.edu/rss/rss.html
  * @author Paul Visco
- * @package sb_RSS
+ * @package RSS
  */
-
-class sb_RSS_Item{
+namespace sb;
+class RSS_Item{
 	
 	/**
-	 * Creates an sb_RSS_Item and adds the following properties
+	 * Creates an \sb\RSS_Item and adds the following properties
 	 *
 	 * @param string $title
 	 * @param string $link
@@ -83,7 +83,7 @@ class sb_RSS_Item{
 	/**
 	 * {optional} Describes a media object that is attached to the item.
 	 *
-	 * @var sb_RSS_ItemEnclosure
+	 * @var \sb\RSS_ItemEnclosure
 	 */
 	public $enclosure;
 	

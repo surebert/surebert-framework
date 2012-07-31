@@ -2,10 +2,11 @@
 
 /**
  * Writes simple excel files based on http://code.google.com/p/hexcel/ @copyright Adrian Duffell 2007
- * @package sb_Excel
+ * @package Excel
  *
  */
-class sb_Excel_Writer {
+namespace sb;
+class Excel_Writer {
 
 	/**
 	 * The beginning of file marker
@@ -28,7 +29,7 @@ class sb_Excel_Writer {
 	 *
 	 * @example
 	 * <code>
-	 * $excel = new sb_Excel_Writer();
+	 * $excel = new \sb\Excel_Writer();
 	 * $excel->set_cell('A1', 'Hello World!');
 	 * $excel->set_cell('D1', 'Hello World!');
 	 * $excel->set_column('C', Array(1,2,3,4));

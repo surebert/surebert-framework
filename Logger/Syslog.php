@@ -6,14 +6,15 @@
  *
  * Used to create syslog compatible logs
  *
- * $syslog = new sb_Logger_Syslog('myprocess');
+ * $syslog = new \sb\Logger\Syslog('myprocess');
  * $syslog->set_message('hello log', 1, 11)->save()
  * //OR
  * $syslog->set_message('hello log', 1, 11)->send('mylogserver.com');
- * @author Paul Visco
- * @package sb_Logger
+ * @author visco
+ * @package Logger
  */
-class sb_Logger_Syslog{
+namespace sb;
+class Logger_Syslog{
 
 	/**
 	 * (Optional) By default is hostname of machine logging, can override if logging for other machine

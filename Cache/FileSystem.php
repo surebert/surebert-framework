@@ -3,11 +3,11 @@
  * Stores cached data in the file system
  * 
  * @author visco
- * @version 1.0 01/23/2009 10/09/2009
- * @package sb_Cache
+ * @package Cache
  *
  */
-class sb_Cache_FileSystem implements sb_Cache_Base{
+namespace sb;
+class Cache_FileSystem implements Cache_Base{
 	
 	/**
 	 * The key to store the catalog in
@@ -58,8 +58,6 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	}
 	/**
 	 * Stores the cached data in /private/cache filesystem
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#store()
 	 */
 	public function store($key, $data, $lifetime = 0){
 		
@@ -70,14 +68,14 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
             try{
                 mkdir($dir, 0777, true);
             } catch (Exception $e){
-                throw new Exception('Could create cache directory: '.$file_path." - ".$e->getMessage());
+                throw new \Exception('Could create cache directory: '.$file_path." - ".$e->getMessage());
             }
 		}
 
         try{
             $fh = fopen($file_path, 'a+');
         } catch (Exception $e){
-            throw new Exception('Could not write to cache: '.$file_path." - ".$e->getMessage());
+            throw new \Exception('Could not write to cache: '.$file_path." - ".$e->getMessage());
         }
 	    
 	    //exclusive lock
@@ -94,7 +92,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	    $data = serialize(array($lifetime, $data));
 	    
 	    if (fwrite($fh, $data)===false){
-	    	throw new Exception('Could not write to cache: '.$file_path);
+	    	throw new \Exception('Could not write to cache: '.$file_path);
 	    }
 	    
 	    fclose($fh);
@@ -107,9 +105,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	}
 	
 	/**
-	 * Retreeives data from /private/cache
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#store()
+	 * Retreives data from /private/cache
 	 */
 	public function fetch($key){
 		
@@ -141,8 +137,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#delete()
+	 * Deletes data from /private/cache
 	 */
 	public function delete($key){
 		

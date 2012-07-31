@@ -2,10 +2,10 @@
 /**
  * This class is used to convert text strings into true type font based png images
  * @author Paul Visco
- * @version 1.01 09/05/07 12/08/2008
- * @package sb_Text
+ * @package Text
  */
-class sb_Text_ToImage{
+namespace sb;
+class Text_ToImage{
 
 	/**
 	 * The path to the ttf you want your use.  must be in true type format.
@@ -39,7 +39,7 @@ class sb_Text_ToImage{
 	 * <code>
 	 * error_reporting(E_ALL);
 	 * ini_set('Display_Errors', 'On');
-	 * $textImage = new sb_Text_ToImage(800, 600, '255,0,0', '0,9,0');
+	 * $textImage = new \sb\Text_ToImage(800, 600, '255,0,0', '0,9,0');
 	 * $textImage->font = '../media/fonts/Eurostile-ExtendedTwo.ttf';
 	 * $textImage->rotation = 0;
 	 * $word = (isset($_GET['word'])) ? $_GET['word'] : 'hello world';

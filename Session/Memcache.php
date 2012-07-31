@@ -2,11 +2,10 @@
 /**
  * Save the sessions on a memcache server, requires memcache server be installed and running on the host and port specified
  * @author visco
- * @version 0.3 01/25/2009 01/25/2009
- * @package sb_Session
+ * @package Session
  */
-
-class sb_Session_Memcache extends sb_Session{
+namespace sb;
+class Session_Memcache extends Session{
 
 	/**
 	 * Instantiates a memcache session

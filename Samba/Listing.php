@@ -2,12 +2,12 @@
 /**
  * Data object that  holds listing information for Windows share lisitngs
  *
- * @author Anthony Cashaw
- * @version 1.0 09/09/09
- * @package sb_Samba
+ * @author Paul Visco, Anthony Cashaw
+ * @package Samba
  *
  */
-class sb_Samba_Listing {
+namespace sb;
+class Samba_Listing {
 
 	/**
 	 * The name of the windows resource
@@ -44,7 +44,7 @@ class sb_Samba_Listing {
 	 * @return string
 	 */
 	public function fullpath() {
-		return sb_Samba_Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
+		return Samba_Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
 	}
 
 	/**

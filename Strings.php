@@ -3,10 +3,10 @@
  * Used to parse strings
  * 
  * @author Paul Visco
- * @version 1.02 09/17/2007
- * @package sb_Strings
+ * @package Strings
  */
-class sb_Strings{
+namespace sb;
+class Strings{
 	
 	/**
 	 * Strips punctuation from a string

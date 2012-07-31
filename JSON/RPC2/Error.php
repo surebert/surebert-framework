@@ -1,11 +1,11 @@
 <?php
 /**
  * Models a JSONRPC 2 response error as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
- * @version 1.0 02/06/09
  * @author visco
- * @package sb_JSON_RPC2
+ * @package JSON_RPC2
  */
-class sb_JSON_RPC2_Error{
+namespace sb;
+class JSON_RPC2_Error{
 	
 	/**
 	 * A Number that indicates the actual error that occurred.
@@ -35,7 +35,7 @@ class sb_JSON_RPC2_Error{
 	public $data;
 	
 	/**
-	 * Instantiates an new sb_JSON_RPC2_Error
+	 * Instantiates an new \sb\JSON_RPC2_Error
 	 * @param $code Sets the error code property
 	 * @param $message Sets the human readible message
 	 * @param $data Sets amy addition data which must send with the error

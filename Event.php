@@ -4,7 +4,8 @@
  * Models an event
  * @author: paul.visco@roswellpark.org 
  */
-class sb_Event{
+namespace sb;
+class Event{
 	
 	/**
 	 * The name of the event being processed
@@ -32,9 +33,9 @@ class sb_Event{
 	
 	/**
 	 * The event processor that dispatched the event
-	 * @var sb_Event_Processor 
+	 * @var \sb\Event_Dispatcher
 	 */
-	protected $processor = null;
+	protected $dispatcher = null;
 	
 	/**
 	 * The last listener that was called either because dispatch reached the 
@@ -132,7 +133,7 @@ class sb_Event{
 	
 	/**
 	 * Gets the event dispatcher that dispatched this event
-	 * @return sb_Event_Dispatcher
+	 * @return \sb\Event_Dispatcher
 	 */
 	public function get_dispatcher(){
 		return $this->dispatcher;
@@ -140,9 +141,9 @@ class sb_Event{
 	
 	/**
 	 * Sets the event dispatcher that dispatched this event
-	 * @param sb_Event_Dispatcher $dispatcher 
+	 * @param \sb\Event_Dispatcher $dispatcher 
 	 */
-	public function set_dispatcher(sb_Event_Dispatcher $dispatcher){
+	public function set_dispatcher(Event_Dispatcher $dispatcher){
 		$this->dispatcher = $dispatcher;
 	}
 	

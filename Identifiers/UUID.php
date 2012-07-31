@@ -2,13 +2,14 @@
 
 /**
  * Creates UUIDS taken from http://php.net/manual/en/function.uniqid.php
- * @package sb_Identifiers
+ * @package _Identifiers
  */
-class sb_Identifiers_UUID {
+namespace sb;
+class Identifiers_UUID {
 
 	/**
 	 * Creates a v3 UUID
-	 * sb_Identifiers_UUID::v4();
+	 * \sb\Identifiers_UUID::v3('hello', 'world');
 	 * @return string
 	 */
 	public static function v3($namespace, $name) {
@@ -48,7 +49,7 @@ class sb_Identifiers_UUID {
 
 	/**
 	 * Creates a v4 UUID
-	 * sb_Identifiers_UUID::v4();
+	 * \sb\Identifiers_UUID::v4();
 	 * @return string
 	 */
 	public static function v4() {

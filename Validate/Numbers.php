@@ -2,9 +2,10 @@
 /**
  * Validates numbers
  * @author Paul Visco
- * @package sb_Validate
+ * @package Validate
  */
-class sb_Validate_Numbers{
+namespace sb;
+class Validate_Numbers{
 
     /**
      * Checks to see if str, float, or int type and represents whole number

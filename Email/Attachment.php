@@ -1,12 +1,12 @@
 <?php
 /**
- * Describes an email attachment, when found they are attached to sb_Email objects
+ * Describes an email attachment, when found they are attached to \sb\Email objects
  *
- * @author Paul Visco and James Buczkowski
- * @package sb_Email
- * @version 2.2 07/09/2007 06/17/09
+ * @author Visco
+ * @package Email
  */
-class sb_Email_Attachment{
+namespace sb;
+class Email_Attachment{
 
 	/**
 	 * The extension of the attachment file
@@ -32,7 +32,7 @@ class sb_Email_Attachment{
 	/**
 	 * The encoding type of the attchment
 	 *
-	 * //when read from sb_Email_Reader 0 = 7bit, 1= 8bit, 2=binary, 3=base64, 4=quoted prinatble, 5=other
+	 * //when read from \sb\Email_Reader 0 = 7bit, 1= 8bit, 2=binary, 3=base64, 4=quoted prinatble, 5=other
 	 * //otherwise use full name
 	 * @var mixed string/integer
 	 */
@@ -81,13 +81,13 @@ class sb_Email_Attachment{
      * Creates an email attachment
 	 *
 	 * <code>
-	 * $attachment = new sb_Email_Attachment($filepath, $mime_type);
-	 * //an instance of sb_Email
+	 * $attachment = new \sb\Email_Attachment($filepath, $mime_type);
+	 * //an instance of \sb\Email
 	 * $email->add_attachment($attachment);
 	 *
 	 *
 	 * //OR from string/blob data
-	 * $attachment = new sb_Email_Attachment();
+	 * $attachment = new \sb\Email_Attachment();
 	 * $attachment->contents = $data_from_db;
 	 * $attachment->mime_type = "image/jpeg";
 	 * $attachment->name = "picture.jpg";
@@ -111,7 +111,7 @@ class sb_Email_Attachment{
             $this->filepath = $filepath;
             $this->contents = file_get_contents($filepath);
             $this->name = basename($filepath);
-            sb_Files::file_to_mime($this->filepath);
+            \sb\Files::file_to_mime($this->filepath);
         }
 
     }
@@ -122,7 +122,7 @@ class sb_Email_Attachment{
     public function zip(){
 
         if(empty($this->filepath)){
-            throw(new Exception("Must set sb_Email_Attachment::file_path before zipping attachment"));
+            throw(new \Exception("Must set \sb\Email_Attachment::file_path before zipping attachment"));
         }
 
         if(empty($this->name)){
@@ -133,11 +133,11 @@ class sb_Email_Attachment{
         $zipfile_path = ROOT."/private/cache/compression/".md5(microtime(true)).'_'.$this->name.".zip";
         $zip_dir = dirname($zipfile_path);
         if(!is_dir($zip_dir) && !@mkdir($zip_dir, 0755, true)){
-            throw(new Exception("Cannot create /private/cache/compression directory\n"));
+            throw(new \Exception("Cannot create /private/cache/compression directory\n"));
         }
 
         if ($zip->open($zipfile_path, ZIPARCHIVE::CREATE)!==TRUE) {
-            throw(new Exception("Cannot open <$zipfile_path>\n"));
+            throw(new \Exception("Cannot open <$zipfile_path>\n"));
         }
 
         $zip->addFromString($this->name, file_get_contents($this->filepath));
@@ -146,13 +146,13 @@ class sb_Email_Attachment{
 
         $this->name .= '.zip';
 
-         //this is the content, in this case I am ready the blob data from a saved image file but you could easily replace this with blob data from a database.  The mime type will be added based on the extension using sb_Files::extension_to_mime.  For bizarre mime-types that are not in sb_Files::extension_to_mime you can override this by setting the mime-type manually $myAttachment->mime_type ='bizarre/weird';
+         //this is the content, in this case I am ready the blob data from a saved image file but you could easily replace this with blob data from a database.  The mime type will be added based on the extension using \sb\Files::extension_to_mime.  For bizarre mime-types that are not in \sb\Files::extension_to_mime you can override this by setting the mime-type manually $myAttachment->mime_type ='bizarre/weird';
         $this->contents = file_get_contents($zipfile_path);
 
         //remove the tmp zip file
         unlink($zipfile_path);
 
-        //add mime type for zip files, sb_Files should handle this after 1.41
+        //add mime type for zip files, \sb\Files should handle this after 1.41
         $this->mime_type ='application/x-zip-compressed';
 
     }
@@ -171,7 +171,7 @@ class sb_Email_Attachment{
         }
 
         if(!is_dir($gnupg_path)){
-            throw(new Exception('In order to use pgp engryption you must either pass a valid .gnupg path as the second argument of '.__METHOD__.' or have the .gnupg directory reside in the /private/resources'));
+            throw(new \Exception('In order to use pgp engryption you must either pass a valid .gnupg path as the second argument of '.__METHOD__.' or have the .gnupg directory reside in the /private/resources'));
         }
         
         putenv("GNUPGHOME=".$gnupg_path);

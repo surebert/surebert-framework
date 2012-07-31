@@ -22,16 +22,16 @@
  *  
  *  GRANT ALL ON @myDatabase.* TO '@myUser'@'@myHost' IDENTIFIED BY '@myPass';
  *
- * $visitors = sb_Web_Visitors::get_visitor_data();
- * echo '<b title="'.implode(",", sb_Web_Visitors::list_users()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
+ * $visitors = \sb\Web_Visitors::get_visitor_data();
+ * echo '<b title="'.implode(",", \sb\Web_Visitors::list_users()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
  *
  * </code>
  * 
  * @author Paul Visco
- * @version 2.22 10-02-2004 06-25-2009
- * @package sb_Web
+ * @package Web
  */
-class sb_Web_Visitors{
+namespace sb;
+class Web_Visitors{
 
 	/**
 	 * The database connection
@@ -105,9 +105,9 @@ class sb_Web_Visitors{
 	/**
 	 * Logs a user into the system and removes any expired users
 	 *
-	 * @param sb_Web_Visitor $visitor
+	 * @param \sb\Web_Visitor $visitor
 	 */
-	public static function log(sb_Web_Visitor $visitor){
+	public static function log(\sb\Web_Visitor $visitor){
 
 		$visitor = self::distill($visitor);
 
@@ -118,9 +118,9 @@ class sb_Web_Visitors{
 	/**
 	 * Inserts a new online visitor into the database
 	 *
-	 * @param sb_Web_Visitor $visitor
+	 * @param \sb\Web_Visitor $visitor
 	 */
-	private static function insert(sb_Web_Visitor $visitor){
+	private static function insert(\sb\Web_Visitor $visitor){
 
 		$expiration = (time()-self::$time_before_expire);
 		$delete = self::$db->prepare("DELETE FROM online_visitors WHERE (ip = INET_ATON(:ip) AND uname='guest' OR uname=:uname) OR tstamp < :expiration");
@@ -149,10 +149,10 @@ class sb_Web_Visitors{
 	/**
 	 * Parses the visitor user agent data to determine if it is a bot or not
 	 *
-	 * @param sb_Web_Visitor $visitor
-	 * @return sb_Web_Visitor The visitor with data parsed
+	 * @param \sb\Web_Visitor $visitor
+	 * @return \sb\Web_Visitor The visitor with data parsed
 	 */
-	private static function distill(sb_Web_Visitor $visitor){
+	private static function distill(\sb\Web_Visitor $visitor){
 
 		//covert to agent_str to lowercase for comparison
 		$agent_str = strtolower($visitor->agent_str);
@@ -191,7 +191,7 @@ class sb_Web_Visitors{
 	/**
 	 * Loads an array of usernames online, excluding guest
 	 *
-	 * @return sb_Web_Visitors Object with data
+	 * @return \sb\Web_Visitors Object with data
 	 */
 	public static function get_visitor_data(){
 
@@ -199,12 +199,12 @@ class sb_Web_Visitors{
 
 		$sql ="SELECT (SELECT COUNT(ip) FROM online_visitors WHERE uname ='guest' AND tstamp > :expiration) as guests, (SELECT COUNT(ip) FROM online_visitors WHERE agent ='bot' AND tstamp > :expiration) as bots, (SELECT COUNT(ip) FROM online_visitors WHERE uname !='guest' AND uname !='' AND tstamp > :expiration) AS users";
 
-		$visitors = self::$db->s2o($sql, Array("expiration" => $expiration), 'sb_Web_VisitorCount');
+		$visitors = self::$db->s2o($sql, Array("expiration" => $expiration), '\sb\Web_VisitorCount');
 
 		if(count($visitors) > 0){
 			return $visitors[0];
 		} else {
-			return new sb_Web_Visitors();
+			return new \sb\Web_Visitors();
 		}
 
 	}
@@ -260,11 +260,8 @@ class sb_Web_Visitors{
  * Represents all online users
  *
  * @author Paul Visco
- * @version 2.2 10-02-2004 06-25-2009
- *
- *
  */
-class sb_Web_VisitorCount{
+class Web_VisitorCount{
 
 	public $bots = 0;
 	public $guests = 0;

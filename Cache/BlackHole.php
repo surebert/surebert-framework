@@ -3,22 +3,20 @@
  * Does not actually cache any data, but uses the Cache interface so that you can
  * removed caching without changing application code
  * <code>
- * $cache = new sb_Cache_BlackHole();
+ * $cache = new \sb\Cache_BlackHole();
  * $cache->store('/my/key', 'something');
  * echo $cache->fetch('/my/key');
  * </code>
  *
  * @author visco
- * @version 1.0 01-23-2009 05-12-2009
- * @package sb_Cache
+ * @package Cache
  * 
  */
-class sb_Cache_BlackHole implements sb_Cache_Base{
+namespace sb;
+class Cache_BlackHole implements Cache_Base{
 	
 	/**
 	 * Store the cache data in memcache
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#store()
 	 */
 	public function store($key, $data, $lifetime = 0) {
 		return true;
@@ -26,8 +24,6 @@ class sb_Cache_BlackHole implements sb_Cache_Base{
 	        
 	/**
 	 * Fetches the cache from memcache
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#fetch()
 	 */
 	public function fetch($key) {
 		return false;
@@ -35,8 +31,6 @@ class sb_Cache_BlackHole implements sb_Cache_Base{
 	
 	/**
 	 * Deletes cache data
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#delete()
 	 */
 	public function delete($key) {
 		return true;
@@ -44,8 +38,6 @@ class sb_Cache_BlackHole implements sb_Cache_Base{
 	
 	/**
 	 * Clears the whole cache
-	 * (non-PHPdoc)
-	 * @see private/framework/sb/sb_Cache#clear_all()
 	 */
 	public function clear_all(){
 		return true;

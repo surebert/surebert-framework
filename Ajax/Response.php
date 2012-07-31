@@ -6,7 +6,8 @@
  * @author paul.visco@roswellpark.org
  * @package sb_Ajax
  */
-class sb_Ajax_Response{
+namespace sb;
+class Ajax_Response{
 	
 	/**
 	 * The body of the response to be sent back to the browser

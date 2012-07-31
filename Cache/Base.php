@@ -2,10 +2,11 @@
 /**
  * Used to cache data in various formats
  * @author visco
- * @version 1.0 01/24/2009 05/14/2009
- * @package sb_Cache
+ * @package Cache
  */
-interface sb_Cache_Base{
+
+namespace sb;
+interface Cache_Base{
 	
 	/**
 	 * Stores the cache data based using the key and ttl

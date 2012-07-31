@@ -3,9 +3,10 @@
  * Models a presence packet for sending and receiving
  *
  * @author Paul Visco
- * @package sb_XMPP
+ * @package XMPP
  */
-class sb_XMPP_Presence extends sb_XMPP_Packet{
+namespace sb;
+class XMPP_Presence extends XMPP_Packet{
 
 	/**
 	 * The SimpleXMLElement if one is imported

@@ -2,9 +2,10 @@
 
 /**
  * An Excel Spreadhseet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
- * @package sb_Excel
+ * @package Excel
  */
-class sb_Excel_Reader extends sb_Excel_ReaderBackend {
+namespace sb;
+class Excel_Reader extends Excel_ReaderBackend {
 
 	/**
 	 * Loads the spreadsheet
@@ -13,7 +14,7 @@ class sb_Excel_Reader extends sb_Excel_ReaderBackend {
 	 * @param string $outputEncoding The output encoding to use
 	 * @example
 	 * <code>
-	 * $data = new sb_Excel_Reader('/path/to/excelfile.xls');
+	 * $data = new \sb\Excel_Reader('/path/to/excelfile.xls');
 	 * </code>
 	 */
 	public function __construct($file='', $read_extended_info=true, $outputEncoding='') {
@@ -53,7 +54,7 @@ class sb_Excel_Reader extends sb_Excel_ReaderBackend {
 	 * @param integer $sheet The sheet to read use when going through cell
 	 * @example
 	 * <code>
-	 * $data = new sb_Excel_Reader('/path/to/excelfile.xls');
+	 * $data = new \sb\Excel_Reader('/path/to/excelfile.xls');
 	 * $data->read_cells(function($val, $row, $col) use($data) {
 	 *   echo $data->rowheight($row, 0);
 	 * });

@@ -5,15 +5,15 @@
  *
  * <code>
  * //returns the "cleaned" text as a string
- * echo sb_Text_Bling::parse"[b]here is a map[/b]"); 	//return the javascript for the bling string
- * echo sb_Text_Bling::get_javascript();
+ * echo \sb\Text_Bling::parse"[b]here is a map[/b]"); 	//return the javascript for the bling string
+ * echo \sb\Text_Bling::get_javascript();
  * </code>
  *
  * @author Paul Visco
- * @package sb_Text
+ * @package Text
  */
-
-class sb_Text_BlingMedia extends sb_Text_Bling{
+namespace sb;
+class Text_BlingMedia extends Text_Bling{
 	/**
 	 * The map format used, for embedded yahoo maps, set type to 'yahoo' and make sure to include yahoo map api script on your page <script type="text/javascript" src="http://maps.yahooapis.com/v3.04/fl/javascript/apiloader.js?appid=YOUR_API_KEY"></script>, You will need to repalce YOUR_API_KEY with your own yahoo flahs map API key
 	 *

@@ -7,11 +7,11 @@
  * AddType application/x-httpd-php .png
  *
  * @author Paul Visco
- * @version 1.0 08/31/07
- * @package sb_Web
+ * @package Web
  * 
  */
-class sb_Web_Captcha{
+namespace sb;
+class Web_Captcha{
 	/**
 	 * The characters allowed in the captcha word
 	 *
@@ -48,7 +48,7 @@ class sb_Web_Captcha{
 	 * session_start();
 	 *
 	 * //You can pass it an optional 200px x 200px background image as a path to the first argument, you can also pass a text color as a 3 integer rgb array e.g. Array(255,255,45) as teh second argument
-	 * $cap = new sb_Web_Captcha();
+	 * $cap = new \sb\Web_Captcha();
 	 *
 	 * //set the ttf font you want to use.  Otherwise uses default font which is ugly and not as scalable
 	 * $cap->font = '../media/fonts/cherokee.ttf';

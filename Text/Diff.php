@@ -5,9 +5,9 @@
  * Adapted from https://github.com/paulgb/simplediff/blob/5bfe1d2a8f967c7901ace50f04ac2d9308ed3169/simplediff.php
  * 
  * @author visco
- * @package sb_Text
+ * @package Text
  */
-class sb_Text_Diff {
+class Text_Diff {
 
 	public static function compare($old, $new) {
 		

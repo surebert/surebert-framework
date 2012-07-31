@@ -3,9 +3,10 @@
 /**
  * Used to create excel xml documents
  * @author Paul Visco paul.visco@roswellpark.org
- * @package sb_Excel
+ * @package Excel
  */
-class sb_Excel_Workbook extends DOMDocument{
+namespace sb;
+class Excel_Workbook extends \DOMDocument{
 
 	/**
 	 * The workbook Element
@@ -38,7 +39,7 @@ class sb_Excel_Workbook extends DOMDocument{
 	 * @param boolean $auto_convert_types Should types be auto converted
 	 * @param string $encoding The default encoding to use
 	 * <code>
-	 * $workbook = new sb_Excel_Workbook("My worksheet");
+	 * $workbook = new \sb\Excel_Workbook("My worksheet");
 	 * $cell1 = $workbook->set_cell_by_alpha_index('A3', 'xxx');
 	 * $cell2 = $workbook->set_cell_by_alpha_index('A3', 'yyy');
 	 * $style = $workbook->add_style('paul', Array(
@@ -64,7 +65,7 @@ class sb_Excel_Workbook extends DOMDocument{
 		$this->styles = $this->workbook->appendChild($this->createElement('ss:Styles'));
 		$this->active_worksheet = $this->add_worksheet($title);
 
-		$this->xpath = new DOMXPath($this);
+		$this->xpath = new \DOMXPath($this);
 		//this does nothing because it is broken in PHP when used on class that extends DOMDocument
 		$this->xpath->registerNamespace('ss', "urn:schemas-microsoft-com:office:spreadsheet");
 
@@ -94,7 +95,7 @@ class sb_Excel_Workbook extends DOMDocument{
 	 * @param mixed $style DOMElement style or the string based style id The style to assign to the item
 	 */
 	public function assign_style(DOMElement $item, $style){
-		if($style instanceOf DOMElement){
+		if($style instanceOf \DOMElement){
 			$style_id = $style->getAttribute('ss:ID');
 		} else {
 			$style_id = $style;

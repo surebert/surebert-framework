@@ -6,18 +6,15 @@
  *
  *
  * <code>
- * App::$cache = new sb_Cache_Hash(');
+ * App::$cache = new \sb\Cache_Hash(');
  * App::$cache->store('/users/paul', $user);
  * </code>
  *
- * @author visco
- * @version 1.0 05/14/2009 05/14/2009
- * @package sb_Cache
+ * @package Cache
  *
  */
-
-require_once('Base.php');
-class sb_Cache_Hash implements sb_Cache_Base{
+namespace sb;
+class Cache_Hash implements Cache_Base{
 
 	/**
 	 * The key to store the catalog in
@@ -43,8 +40,6 @@ class sb_Cache_Hash implements sb_Cache_Base{
 
 	/**
 	 * Store the cache data in memcache
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#store()
 	 */
 	public function store($key, $data, $lifetime = 0) {
 		
@@ -65,8 +60,6 @@ class sb_Cache_Hash implements sb_Cache_Base{
 
 	/**
 	 * Fetches the cache from memcache
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#fetch()
 	 */
 	public function fetch($key) {
 
@@ -88,8 +81,6 @@ class sb_Cache_Hash implements sb_Cache_Base{
 
 	/**
 	 * Deletes cache data
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#delete()
 	 */
 	public function delete($key) {
 
@@ -113,8 +104,6 @@ class sb_Cache_Hash implements sb_Cache_Base{
 
 	/**
 	 * Clears the whole cache
-	 * (non-PHPdoc)
-	 * @see private/framework/sb/sb_Cache#clear_all()
 	 */
 	public function clear_all(){
 		return $this->hash = Array();

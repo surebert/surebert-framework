@@ -2,11 +2,10 @@
 /**
  * Interface for encrypting and decrypting data for network transmission
  * @author visco
- * @version 1.1 02/12/09 02/24/09
- * @package sb_Encrytion
+ * @package Encrytion
 <code>
 
-$encryptor = new sb_Encryption_ForTransmission('My very secret key');
+$encryptor = new \sb\Encryption_ForTransmission('My very secret key');
 //encrypt data
 $encrypted_data = $encryptor->encrypt('data to encrypt');
 
@@ -15,7 +14,8 @@ $plain_text = $encryptor>decrypt($encrypted_data);
 
 </code>
  */
-class sb_Encryption_ForTransmission{
+namespace sb;
+class Encryption_ForTransmission{
 	
 	protected $cypher = 'rijndael-256';
 	protected $mode = 'ofb';
@@ -28,7 +28,7 @@ class sb_Encryption_ForTransmission{
 	public function __construct($key){
 		
 		if(empty($key)){
-			throw(new Exception("Cannot use empty key for encryption"));
+			throw(new \Exception("Cannot use empty key for encryption"));
 		}
 		
    		$this->key = md5($key);

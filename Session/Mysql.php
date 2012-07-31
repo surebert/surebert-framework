@@ -15,12 +15,11 @@
  * </code>
  *
  * @author visco
- * @version 1.0 01/24/2009 01/24/2009
- * @package sb_Session
+ * @package Session
  *
  */
-
-class sb_Session_Mysql extends sb_Session_Abstract{
+namespace sb;
+class Session_Mysql extends Session_Abstract{
 	
 	/**
 	 * The database connection
@@ -50,7 +49,7 @@ class sb_Session_Mysql extends sb_Session_Abstract{
 	 * Connects to the mysql server for session storage
 	 * <code>
 	#in /private/config/definitions.php
-	new sb_Session_Mysql(App::$db);
+	new sb_Session_Mysql(\App::$db);
 	 * </code>
 	 *
 	 * @param $db PDO the database conection to store the sessions in

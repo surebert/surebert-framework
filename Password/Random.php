@@ -5,10 +5,11 @@
  *
  * Makes sure at least one
  *
- * @author paul.visco@roswellpark.org
- * @package sb_Password
+ * @author visco
+ * @package Password
  */
-class sb_Password_Random {
+namespace sb;
+class Password_Random {
 	/**
 	 * The length of password to generate
 	 * @var integer
@@ -25,7 +26,7 @@ class sb_Password_Random {
 	 * Create a password of a certain length
 	 *
 	 * <code>
-	 * echo new sb_Password_Random(6);
+	 * echo new \sb\Password_Random(6);
 	 * </code>
 	 * 
 	 * @param integer $length The length of the password to generate
@@ -36,7 +37,7 @@ class sb_Password_Random {
 		if(preg_match("~^\d+$~", $length)){
 			$this->length = $length;
 		} else {
-			throw(new Exception("Length must an integer"));
+			throw(new \Exception("Length must an integer"));
 		}
 
 		$this->generate();

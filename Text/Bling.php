@@ -5,16 +5,16 @@
  *
  * <code>
  * //returns the "cleaned" text as a string
- * echo sb_Text_Bling::clean"[b]here is a map[/b]\n[map]24 linwood avenue, buffalo, ny, 14209[/map]"); 	//return the javascript for the bling string
+ * echo \sb\Text_Bling::clean"[b]here is a map[/b]\n[map]24 linwood avenue, buffalo, ny, 14209[/map]"); 	//return the javascript for the bling string
  * 
- * echo sb_Text_Bling::get_javascript();
+ * echo \sb\Text_Bling::get_javascript();
  * </code>
  *
  * @author Paul Visco
- * @package sb_Text
+ * @package Text
  * 
 */
-class sb_Text_Bling{
+class Text_Bling{
 	/*
 	 * If mobile is true than the media is linked instead of parsed and thumbnails are displayed instead of the images
 	 *
@@ -84,7 +84,7 @@ class sb_Text_Bling{
 		
 		$str = self::typo_fix($str);
 		
-		$str = sb_HTML::escape($str);
+		$str = HTML::escape($str);
 		
 		$str = self::convert_quotes($str);
 
@@ -369,9 +369,9 @@ class sb_Text_Bling{
 	public static function strip_all($str){
 		$str = stripslashes($str);
 		$str = strip_tags($str);
-		$str = sb_Strings::unicode_urldecode($str);
+		$str = Strings::unicode_urldecode($str);
 		$str = self::strip_bling($str);
-		$str = sb_Strings::strip_microsoft_chars($str);
+		$str = Strings::strip_microsoft_chars($str);
 		return $str;
 	}
 	

@@ -4,15 +4,16 @@
  * 
  * <code>
  * //load data from google homepage
- * $conn = new sb_Socket_Client('www.google.com', 80);
+ * $conn = new \sb\Socket_Client('www.google.com', 80);
  * $conn->write("GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: Close\r\n\r\n");
  * echo $conn->read();
  * </code>
  * 
  * @author visco
- * @package sb_Socket
+ * @package Socket
  */
-class sb_Socket_Client {
+namespace sb;
+class Socket_Client {
 
     /**
      *
@@ -75,7 +76,7 @@ class sb_Socket_Client {
 
             return true;
         } else {
-            throw(new Exception("{$errstr} (#{$errno})"));
+            throw(new \Exception("{$errstr} (#{$errno})"));
         }
     }
 

@@ -104,7 +104,7 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
 	 */
 	public function set_language($language=en){
 		if (mb_strlen($language) != 2) {
-			throw(new Exception("language must be two char language code e.g. en, de"));
+			throw(new \Exception("language must be two char language code e.g. en, de"));
 		}
 		$this->language = $this->metadata->appendChild($this->createElement('dc:language'));
 		$txt = $this->createTextNode($language);

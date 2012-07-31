@@ -3,11 +3,10 @@
  * Validation results object returned from sb_Validate methods
  *
  * @author Paul Visco
- * @version 1.2 03/17/2008
- * @package sb_Validate
+ * @package Validate
  *
  */
-class sb_Validate_Results{
+class Validate_Results{
 
 	/**
 	 * Is the string valid or not

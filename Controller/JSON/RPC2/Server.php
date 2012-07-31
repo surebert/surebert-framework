@@ -2,10 +2,11 @@
 /**
  * Used to response to JSON_RPC2 requests as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  * @author visco
- * @package sb_JSON_RPC2
+ * @package JSON_RPC2
  *
  */
-class sb_Controller_JSON_RPC2_Server extends sb_Controller {
+namespace sb;
+class Controller_JSON_RPC2_Server extends Controller_Base {
 
 	/**
 	 * The transport method to listen for data on
@@ -61,7 +62,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	 * @param $key String
 	 */
 	public function use_encryption($key) {
-		$this->encryptor = new sb_Encryption_ForTransmission($key);
+		$this->encryptor = new \sb\Encryption\ForTransmission($key);
 		$this->encryption_key = $key;
 
 		//decrypt cookies if sent
@@ -71,7 +72,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	}
 
 	/**
-	 * Get the methods available for this sb_JSON_RPC2_Server instance
+	 * Get the methods available for this \sb\JSON\RPC2_Server instance
 	 * @return Array - Object once json_encoded
 	 * @servable true
 	 */
@@ -125,7 +126,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 		if (method_exists($this, $method)) {
 			$reflect = new ReflectionMethod($this, $method);
 		} else {
-			$response->error = new sb_JSON_RPC2_Error();
+			$response->error = new \sb\JSON\RPC2_Error();
 			$response->error->code = -32602;
 			$response->error->message = "Invalid method parameters";
 			return $response;
@@ -178,7 +179,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	 */
 	protected function get_response($json_request_str='') {
 
-		$response = new sb_JSON_RPC2_Response();
+		$response = new \sb\JSON\RPC2_Response();
 
 		$request = null;
 		
@@ -194,7 +195,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 					&& ($this->method == 'get' || $this->method == 'both')
 					&& (isset($this->request->get['method']) && isset($this->request->get['params']) && isset($this->request->get['id']))){
 				
-					$request = new sb_JSON_RPC2_Request();
+					$request = new \sb\JSON\RPC2_Request();
 					
 					$request->id = $this->request->get['id'];
 					$request->method = $this->request->get['method'];
@@ -218,10 +219,10 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 			}
 			
 		} 
-		$request = new sb_JSON_RPC2_Request($json_request_str);
+		$request = new \sb\JSON\RPC2_Request($json_request_str);
 		
 		if (is_null($request)) {
-			$response->error = new sb_JSON_RPC2_Error(-32700, 'Parse Error', "Data Received: " . $json_request_str);
+			$response->error = new \sb\JSON\RPC2_Error(-32700, 'Parse Error', "Data Received: " . $json_request_str);
 		} else {
 			$response->id = $request->id;
 		}
@@ -256,24 +257,24 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 				$answer = call_user_func_array(Array($this, $request->method), $request->params);
 			} 
 			//if they return an error from the method call, return that
-			if ($answer instanceof sb_JSON_RPC2_Error) {
+			if ($answer instanceof \sb\JSON\RPC2_Error) {
 				$response->error = $answer;
 			} else {
 				//otherwise return the answer
 				$response->result = $answer;
 			}
 		} else {
-			if(isset($request->error) && $request->error instanceOf sb_JSON_RPC2_Error){
+			if(isset($request->error) && $request->error instanceOf \sb\JSON\RPC2_Error){
 				$response->error = $request->error;
 			} else {
-				$response->error = new sb_JSON_RPC2_Error();
+				$response->error = new \sb\JSON\RPC2_Error();
 				$response->error->code = -32601;
 				$response->error->message = "Procedure not found";
 			}
 		}
 
 		//remove unnecessary properties
-		if ($response->error instanceof sb_JSON_RPC2_Error) {
+		if ($response->error instanceof \sb\JSON\RPC2_Error) {
 
 			unset($response->result);
 			if (is_null($response->error->data)) {
@@ -292,8 +293,8 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 	/**
 	 * Serves data based on the json_request if set, otherwise based on Gateway::$cmd_options['json_request']
 	 * Had to remove default args being listed to prevent "should be compatible with that of" when using autoload, kept them in phpdoc to make it known which exist
-	 * @param $json_request_str String This optional argument can be used for debugging the server.  A sb_JSON_RPC2_Request formatted JSON string e.g. {"method":"add","params":[1,2],"id":"abc123"}
-	 * @return string JSON encoded sb_JSON_RPC2_Response
+	 * @param $json_request_str String This optional argument can be used for debugging the server.  A \sb\JSON\RPC2_Request formatted JSON string e.g. {"method":"add","params":[1,2],"id":"abc123"}
+	 * @return string JSON encoded \sb\JSON\RPC2_Response
 	 */
 	public function render() {
 		$args = func_get_args();
@@ -307,7 +308,7 @@ class sb_Controller_JSON_RPC2_Server extends sb_Controller {
 			$message = 'OK';
 			$status = 200;
 			//headers from spec here http://json-rpc.googlegroups.com/web/json-rpc-over-http.html
-			if (isset($response->error) && $response->error instanceof sb_JSON_RPC2_Error) {
+			if (isset($response->error) && $response->error instanceof \sb\JSON\RPC2_Error) {
 				$code = $response->error->code;
 
 				if (in_array($code, Array(-32700, -3260, -32603))

@@ -2,13 +2,12 @@
 /**
  * Logs to blackHole - nothing - so that you can estimate logging performance hit
  *
- * @author Paul Visco
- * @package sb_Logger
- * @version 1.0 05/12/2009 05/12/2009
+ * @author visco
+ * @package Logger
  *
  */
-
-class sb_Logger_BlackHole extends sb_Logger_Base{
+namespace sb;
+class Logger_BlackHole extends Logger_Base{
 
 	/**
 	 * Writes the data to file

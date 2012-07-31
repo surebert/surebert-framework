@@ -14,13 +14,12 @@
  * </code>
  *
  * @author visco
- * @version 1.0 01/23/2009 05/14/2009
- * @package sb_Cache
+ * @package Cache
  *
  *
  */
-
-class sb_Cache_Mysql implements sb_Cache_Base{
+namespace sb;
+class Cache_Mysql implements Cache_Base{
 	
 	/**
 	 * The database connection to store the data in
@@ -44,8 +43,6 @@ class sb_Cache_Mysql implements sb_Cache_Base{
 	
 	/**
 	 * Stores the cache data in mysql
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#store()
 	 */
 	public function store($key, $data, $lifetime = 0) {
 		$stmt_cache = md5(__METHOD__);
@@ -79,8 +76,6 @@ class sb_Cache_Mysql implements sb_Cache_Base{
 
 	/**
 	 * Fetches the cache data from mysql
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#fetch()
 	 */
 	public function fetch($key) {
 		$stmt_cache = md5(__METHOD__);
@@ -123,8 +118,6 @@ class sb_Cache_Mysql implements sb_Cache_Base{
 	
 	/**
 	 * Delete the cache from the mysql database
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#delete()
 	 */
 	public function delete($key) {
 		$stmt_cache = md5(__METHOD__);

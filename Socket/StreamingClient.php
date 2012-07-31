@@ -50,7 +50,7 @@ class sb_Socket_StreamingClient extends sb_Socket_Client {
 
 			return true;
 		} else {
-			throw(new Exception("{$errstr} (#{$errno})"));
+			throw(new \Exception("{$errstr} (#{$errno})"));
 		}
 	}
 

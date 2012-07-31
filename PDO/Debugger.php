@@ -4,10 +4,10 @@
  * Extends native PDO class for logging and debugging
  *
  * @author Paul Visco
- * @version 1.1 03/31/2009 04/01/2009
- * @package sb_PDO
+ * @package PDO
  */
-class sb_PDO_Debugger extends sb_PDO{
+namespace sb;
+class PDO_Debugger extends PDO{
 	
 	/**
 	 * Creates am extended PDO object
@@ -17,8 +17,8 @@ class sb_PDO_Debugger extends sb_PDO{
 	 * @param string $pass Password for connection if required
 	 *
 	 * <code>
-	 * $db=new sb_PDO("mysql:dbname=xxx;host=xxx", 'username', 'pass');
-	 * $db=new sb_PDO("sqlite:myfile.db3');
+	 * $db=new \sb\PDO("mysql:dbname=xxx;host=xxx", 'username', 'pass');
+	 * $db=new \sb\PDO("sqlite:myfile.db3');
 	 * </code>
 	 *
 	 */
@@ -40,7 +40,7 @@ class sb_PDO_Debugger extends sb_PDO{
         try{
             return parent::s2o($sql, $params, $class_name, $prepare_and_store);
         } catch(Exception $e){
-            throw(new Exception('CALLED: '.__METHOD__."\nERROR RETURNED: ".print_r($e, 1)));
+            throw(new \Exception('CALLED: '.__METHOD__."\nERROR RETURNED: ".print_r($e, 1)));
 
         }
 	}
@@ -48,7 +48,7 @@ class sb_PDO_Debugger extends sb_PDO{
     public static function paramify($data, $omit=Array()){
 
         if(!is_array($data) && !is_object($data)){
-            throw(new sb_PDO_Exception('Paramify only accepts hashes and objects as data argument'));
+            throw(new PDO_Exception('Paramify only accepts hashes and objects as data argument'));
         }
 
         return parent::paramify($data, $omit);

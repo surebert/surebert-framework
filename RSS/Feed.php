@@ -4,9 +4,10 @@
  * Describes and creates RSS 2.0 feeds. Remember to validate http://feedvalidator.org/check.cgi
  * 
  * @author Paul Visco
- * @package sb_RSS
+ * @package RSS
 */
-class sb_RSS_Feed extends DomDocument{
+namespace sb;
+class RSS_Feed extends \DomDocument{
 	
 	/**
 	 * The title of the feed e.g. GoUpstate.com News Headlines
@@ -31,7 +32,7 @@ class sb_RSS_Feed extends DomDocument{
 	public $description;
 	
 	/**
-	 * The sb_RSS_Items for the feed
+	 * The \sb\RSS_Items for the feed
 	 *
 	 * @var array
 	 */
@@ -114,7 +115,7 @@ class sb_RSS_Feed extends DomDocument{
 	/**
 	 * The image of the feed
 	 *
-	 * @var sb_RSS_Image object
+	 * @var \sb\RSS_Image object
 	 */
 	public $image;
 	
@@ -176,20 +177,20 @@ class sb_RSS_Feed extends DomDocument{
 	private $channel;
 	
 	/**
-	 * Creates a new sb_RSSFeed, youc an either pass the required paramters to the contructor or add them afterwards to the result of the constructor
+	 * Creates a new \sb\RSSFeed, youc an either pass the required paramters to the contructor or add them afterwards to the result of the constructor
 	 *
 	 *  <code>
 	 * //set content type as xml//set content type as xml
 	 * header("Content-Type: application/xml");
 	 *
 	 * //create a new feed
-	 * $feed = new sb_RSS_Feed("My Test Feed", "http://www.test.com", "A test feed for test.com");
+	 * $feed = new \sb\RSS_Feed("My Test Feed", "http://www.test.com", "A test feed for test.com");
 	 *
 	 * //add optional image
-	 * $feed->image= new sb_RSS_Image("Test's Feed", "http://test.com/test.gif");
+	 * $feed->image= new \sb\RSS_Image("Test's Feed", "http://test.com/test.gif");
 	 *
 	 * //optional RSS cloud
-	 * $feed->cloud= new sb_RSS_Cloud("rpc.sys.com",80, "/RPC2", "myCloud.rssPleaseNotify", "xml-rpc");
+	 * $feed->cloud= new \sb\RSS_Cloud("rpc.sys.com",80, "/RPC2", "myCloud.rssPleaseNotify", "xml-rpc");
 	 *
 	 * //add some optional categories
 	 * $feed->categories[] = 'dancing';
@@ -200,17 +201,17 @@ class sb_RSS_Feed extends DomDocument{
 	 * $feed->skipDays = Array('Monday', 'Tuesday');
 	 *
 	 * //add an item to the rss feed - the constructor takes the required properties, they can also be added afterwards, as with author below
-	 * $item_one = $feed->add_item(new sb_RSS_Item("Test's First Article", "http://test.com?a=1", "<h1>Here is a simple HTML feed</h1><p>With a list</p><ol><li>one</li><li>two</li><li>three</li></ol>", date('r')));
+	 * $item_one = $feed->add_item(new \sb\RSS_Item("Test's First Article", "http://test.com?a=1", "<h1>Here is a simple HTML feed</h1><p>With a list</p><ol><li>one</li><li>two</li><li>three</li></ol>", date('r')));
 	 *
 	 * //properties can also be added to the item afterwards, here are some optional ones
 	 * $item_one->author='paul@test.com';
 	 * $item_one->categories[] = 'swimming';
 	 * 
 	 * //for podcasts add an enclose, remember file size is required
-	 * $item_one->enclosure = new sb_RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
+	 * $item_one->enclosure = new \sb\RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
 	 * 
 	 * //add second item to the feed
-	 * $item_two = $feed->add_item(new sb_RSS_Item("Test's Second Article", "http://test.com?a=2", "This is just a plain text feed.  Hello World"), date('r'));
+	 * $item_two = $feed->add_item(new \sb\RSS_Item("Test's Second Article", "http://test.com?a=2", "This is just a plain text feed.  Hello World"), date('r'));
 	 * 
 	 * //echo out the RSS feed
 	 * echo $feed->display();
@@ -234,19 +235,19 @@ class sb_RSS_Feed extends DomDocument{
 	}
 	
 	/**
-	 * Adds a sb_RSS_Item instance to a a sb_RSSFeed instance
+	 * Adds a \sb\RSS_Item instance to a a \sb\RSSFeed instance
 	 *
-	 * @param sb_RSS_Item $item
-	 * @return sb_RSS_Item the reference to the item
+	 * @param \sb\RSS_Item $item
+	 * @return \sb\RSS_Item the reference to the item
 	 */
-	public function add_item(sb_RSS_Item &$item){
+	public function add_item(RSS_Item &$item){
 		
 		$this->items[] = $item;
 		return $item;
 	}
 	
 	/**
-	 * Converts the sb_RSSFeed instance into XML for display
+	 * Converts the \sb\RSSFeed instance into XML for display
 	 * <code>
 	 * echo $myFeed->display();
 	 * </code>
@@ -288,16 +289,16 @@ class sb_RSS_Feed extends DomDocument{
     }
 	
     /**
-     * Takes an sb_RSS_Item and converts it into a DOMM node followed by inserting it into the feed DOM
+     * Takes an \sb\RSS_Item and converts it into a DOMM node followed by inserting it into the feed DOM
      *
-     * @param sb_RSS_Item $item
+     * @param \sb\RSS_Item $item
      */
-	private function append_item(sb_RSS_Item $item){
+	private function append_item(\sb\RSS_Item $item){
     	
         $new_item = $this->createElement("item");
         
         foreach(get_object_vars($item) as $key=>$val){
-        	if($item->{$key} instanceof sb_RSS_ItemEnclosure){
+        	if($item->{$key} instanceof \sb\RSS_ItemEnclosure){
     			$enclosure = $this->createElement('enclosure');
     			foreach($item->{$key} as $n=>$v){
     				$enclosure->setAttribute($n, $v);
@@ -340,7 +341,7 @@ class sb_RSS_Feed extends DomDocument{
 				$this->channel->appendChild($this->create_node($key, $val, $key == 'description'));
     		
     		//parse image	
-    		} else if ($this->{$key} instanceof sb_RSS_Image){
+    		} else if ($this->{$key} instanceof \sb\RSS_Image){
     		
     		
     			$image = $this->createElement('image');
@@ -354,7 +355,7 @@ class sb_RSS_Feed extends DomDocument{
     			$this->channel->appendChild($image);
     		
     		//parse cloud
-    		} else if ($this->{$key} instanceof sb_RSS_Cloud){
+    		} else if ($this->{$key} instanceof \sb\RSS_Cloud){
     			
     			$cloud = $this->createElement('cloud');
     			foreach($this->{$key} as $n=>$v){

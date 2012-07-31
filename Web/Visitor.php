@@ -1,14 +1,13 @@
 <?php
-
 /**
- * Models an online visitor - usage requires sb_Web_Visitors
+ * Models an online visitor - usage requires \sb\Web_Visitors
  * 
  * @author Paul Visco 
- * @version 2.2 10-02-2004 06-25-2009
- * @package sb_Web
+ * @package Web
  *
  */
-class sb_Web_Visitor{
+namespace sb;
+class Web_Visitor{
 	/**
      * The IP address of the visitor
      * @var string
@@ -51,7 +50,7 @@ class sb_Web_Visitor{
 	public $mobl;
 
     /**
-     * Creates a new sb_Web_Visitor
+     * Creates a new \sb\Web_Visitor
      * @param string $uname The unique username of the visitor
      * @param string $dname The display name of the visitor
      * @param boolean $mobl If the user is coming from mobile site or not
@@ -67,16 +66,16 @@ class sb_Web_Visitor{
     }
 
     /**
-     * Logs a sb_Web_Visitor in the database
-     * @param PDO $db Optional database connection to use for sb_Web_Vistors
+     * Logs a \sb\Web_Visitor in the database
+     * @param PDO $db Optional database connection to use for \sb\Web_Vistors
      */
     public function log($db=null){
         
         if($db instanceof PDO){
-            sb_Web_Visitors::$db=$db;
+            \sb\Web_Visitors::$db=$db;
         }
 
-        return sb_Web_Visitors::log($this);
+        return \sb\Web_Visitors::log($this);
 
     }
 }

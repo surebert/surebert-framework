@@ -2,9 +2,10 @@
 
 /**
  * An Excel Spreadhseet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
- * @package sb_Excel
+ * @package Excel
  */
-abstract class sb_Excel_Reader_Backend {
+namespace sb;
+abstract class Excel_Reader_Backend {
 	const NUM_BIG_BLOCK_DEPOT_BLOCKS_POS = 0x2c;
 	const SMALL_BLOCK_DEPOT_BLOCK_POS = 0x3c;
 	const ROOT_START_BLOCK_POS = 0x30;

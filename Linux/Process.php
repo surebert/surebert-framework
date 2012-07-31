@@ -4,9 +4,10 @@
  *
  * Adapted from http://us.php.net/manual/en/function.exec.php
  * @author paul.visco@roswellpark.org
- * @package sb_Linux
+ * @package Linux
  */
-class sb_Linux_Process{
+namespace sb;
+class Linux_Process{
 
 	/**
 	 * The pid of the command executed
@@ -108,7 +109,7 @@ class sb_Linux_Process{
 			return true;
 
 		} else {
-			throw(new Exception('$this->command not set!'));
+			throw(new \Exception('$this->command not set!'));
 		}
     }
 

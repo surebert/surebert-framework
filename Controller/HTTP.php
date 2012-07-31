@@ -3,9 +3,10 @@
  * Used to handle http requests
  * 
  * @author visco
- * @package sb_Controller
+ * @package Controller
  */
-class sb_Controller_HTTP extends sb_Controller{
+namespace sb;
+class Controller_HTTP extends Controller{
   
      /**
      * Sets a session var

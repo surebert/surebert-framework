@@ -2,11 +2,11 @@
 /**
  * Models a JSONRPC 2 request as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  *
- * @version 1.0 02/06/09
  * @author visco
- * @package sb_JSON_RPC2
+ * @package JSON_RPC2
  */
-class sb_JSON_RPC2_Request{
+namespace sb;
+class JSON_RPC2_Request{
 	
 	/**
 	 * A String containing the name of the procedure to be invoked.
@@ -30,7 +30,7 @@ class sb_JSON_RPC2_Request{
 	 * Popultes the properties from json recieved
 	 * 
 	 * <code>
-	 * $request = new sb_JSON_RPC2_Request();
+	 * $request = new \sb\JSON_RPC2_Request();
 	 * $request->id = 'abc123';
 	 * $request->method = '+';
 	 * $request->params = Array(1,2);
@@ -38,7 +38,7 @@ class sb_JSON_RPC2_Request{
 	 * print_r($response);
 	 * </code>
 	 *
-	 * @param $json JSON encoded sb_JSON_RPC2_Response
+	 * @param $json JSON encoded \sb\JSON_RPC2_Response
 	 * OR
 	 * @param $method String The method to call
 	 * @param $params Array/Object The params to send
@@ -83,7 +83,7 @@ class sb_JSON_RPC2_Request{
 			}
 			
 			if(!is_object($o)){
-				$this->error = new sb_JSON_RPC2_Error(-32700, $error);
+				$this->error = new JSON_RPC2_Error(-32700, $error);
 			}
 			
 			foreach(get_object_vars($this) as $k=>$v){

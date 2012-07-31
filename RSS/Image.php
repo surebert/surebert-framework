@@ -1,10 +1,11 @@
 <?php
 /**
- * Used to create an sb_RSSFeed image for the channel
+ * Used to create an \sb\RSSFeed image for the channel
  * @author Paul Visco
- * @package sb_RSS
+ * @package RSS
  */
-class sb_RSS_Image{
+namespace sb;
+class RSS_Image{
 	
 	/**
 	 * The url for the image
@@ -21,7 +22,7 @@ class sb_RSS_Image{
 	public $title='';
 	
 	/**
-	 * Returns an object suitable to use as an image for the sb_RSSFeed
+	 * Returns an object suitable to use as an image for the \sb\RSSFeed
 	 *
 	 * @param string $title The title of the image
 	 * @param string $url The url of the image

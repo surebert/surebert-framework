@@ -3,14 +3,15 @@
 /**
  * Maps ranges from one set of numbers to another
  *
- * @author Paul Visco 06/05/2007
- * @package sb_Math
+ * @author Voscp
+ * @package Math
  * 
  * $rangeMapper =new sb_Math_RangeMapper(Array(8,20), Array(10,100));
  * $rangeMapper->convert(50); //return 13.3 repeating
  * //basically 50 from the range of 10 to 100 is equivalent to 13.33 in the range of 8 to 20
  */
-class sb_Math_RangeMapper{
+namespace sb;
+class Math_RangeMapper{
  
 	public function __construct($toRange, $fromRange){
 		$this->toRange = $toRange;

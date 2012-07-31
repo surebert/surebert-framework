@@ -1,10 +1,11 @@
 <?php
 /**
- * @package sb_Identity
+ * @package Microformats
  *
  * Adapted from http://code.google.com/p/collabtiv/source/browse/include/class.vCard.php?r=1
  */
-class sb_Microformats_VCard {
+namespace sb;
+class Microformats_VCard {
 	private $output;
 	private $output_format;
 	private $first_name;

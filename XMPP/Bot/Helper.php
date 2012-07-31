@@ -9,12 +9,12 @@
  * commands.
  *
  * <code>
- * class BotDemo extends sb_Bot_Helper{
+ * class BotDemo extends \sb\Bot_Helper{
  *	public $status = 'thinking';
  *	public $uname = 'you bot name';
  *	public $pass = 'your bot pass';
  *
- *	public serve_hello(sb_XMPP_Message $message, $str){
+ *	public serve_hello(\sb\XMPP_Message $message, $str){
  *		return 'hello '.$message->get_from().' you said '.$message->get_body();
  *
  *	}
@@ -23,9 +23,10 @@
  * </code>
  * 
  * @author paul.visco@roswellpark.org, gregary.dean@roswellpark.org
- * @package sb_XMPP
+ * @package XMPP
  */
-class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
+namespace sb;
+class XMPP_Bot_Helper extends XMPP_Client{
 
 	/**
 	 * The status to display for the bot
@@ -58,14 +59,14 @@ class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 	/**
 	 * Debug messages for auditing bot
 	 *
-	 * @param sb_XMPP_Message $message Has additional ->arguments property which is
+	 * @param \sb\XMPP_Message $message Has additional ->arguments property which is
 	 * the message body minus the method name
 	 * @param string $srguments The arguments passed to the command
 	 *
 	 * @secret true
 	 * @return string The debug message data
 	 */
-	public function serve_debug(sb_XMPP_Message $message, $command){
+	public function serve_debug(\sb\XMPP_Message $message, $command){
 
 		$str = '';
 		switch($command){
@@ -106,7 +107,7 @@ class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 			foreach($methods as $method) {
 				if(substr($method, 0, 6) == 'serve_'){
 
-					$reflect = new ReflectionMethod($this, $method);
+					$reflect = new \ReflectionMethod($this, $method);
 
 					if($reflect) {
 						$phpdoc = $reflect->getDocComment();
@@ -126,7 +127,7 @@ class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 	 * Fires when a new message is received
 	 * @param string $message
 	 */
-    protected function on_message(sb_XMPP_Message $message_in){
+    protected function on_message(\sb\XMPP_Message $message_in){
 
 		$str = $message_in->get_body();
 		$str = trim((String) $str);
@@ -148,7 +149,7 @@ class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 			}
 
 			if($data){
-				$message_out = new sb_XMPP_Message();
+				$message_out = new \sb\XMPP_Message();
 				$message_out->set_to($message_in->get_from());
 				$message_out->set_body($data);
 				$this->send_message($message_out);
@@ -165,10 +166,10 @@ class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 
 	/**
 	 * Mirrors the words sent to it
-	 * @param sb_XMPP_Message $message
+	 * @param \sb\XMPP_Message $message
 	 * @return string
 	 */
-	public function method_not_found(sb_XMPP_Message $message){
+	public function method_not_found(\sb\XMPP_Message $message){
 		$body = $message->get_body();
 
 		if($body == '?'){
@@ -194,9 +195,9 @@ class sb_XMPP_Bot_Helper extends sb_XMPP_Client{
 
 	/**
 	 * Fires when presence packets are received and keeps track of online buddies
-	 * @param sb_XMPP_Presence $presence
+	 * @param \sb\XMPP_Presence $presence
 	 */
-   protected function on_presence(sb_XMPP_Presence $presence){
+   protected function on_presence(\sb\XMPP_Presence $presence){
 			//do something with
 	}
 

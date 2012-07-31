@@ -3,13 +3,10 @@
  * Used to log application state to the log files.
  *
  * @author Paul Visco
- * @package sb_Logger
- * @version 1.0 05/12/2009 05/12/2009
- * 
- *
+ * @package Logger
  */
- 
-class sb_Logger_StdOut extends sb_Logger_Base{
+ namespace sb;
+class Logger_StdOut extends Logger_Base{
 
 	/**
 	 * Writes the data to file

@@ -2,12 +2,12 @@
 /**
  * Abstract class base for logging
  *
- * @author Paul Visco
- * @version 1.35 4/17/2008 05/12/2009
- * @package sb_Logger
+ * @author visco
+ * @package Logger
  *
  */
-abstract class sb_Logger_Base{
+namespace sb;
+abstract class Logger_Base{
 	
 	/**
 	 * If logging is enabled or not
@@ -41,16 +41,16 @@ abstract class sb_Logger_Base{
 	protected $_agent_str = 'n/a';
 	
 	/**
-	* Creates an sb_Logger instance
+	* Creates an \sb\Logger\Base instance
 	* @param $agent String The agent string
 	*
 	* <code>
 	* //LOGGER_TYPE replace with FileSystem() etc
-	* App::$logger = new sb_Logger_LOGGER_TYPE();
-	* App::$logger->set_agent_string("\t".App::$user->uname."\t".App::$user->roswell_id."\t".Gateway::$remote_addr);
-	* App::$logger->debug('Here is a message');
+	* \App::$logger = new \sb\Logger\LOGGER_TYPE();
+	* \App::$logger->set_agent_string("\t".App::$user->uname."\t".App::$user->roswell_id."\t".\sb\Gateway::$remote_addr);
+	* \App::$logger->debug('Here is a message');
 	* //If the argument is anything other than a string it is converted to json for logging as string
-	* App::$logger->files($obj);
+	* \App::$logger->files($obj);
 	* </code>
 	*/
 	public function __construct($agent = ''){

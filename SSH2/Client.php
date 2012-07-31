@@ -5,7 +5,7 @@
  * see http://php.net/manual/en/wrappers.ssh2.php for more info
  *
  * <code>
- * $client = new sb_SSH2_Client('server.com', 1027);
+ * $client = new \sb\SSH2_Client('server.com', 1027);
  * $client->login('uname', 'pass');
  * OR
  * $client->login_with_key('uname', 'id_rsa.pub', 'id_rsa', '');
@@ -14,9 +14,10 @@
  * </code>
  * 
  * @author paul.visco@roswellpark.org
- * @package sb_SSH2
+ * @package SSH2
  */
-class sb_SSH2_Client{
+namespace sb;
+class SSH2_Client{
 
 	protected $connection;
 
@@ -28,12 +29,12 @@ class sb_SSH2_Client{
 	public function __construct($host, $port=22){
 
 		if(!function_exists('ssh2_connect')){
-			throw new Exception("You must install pecl ssh2 extension to use sb_SFTP_Client");
+			throw new \Exception("You must install pecl ssh2 extension to use \sb\SFTP_Client");
 		}
 
-		$this->connection = ssh2_connect($host, $port);
+		$this->connection = \ssh2_connect($host, $port);
 		if(!$this->connection){
-			throw new Exception("Could not connect to $host on port $port.");
+			throw new \Exception("Could not connect to $host on port $port.");
 		}
 
 	}
@@ -46,7 +47,7 @@ class sb_SSH2_Client{
 	public function login($uname, $pass){
 		
         if (!@ssh2_auth_password($this->connection, $uname, $pass)){
-            throw new Exception("Could not authenticate with credentials given.");
+            throw new \Exception("Could not authenticate with credentials given.");
 		}
 
 		return true;
@@ -61,7 +62,7 @@ class sb_SSH2_Client{
 	 */
 	public function login_with_key($uname, $public_key_file, $private_key_file, $pass=''){
 		if (!ssh2_auth_pubkey_file($this->connection, $uname, $public_key_file, $private_key_file, $pass)){
-            throw new Exception("Could not authenticate with credentials given.");
+            throw new \Exception("Could not authenticate with credentials given.");
 		}
 
 		return true;
@@ -79,7 +80,7 @@ class sb_SSH2_Client{
 		$stream = @ssh2_exec($this->connection, $command);
 
 		if (!$stream) {
-			throw new Exception('Unable to exec command: '.$command);
+			throw new \Exception('Unable to exec command: '.$command);
 		}
 
 		if($return_stream){
@@ -103,7 +104,7 @@ class sb_SSH2_Client{
 	public function tunnel($host, $port){
 		$stream = @ssh2_tunnel($this->connection, $command);
 		if(!$stream){
-			throw new Exception('Cannot create tunnel to: '.$host.' on port'.$port);
+			throw new \Exception('Cannot create tunnel to: '.$host.' on port'.$port);
 		}
 
 		return $stream;

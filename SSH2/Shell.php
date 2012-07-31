@@ -3,7 +3,7 @@
  * An ssh2 Shell
  *
  * <code>
- * $shell = new sb_SSH2_Shell('server.com', 1027);
+ * $shell = new \sb\SSH2_Shell('server.com', 1027);
  * $shell->login('uname', 'pass');
  *
  * $shell->create('vt102', null, 80, 24, SSH2_TERM_UNIT_CHARS);
@@ -11,9 +11,10 @@
  *
  * </code>
  *
- * @package sb_SSH2
+ * @package SSH2
  */
-class sb_SSH2_Shell extends sb_SSH2_Client{
+namespace sb;
+class SSH2_Shell extends SSH2_Client{
 
 	/**
 	 * The shell stream
@@ -38,7 +39,7 @@ class sb_SSH2_Shell extends sb_SSH2_Client{
 		stream_set_blocking($this->shell, true);
 
 		if(!$this->shell){
-			throw new Exception('Cannot create shell');
+			throw new \Exception('Cannot create shell');
 		}
 
 		return $this->shell;

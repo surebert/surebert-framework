@@ -3,10 +3,10 @@
  * Used to connect to and interact with windows machines from php code on a linux machine
  *	maps the smbclient command line executable to a local PHP object.
  *
- * @author Anthony Cashaw, Paul Visco
- * @package sb_Samba
+ * @author , Paul Visco, Anthony Cashaw
+ * @package Samba
  */
-class sb_Samba_Connection {
+class Samba_Connection {
 
 /**
  * The domain of the connecting windows account
@@ -28,7 +28,7 @@ class sb_Samba_Connection {
 
 	/**
 	 * Object to log with
-	 * @var sb_Logger_Base
+	 * @var \sb\Logger_Base
 	 */
 	public static $log;
 
@@ -61,7 +61,7 @@ class sb_Samba_Connection {
 	 * Class constructor for the rp_WindowsShare class.
 	 *
 	 * <code>
-	 * $win = new sb_Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
+	 * $win = new \sb\Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
 	 * print_r($win->ls());
 	 * </code>
 	 *
@@ -134,7 +134,7 @@ class sb_Samba_Connection {
 		exec($cmd, $output, $return);
 
         if(stristr(implode(" ", $output), 'NT_STATUS_ACCOUNT_LOCKED_OUT')){
-            throw(new Exception('NT_STATUS_ACCOUNT_LOCKED_OUT: '.$this->username));
+            throw(new \Exception('NT_STATUS_ACCOUNT_LOCKED_OUT: '.$this->username));
         }
 
         if($this->debug == true){
@@ -195,13 +195,13 @@ class sb_Samba_Connection {
 	}
 
 	/**
-	 * Converts a line of returned output into a sb_Samba_Listing object
+	 * Converts a line of returned output into a \sb\Samba_Listing object
 	 * @param $listing
 	 * @param $subdir
-	 * @return sb_Samba_Listing
+	 * @return \sb\Samba_Listing
 	 */
 	private	function parseListing($listing, $subdir = '') {
-		$ret = new sb_Samba_Listing();
+		$ret = new Samba_Listing();
 		$exp = '/^\s{2}([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
 
 		preg_match_all($exp, $listing, $matches);

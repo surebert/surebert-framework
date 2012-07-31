@@ -6,11 +6,11 @@
  * If DEBUG_EMAIL constant is defined, then all email goes to that address.
  *
  * @author Paul Visco
- * @version 2.25 06/08/03 06/16/09
- * @package sb_Email
+ * @package Email
  *
  */
-class sb_Email_Writer {
+namespace sb;
+class Email_Writer {
 
 /**
  * An instance of sb_Logger for logging the emails sent
@@ -25,9 +25,9 @@ class sb_Email_Writer {
     public $log_body = true;
 
     /**
-     * An instance of sb_Email which describes the email being sent
+     * An instance of \sb\Email which describes the email being sent
      *
-     * @var sb_Email
+     * @var \sb\Email
      */
     protected $emails = Array();
 
@@ -46,13 +46,13 @@ class sb_Email_Writer {
     /**
      * Creates a new outbox to send from
      *
-	 * @param sb_Logger $logger optional
+	 * @param \sb\Logger $logger optional
 	 *
 	 * <code>
 	 * //instanciate the email writer
-	 * $myEmailWriter = new sb_Email_Writer();
+	 * $myEmailWriter = new \sb\Email_Writer();
 	 *
-	 * //add an instance of sb_Email to the outbox, you can add as many as you want
+	 * //add an instance of \sb\Email to the outbox, you can add as many as you want
 	 * $myEmailWriter->add_email_to_outbox($myMail);
 	 *
 	 * //then send, you could add more emails before sending
@@ -62,12 +62,12 @@ class sb_Email_Writer {
      */
     public function __construct($logger=null, $remote_addr='', $http_host='') {
 
-        if($logger instanceOf sb_Logger) {
+        if($logger instanceOf Logger_Base) {
             $this->logger = $logger;
-        } else if(isset(App::$logger) && App::$logger instanceof sb_Logger_Base) {
-            $this->logger = App::$logger;
+        } else if(isset(\App::$logger) && \App::$logger instanceof Logger_Base) {
+            $this->logger = \App::$logger;
 		} else {
-			$this->logger = new sb_Logger_FileSystem();
+			$this->logger = new Logger_FileSystem();
 		}
 
         $this->remote_addr = (!empty($remote_addr)) ? $remote_addr : Gateway::$remote_addr;
@@ -80,7 +80,7 @@ class sb_Email_Writer {
      */
     public function send($email=0) {
 
-        if($email instanceof sb_Email) {
+        if($email instanceof Email) {
             $this->add_email_to_outbox($email);
         }
 
@@ -140,10 +140,10 @@ class sb_Email_Writer {
     /**
      * Adds an email to the outbox which is sent with the send method
      *
-     * @param sb_Email $email
+     * @param \sb\Email $email
      * @return boolean false if it has injectors, true if added to outbox
      */
-    public function add_email_to_outbox($email) {
+    public function add_email_to_outbox(Email $email) {
     
         if($this->check_headers_for_injection($email)) {
             return 0;
@@ -158,7 +158,7 @@ class sb_Email_Writer {
     /**
      * Logs the sending of emails if logging is enable by specifying the log_file property
      *
-     * @param $email sb_Email
+     * @param $email \sb\Email
      * @param $sent Boolean, was the email sent or not
      */
     private function log_email($email, $sent) {
@@ -198,9 +198,9 @@ class sb_Email_Writer {
     /**
      * Adds security info of sender
      *
-     * @param sb_Email $email
+     * @param \sb\Email $email
      */
-    private function add_security_info(sb_Email &$email) {
+    private function add_security_info(Email &$email) {
 
         $email->body .= "\n\nFor security purposes the following information was recorded: \nSending IP: ".$this->remote_addr." \nSending Host: ".$this->http_host;
 
@@ -212,10 +212,10 @@ class sb_Email_Writer {
     /**
      * Checks email for injections in from and to addr
      *
-     * @param sb_Email $email
+     * @param \sb\Email $email
      * @return boolean
      */
-    private function check_headers_for_injection(sb_Email $email) {
+    private function check_headers_for_injection(Email $email) {
     //try and catch injection attempts and alert admin user
         if (preg_match("~\r|:~i",$email->to) || preg_match("~\r|:~i",$email->from)) {
             return true;

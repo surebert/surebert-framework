@@ -2,9 +2,11 @@
 /**
  * Creates concatenated javascript files for the surebert toolkit from the arguments it is fed
  * @author visco
- * @package sb_Controller
+ * @package Controller
  */
-class sb_Controller_Toolkit extends sb_Controller{
+namespace sb;
+
+class Controller_Toolkit extends Controller{
 
     public $input_args_delimiter = ',';
     
@@ -85,7 +87,7 @@ class sb_Controller_Toolkit extends sb_Controller{
 		}
 
 		if($this->cache_enable){
-			$cache = isset(App::$cache) ? App::$cache : new sb_Cache_FileSystem();
+			$cache = isset(\App::$cache) ? \App::$cache : new Cache_FileSystem();
 			$key = '/toolkit/'.md5(implode(",", $files).$version);
 
 			$data = $cache->fetch($key);
@@ -136,6 +138,7 @@ class sb_Controller_Toolkit extends sb_Controller{
 	 */
 	protected function grab_file($file, $root){
 		$data = '';
+		
 		if(is_file($root.'/'.$file)){
 
 			$this->loaded_files[] = $file;

@@ -3,9 +3,10 @@
  * Represents a XMPP Message for sending and receiving
  *
  * @author Paul Visco
- * @package sb_XMPP
+ * @package XMPP
  */
-class sb_XMPP_Message extends sb_XMPP_Packet{
+namespace sb;
+class XMPP_Message extends XMPP_Packet{
 
 	/**
 	 * The SimpleXMLElement if one is imported
@@ -14,7 +15,7 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 	public $xml;
 
 	/**
-	 * Creates a new sb_XMPP_Message instance
+	 * Creates a new XMPP_Message instance
 	 * @param string $xml Optional XML string to base the Document on
 	 */
 	public function __construct($xml = ''){
@@ -129,12 +130,12 @@ class sb_XMPP_Message extends sb_XMPP_Packet{
 
 	/**
 	 * Creates a reply message and sends it to the user that sent the
-	 * original message.  This can be used only on sb_XMPP_Message instances
+	 * original message.  This can be used only on \sb\XMPP_Message instances
 	 * that came over the socket and were passed to the on_message method.
 	 * @param string $str
 	 */
 	public function reply($str){
-		$message = new sb_XMPP_Message();
+		$message = new \sb\XMPP_Message();
 		$message->set_to($this->get_from());
 		$message->set_from($this->get_to());
 		$message->set_body($str);

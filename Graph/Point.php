@@ -1,13 +1,12 @@
 <?php
 /**
- * Used to plot simple point and line graphs.  Requires sb_Math_RangeMapper
+ * Used to plot simple point and line graphs.  Requires \sb\Math_RangeMapper
  * @author Paul Visco
- * @version 1.6  11/19/07
- * @package sb_Graph
+ * @package Graph
  * 
  */
 
-class sb_Graph_Point{
+class Graph_Point{
 	
 	/**
 	 * Determines if plotted points are connected by a line
@@ -66,7 +65,7 @@ class sb_Graph_Point{
 	 * <code>
 	 * //set the graph width and height plus values and labels
 	 * //set the graph width and height plus values and labels
-	 * $chart = new sb_Graph_Point(600, 300,  Array(
+	 * $chart = new \sb\Graph_Point(600, 300,  Array(
 	 * 	'A' => 1.27,
 	 * 	'B' => 1.45,
 	 * 	'C' => 1.20,
@@ -222,7 +221,7 @@ class sb_Graph_Point{
 	 */
 	private function map_y_value($value){
 		
-		$rangeMapper = new sb_Math_RangeMapper(Array(30, $this->graph_height), Array($this->min, $this->max));
+		$rangeMapper = new Math_RangeMapper(Array(30, $this->graph_height), Array($this->min, $this->max));
 		return $rangeMapper->convert($value);
 	}
 	
@@ -313,7 +312,7 @@ class sb_Graph_Point{
 	 * @return integer The value in pixels
 	 */
 	private function plot_value($y){
-		$rangeMapper = new sb_Math_RangeMapper(Array($this->axis_offset, $this->graph_height-$this->axis_offset), Array($this->max, $this->min));
+		$rangeMapper = new \sb\Math_RangeMapper(Array($this->axis_offset, $this->graph_height-$this->axis_offset), Array($this->max, $this->min));
 		return $rangeMapper->convert($y);
 	}
 	
@@ -403,7 +402,7 @@ class sb_Graph_Point{
 	public function add_horizontal_line($y, $color='red', $label=''){
 		
 		if(!array_key_exists($color, $this->ink)){
-			throw(new Exception("Ink color must be in ".implode(",", array_keys($this->ink))));
+			throw(new \Exception("Ink color must be in ".implode(",", array_keys($this->ink))));
 		}
 		
 		$y = $this->plot_value($y);

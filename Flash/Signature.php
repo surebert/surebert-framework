@@ -4,8 +4,7 @@
  * A secure Flash_Signature object which holds the data for each Flash_Signature
  *
  * @author Paul Visco
- * @version 1.21 05/10/06 02/02/09
- * @package sb_Flash
+ * @package Flash
  * 
  * <code>
  * DROP TABLE IF EXISTS `storage`;
@@ -27,7 +26,7 @@
  * $db = new PDO("mysql:host=HOST;dbname=DBNAME", "USERNAME", "PASSWORD");
  * 
  * //saving a Flash_Signature
- * $Flash_Signature = new sb_Flash_Signature();
+ * $Flash_Signature = new \sb\Flash_Signature();
  * $Flash_Signature->app_id = 999;
  * $Flash_Signature->width=600;
  * $Flash_Signature->height=150;
@@ -40,12 +39,13 @@
  * echo 'transaction='.$Flash_Signature->id;
  * 
  * //loading a Flash_Signature
- * $Flash_Signature = new sb_Flash_Signature($db, '08fb669424c5dcbf6e73a943df2bc2a8');
+ * $Flash_Signature = new \sb\Flash_Signature($db, '08fb669424c5dcbf6e73a943df2bc2a8');
  * 
  * $Flash_Signature->to_img('gif', null, 100, null, null, 2, Array(255,235,0), Array(255,255,255), null);
  * </code>
  */
-class sb_Flash_Signature{
+namespace sb;
+class Flash_Signature{
 	
 	/**
 	 * The logged in username of the Flash_Signature creator
@@ -375,7 +375,7 @@ class sb_Flash_Signature{
 		}
 		
 		if(!$this->db instanceof PDO){
-			throw new Exception("The Flash_Signatures's database property must be an instance of PDO");
+			throw new \Exception("The Flash_Signatures's database property must be an instance of PDO");
 			return null;
 		}
 		
@@ -396,7 +396,7 @@ class sb_Flash_Signature{
 		));
 		
 		if(!$insert){
-			throw new Exception('Could  not insert Flash_Signature into the database');
+			throw new \Exception('Could  not insert Flash_Signature into the database');
 		}
 	}
 	
@@ -412,12 +412,12 @@ class sb_Flash_Signature{
 		}
 		
 		if(!$this->db instanceof PDO){
-			throw new Exception("The Flash_Signatures's database property must be an instance of PDO");
+			throw new \Exception("The Flash_Signatures's database property must be an instance of PDO");
 			return null;
 		}
 		
 		if(!is_string($this->id)){
-			throw new Exception("The id of the Flash_Signature must be a string");
+			throw new \Exception("The id of the Flash_Signature must be a string");
 			return null;
 		}
 		
@@ -426,7 +426,7 @@ class sb_Flash_Signature{
 		$stmt = $this->db->prepare($sql);
 	
 		$stmt->execute(Array(":id" => $this->id));
-		$rows = $stmt->fetchAll(PDO::FETCH_CLASS, 'sb_Flash_Signature');
+		$rows = $stmt->fetchAll(PDO::FETCH_CLASS, '\sb\Flash_Signature');
 		foreach($rows[0] as $prop=>$val){
 			$this->{$prop} = $val;
 		}

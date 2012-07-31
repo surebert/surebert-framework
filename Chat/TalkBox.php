@@ -26,14 +26,12 @@
 			PRIMARY KEY (id)
 	)
 
- * @author Paul Visco 06/05/2004
- * @version 2.1 11/21/2007
- * @package sb_Chat
+ * @package Chat
  * 
  * 
  */
-
-class sb_Chat_TalkBox{
+namespace sb;
+class Chat_TalkBox{
 	
 	/**
 	 * Determines if debugging is enabled or not
@@ -115,7 +113,7 @@ class sb_Chat_TalkBox{
 	 * @param string $room
 	 *
 	 */
-	function __construct($pdo_connection, $room){
+	function __construct(PDO $pdo_connection, $room){
 		
 		$this->db = $pdo_connection;
 		

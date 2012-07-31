@@ -3,9 +3,10 @@
  * Used to create command line utilities
  * 
  * @author visco
- * @package sb_Controller
+ * @package Controller
  */
-class sb_Controller_Command_Line extends sb_Controller{
+namespace sb;
+class Command_Line extends Controller_Base{
 
 	/**
 	 * The begin time of the script in order to calculate the total time required

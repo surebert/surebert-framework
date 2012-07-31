@@ -6,13 +6,13 @@
  * Tested with entouage, outlook, mail.app, owa, android, iphone, and blackbery
  *
  * <code>
- * $event = new sb_ICalendar_Event();
+ * $event = new \sb\ICalendar_Event();
  * $event->location = '901 Washington #3';
  * $event->summary = 'Ride for Roswell Meeting';
  * $event->set_time('11/26/2009 13:30', '11/26/2009 14:30');
- * $event->add_attendee(new sb_ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
- * $event->add_attendee(new sb_ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
- * $event->set_organizer(new sb_ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
+ * $event->add_attendee(new \sb\ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
+ * $event->add_attendee(new \sb\ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
+ * $event->set_organizer(new \sb\ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
  *
  * //view contents
  * echo $event->__toString();
@@ -25,19 +25,20 @@
  * $event->send();
  *
  * //Canceling
- * $event = new sb_ICalendar_Event($uid);
+ * $event = new \sb\ICalendar_Event($uid);
  * $event->summary = 'Ride for Roswell Meeting';
- * $event->add_attendee(new sb_ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
- * $event->add_attendee(new sb_ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
- * $event->set_organizer(new sb_ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
+ * $event->add_attendee(new \sb\ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
+ * $event->add_attendee(new \sb\ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
+ * $event->set_organizer(new \sb\ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
  *
  * $event->send();
  * </code>
  *
- * @package sb_ICalendar
+ * @package ICalendar
  * @author paul.visco@roswellpark.org, gregary.dean@roswellpark.org
  */
-class sb_ICalendar_Event {
+namespace sb;
+class ICalendar_Event {
 
 	/**
 	 * The summary of the event
@@ -86,14 +87,14 @@ class sb_ICalendar_Event {
 	protected $dtend = '';
 
 	/**
-	 * The attendees An array of sb_Calendar_Ics_Attendee
+	 * The attendees An array of \sb\Calendar_Ics_Attendee
 	 * @var array
 	 */
 	protected $attendees = Array();
 
 	/**
 	 * The organizer
-	 * @var sb_Calendar_Ics_Attendee
+	 * @var \sb\Calendar_Ics_Attendee
 	 */
 	protected $organizer;
 
@@ -120,9 +121,9 @@ class sb_ICalendar_Event {
 	/**
 	 * Adds the organizer of the event
 	 *
-	 * @param sb_ICalendar_Attendee $attendee
+	 * @param \sb\ICalendar_Attendee $attendee
 	 */
-	public function set_organizer(sb_ICalendar_Organizer $attendee) {
+	public function set_organizer(ICalendar_Organizer $attendee) {
 		$this->organizer = $attendee;
 	}
 
@@ -131,9 +132,9 @@ class sb_ICalendar_Event {
 	 * This does not mean that the event is sent to those attendees only that they
 	 * get notified when changes occurr
 	 *
-	 * @param sb_ICalendar_Attendee $attendee
+	 * @param \sb\ICalendar_Attendee $attendee
 	 */
-	public function add_attendee(sb_ICalendar_Attendee $attendee) {
+	public function add_attendee(ICalendar_Attendee $attendee) {
 		$this->attendees[] = $attendee;
 	}
 
@@ -168,7 +169,7 @@ class sb_ICalendar_Event {
 
 			$subject = 'CANCELED '.$subject;
 			if(empty($this->uid)){
-				throw(new Exception('Must set uid to cancel an event.'));
+				throw(new \Exception('Must set uid to cancel an event.'));
 			}
 		}
 
@@ -178,7 +179,7 @@ class sb_ICalendar_Event {
 
 		$to = '"'.$this->organizer->dname.'" <'.$this->organizer->email.'>';
 
-		$mail = new sb_Email($to, $subject, $this->summary, $to);
+		$mail = new \sb\Email($to, $subject, $this->summary, $to);
 		$attendee_emails = Array();
 		foreach($this->attendees as $attendee) {
 			$attendee_emails[] = '"'.$attendee->dname.'" <'.$attendee->email.'>';
@@ -197,11 +198,11 @@ class sb_ICalendar_Event {
 	public function  __toString() {
 
 		if(empty($this->organizer)) {
-			throw(new Exception('You must add an event organizer'));
+			throw(new \Exception('You must add an event organizer'));
 		}
 
 		if(empty($this->attendees)) {
-			throw(new Exception('You must add at least one attendee'));
+			throw(new \Exception('You must add at least one attendee'));
 		}
 
 		//convert to unix time

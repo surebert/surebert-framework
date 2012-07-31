@@ -11,498 +11,11 @@
 ##### DO NOT TOUCH THIS FILE UNLESS YOU KNOW WHAT YOU ARE DOING #####
 #####################################################################
 
+namespace sb;
 ob_start();
 
 //script start time
 $sb_start = microtime(true);
-
-/**
- * Loads the .view file that corresponds to the request
- * @author paul.visco@roswellpark.org
- * @package sb_Controller
- */
-class sb_Controller {
-
-	/**
-	 * Set to true if the view is loaded from within another view via Gateway::render_request, otherwise false
-	 *
-	 * @var boolean
-	 */
-	public $included = false;
-
-	/**
-	 * The requested data and input
-	 * @var sb_Request
-	 */
-	public $request;
-
-	/**
-	 * The argument delimeter e.g. the comma in: /view/action/1,2,3
-	 * @var string
-	 */
-	protected $input_args_delimiter = '/';
-
-	/**
-	 * Determines if the controller's public properties become
-	 * local vars in the views or not
-	 * @var boolean 
-	 */
-	protected $extract = false;
-
-	/**
-	 * Determines which file is loaded in the view directory if one is not specified.  When not set renders index.view.  To set just use template name minus the .view extension e.g. $this->default-file = index;
-	 *
-	 * @var string
-	 */
-	protected $default_file = 'index';
-	
-	/**
-	 * An array of REGex to callable that routes requests that are not otherwise servable
-	 * @var array 
-	 */
-	public $routing_patterns = Array();
-
-	/**
-	 * Filters the output after the view is rendered but before
-	 * it is displayed so that you can filter the output
-	 *
-	 * @param $output
-	 * @return string
-	 */
-	public function filter_output($output) {
-		return $output;
-	}
-
-	/**
-	 * Sets the request paramter
-	 *
-	 * @param sb_Request $request The request instance fed to the view
-	 */
-	final public function set_request(sb_Request $request) {
-
-		$this->request = $request;
-
-		$request->set_input_args_delimiter($this->input_args_delimiter);
-	}
-
-	/**
-	 * Fires before any response is rendered by he controller allowing you to make decisions, check input args, etc before the output is rendered.
-	 * If you return false from this method then no output is rendered.
-	 * @return boolean determines if anything should render anything or not, false == no render
-	 */
-	public function on_before_render($method = '') {
-
-		return true;
-	}
-
-	/**
-	 * Render the response based on the request
-	 *
-	 * I had to remove default arguments in order to get around issue with incompatbile
-	 * child class methods when E_STRICT is enabled.  I am keeping them in phpdoc
-	 * 
-	 * @param String $template the template to use e.g. /dance
-	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view
-	 * 
-	 */
-	public function render() {
-
-		$args = func_get_args();
-		$template = isset($args[0]) ? $args[0] : '';
-		$extract_vars = isset($args[1]) ? $args[1] : null;
-
-		$output = '';
-
-		//capture view to buffer
-		ob_start();
-		//if no method is set, use index, for the IndexController that would be request path array 0
-
-		if (get_class($this) == 'IndexController') {
-			$method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
-		} else {
-			$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
-		}
-		
-		//return the servable method
-		$response = Gateway::process_controller_method($this, $method);
-
-		if ($response['exists']) {
-			return $response['data'];
-		}
-
-		//if no matching controller and direct view rendering is allowed
-		if (Gateway::$allow_direct_view_rendering) {
-			//set default path
-			$path = $this->request->path;
-
-			//if there is a template render that
-			if (!empty($template)) {
-
-				if (isset($this->request->path_array[1])) {
-					$path = preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
-				} else {
-					$path .= $template;
-				}
-			} else if (isset($this->request->path_array[1])) {
-
-				$template = $this->request->path_array[1];
-			} else {
-				$path .= '/'.$this->default_file;
-			}
-
-			$this->template = $template;
-
-			if($this->get_view($path, $extract_vars)){
-				$output = ob_get_clean();
-				return $this->filter_output($output);
-			}
-		}
-		
-		if(isset($this->routing_patterns)){
-			foreach($this->routing_patterns as $pattern=>$method){
-				if(preg_match($pattern, Gateway::$request->request)){
-					if(is_callable($method)){
-						return $this->filter_output(call_user_func($method, $pattern));
-					} else if(is_string($method) && is_callable(Array($this, $method))){
-						return $this->filter_output($this->$method($pattern));
-					}
-
-				}
-			}
-		}
-		
-		$this->not_found();
-	}
-
-	/**
-	 * Renders the actual .view template
-	 * @param string $view_path The path to the template e.g. /blah/foo
-	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view
-	 * @return string 
-	 */
-	protected function get_view($_view_path, $extract_vars = null) {
-
-		//extract class vars to local vars for view
-		if ($this->extract) {
-			extract(get_object_vars($this));
-		}
-
-		if (!is_null($extract_vars)) {
-			if (is_object($extract_vars)) {
-				$extract_vars = get_object_vars($extract_vars);
-			}
-			if (is_array($extract_vars)) {
-				extract($extract_vars);
-			}
-		}
-
-		$_pwd = ROOT . '/private/views/' . $_view_path . '.view';
-
-		if (!is_file($_pwd)) {
-			$_pwd = false;
-			foreach (Gateway::$mods as $mod) {
-				$m = ROOT . '/mod/' . $mod . '/views/' . $_view_path . '.view';
-				if (is_file($m)) {
-					$_pwd = $m;
-					break;
-				}
-			}
-		}
-
-		if ($_pwd) {
-			require($_pwd);
-			return true;
-		}
-		return false;
-		return $this->not_found($_view_path);
-	}
-
-	/**
-	 * Include an arbitrary .view template within the $this of the view
-	 * @param string $view_path  e.g. .interface/cp
-	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view
-	 */
-	public function render_view($path, $extract_vars = null) {
-
-		//capture view to buffer
-		ob_start();
-
-		$this->get_view($path, $extract_vars);
-		return ob_get_clean();
-	}
-
-	/**
-	 * Default request not fullfilled
-	 */
-	public function not_found() {
-
-		$file = ROOT . '/private/views/errors/404.view';
-		if (is_file($file)) {
-			include_once($file);
-		} else {
-			header("HTTP/1.0 404 Not Found");
-		}
-	}
-
-}
-
-/**
- * Models an incoming request's path and data e.g. /_surebert/custom
- * @author paul.visco@roswellpark.org
- * @package sb_Request
- *
- */
-class sb_Request {
-
-	/**
-	 * The path as a string eg. /surebert/load
-	 * @var string
-	 */
-	public $path;
-
-	/**
-	 * The path requested e.g. /user/dance
-	 * @var string
-	 */
-	public $request;
-
-	/**
-	 * The path as an array /view/action Array('view', 'action')
-	 * @var array
-	 */
-	public $path_array = Array();
-
-	/**
-	 * The framework path args in e.g. /view/action/1,2,3 it would be 1,2,3
-	 * @var array
-	 */
-	public $args = Array();
-
-	/**
-	 * The "get" based input arguments from the request e.g. ?dog=cat as an array of key value pairs
-	 * @var array
-	 */
-	public $get = Array();
-
-	/**
-	 * The post based input from the request - used to pass or similate $_POST
-	 * @var array
-	 */
-	public $post = Array();
-
-	/**
-	 * Any incoming data not specified in post e.g. PUT, DELETE, command line etc
-	 * @var array
-	 */
-	public $data = Array();
-
-	/**
-	 * The cookies with the request
-	 * @var array
-	 */
-	public $cookie = Array();
-
-	/**
-	 * A copy of the global $_FILES array, can be used to simulate file uploads
-	 * @var array
-	 */
-	public $files = Array();
-
-	/**
-	 * The method
-	 * @var string The request method
-	 */
-	public $method = 'GET';
-
-	/**
-	 * Creates a new request instance
-	 * @param $request The string request with args e.g. /_surebert/custom/strings.numPad
-	 */
-	public function __construct($request) {
-
-		if (preg_match("~\?(.*)$~", $request, $match)) {
-			$request = preg_replace("~\?.*$~", '', $request);
-			if (isset($match[1])) {
-				parse_str($match[1], $this->get);
-			}
-		}
-
-		if (method_exists('App', 'filter_all_input')) {
-			App::filter_all_input($this->get);
-		}
-
-		$this->request = urldecode($request);
-
-		$arr = explode("/", substr_replace($this->request , "", 0, 1));
-
-		$this->path_array[0] = $arr[0];
-		if (isset($arr[1]) && !empty($arr[1])) {
-			$this->path_array[1] = $arr[1];
-		}
-
-		$this->path = "/" . implode("/", $this->path_array);
-
-		$this->set_input(Gateway::$post, Gateway::$cookie, Gateway::$files, Gateway::$data);
-
-		$this->method = Gateway::$request_method;
-	}
-
-	/**
-	 * Sets the input for the request
-	 * @param $post
-	 * @param $cookie
-	 * @param $files
-	 */
-	public function set_input(&$post, &$cookie, &$files, &$data) {
-
-		$this->post = $post;
-		$this->cookie = $cookie;
-		$this->files = $files;
-		$this->data = $data;
-	}
-
-	/**
-	 * Sets the input argument delimeter and parses it
-	 * @param $input_args_delimiter
-	 */
-	public function set_input_args_delimiter($input_args_delimiter) {
-
-		//parse arguments by removing path
-		$args = preg_replace("~^.{" . strlen($this->path) . "}/?~", "", $this->request);
-
-		//remove $_GET string
-		$args = preg_replace("~\?.*?$~", "", $args);
-
-		if ($args !== '') {
-
-			$this->args = explode($input_args_delimiter, $args);
-
-			//decodes url encoding
-			foreach ($this->args as &$arg) {
-				$arg = urldecode($arg);
-			}
-
-			if (method_exists('App', 'filter_all_input')) {
-				App::filter_all_input($this->args);
-			}
-		}
-	}
-
-	/**
-	 * Gets a get variable value or returns the default value (null unless overridden)
-	 * @param string $key The $_GET var key to look for
-	 * @param mixed $default_val null by default
-	 * @return mixed string value or null 
-	 */
-	public function get_get($key, $default_val = null) {
-
-		if (isset($this->get[$key])) {
-			return $this->get[$key];
-		}
-
-		return $default_val;
-	}
-
-	/**
-	 * Gets a post variable value or returns the default value (null unless overridden)
-	 * @param string $key The $_POST var key to look for
-	 * @param mixed $default_val null by default
-	 * @return mixed string value or null 
-	 */
-	public function get_post($key, $default_val = null) {
-		if (isset($this->post[$key])) {
-			return $this->post[$key];
-		}
-
-		return $default_val;
-	}
-
-	/**
-	 * Gets a cookie value if set, otherwise returns null
-	 * 
-	 * @param string $key The key to look for
-	 * @return mixed the string value or null if not found
-	 */
-	public function get_cookie($key, $default_val = null) {
-		if (isset($this->cookie[$key])) {
-			return $this->cookie[$key];
-		}
-
-		return $default_val;
-	}
-
-	/**
-	 * Gets a get variable value or returns the default value (null unless overridden)
-	 * @param string $key The $_SESSION var key to look for
-	 * @param mixed $default_val null by default
-	 * @return mixed string value or null 
-	 */
-	public function get_session($key, $default_val = null) {
-
-		if (isset($_SESSION[$key])) {
-			return $_SESSION[$key];
-		}
-
-		return $default_val;
-	}
-
-	/**
-	 * Gets a args variable value or returns the default value (null unless overridden)
-	 * @param integer $arg_num The numeric arg value
-	 * @param mixed $default_val null by default
-	 * @return mixed string value or null 
-	 */
-	public function get_arg($arg_num, $default_val = null) {
-		if (isset($this->args[$arg_num])) {
-			return $this->args[$arg_num];
-		}
-
-		return $default_val;
-	}
-
-}
-
-/**
- * Stores configuration variables
- */
-class sb_Config {
-
-	/**
-	 * Stores all the data
-	 * @var <type>
-	 */
-	protected static $hash = Array();
-
-	/**
-	 * Gets a config variable
-	 * @param string $key The key to get the value for
-	 * @return string value
-	 */
-	public static function get($key) {
-		return isset(self::$hash[$key]) ? self::$hash[$key] : null;
-	}
-
-	/**
-	 * Stes a config variable
-	 * @param string $key The key to set
-	 * @param mixed $val The value to set
-	 */
-	public static function set($key, $val) {
-		self::$hash[$key] = $val;
-	}
-
-	/**
-	 * A dump of the entire config value array
-	 * @return array
-	 */
-	public static function dump() {
-		return print_r(self::$hash, 1);
-	}
-
-}
 
 /**
  * The main gateway
@@ -514,7 +27,7 @@ class Gateway {
 
 	/**
 	 * The main controller being served by the request
-	 * @var sb_Controller
+	 * @var sb\Controller
 	 */
 	public static $controller;
 
@@ -527,7 +40,7 @@ class Gateway {
 
 	/**
 	 * The request path being requested
-	 * @var sb_Request
+	 * @var sb\Request
 	 */
 	public static $request;
 
@@ -593,14 +106,14 @@ class Gateway {
 	public static $command_line = false;
 
 	/**
-	 * The type of controller to use by default - must extend sb_Controller
+	 * The type of controller to use by default - must extend sb\Controller
 	 * @var string
 	 */
 	public static $default_controller_type = 'IndexController';
-
+	
 	/**
 	 * An instance of a logger used to log all gateway requests during debugging
-	 * @var sb_Logger_Base
+	 * @var \sb\Logger_Base
 	 */
 	public static $logger;
 
@@ -629,28 +142,28 @@ class Gateway {
 	 * @param mixed $data
 	 */
 	public function json_encode($data) {
-		$response = new sb_Ajax_Response();
+		$response = new Ajax\Response();
 		$response->set_content($data);
 		$response->dispatch();
 	}
 
 	/**
 	 * Loads a view for rendering
-	 * @param mixed $request Either an instance of sb_Request or a string with the path to the view e.g. /user/run
+	 * @param mixed $request Either an instance of Request or a string with the path to the view e.g. /user/run
 	 * @return string The rendered view data
 	 */
 	public static function render_request($request, $included = true) {
 
-		if ($request instanceof sb_Request && method_exists('App', 'filter_all_input')) {
+		if ($request instanceof Request && method_exists('\App', 'filter_all_input')) {
 
-			App::filter_all_input($request->get);
-			App::filter_all_input($request->post);
+			\App::filter_all_input($request->get);
+			\App::filter_all_input($request->post);
 		} else if (is_string($request)) {
-			$request = new sb_Request($request);
+			$request = new Request($request);
 		}
 
-		if (!$request instanceof sb_Request) {
-			trigger_error('$request must be a sb_Request instance');
+		if (!$request instanceof Request) {
+			trigger_error('$request must be a \sb\Request instance');
 		}
 
 		$controller = $request->path_array[0];
@@ -665,7 +178,7 @@ class Gateway {
 			if (!is_file(ROOT . '/private/controllers/' . $path)) {
 
 				if ($controller == 'surebert') {
-					$controller_class = 'sb_Controller_Toolkit';
+					$controller_class = '\sb\Controller_Toolkit';
 				} else {
 					$found = false;
 					foreach (Gateway::$mods as $mod) {
@@ -686,8 +199,10 @@ class Gateway {
 		if (!isset($controller_class)) {
 			$controller_class = Gateway::$default_controller_type;
 		}
-
+		
 		$controller = new $controller_class();
+
+		//$controller = new $controller_class();
 
 		$controller->included = $included;
 		if (!$included) {
@@ -697,8 +212,9 @@ class Gateway {
 			$request->get = array_merge(Gateway::$request->get, $request->get);
 		}
 
-		if (!$controller instanceof sb_Controller) {
-			trigger_error("Your custom controller " . $controller_class . " must extend sb_Controller");
+		if (!$controller instanceof Controller) {
+			
+			throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller");
 		}
 
 		$controller->set_request($request);
@@ -719,7 +235,7 @@ class Gateway {
 		}
 
 		if (method_exists($class, $method)) {
-			$reflection = new ReflectionMethod($class, $method);
+			$reflection = new \ReflectionMethod($class, $method);
 
 			//check for phpdocs
 			$docs = $reflection->getDocComment();
@@ -775,8 +291,42 @@ class Gateway {
 	 */
 	public static function sb_autoload($class_name) {
 
-		$class_name = str_replace('_', '/', $class_name);
+		if(strstr($class_name, "\\")){
+			
+			 $class_name = ltrim($class_name, '\\');
+			$fileName  = '';
+			$namespace = '';
+			if ($lastNsPos = strripos($class_name, '\\')) {
+				$namespace = substr($class_name, 0, $lastNsPos);
+				$class_name = substr($class_name, $lastNsPos + 1);
+				$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+			}
+			$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
 
+			$fileName = ROOT.'/vendor/'.$fileName;
+		
+			require $fileName;
+		} else if (preg_match('~Controller$~', $class_name)) {
+			$f = ROOT . '/private/controllers/' . $class_name . '.php';
+			if (is_file($f)) {
+				require($f);
+			} else {
+				foreach (Gateway::$mods as $mod) {
+					$f = ROOT . '/mod/' . $mod . '/controllers/' . $class_name . '.php';
+					if (is_file($f)) {
+						require($f);
+					}
+				}
+			}
+		}
+		
+	
+	return;
+		$class_name = str_replace('\\', '_', $class_name);
+		
+		$class_name = str_replace('_', '/', $class_name);
+		echo $class_name;
+		return;
 		if (substr($class_name, 0, 3) == 'sb/') {
 			$class_name = substr_replace($class_name, "", 0, 3);
 			require(SUREBERT_FRAMEWORK_SB_PATH . '/' . $class_name . '.php');
@@ -863,8 +413,9 @@ class Gateway {
 	 * @param $argv array Command line arguments
 	 */
 	public static function init($argv = null) {
+	
 		spl_autoload_extensions('.php');
-		spl_autoload_register("Gateway::sb_autoload");
+		spl_autoload_register("sb\Gateway::sb_autoload");
 
 		self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
@@ -879,7 +430,7 @@ class Gateway {
 		self::$request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::$request_method;
 
 		if (method_exists('App', 'filter_all_input')) {
-			App::filter_all_input($_POST);
+			\App::filter_all_input($_POST);
 		}
 
 		//$_GET is handled by sb_Request constructor so to allow included views to use ? GET syntax
@@ -966,7 +517,7 @@ $output = '';
 if ($request) {
 
 	//set the main request and filter the input if required
-	Gateway::$request = new sb_Request($request);
+	Gateway::$request = new Request($request);
 }
 
 //include site based definitions/global functions
@@ -987,8 +538,8 @@ if (isset(Gateway::$cmd_options)) {
 }
 
 //filter the output if required and display it
-if (method_exists('App', "filter_all_output")) {
-	echo App::filter_all_output($output);
+if (method_exists('\App', "filter_all_output")) {
+	echo \App::filter_all_output($output);
 } else {
 	echo $output;
 }

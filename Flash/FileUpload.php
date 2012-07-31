@@ -4,11 +4,11 @@
  * 
  * You can laos extend this class and add a on_save method which can handle different file upload types by extension, etc
  * @author visco
- * @package sb_Flash
- * @version 1.0 02/19/09
+ * @package Flash
  * 
  */
-class sb_Flash_FileUpload{
+namespace sb;
+class Flash_FileUpload{
 	
 	/**
 	 * The name of the file uploaded
@@ -65,7 +65,7 @@ class sb_Flash_FileUpload{
 	 * @param $key
 	 *
 	 * <code>
-	 * $file = new sb_Flash_FileUpload();
+	 * $file = new \sb\Flash_FileUpload();
 	 * $uploaded = $file->save(ROOT.'/public/content/users/paul/'.date('my'));
 	 * 
 	 * if($uploaded){
@@ -82,7 +82,7 @@ class sb_Flash_FileUpload{
 			$this->uploaded_file = Gateway::$request->files[$key];
 			
 		} else {
-			throw(new Exception('Gateway::$request->files['.$key.'] must be set in order to upload'));
+			throw(new \Exception('\sb\Gateway::$request->files['.$key.'] must be set in order to upload'));
 		}
 	}
 	
@@ -95,11 +95,11 @@ class sb_Flash_FileUpload{
 		
 		if(!is_dir($destination_directory)){
 			if(!mkdir($destination_directory, 0777, true)){
-				throw(new Exception('Could not create upload directory'));
+				throw(new \Exception('Could not create upload directory'));
 			}
 		}
 		
-		$this->name = sb_Strings::clean_file_name($this->uploaded_file['name']);
+		$this->name = Strings::clean_file_name($this->uploaded_file['name']);
 		
 		$this->path = $destination_directory.'/'.$this->name;
         $arr = explode('.', $this->name);
@@ -110,11 +110,11 @@ class sb_Flash_FileUpload{
 		$this->error = $this->uploaded_file['error'];
 
 		if($this->error && $this->error != UPLOAD_ERR_OK){
-			throw(new Exception(self::$upload_errors[$this->error]));
+			throw(new \Exception(self::$upload_errors[$this->error]));
 		}
 		
 		if(!move_uploaded_file($this->uploaded_file['tmp_name'], $this->path)){
-			throw(new Exception('The file could not be moved to its final destination at '.$this->path));
+			throw(new \Exception('The file could not be moved to its final destination at '.$this->path));
 		}
 		
 		if(method_exists($this, 'on_save')){

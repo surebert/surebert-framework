@@ -1,8 +1,9 @@
 <?php 
 /**
- * @package sb_Controller 
+ * @package Controller 
  */
-class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
+namespace sb;
+class Controller_Logviewer_FileSystem extends Controller_HTML5{
 
 	/**
 	 * Get the base url for the logs access url.  By default this is whatever
@@ -40,7 +41,7 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 	 */
 	protected function log_types_to_html_table($sort_by='name', $reverse=false){
 		
-		$directories = sb_Files::get_files($this->get_root(), true);
+		$directories = \sb\Files::get_files($this->get_root(), true);
 		foreach($directories as &$dir){
 			$dir['file_count'] = $dir['size']->file_count;
 			$dir['size'] = $dir['size']->size;
@@ -80,7 +81,7 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 		
 			$html .= '<tr><td>'.$data['name'].'</td>';
 			$html .= '<td>'.date('m/d/Y', intval($data['mtime'])).'</td>';
-			$html .= '<td>'.sb_Files::size_to_string($data['size']).'</td>';
+			$html .= '<td>'.\sb\Files::size_to_string($data['size']).'</td>';
 			$html .= '<td>'.$data['file_count'].'</td>';
 			$html .= '<td><a href="'.($this->get_base_url()).'?command=get_dates&log_type='.$data['name'].'">view</a> | <a href="'.(str_replace("#", "", $this->get_base_url())).'/export?log_type='.$data['name'].'">export</a></td>';
 			$html .= '</tr>';
@@ -99,7 +100,7 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 	 */
 	protected function dates_to_html_table($log_type, $sort_by='name', $reverse=false){
 		$log_type = preg_replace("~[^\w]~", "", $log_type);
-		$files = sb_Files::get_files($this->get_root().$log_type, false);
+		$files = \sb\Files::get_files($this->get_root().$log_type, false);
 		rsort($files);
 		$html = $this->get_nav().'<h1>Log: '.$log_type.'</h1>';
 		$html .= '<table><thead><tr>';
@@ -142,7 +143,7 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 			$html .= '<tr>';
 			$html .= '<td>'.str_replace(".log", "", $file['name']).'</td>';
 			
-			$html .= '<td>'.sb_Files::size_to_string($file['size']).'</td>';
+			$html .= '<td>'.\sb\Files::size_to_string($file['size']).'</td>';
 			$html .= '<td>';
 			$html .= '<a href="'.($this->get_base_url()).'?command=view&log_type='.$log_type.'&date_file='.$file['name'].'">view</a> | <a href="'.($this->get_base_url()).'?command=tail&n=100&log_type='.$log_type.'&date_file='.$file['name'].'">tail</a> |<a href="'.(str_replace("#", "", $this->get_base_url())).'/export?log_type='.$log_type.'&date_file='.$file['name'].'">export</a>';
 			$html .= '</td>';
@@ -284,7 +285,7 @@ class sb_Controller_Logviewer_FileSystem extends sb_Controller_HTML5{
 		$date_file = $this->get_get('date_file');
 		$date_file_path = $this->get_root().$log_type.'/'.$date_file;
 		if(($date_file && is_file($date_file_path)) || is_dir($date_file_path)){
-			return sb_Files_ForceDownload::file_to_zip($date_file_path);
+			return \sb\Files_ForceDownload::file_to_zip($date_file_path);
 		}
 				
 	}

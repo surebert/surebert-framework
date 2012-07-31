@@ -1,14 +1,14 @@
 <?php
 
 /**
- * This class is used to read an email inbox.  It required sb_Strings from the surebert framework REQUIRES sb_Email_Reader.php
+ * This class is used to read an email inbox.  It required \sb\Strings from the surebert framework REQUIRES \sb\Email\Reader.php
  *
  * @author Paul Visco
- * @version 2.01 07/09/2007
- * @package sb_Email
+ * @package \sb\Email
  * 
  */
-class sb_Email_Reader{
+namespace sb;
+class Email_Reader{
 
 	/**
 	 * The email address to load
@@ -91,7 +91,7 @@ class sb_Email_Reader{
 	 * Logs into the email inbox
 	 * 
 	 * <code>
-	 * $email_box = new sb_Email_Reader('paul@test.org', 'myPass', 'mail.test.org', 'imap');
+	 * $email_box = new Email_Reader('paul@test.org', 'myPass', 'mail.test.org', 'imap');
 	 * $email_box->log_file = '../_cache/sb_Email_Reader.log';
 	 * //$email_box->capture_body_html =0;
 	 * 
@@ -244,7 +244,7 @@ class sb_Email_Reader{
 	 * @param sb_Email $email
 	 * @param object $header
 	 */
-	public function parse_header_info(sb_Email &$email, $header){
+	public function parse_header_info(Email &$email, $header){
 		
 		//map the most useful header info to the email object itself
 		$email->all_headers = $header;
@@ -268,7 +268,7 @@ class sb_Email_Reader{
 	/**
 	 * Check in an email part for attachments and data
 	 *
-	 * @param sb_Email $email The email being examined
+	 * @param \sb\Email $email The email being examined
 	 * @param object $part The current part
 	 * @param string $part_id The id of the part
 	 */
@@ -305,7 +305,7 @@ class sb_Email_Reader{
 			case 'flv':
 				
 				if($part->type==5){
-					$attachment = new sb_EmailAttachment();
+					$attachment = new Email_Attachment();
 					$attachment->sizeK = $part->bytes/1000;
 					$attachment->subtype = $subtype;
 					$attachment->type = $part->type;
@@ -347,11 +347,11 @@ class sb_Email_Reader{
 
 		}
 
-		$this->log($this->email_count.' '.sb_Strings::pluralize($this->email_count, 'email').' to process.');
+		$this->log($this->email_count.' '.Strings::pluralize($this->email_count, 'email').' to process.');
 
 		for($i=1;$i<$this->email_count+1;$i++){
 
-			$email = new sb_Email;
+			$email = new Email;
 			
 			//set the message index in case we want to delete it later
 			$email->index = $i;

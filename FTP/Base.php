@@ -2,9 +2,9 @@
 /**
  * Common OOP interface for FTP and SFTP client
  *
- * @package sb_FTP
+ * @package FTP
  */
-interface sb_FTP_Base{
+interface FTP_Base{
 
 	/**
 	 * Login to a remote server with uname and pass based credentials

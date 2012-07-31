@@ -1,15 +1,12 @@
 <?php
-
-
-
 /**
  * Used to validate various strings
  * @author Paul Visco
- * @version 1.2 03/18/2008
- * @package sb_Validate
+ * @package Validate
  *
  */
-class sb_Validate_ContactInfo{
+namespace sb;
+class Validate_ContactInfo{
 
 
 	/**
@@ -19,11 +16,11 @@ class sb_Validate_ContactInfo{
 	 * @version 1.2 13/18/2008
 	 * @param string $email
 	 * @param string $check_mx_records Check the MX record at the dns to make sure the mail host exists
-	 * @return sb_Validate_Results
+	 * @return \sb\Validate_Results
 	 */
 	public static function email($email, $check_mx_records=true){
 
-		$result = new sb_Validate_Results();
+		$result = new \sb\Validate_Results();
 		$result->value = $email;
 
 		if(preg_match("/^[\w-!\+]+(\.[\w-!\+]+)*@[\w-]+(\.[\w-]+)*(\.[\w]{2,4})$/", $email)){
@@ -52,11 +49,11 @@ class sb_Validate_ContactInfo{
 	 * @param string $zip The zip code to validate in xxxxx or xxxxx-xxxx format
 	 * @param boolean check_usps Check the usps sie look for validation
 
-	 * @return sb_Validate_Results The message property includes the city if it exists
+	 * @return \sb\Validate_Results The message property includes the city if it exists
 	 */
 	public static function zip($zip, $check_usps=true){
 
-		$result = new sb_Validate_Results();
+		$result = new \sb\Validate_Results();
 		$result->value = $zip;
 		$result->is_valid = false;
 
@@ -100,11 +97,11 @@ class sb_Validate_ContactInfo{
 	 * @version 1.2 13/18/2008
 	 * @param string $phone The phone number to validate shoudl be in  xxx-xxx-xxxx format
 
-	 * @return sb_Validate_Results
+	 * @return \sb\Validate_Results
 	 */
 	public static function phone($phone){
 
-		$result = new sb_Validate_Results();
+		$result = new \sb\Validate_Results();
 		$result->value = $phone;
 		$result->is_valid = false;
 
@@ -126,11 +123,11 @@ class sb_Validate_ContactInfo{
 	 *
 	 * @param string $url The url to validate should
 
-	 * @return sb_Validate_Results
+	 * @return \sb\Validate_Results
 	 */
 	public static function url($url, $check_url=true){
 
-		$result = new sb_Validate_Results();
+		$result = new \sb\Validate_Results();
 		$result->value = $url;
 		$result->is_valid = false;
 		$result->data = new stdClass();
@@ -175,11 +172,11 @@ class sb_Validate_ContactInfo{
 	 * @version 1.2 13/18/2008
 	 *
 	 * @param string $state
-	 * @return sb_Validate_Results
+	 * @return \sb\Validate_Results
 	 */
 	public static function state($state){
 
-		$result = new sb_Validate_Results();
+		$result = new \sb\Validate_Results();
 		$result->value = $state;
 
 		if(in_array($state, array('AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WV', 'WY'))){
@@ -203,11 +200,11 @@ class sb_Validate_ContactInfo{
 	 * @version 1.2 13/18/2008
 	 *
 	 * @param string $province
-	 * @return sb_Validate_Results
+	 * @return \sb\Validate_Results
 	 */
 	public static function province($province){
 
-		$result = new sb_Validate_Results();
+		$result = new \sb\Validate_Results();
 		$result->value = $province;
 
 		if(in_array($province, array('AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'))){

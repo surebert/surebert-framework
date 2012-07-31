@@ -3,10 +3,11 @@
 /**
  * An Excel Spreadhseet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
  *
- * Extends sb_Excel_Reader to do excel to html mapping with css
- * @package sb_Excel
+ * Extends Excel_Reader to do excel to html mapping with css
+ * @package Excel
  */
-class sb_Excel_Reader_HTML extends sb_Excel_Reader {
+namespace sb;
+class Excel_Reader_HTML extends Excel_Reader {
 
 	/**
 	 * Converts excel file cell style info into css

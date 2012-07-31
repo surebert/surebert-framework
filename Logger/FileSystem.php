@@ -3,14 +3,14 @@
  * Used to log application state to the log files.
  *
  * @author Paul Visco
- * @package sb_Logger
- * @version 1.35 4/17/2008 05/12/2009
+ * @package Logger
  * 
  */
-class sb_Logger_FileSystem extends sb_Logger_Base{
+namespace sb;
+class Logger_FileSystem extends Logger_Base{
 	
 	/**
-	* Creates an sb_Logger instance
+	* Creates a filesystem type logger
 	* @param $agent String The agent string
 	*/
 	public function __construct($agent = '', $log_root=''){

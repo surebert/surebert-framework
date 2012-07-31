@@ -2,9 +2,10 @@
 /**
  * Used to easily convert XMPP_Packets from simpleXML to string and back
  * @author Paul Visco
- * @package sb_XMPP
+ * @package XMPP
  */
-abstract class sb_XMPP_Packet extends DOMDocument {
+namespace sb;
+abstract class XMPP_Packet extends \DOMDocument {
 
 	/**
 	 * gets the jid of the user that send the packet

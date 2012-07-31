@@ -2,13 +2,12 @@
 /**
  * The properties of the weather reading that are returned
  *
- * @author Paul 05/21/2005
- * @version 2.11  12/08/2008
- * @package sb_Web
+ * @author Visco
+ * @package Web
  * 
  */
-
-class sb_Web_WeatherFeed{
+namespace sb;
+class Web_WeatherFeed{
 	
 	/**
 	 * The current weather condition
@@ -44,6 +43,5 @@ class sb_Web_WeatherFeed{
 	 */
 	public $icon;
 }
-
 
 ?>

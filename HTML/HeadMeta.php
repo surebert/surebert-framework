@@ -5,9 +5,11 @@
  * You can add additional properties on the fly
  * @author visco
  * @version 1.0 12/08/08 12/08/08
- * @package sb_View
+ * @package sb\HTML
  */
-class sb_HTML_HeadMeta {
+
+namespace sb;
+class HTML_HeadMeta {
 
 	/**
 	 *

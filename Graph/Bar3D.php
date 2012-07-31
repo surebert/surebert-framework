@@ -3,13 +3,12 @@
 /**
  * Used to draw bar graphs
  * @author Paul Visco
- * @version 1.0 07/06/05
- * @package sb_Graph
+ * @package Graph
  *
  */
 
 /*
-$chunkChart = new sb_Graph_Bar3D(240, 130);
+$chunkChart = new \sb\Graph_Bar3D(240, 130);
 $chunkChart->title ="comments on e:strip per 24 hrs";
 $chunkChart->padding =5;
 //$chunkChart->setColors("#BBC086", "#AEB55C", "#949D2F", "#FFFFFF", "#757E10");
@@ -22,7 +21,8 @@ header("Content-type: image/gif");
 // return the image using imagepng or imagejpeg.
 imagegif($chunkChart->graph);
 */
-class sb_Graph_Bar3D{
+namespace sb;
+class Graph_Bar3D{
 
 	public $values = array();
 	public $graph;//the graph image

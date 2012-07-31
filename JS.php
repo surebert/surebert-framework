@@ -2,9 +2,10 @@
 /**
  * Used to respond to javascript requests
  * @author visco
- * @package sb_JS
+ * @package JS
  */
-class sb_JS{
+namespace sb;
+class JS{
 	
 	/**
 	 * The current on response headers

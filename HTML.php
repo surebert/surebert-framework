@@ -1,5 +1,10 @@
 <?php 
-class sb_HTML{
+/**
+ * Used to escape and unescape HTML for sanitation purposes
+ * @author paul.visco@roswellpark.org 
+ */
+namespace sb;
+class HTML{
 	
 	/**
 	 * Recursively htmlspecialchars string properties of objects and arrays 

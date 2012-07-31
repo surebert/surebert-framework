@@ -3,15 +3,17 @@
 /**
  * A ControllerClass that all HTML Controllers could/should extend
  * @author visco
- * @package sb_Controller
+ * @package Controller
  */
-class sb_Controller_HTML5 extends sb_Controller_HTTP{
+
+namespace sb;
+class Controller_HTML5 extends Controller_HTTP{
 
 	/**
 	 * Assigns the sb_HTML_HeadMeta property
 	 */
 	public function __construct(){
-		$this->meta = new sb_HTML_HeadMeta();
+		$this->meta = new HTML_HeadMeta();
 	}
     
 	/**
@@ -31,7 +33,7 @@ class sb_Controller_HTML5 extends sb_Controller_HTTP{
 	/**
 	 * The meta tags for the HTML head - author, description, keywords
 	 * You can add additional properties on the fly, they will be rendered in the $this->html_head() method
-	 * @var sb_HTMLHeadMeta
+	 * @var \sb\HTML_HeadMeta
 	 */
 	public $meta;
 
@@ -86,7 +88,7 @@ class sb_Controller_HTML5 extends sb_Controller_HTTP{
 
 		$html .= '<title>'.$this->title.'</title>'."\n";
 
-        if($this->meta instanceof sb_HTML_HeadMeta){
+        if($this->meta instanceof HTML_HeadMeta){
 
             foreach(get_object_vars($this->meta) as $key=>$val){
                 $html .= '<meta name="'.$key.'" content="'.$val.'" />'."\n";

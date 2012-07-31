@@ -1,13 +1,12 @@
 <?php
 /**
- * Extends native PDOStatement class for logging and debugging, when the logging is set on an sb_PDO instance.  You would never access this directly
+ * Extends native PDOStatement class for logging and debugging, when the logging is set on an \sb\PDO instance.  You would never access this directly
  *
  * @author paul.visco@roswellpark.org
- * @version 1.9 09/27/2007 04/01/2009
- * @package sb_PDO
+ * @package PDO
  */
-
-class sb_PDO_Statement_Logger extends PDOStatement {
+namespace sb;
+class PDO_Statement_Logger extends \PDOStatement {
 
 	public $connection;
 
@@ -132,16 +131,15 @@ class sb_PDO_Statement_Logger extends PDOStatement {
 /**
  * Extends native PDO class for logging and debugging
  *
- * @author paul.visco@roswellpark.org
- * @version 1.9 09/27/2007 04/01/2009
- * @package sb_PDO
+ * @author visco
+ * @package PDO
  *
  */
-class sb_PDO_Logger extends sb_PDO_Debugger {
+class PDO_Logger extends PDO_Debugger {
 
 	/**
-	 * An instance of sb_Logger used to do the logging
-	 * @var sb_Logger
+	 * An instance of \sb\Logger_Base used to do the logging
+	 * @var \sb\Logger_Base
 	 */
 	private $logger = null;
 
@@ -159,8 +157,8 @@ class sb_PDO_Logger extends sb_PDO_Debugger {
 	 * @param string $pass Password for connection if required
 	 *
 	 * <code>
-	 * $db=new sb_PDO_Logger("mysql:dbname=xxx;host=xxx", 'username', 'pass');
-	 * $db=new sb_PDO_Logger("sqlite:myfile.db3');
+	 * $db=new  \sb\PDO_Logger("mysql:dbname=xxx;host=xxx", 'username', 'pass');
+	 * $db=new \sb\PDO_Logger("sqlite:myfile.db3');
 	 * $db->set_logger(App::$logger);
 	 * </code>
 	 *
@@ -175,14 +173,14 @@ class sb_PDO_Logger extends sb_PDO_Debugger {
 	/**
 	 * Set the logger
 	 *
-	 * @param $logger sb_Logger An instance of sb_Logger or one is created using FileSystem logging
+	 * @param $logger \sb\Logger_Base An instance of \sb\Logge_rBase or one is created using FileSystem logging
 	 */
 	public function set_logger($logger=null) {
 
-		if($logger instanceOf sb_Logger_Base) {
+		if($logger instanceOf Logger_Base) {
 			$this->logger = $logger;
 		} else {
-			$this->logger = new sb_Logger_FileSystem();
+			$this->logger = new Logger_FileSystem();
 		}
 	}
 

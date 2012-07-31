@@ -3,22 +3,23 @@
  * Used to model an Epub document
  * $cssData = "body {\n  margin-left: .5em;\n  margin-right: .5em;\n  text-align: justify;\n}\n\np {\n  font-family: serif;\n  font-size: 10pt;\n  text-align: justify;\n  text-indent: 1em;\n  margin-top: 0px;\n  margin-bottom: 1ex;\n}\n\nh1, h2 {\n  font-family: sans-serif;\n  font-style: italic;\n  text-align: center;\n  background-color: #6b879c;\n  color: white;\n  width: 100%;\n}\n\nh1 {\n    margin-bottom: 2px;\n}\n\nh2 {\n    margin-top: -2px;\n    margin-bottom: 2px;\n}\n";
  *
- * $ebook = new sb_Ebook_Epub('hello world', 'Visco, Paul');
+ * $ebook = new \sb\Ebook_Epub('hello world', 'Visco, Paul');
 <code>
 //$ebook->set_date(strtotime('01/22/1977 12:00PM'));
 
 $ebook->add_global_css_file('test.css', $cssData);
 $ebook->add_cover('cover.jpg');
-$ebook->add_chapter(new sb_Ebook_Epub_Chapter('chapter 1', '<h1>Chapter 1</h1><p>blah blah</p>'));
-$ebook->add_chapter(new sb_Ebook_Epub_Chapter('chapter 2', '<h1>Chapter 2</h1><p>blah blah</p>'));
-$ebook->add_chapter(new sb_Ebook_Epub_Chapter('chapter 3', '<h1>Chapter 3</h1><p>blah blah</p>'));
-$ebook->add_chapter(new sb_Ebook_Epub_Chapter('chapter 4', '<h1>Chapter 4</h1><p>blah blah</p>'));
+$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 1', '<h1>Chapter 1</h1><p>blah blah</p>'));
+$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 2', '<h1>Chapter 2</h1><p>blah blah</p>'));
+$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 3', '<h1>Chapter 3</h1><p>blah blah</p>'));
+$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 4', '<h1>Chapter 4</h1><p>blah blah</p>'));
 $ebook->output();
  * </code>
  * @author visco
  * @package Epub
  */
-class sb_Ebook_Epub{
+namespace sb;
+class Ebook_Epub{
 
 	public $global_style_sheets = Array();
 
@@ -39,13 +40,13 @@ class sb_Ebook_Epub{
 
 	/**
 	 *
-	 * @var sb_Ebook_Epub_OPF
+	 * @var \sb\Ebook_Epub_OPF
 	 */
 	public $ocf;
 
 	/**
 	 *
-	 * @var sb_Ebook_Epub_NCX
+	 * @var sb\Ebook_Epub_NCX
 	 */
 	public $ncx;
 
@@ -59,13 +60,13 @@ class sb_Ebook_Epub{
 			$this->debug("Opening archive: ".$this->tmp_file);
 			$this->create_archive();
 			$this->create_container_xml();
-			$this->opf = new sb_Ebook_Epub_OPF();
+			$this->opf = new \sb\Ebook_Epub_OPF();
 
-			$this->ncx = new sb_Ebook_Epub_NCX();
+			$this->ncx = new \sb\Ebook_Epub_NCX();
 			$this->set_title($title);
 			$this->set_author($author);
 		} else {
-			throw(new Exception("Could not create archive: ".$this->tmp_file));
+			throw(new \Exception("Could not create archive: ".$this->tmp_file));
 		}
 
 	}
@@ -116,7 +117,7 @@ class sb_Ebook_Epub{
 	 * @return <type>
 	 */
 	public function file_to_mime($filename){
-		return sb_Files::file_to_mime($filename);
+		return \sb\Files::file_to_mime($filename);
 	}
 
 	/**
@@ -161,7 +162,7 @@ class sb_Ebook_Epub{
 	public function set_language($lang='en'){
 
 		if (mb_strlen($language) != 2) {
-			throw(new Exception("language must be two char language code e.g. en, de"));
+			throw(new \Exception("language must be two char language code e.g. en, de"));
 		}
 		return $this->opf->set_language($lang);
 	}
@@ -173,7 +174,7 @@ class sb_Ebook_Epub{
 
 	public function set_identifier($identifier, $identifier_type){
 		if ($identifier_type != "URI" && $identifier_type != "ISBN" && $identifier_type != "UUID") {
-			throw(new Exception("Identifier type must be ISBN, UUID, or URI"));
+			throw(new \Exception("Identifier type must be ISBN, UUID, or URI"));
 		}
 		$this->identifier = $identifier;
 		$this->identifier_type = $identifier_type;
@@ -196,7 +197,7 @@ class sb_Ebook_Epub{
 
 	}
 
-	public function add_chapter(sb_Ebook_Epub_Chapter $chapter, $linear='yes'){
+	public function add_chapter(\sb\Ebook_Epub_Chapter $chapter, $linear='yes'){
 		$chapter->add_css($this->global_style_sheets);
 		$this->add_chapter_raw($chapter->title, $chapter->saveXML(), $linear);
 		return $chapter;
@@ -208,7 +209,7 @@ class sb_Ebook_Epub{
 		}
 
 		$this->add_file('cover.jpg', $data, 'cover', 'image/jpeg');
-		$cover = new sb_Ebook_Epub_Chapter('Cover', '<div id="cover-image"><img src="cover.jpg" alt="Cover Image"/></div>');
+		$cover = new \sb\Ebook_Epub_Chapter('Cover', '<div id="cover-image"><img src="cover.jpg" alt="Cover Image"/></div>');
 		$this->add_chapter($cover, 'no');
 
 	}
@@ -239,7 +240,7 @@ class sb_Ebook_Epub{
 		header('Content-Transfer-Encoding: binary');
 		header('Content-Length: ' . strlen($this->tmp_file));
 
-		sb_Files::read_chunked($this->tmp_file);
+		\sb\Files::read_chunked($this->tmp_file);
 	}
 
 	protected function debug($str){

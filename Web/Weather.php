@@ -1,13 +1,12 @@
 <?php
-
 /**
  * used to read the weather from NOAA, requires sb_Weather_Feed
  *
- * @author Paul 05/21/2005
- * @package sb_Web
+ * @package Web
  * 
  */
-class sb_Web_Weather{
+namespace sb;
+class Web_Weather{
 
 	/**
 	 * 
@@ -16,13 +15,13 @@ class sb_Web_Weather{
 	 * @param string $feed The url to the weather feed from NOAA e.g.
 	 * @return object weather_feed
 	 * <code>
-	 * $weather = sb_Web_Weather::fetch('http://w1.weather.gov/xml/current_obs/KBUF.xml');
+	 * $weather = \sb\Web_Weather::fetch('http://w1.weather.gov/xml/current_obs/KBUF.xml');
 	 * print_r($weather);
 	 * </code>
 	 */
 	public static function fetch($feed){
 	
-		$weather = new sb_Web_WeatherFeed();
+		$weather = new \sb\Web_WeatherFeed();
 		$parts = parse_url($feed);
 		$fp = @fsockopen($parts['host'], 80, $errno, $errstr, 2);
 		if($fp) {

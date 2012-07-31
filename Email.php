@@ -3,10 +3,11 @@
  * Object to represent an email used by sb_EmailReader and sb_EmailWriter
  * 
  * @author Paul Visco
- * @package sb_Email
+ * @package Email
  *
  */
-class sb_Email{
+namespace sb;
+class Email{
 	
 	/**
 	 * The index number of the message in the inbox
@@ -189,12 +190,12 @@ class sb_Email{
 	 *
 	 * //you can also manually add an attachment from a non file e.g. data from database
 	 * //create an optional attachment
-	 * $myAttachment = new sb_Email_Attachment();
+	 * $myAttachment = new \sb\Email_Attachment();
 	 *
 	 * //set up the properties for the attachment
 	 * $myAttachment->name = 'MyPicture.jpg';
 	 *
-	 * //this is the content, in this case I am ready the blob data from a saved image file but you could easily replace this with blob data from a database.  The mime type will be added based on the extension using sb_Files::extension_to_mime.  For bizarre mime-types that are not in sb_Files::extension_to_mime you can override this by setting the mime-type manually $myAttachment->mime_type ='bizarre/weird';
+	 * //this is the content, in this case I am ready the blob data from a saved image file but you could easily replace this with blob data from a database.  The mime type will be added based on the extension using \sb\Files::extension_to_mime.  For bizarre mime-types that are not in \sb\Files::extension_to_mime you can override this by setting the mime-type manually $myAttachment->mime_type ='bizarre/weird';
 	 * $myAttachment->contents = $filedata;
 	 *
 	 * </code>
@@ -215,9 +216,9 @@ class sb_Email{
 
 	/**
 	 * Adds an attachment to the email
-	 * @param $attachment sb_Email
+	 * @param $attachment \sb\Email
 	 */
-	public function add_attachment(sb_Email_Attachment $attachment){
+	public function add_attachment(Email_Attachment $attachment){
 		$this->attachments[] = $attachment;
 	}
 
@@ -226,9 +227,9 @@ class sb_Email{
 	 * 
 	 * @param sb_ICalendar_Event $event
 	 */
-	public function add_ICalendar_Event(sb_ICalendar_Event $event){
+	public function add_ICalendar_Event(ICalendar_Event $event){
 
-		$a = new sb_Email_Attachment();
+		$a = new Email_Attachment();
 		$a->mime_type = 'text/calendar;';
 		$a->set_encoding('8bit');
 		$a->name = 'event.ics';
@@ -255,10 +256,10 @@ class sb_Email{
      */
     public function send($outbox=null){
 
-        if($outbox instanceof sb_Email_Writer){
+        if($outbox instanceof Email_Writer){
             self::$outbox = $outbox;
         } else if(!self::$outbox){
-            self::$outbox = new sb_Email_Writer();
+            self::$outbox = new Email_Writer();
         }
 
 		if($this->on_before_send($this) !== false){
@@ -379,7 +380,7 @@ class sb_Email{
                 }
 
                 if(empty($attachment->mime_type)) {
-                    $attachment->mime_type = sb_Files::file_to_mime($attachment->filepath);
+                    $attachment->mime_type = Files::file_to_mime($attachment->filepath);
                 }
 
             }
@@ -388,7 +389,7 @@ class sb_Email{
 
             //try and guess the mime type unless it is set
             if(empty($attachment->mime_type)) {
-                $attachment->mime_type = sb_Files::extension_to_mime($attachment->extension);
+                $attachment->mime_type = Files::extension_to_mime($attachment->extension);
             }
 
 			if($attachment->encoding == 'base64'){

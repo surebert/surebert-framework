@@ -1,16 +1,15 @@
 <?php
 /**
  * @author Tony Cashaw
- * @version 1.2 02-14-2008 12-08-2008
- * @package sb_PDO
+ * @package PDO
  */
-
-class sb_PDO_RecordPager {
+namespace sb;
+class PDO_RecordPager {
 
 	/**
 	 * The connection object to your database
 	 *
-	 * @var object sb_PDO
+	 * @var object PDO
 	 */
 	private $db;
 
@@ -58,28 +57,28 @@ class sb_PDO_RecordPager {
 	public $values = array();
 
 	/**
-	 * Creates the record paging object and accepts an sb_PDO database connection
+	 * Creates the record paging object and accepts an \sb\PDO database connection
 	 *
-	 * @param sb_PDO $db
+	 * @param PDO $db
 	 */
-	public function __construct(sb_PDO $db) {
+	public function __construct(PDO $db) {
 		$this->db = $db;
 	}
 
 	/**
-	 * Returns an object of type sb_PDORecordPage set to the page numberd $pagenum
+	 * Returns an object of type PDORecordPage set to the page numberd $pagenum
 	 *
-	 * Changed this 05/06/2008 Paul Visco added use of $this->values and $this->object_type to support additional sb_PDO->s2o() arguments
+	 * Changed this 05/06/2008 Paul Visco added use of $this->values and $this->object_type to support additional \sb\PDO->s2o() arguments
 	 *
 	 * @param integer $pagenum
-	 * @return sb_PDORecordPage
+	 * @return \sb\PDORecordPage
 	 *
 	 * <code>
 	 * 
 	 * //get the current requested page from an internet user
 	 * $pnum = (isset($_REQUEST['page']))?$_REQUEST['page']:1;
 	 * 
-	 * $pager = new sb_PDO_RecordPager($mysqlconn);
+	 * $pager = new \sb\PDO_RecordPager($mysqlconn);
 	 * $pager->sql = "SELECT * FROM user ORDER BY lname DESC;";
 	 * $pager->pagesize = 20 //optional default is set to 10
 	 * $res = $pager->get_page($punm);
@@ -90,25 +89,25 @@ class sb_PDO_RecordPager {
 	 * </code>
 	 *
 	 */
-	public function get_page($pagenum = 1, sb_PDO_RecordPage $ret = null) {
+	public function get_page($pagenum = 1, PDO_RecordPage $ret = null) {
 
 		$pagenum = ($pagenum<1)?1:$pagenum;
 
 		if((trim($this->sql) == '')) {
 
-			throw(new Exception("The SQL statement '$this->sql' is not valid."));
+			throw(new \Exception("The SQL statement '$this->sql' is not valid."));
 
 		}
 		else if( !(stristr(($this->sql), 'SELECT')) || (stristr(($this->sql), 'LIMIT'))) {
 
-			throw(new Exception("SQL must be a 'SELECT' statment with no 'LIMIT' clause"));
+			throw(new \Exception("SQL must be a 'SELECT' statment with no 'LIMIT' clause"));
 
 		}
 		else {
 
 			//start return object
 			if(!$ret) {
-				$ret = new sb_PDO_RecordPage();
+				$ret = new PDO_RecordPage();
 			}
 
 			$this->sql = str_replace(";", "", $this->sql);
@@ -154,7 +153,7 @@ class sb_PDO_RecordPager {
 
 	/**
 	 * After a sql statment has been set for this object this method will return
-	 * a class of type sb_PDORecordPage that is the first page that meets the following
+	 * a class of type \sb\PDORecordPage that is the first page that meets the following
 	 * search critieria:
 	 * 		$field (the field to search)
 	 * 		$value (the value of the specified field)
@@ -163,7 +162,7 @@ class sb_PDO_RecordPager {
 	 * @author Tony Cashaw
 	 * @param string $field
 	 * @param string $value
-	 * @return object sb_PDORecordPage or 0 if the value is not found
+	 * @return object \sb\PDORecordPage or 0 if the value is not found
 	 *
 	 * <code>
 	 * //... continued from above
@@ -202,13 +201,13 @@ class sb_PDO_RecordPager {
 							return $page;
 						}
 					} else {
-						throw(new Exception("The field $field is not contained in the recordset you request to search"));
+						throw(new \Exception("The field $field is not contained in the recordset you request to search"));
 					}
 
 				}
 			}
 		} else {
-			throw(new Exception("\$sql not set. Please set SQL before flipping to a page"));
+			throw(new \Exception("\$sql not set. Please set SQL before flipping to a page"));
 		}
 
 		return 0;

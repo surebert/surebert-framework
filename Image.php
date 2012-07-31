@@ -4,13 +4,12 @@
  * This class is used to edit images.
  * 
  * @author Paul Visco 10/26/2005
- * @version 2.0 07/08/2007
- * @package sb_Image
+ * @package Image
  * 
  *
  */
-
-class sb_Image{
+namespace sb;
+class Image{
 	/**
 	 * The file path to the original image file being edited
 	 *
@@ -69,7 +68,7 @@ class sb_Image{
 	 * @param string $orig the file path to the image being edited
 	 * @param string $dest optional, the file path to name the edited file should be saved as, without this the original file gets saved over with the edited version
 	 * <code>
-	 * $sb_Image = new sb_Image('orig.jpg', 'orig3.jpg');
+	 * $sb_Image = new \sb\Image('orig.jpg', 'orig3.jpg');
 	 *
 	 * //$sb_Image->to_grayscale();
 	 * $sb_Image->resize(200, -1);

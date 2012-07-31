@@ -3,9 +3,10 @@
  * Stores data in APC - requires the apc extension is installed
  * @author visco
  * @version 1.0 01/23/2009 05/14/2009
- * @package sb_Cache
+ * @package Cache
  */
-class sb_Cache_APC implements sb_Cache_Base{
+namespace Cache;
+class Cache_APC implements Cache_Base{
 	
 	/**
 	 * The key to store the catalog in
@@ -29,8 +30,6 @@ class sb_Cache_APC implements sb_Cache_Base{
 	
 	/**
 	 * Store the cache data in APC
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#store()
 	 */
 	public function store($key, $data, $lifetime = 0) {
 		
@@ -45,8 +44,6 @@ class sb_Cache_APC implements sb_Cache_Base{
 	        
 	/**
 	 * Fetches the cache from APC
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#fetch()
 	 */
 	public function fetch($key) {
 		$key = $this->namespace.$key;
@@ -56,8 +53,6 @@ class sb_Cache_APC implements sb_Cache_Base{
 	
 	/**
 	 * Deletes cache data
-	 * (non-PHPdoc)
-	 * @see trunk/private/framework/sb/sb_Cache#delete()
 	 */
 	public function delete($key) {
 	
@@ -82,8 +77,6 @@ class sb_Cache_APC implements sb_Cache_Base{
 	
 	/**
 	 * Clears the whole cache
-	 * (non-PHPdoc)
-	 * @see private/framework/sb/sb_Cache#clear_all()
 	 */
 	public function clear_all(){
 		return apc_clear_cache('user');

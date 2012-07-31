@@ -4,9 +4,10 @@
  *
  * You can add additional properties on the fly
  * @author visco
- * @package sb_Files
+ * @package Files
  */
-class sb_Files_ForceDownload{
+namespace sb;
+class Files_ForceDownload{
 
 	/**
 	 * Send headers and begins force-download
@@ -31,7 +32,7 @@ class sb_Files_ForceDownload{
 		while (ob_get_level() > 0) {
 			ob_end_flush();
 		}
-		sb_Files::read_chunked($file);
+		Files::read_chunked($file);
 	}
 	
 	/**
@@ -67,10 +68,10 @@ class sb_Files_ForceDownload{
 					unlink($zip_file);
 				}
 			} else {
-				throw(new Exception('failed to create zip file'));
+				throw(new \Exception('failed to create zip file'));
 			}
 		} else {
-			throw(new Exception('No data found!'));
+			throw(new \Exception('No data found!'));
 		}
 	}
 

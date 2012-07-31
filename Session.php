@@ -2,11 +2,10 @@
 /**
  * Base class for custom sessions
  * @author visco
- * @version 0.4 01/24/2009 01/24/2009
- * @package sb_Session
+ * @package Session
  */
-
-class sb_Session{
+namespace sb;
+class Session{
 
 	public function __construct(){
         session_start();

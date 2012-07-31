@@ -1,10 +1,10 @@
 <?php
 
 /**
- * sb_SMS
+ * SMS
  * 
  * <code>
- * $sms = new sb_Mobile_SMS();
+ * $sms = new \sb\Mobile_SMS();
  * $sms->send_to['num'] ='716-228-7445';
  * $sms->send_to['carrier'] ='sprint';
  * $sms->send_from['num'] ='x@t.com';
@@ -14,13 +14,12 @@
  * }
  * </code>
  *
- * @author Paul Visco
- * @version 1.1 04/25/04 08/23/07
- * @package sb_Mobile
+ * @author Visco
+ * @package Mobile
  * 
  */
-
-class sb_Mobile_SMS{
+namespace sb;
+class Mobile_SMS{
 	
 	/**
 	 * The telephone number to send to and the carrier

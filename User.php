@@ -2,10 +2,10 @@
 /**
  * Describe the most basic user in any sb framework system.  All users should extend this user
  * @author visco
- * @package sb_User
+ * @package User
  *
  */
-class sb_User{
+class User{
 	
 	/**
 	 * The last name of the person

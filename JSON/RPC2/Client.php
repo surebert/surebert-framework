@@ -3,10 +3,10 @@
  * The JSON_RPC2_Client used to send the request
  *
  * @author visco
- * @package sb_JSON_RPC2
+ * @package JSON_RPC2
  */
-
-class sb_JSON_RPC2_Client {
+namespace sb;
+class JSON_RPC2_Client {
 
 	/**
 	 * Determines if data is debugged to the output
@@ -37,19 +37,19 @@ class sb_JSON_RPC2_Client {
 	 * The user agent to send with the request
 	 * @var string
 	 */
-	public $agent = 'sb_JSON_RPC2_Client';
+	public $agent = '\sb\JSON_RPC2_Client';
 
 	/**
-	 * The sb_JSON_RPC2_Request to dispatch
-	 * @var sb_JSON_RPC2_Request
+	 * The \sb\_JSON_RPC2_Request to dispatch
+	 * @var \sb\JSON_RPC2_Request
 	 */
 	protected $request;
 
 	/**
-	 * Creates an instance of sb_JSON_RPC2_Client
+	 * Creates an instance of \sb\JSON_RPC2_Client
 	 *
 	 * <code>
-	 * $client = new sb_JSON_RPC2_Client('http://service.roswellpark.org/my/service');
+	 * $client = new \sb\JSON_RPC2_Client('http://service.roswellpark.org/my/service');
 	 * 
 	 * $x = $client->add(1,2);
 	 *
@@ -59,7 +59,7 @@ class sb_JSON_RPC2_Client {
 	 * @param $url String The url of the server
 	 * @param $timeout The time to wait for a response in seconds
 	 * @param $port Integer The port to make the request on
-	 * @return sb_JSON_RPC2_Response
+	 * @return \sb\JSON_RPC2_Response
 	 */
 	public function __construct($url, $timeout=1, $port=null) {
 		
@@ -94,7 +94,7 @@ class sb_JSON_RPC2_Client {
 	 * @param $key String
 	 */
 	public function use_encryption($key) {
-		$this->encryptor = new sb_Encryption_ForTransmission($key);
+		$this->encryptor = new Encryption_ForTransmission($key);
 		$this->encryption_key = $key;
 	}
 
@@ -113,15 +113,15 @@ class sb_JSON_RPC2_Client {
 	}
 
 	/**
-	 * Dispatches a sb_JSON_RPC2_Request
-	 * @param $request sb_JSON_RPC2_Request An object instance that models that request
-	 * @return sb_JSON_RPC2_Response
+	 * Dispatches a \sb\JSON_RPC2_Request
+	 * @param $request \sb\JSON_RPC2_Request An object instance that models that request
+	 * @return \sb\JSON_RPC2_Response
 	 */
-	public function dispatch(sb_JSON_RPC2_Request $request) {
+	public function dispatch(JSON_RPC2_Request $request) {
 	
 			if(!(is_array($request->params) || is_object($request->params))) {
-				$response = new sb_JSON_RPC2_Response();
-				$response->error = new sb_JSON_RPC2_Error('-32602');
+				$response = new JSON_RPC2_Response();
+				$response->error = new JSON_RPC2_Error('-32602');
 				$response->message = 'Invalid params';
 				$response->error->data = 'Invalid method parameters: '.json_encode($request->params);
 				return $response;
@@ -184,8 +184,8 @@ class sb_JSON_RPC2_Client {
 			}
 			$fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
 			if (!$fp || !(get_resource_type($fp) == 'stream')) {
-				$response = new sb_JSON_RPC2_Response();
-				$response->error = new sb_JSON_RPC2_Error('-32099');
+				$response = new JSON_RPC2_Response();
+				$response->error = new JSON_RPC2_Error('-32099');
 				$response->error->message = 'Server error';
 				$response->error->data = 'Could not reach: '.$this->host.": #$errno - $errstr";
 				return $response;
@@ -254,7 +254,7 @@ class sb_JSON_RPC2_Client {
 		$body = utf8_encode($body);
 		
 		if(!isset($response)){
-			$response = new sb_JSON_RPC2_Response($body);
+			$response = new JSON_RPC2_Response($body);
 		}
 
 		return $response;
@@ -268,7 +268,7 @@ class sb_JSON_RPC2_Client {
 	 */
 	public function __call($method, $args) {
 
-		$request = new sb_JSON_RPC2_Request();
+		$request = new JSON_RPC2_Request();
 		$request->method = $method;
 
 		$request->params = isset($args) ? $args : Array();
@@ -281,9 +281,9 @@ class sb_JSON_RPC2_Client {
 
 		$response = $this->dispatch($request);
 
-		if($response instanceof sb_JSON_RPC2_Response){
+		if($response instanceof JSON_RPC2_Response){
 			if(isset($response->error)) {
-				throw(new Exception($response->error->code.': '.$response->error->message.".\nData Received: ".(isset($response->error->data) ? $response->error->data : 'NONE')));
+				throw(new \Exception($response->error->code.': '.$response->error->message.".\nData Received: ".(isset($response->error->data) ? $response->error->data : 'NONE')));
 			} else {
 				return $response->result;
 			}

@@ -4,7 +4,8 @@
  * @package sb_ICalendar
  * @author paul.visco@roswellpark.org
  */
-class sb_ICalendar_Attendee{
+namespace sb;
+class ICalendar_Attendee{
 
 	/**
 	 * The display name of the attendee e.g Visco, Paul
@@ -22,7 +23,7 @@ class sb_ICalendar_Attendee{
 	 * Creates a new construct
 	 *
 	 * <code>
-	 * new sb_ICalendar_Attendee('Visco, Paul', 'paul.visco@roswellpark.org')
+	 * new \sb\ICalendar_Attendee('Visco, Paul', 'paul.visco@roswellpark.org')
 	 * </code>
 	 *
 	 * @param string $dname The display name

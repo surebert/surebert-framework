@@ -2,9 +2,10 @@
 /**
  * Describes the parameters returned from the govt weather SOAP service
  * @author visco
- * @package sb_Web_SOAP
+ * @package Web_SOAP
  */
-class sb_Web_SOAP_WeatherGovParametersType {
+namespace sb;
+class Web_SOAP_WeatherGovParametersType {
   public $maxt; // boolean
   public $mint; // boolean
   public $temp; // boolean
@@ -59,20 +60,20 @@ class sb_Web_SOAP_WeatherGovParametersType {
 
 
 /**
- * sb_Web_SOAP_WeatherGov class  This is used to lookup weather information
+ * Web_SOAP_WeatherGov class  This is used to lookup weather information
  *
  * @author visco
- * @package sb_Web_SOAP
+ * @package Web_SOAP
  * 
  * <code>
- * $weather = new sb_Web_SOAP_WeatherGov();
+ * $weather = new \sb\Web_SOAP_WeatherGov();
  * $result = $weather->LatLonListZipCode(14209);
  * </code>
  */
-class sb_Web_SOAP_WeatherGov extends SoapClient {
+class Web_SOAP_WeatherGov extends SoapClient {
 
   private static $classmap = array(
-                                    'weatherParametersType' => 'sb_Web_SOAP_WeatherGovParametersType',
+                                    'weatherParametersType' => '\sb\Web_SOAP_WeatherGovParametersType',
                                    );
 
   public function __construct($wsdl = "http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl", $options = array()) {

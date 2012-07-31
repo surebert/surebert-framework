@@ -10,9 +10,10 @@
  *
  * The db credetials should be for root or a user that has SELECT access to every database
  * @author Paul Visco paul.visco@roswellpark.org
- * @package sb_PDO
+ * @package PDO
  */
-class sb_PDO_BackupMysql {
+namespace sb;
+class PDO_BackupMysql {
 
 	/**
 	 * An array of databases to ignore
@@ -48,7 +49,7 @@ class sb_PDO_BackupMysql {
 	 * Connects to the database for SELECT and mysqldump
 	 *
 	 * <code>
-	 * $backup = new sb_PDO_BackupMysql('127.0.0.1', 'root', 'abc123');
+	 * $backup = new \sb\PDO_BackupMysql('127.0.0.1', 'root', 'abc123');
 	 * //optional
 	 * $backup->max_version = 3;
 	 * $backup->backup();

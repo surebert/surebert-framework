@@ -1,8 +1,9 @@
 <?php
 /**
- * @package sb_Application
+ * @package Application
  */
-class sb_Application_Debugger{
+namespace sb;
+class Application_Debugger{
 	
 	/**
 	 * Are errors displayed
@@ -48,8 +49,8 @@ class sb_Application_Debugger{
 			$message .= "Trace: \n\t" . str_replace("\n", "\n\t", print_r($e->getTrace(), 1));
 		}
 		
-		if(method_exists("App", "exception_handler")){
-			if(App::exception_handler($e, $message) === false){
+		if(method_exists("\App", "exception_handler")){
+			if(\App::exception_handler($e, $message) === false){
 				return false;
 			}
 		}
@@ -62,11 +63,11 @@ class sb_Application_Debugger{
 			}
 		}
 		
-		if (!isset(App::$logger)) {
-			App::$logger = new sb_Logger_FileSystem();
+		if (!isset(\App::$logger)) {
+			\App::$logger = new sb_Logger_FileSystem();
 		}
 
-		App::$logger->exceptions($message);
+		\App::$logger->exceptions($message);
       
     }
 

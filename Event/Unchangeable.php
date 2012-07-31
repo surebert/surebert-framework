@@ -3,9 +3,11 @@
  * Extends sb_Event to make an event for which the listeners cannot reset the original
  * data past to the event constructors 
  * @author paul.visco@roswellpark.org
+ * @package Event
  * 
  */
-class sb_Event_Unchangeable extends sb_Event{
+namespace sb;
+class Event_Unchangeable extends _Event{
 	/**
 	 * Sets the data for the event
 	 * @param array $data 
@@ -31,18 +33,18 @@ class sb_Event_Unchangeable extends sb_Event{
 	
 	/**
 	 * Stops programmer who wrote listener from overriding the args
-	 * @throws sb_Event_Unchangeable_Exception 
+	 * @throws \sb\Event_Unchangeable_Exception 
 	 */
 	public function set_args(){
-		throw(new sb_Event_Unchangeable_Exception());
+		throw(new \sb\Event_Unchangeable_Exception());
 	}
 	
 	/**
 	 * Stops programmer who wrote listener from overriding the args
-	 * @throws sb_Event_Unchangeable_Exception 
+	 * @throws \sb\Event_Unchangeable_Exception 
 	 */
 	public function set_arg(){
-		throw(new sb_Event_Unchangeable_Exception());
+		throw(new \sb\Event_Unchangeable_Exception());
 	}
 }
 
@@ -51,8 +53,8 @@ class sb_Event_Unchangeable extends sb_Event{
  * of an Event past to a listener
  * @author paul.visco@roswellpark.org 
  */
-class sb_Event_Unchangeable_Exception extends Exception{
-	protected $message = 'Cannot change args of an sb_Event_Unchangeable event';
+class Event_Unchangeable_Exception extends \Exception{
+	protected $message = 'Cannot change args of an \sb\Event_Unchangeable event';
 	protected $code = 1;
 }
 

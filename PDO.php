@@ -4,10 +4,10 @@
  * Extends native PDO class for logging and debugging
  * 
  * @author Paul Visco
- * @version 1.9 09/27/2007 04/01/2009
- * @package sb_PDO
+ * @package PDO
  */
-class sb_PDO extends PDO{
+namespace sb;
+class PDO extends \PDO{
 	
 	/**
 	 * This is an array of stored prepared sql statements for use with prepare_and_store
@@ -24,8 +24,8 @@ class sb_PDO extends PDO{
 	 * @param string $pass Password for connection if required
 	 * 
 	 * <code>
-	 * $db=new sb_PDO("mysql:dbname=xxx;host=xxx", 'username', 'pass');
-	 * $db=new sb_PDO("sqlite:myfile.db3');
+	 * $db=new \sb\PDO("mysql:dbname=xxx;host=xxx", 'username', 'pass');
+	 * $db=new \sb\PDO("sqlite:myfile.db3');
 	 * </code>
 	 * 
 	 */
@@ -34,10 +34,10 @@ class sb_PDO extends PDO{
 		parent::__construct($connection, $user, $pass);
 		
 		//sets default mode to fetch obj
-		$this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+		$this->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
 
         //silence all errors in production
-        $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+        $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
 	}
 	
 	/**
@@ -105,11 +105,11 @@ class sb_PDO extends PDO{
             return $stmt;
         } else if(!empty($class_name)){
             if(class_exists($class_name)){
-                return $stmt->fetchAll(PDO::FETCH_CLASS, $class_name);
+                return $stmt->fetchAll(\PDO::FETCH_CLASS, $class_name);
             }
         } else {
             //otherwise return standard objects
-            return $stmt->fetchAll(PDO::FETCH_OBJ);
+            return $stmt->fetchAll(\PDO::FETCH_OBJ);
         }
 		
 	}
@@ -127,10 +127,10 @@ class sb_PDO extends PDO{
 	 * $question->qid = 1;
 	 * $question->answer = 'grape';
 	 *
-	 * $params = sb_PDO::paramify($question);
+	 * $params = \sb\PDO::paramify($question);
 	 * //returns $params as Array ( [:qid] => 1 [:answer] => 'grape' )
      * 
-     * $params = sb_PDO::paramify(Array('qid' => 1, 'answer' => 'grape'));
+     * $params = \sb\PDO::paramify(Array('qid' => 1, 'answer' => 'grape'));
      * //returns $params as Array ( [:qid] => 1 [:answer] => 'grape' )
      * </code>
 	 *

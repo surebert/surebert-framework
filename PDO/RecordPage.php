@@ -3,10 +3,10 @@
  * A data object with the details and records of a paged MySQL query
  *
  * @author Tony Cashaw
- * @version 1.0 2008-02-01
- * @package sb_PDO
+ * @package PDO
  */
-class sb_PDO_RecordPage {
+namespace sb;
+class PDO_RecordPage {
 
 	/**
 	 * The page number that this object is set to
