@@ -206,7 +206,8 @@ class Email{
      * @param String $message The plaintext message being sent
      * @param String $from The address it is being sent from
      */
-    public function  __construct($to='', $subject='', $message='', $from=''){
+    public function  __construct($to='', $subject='', $message='', $from='')
+    {
 
         $this->to = $to;
         $this->subject = $subject;
@@ -219,7 +220,8 @@ class Email{
      * Adds an attachment to the email
      * @param $attachment \sb\Email
      */
-    public function add_attachment(Email_Attachment $attachment){
+    public function add_attachment(Email_Attachment $attachment)
+    {
         $this->attachments[] = $attachment;
     }
 
@@ -228,7 +230,8 @@ class Email{
      * 
      * @param sb_ICalendar_Event $event
      */
-    public function add_ICalendar_Event(ICalendar_Event $event){
+    public function add_ICalendar_Event(ICalendar_Event $event)
+    {
 
         $a = new Email_Attachment();
         $a->mime_type = 'text/calendar;';
@@ -249,13 +252,15 @@ class Email{
      * Fires before sending, if returns false, then sending does not occur
      * @return boolean
      */
-    public function on_before_send(){
+    public function on_before_send()
+    {
         return true;
     }
     /**
      * Uses sb_Email_Writer to send the email
      */
-    public function send($outbox=null){
+    public function send($outbox=null)
+    {
 
         if($outbox instanceof Email_Writer){
             self::$outbox = $outbox;
@@ -275,7 +280,8 @@ class Email{
     /**
      * Ups the importance of the email, in outlook this displays a exclamation point
      */
-    public function make_important(){
+    public function make_important()
+    {
         $this->headers[] = $this->add_header('Priority', 'Urgent');
         $this->headers[] = $this->add_header('Importance', 'high');
     }
@@ -286,7 +292,8 @@ class Email{
      * $mail->add_header('Priority', 'low');
      * </code>
      */
-    public function add_header($key, $value){
+    public function add_header($key, $value)
+    {
         $this->headers[$key] = $value;
     }
     
@@ -294,7 +301,8 @@ class Email{
      * Convert the email to a multipart_message
      * @return string the raw email source
      */
-    public function construct_multipart_message() {
+    public function construct_multipart_message() 
+    {
         
         $mixed_boundary = '__mixed_1S2U3R4E5B6E7R8T9';
         $alterative_boundary = '__alter_1S2U3R4E5B6E7R8T9';

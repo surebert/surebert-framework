@@ -77,7 +77,8 @@ class Flash_FileUpload{
      *
      * </code>
      */
-    public function __construct($key='Filedata'){
+    public function __construct($key='Filedata')
+    {
        
         if(isset(Gateway::$request->files[$key])){
             $this->uploaded_file = Gateway::$request->files[$key];
@@ -92,7 +93,8 @@ class Flash_FileUpload{
      * @param $destination_directory
      * @return boolean true if saved, false if not
      */
-    public function save($destination_directory){
+    public function save($destination_directory)
+    {
         
         if(!is_dir($destination_directory)){
             if(!mkdir($destination_directory, 0777, true)){

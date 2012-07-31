@@ -18,7 +18,8 @@ class RSS_Item{
      * @param string $description You can use html in the description, although escpaed it will appear.  if you want it to appear as HTML code, use encoded html.
      * @param string $pubDate
      */
-    public function __construct($title='', $link='',$description='', $pubDate=''){
+    public function __construct($title='', $link='',$description='', $pubDate='')
+    {
         $this->title = $title;
         $this->link = $link;
         $this->description = $description;

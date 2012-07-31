@@ -36,7 +36,8 @@ class PDO_Debugger extends PDO{
      * Additionally Logs the errors
      * {@inheritdoc }
      */
-    public function s2o($sql, $params=null, $class_name='', $prepare_and_store=1){
+    public function s2o($sql, $params=null, $class_name='', $prepare_and_store=1)
+    {
 
         try{
             return parent::s2o($sql, $params, $class_name, $prepare_and_store);
@@ -46,7 +47,8 @@ class PDO_Debugger extends PDO{
         }
     }
 
-    public static function paramify($data, $omit=Array()){
+    public static function paramify($data, $omit=Array())
+    {
 
         if(!is_array($data) && !is_object($data)){
             throw(new PDO_Exception('Paramify only accepts hashes and objects as data argument'));

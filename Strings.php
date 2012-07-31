@@ -18,7 +18,8 @@ class Strings{
      * @version 2.1
      * 
      */
-    public static function strip_punct($str){
+    public static function strip_punct($str)
+    {
         return preg_replace("~[^ \w]~", "", $str);
     }
     
@@ -30,7 +31,8 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function to_camel($str){
+    public static function to_camel($str)
+    {
         return str_replace(' ', '', ucwords(preg_replace('/[^A-Z^a-z^0-9]+/', ' ', $str)));
     } 
     
@@ -41,7 +43,8 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function clean_file_name($str){
+    public static function clean_file_name($str)
+    {
         preg_match('~\.\w{1,4}$~', $str, $ext);
         
         $str = preg_replace('~\.\w{1,4}$~', '', $str);
@@ -56,7 +59,8 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function html_escape_tags($str){
+    public static function html_escape_tags($str)
+    {
          return preg_replace("/&amp;(#[0-9]+|[a-z]+);/i", "&$1;", htmlspecialchars($str));
     }
     
@@ -67,7 +71,8 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function strip_microsoft_chars($str){
+    public static function strip_microsoft_chars($str)
+    {
         
         $chars=array(
         
@@ -102,7 +107,8 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function unicode_urldecode($str){
+    public static function unicode_urldecode($str)
+    {
        preg_match_all('/%u([[:alnum:]]{4})/', $str, $matches);
      
        foreach ($matches[1] as $uniord){
@@ -120,7 +126,8 @@ class Strings{
      * @param string $noun
      * @return string
      */
-    public static function pluralize($quanitity, $noun){
+    public static function pluralize($quanitity, $noun)
+    {
         $quanitity = intval($quanitity);
         return ($quanitity ===1) ? $noun : $noun.'s';
     }
@@ -132,7 +139,8 @@ class Strings{
      * @param integer $maxlength The maximum length, keep in mind that the ... counts as three chars
      * @return string
      */
-    public static function truncate($str, $maxlength=20){
+    public static function truncate($str, $maxlength=20)
+    {
         
         if(strlen($str) > $maxlength){
             $str = substr($str, 0, $maxlength-3).'...';
@@ -147,7 +155,8 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function safe($str){
+    public static function safe($str)
+    {
         return htmlentities(strip_tags(stripslashes(($str))));
     }
 }

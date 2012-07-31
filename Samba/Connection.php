@@ -6,7 +6,8 @@
  * @author , Paul Visco, Anthony Cashaw
  * @package Samba
  */
-class Samba_Connection {
+class Samba_Connection 
+    {
 
 /**
  * The domain of the connecting windows account
@@ -70,7 +71,8 @@ class Samba_Connection {
      * @param $path
      *
      */
-    public function __construct($host, $share, $uname, $pass, $domain = '') {
+    public function __construct($host, $share, $uname, $pass, $domain = '') 
+    {
         $this->username = $uname;
         $this->password = $pass;
         $this->domain = $domain;
@@ -85,7 +87,8 @@ class Samba_Connection {
      *
      * @return array $output the raw command line output for smbclient
      */
-    public function get($remotepath, $localfile = '.') {
+    public function get($remotepath, $localfile = '.') 
+    {
         $remotepath = self::winslashes($remotepath);
         $this->execute('get "'.$remotepath.'" "'.$localfile.'"', $output);
         return $output;
@@ -99,7 +102,8 @@ class Samba_Connection {
      *
      * @return array $output
      */
-    public function put($localfile, $remotepath = ".") {
+    public function put($localfile, $remotepath = ".") 
+    {
         $remotepath = self::winslashes($remotepath);
         $command = 'put "'.$localfile.'" "'.$remotepath.'"';
 
@@ -114,7 +118,8 @@ class Samba_Connection {
      *
      * @return array $output
      */
-    public function rename($remote_file_path, $new_remote_file_path){
+    public function rename($remote_file_path, $new_remote_file_path)
+    {
         //get file string massage
         $remote_file_path = self::winslashes($remote_file_path);
     $new_remote_file_path = self::winslashes($new_remote_file_path);
@@ -128,7 +133,8 @@ class Samba_Connection {
      * @param $output array what the command line returns
      * @param $log boolean weather to log this transaction
      */
-    public function execute($command, &$output = null) {
+    public function execute($command, &$output = null) 
+    {
 
         $cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
         exec($cmd, $output, $return);
@@ -155,7 +161,8 @@ class Samba_Connection {
      * @param $subdir
      * @return unknown_type
      */
-    public function ls($subdir = '', &$raw = NULL) {
+    public function ls($subdir = '', &$raw = NULL) 
+    {
 
         $teststr  = str_replace('\\', '-', $subdir);
         $nub =  (preg_match('/[-?|\/?]*([\w \-]+\.\w{1,4})/', $teststr))?'':'\*';
@@ -172,7 +179,8 @@ class Samba_Connection {
      * @param $subdir
      * @return unknown_type
      */
-    public function dir($subdir = '', &$raw = NULL) {
+    public function dir($subdir = '', &$raw = NULL) 
+    {
 
         return $this->ls($subdir, $raw);
     }
@@ -181,7 +189,8 @@ class Samba_Connection {
      * Internal operation: converts raw commanline ls returns into an array of samba share listing objects
      * @private
      */
-    private function processLS($raw_ls, $subdir = '') {
+    private function processLS($raw_ls, $subdir = '') 
+    {
         $ret = array();
 
         foreach($raw_ls as $listing) {
@@ -200,7 +209,8 @@ class Samba_Connection {
      * @param $subdir
      * @return \sb\Samba_Listing
      */
-    private    function parseListing($listing, $subdir = '') {
+    private    function parseListing($listing, $subdir = '') 
+    {
         $ret = new Samba_Listing();
         $exp = '/^\s{2}([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
 
@@ -227,7 +237,8 @@ class Samba_Connection {
      * @param array $output The raw out as a reference in array if passed
      * @return boolean was it successful or not
      */
-    public function mput($local_dir, $remote_dir, $file_pattern='*', &$raw = NULL){
+    public function mput($local_dir, $remote_dir, $file_pattern='*', &$raw = NULL)
+    {
         $result = $this->execute('cd '.self::winslashes($remote_dir).';lcd '.$local_dir.';prompt;mput '.$file_pattern.';exit;', $raw);
 
         return $result;
@@ -240,7 +251,8 @@ class Samba_Connection {
      * @param array $output The raw out as a reference in array if passed
      * @return boolean was it successful or not
      */
-    public function mkdir($remote_dir, &$raw = NULL){
+    public function mkdir($remote_dir, &$raw = NULL)
+    {
         $result = $this->execute('mkdir '.self::winslashes($remote_dir), $raw);
 
         return $result;
@@ -251,7 +263,8 @@ class Samba_Connection {
      * @param $str
      * @return string
      */
-    public static function winslashes($str) {
+    public static function winslashes($str) 
+    {
         return str_replace("/", "\\", $str);
     }
 

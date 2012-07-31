@@ -13,7 +13,8 @@ class Files{
      * read a file into chunks for faster force download and better memory management
      *
      */
-    public static function read_chunked($file_name,$seekat=0,$return_bytes=true) {
+    public static function read_chunked($file_name,$seekat=0,$return_bytes=true) 
+    {
 
          // how many bytes per chunk
         $chunk_size = 1*(1024*1024);
@@ -55,7 +56,8 @@ class Files{
      * @param string $ext e.g. mp3
      * @return mixed boolean/string e.g. audio/mpeg, false if not found
      */
-    public static function extension_to_mime($ext){
+    public static function extension_to_mime($ext)
+    {
 
             switch($ext){
 
@@ -154,7 +156,8 @@ class Files{
      * @param string $file Path to file
      * @return string The mime type from finfo
      */
-    public static function file_to_mime($file){
+    public static function file_to_mime($file)
+    {
 
         $mime = self::filename_to_mime($file);
         if($mime){
@@ -175,7 +178,8 @@ class Files{
      * @param string $filename
      * @return string The mime type of the file
      */
-    public static function filename_to_mime($filename){
+    public static function filename_to_mime($filename)
+    {
         $arr = explode(".", basename($filename));
         $ext = strtolower(end($arr));
         return self::extension_to_mime($ext);
@@ -188,7 +192,8 @@ class Files{
      * @param boolean $del Should directory itself be deleted upon completion
      * @return boolean
      */
-    public static function recursive_delete($dir, $del=0){
+    public static function recursive_delete($dir, $del=0)
+    {
     
          if($dir == '/'){
             die("You cannot delete the root directory");
@@ -214,7 +219,8 @@ class Files{
      * @param string $path The path to the server
      * @return object
      */
-    public static function get_directory_size($path) {
+    public static function get_directory_size($path) 
+    {
 
         $stats = new stdClass();
         $stats->size = 0;
@@ -249,7 +255,8 @@ class Files{
      * @param boolean $get_directories Should subdirectories be listed
      * @return array
      */
-    public static function get_files($dir, $get_directories=false){
+    public static function get_files($dir, $get_directories=false)
+    {
         $arr = Array();
         $iterator = new DirectoryIterator($dir);
         
@@ -276,7 +283,8 @@ class Files{
      * @param integer $size The size in bytes
      * @return string
      */
-    public static function size_to_string($size) {
+    public static function size_to_string($size) 
+    {
 
         if($size<1024) {
             return $size." bytes";

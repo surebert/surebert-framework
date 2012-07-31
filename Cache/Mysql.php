@@ -38,14 +38,16 @@ class Cache_Mysql implements Cache_Base{
      * Constructs the mysql cache, pass the db connection to the constructor
      * @param $db PDO
      */
-    public function __construct(PDO $db){
+    public function __construct(PDO $db)
+    {
         $this->db = $db;
     }
     
     /**
      * Stores the cache data in mysql
      */
-    public function store($key, $data, $lifetime = 0) {
+    public function store($key, $data, $lifetime = 0) 
+    {
         $stmt_cache = md5(__METHOD__);
         
         if(!isset($this->stmts[$stmt_cache])){
@@ -78,7 +80,8 @@ class Cache_Mysql implements Cache_Base{
     /**
      * Fetches the cache data from mysql
      */
-    public function fetch($key) {
+    public function fetch($key) 
+    {
         $stmt_cache = md5(__METHOD__);
         
         if(!isset($this->stmts[$stmt_cache])){
@@ -120,7 +123,8 @@ class Cache_Mysql implements Cache_Base{
     /**
      * Delete the cache from the mysql database
      */
-    public function delete($key) {
+    public function delete($key) 
+    {
         $stmt_cache = md5(__METHOD__);
         
         if(!isset($this->stmts[$stmt_cache])){
@@ -143,7 +147,8 @@ class Cache_Mysql implements Cache_Base{
      * Clears the cache
      * @return unknown_type
      */
-    public function clear_all(){
+    public function clear_all()
+    {
         $stmt_cache = md5(__METHOD__);
         
         if(!isset($this->stmts[$stmt_cache])){
@@ -161,7 +166,8 @@ class Cache_Mysql implements Cache_Base{
      * Loads the current catalog
      * @return Array a list of all keys stored in the cache
      */
-    public function get_keys(){
+    public function get_keys()
+    {
         
         $stmt_cache = md5(__METHOD__);
         

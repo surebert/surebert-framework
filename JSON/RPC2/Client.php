@@ -7,7 +7,8 @@
  */
 namespace sb;
 
-class JSON_RPC2_Client {
+class JSON_RPC2_Client 
+    {
 
     /**
      * Determines if data is debugged to the output
@@ -62,7 +63,8 @@ class JSON_RPC2_Client {
      * @param $port Integer The port to make the request on
      * @return \sb\JSON_RPC2_Response
      */
-    public function __construct($url, $timeout=1, $port=null) {
+    public function __construct($url, $timeout=1, $port=null) 
+    {
         
         $data = parse_url($url);
 
@@ -82,19 +84,22 @@ class JSON_RPC2_Client {
      * method you can use to log the json request
      * @param string $json_request The input json
      */
-    protected function log_request($json_request){}
+    protected function log_request($json_request)
+    {}
     
     /**
      * method you can use to log the json response
      * @param string $json_request The output json
      */
-    protected function log_response($json_response){}
+    protected function log_response($json_response)
+    {}
 
     /**
      * Sets the key that data is encrypted with and turns on encryption, the server must use the same key
      * @param $key String
      */
-    public function use_encryption($key) {
+    public function use_encryption($key) 
+    {
         $this->encryptor = new Encryption_ForTransmission($key);
         $this->encryption_key = $key;
     }
@@ -103,7 +108,8 @@ class JSON_RPC2_Client {
      * Adds a cookie to send to the server
      * @param $cookie Array('key' => 'val');
      */
-    public function add_cookie($cookie = Array()) {
+    public function add_cookie($cookie = Array()) 
+    {
         foreach($cookie as $key=>$val) {
             if(isset($this->encryption_key)) {
                 $val = $this->encryptor->encrypt($val);
@@ -118,7 +124,8 @@ class JSON_RPC2_Client {
      * @param $request \sb\JSON_RPC2_Request An object instance that models that request
      * @return \sb\JSON_RPC2_Response
      */
-    public function dispatch(JSON_RPC2_Request $request) {
+    public function dispatch(JSON_RPC2_Request $request) 
+    {
     
             if(!(is_array($request->params) || is_object($request->params))) {
                 $response = new JSON_RPC2_Response();
@@ -209,7 +216,8 @@ class JSON_RPC2_Client {
      * @param $str  The data returned from the socket connection
      * @return string The body of the message
      */
-    protected function process_response($str) {
+    protected function process_response($str) 
+    {
 
         $marker = strpos($str, "\r\n\r\n")+4;
         $headers =  substr($str, 0, $marker);
@@ -267,7 +275,8 @@ class JSON_RPC2_Client {
      * @param $args
      * @return mixed
      */
-    public function __call($method, $args) {
+    public function __call($method, $args) 
+    {
 
         $request = new JSON_RPC2_Request();
         $request->method = $method;
@@ -298,7 +307,8 @@ class JSON_RPC2_Client {
      * @param $data gzencoded string
      * @return string
      */
-    protected function gzdecode ($data) {
+    protected function gzdecode ($data) 
+    {
 
         $flags = ord(substr($data, 3, 1));
         $headerlen = 10;
@@ -336,7 +346,8 @@ class JSON_RPC2_Client {
      * @param $str
      * @return string
      */
-    private function unchunk_data($str) {
+    private function unchunk_data($str) 
+    {
 
         if (!is_string($str) or strlen($str) < 1) { return false; }
 

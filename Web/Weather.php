@@ -20,7 +20,8 @@ class Web_Weather{
      * print_r($weather);
      * </code>
      */
-    public static function fetch($feed){
+    public static function fetch($feed)
+    {
     
         $weather = new \sb\Web_WeatherFeed();
         $parts = parse_url($feed);

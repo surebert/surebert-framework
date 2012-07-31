@@ -101,7 +101,8 @@ class Graph_Point{
      * imagegif($chart->output());
      * </code>
      */
-    public function __construct($width, $height, $values){
+    public function __construct($width, $height, $values)
+    {
         
         $this->width = $width;
         $this->height = $height;
@@ -120,7 +121,8 @@ class Graph_Point{
      *
      * @param float $increment
      */
-    public function set_y_axis_label_increment($increment=''){
+    public function set_y_axis_label_increment($increment='')
+    {
         
         if(is_numeric($increment)){
             $this->y_axis_legend_increment = $increment;
@@ -134,7 +136,8 @@ class Graph_Point{
      * @param integer $g The green value 0-255
      * @param integer $b The blue value 0-255
      */
-    public function set_point_color($r, $g, $b){
+    public function set_point_color($r, $g, $b)
+    {
         
         $this->ink['point'] = imagecolorallocate($this->im, $r, $g, $b);
     }
@@ -146,7 +149,8 @@ class Graph_Point{
      * @param integer $g The green value 0-255
      * @param integer $b The blue value 0-255
      */
-    public function set_line_color($r, $g, $b){
+    public function set_line_color($r, $g, $b)
+    {
         
         $this->ink['line'] = imagecolorallocate($this->im, $r, $g, $b);
     }
@@ -158,7 +162,8 @@ class Graph_Point{
      * @param integer $g The green value 0-255
      * @param integer $b The blue value 0-255
      */
-    public function set_text_color($r, $g, $b){
+    public function set_text_color($r, $g, $b)
+    {
         $this->ink['text'] = imagecolorallocate($this->im, $r, $g, $b);
     }
     
@@ -169,11 +174,13 @@ class Graph_Point{
      * @param integer $g The green value 0-255
      * @param integer $b The blue value 0-255
      */
-    public function set_axis_color($r, $g, $b){
+    public function set_axis_color($r, $g, $b)
+    {
         $this->ink['axis'] = imagecolorallocate($this->im, $r, $g, $b);
     }
     
-    public function set_background_color($r, $g, $b){
+    public function set_background_color($r, $g, $b)
+    {
         
         $this->ink['background'] = imagecolorallocate($this->im, $r, $g, $b);
         imagefilledrectangle($this->im, 0, 0, $this->width, $this->height, $this->ink['background']);
@@ -183,7 +190,8 @@ class Graph_Point{
      * Create the background image
      *
      */
-    private function create_background(){
+    private function create_background()
+    {
         
         imagefilledrectangle($this->im, 0, 0, $this->width, $this->height, $this->ink['black']);
     }
@@ -192,7 +200,8 @@ class Graph_Point{
      * Allocates the default color used
      *
      */
-    private function allocate_colors(){
+    private function allocate_colors()
+    {
 
         $this->ink['red'] = imagecolorallocate ($this->im,0xff,0x00,0x00);
         $this->ink['orange'] = imagecolorallocate ($this->im,0xd2,0x8a,0x00);
@@ -219,7 +228,8 @@ class Graph_Point{
      * @param integer $value The value to convert
      * @return integer The number as converted into the pixel range on the graph
      */
-    private function map_y_value($value){
+    private function map_y_value($value)
+    {
         
         $rangeMapper = new Math_RangeMapper(Array(30, $this->graph_height), Array($this->min, $this->max));
         return $rangeMapper->convert($value);
@@ -230,7 +240,8 @@ class Graph_Point{
      *
      * @param array $values
      */
-    private function set_values($values){
+    private function set_values($values)
+    {
         
         $numbers = Array();
         foreach($values as $key=>$val){
@@ -278,7 +289,8 @@ class Graph_Point{
      * Draws the y axis on the graph at each point in a dashed line fashion.  This is totally optional and only happens if $this->draw_y_axis ==1
      *
      */
-    private function draw_y_axis(){
+    private function draw_y_axis()
+    {
         
         $min = round($this->min, $this->precision);
         $max = round($this->max, $this->precision);
@@ -311,7 +323,8 @@ class Graph_Point{
      * @param integer $y
      * @return integer The value in pixels
      */
-    private function plot_value($y){
+    private function plot_value($y)
+    {
         $rangeMapper = new \sb\Math_RangeMapper(Array($this->axis_offset, $this->graph_height-$this->axis_offset), Array($this->max, $this->min));
         return $rangeMapper->convert($y);
     }
@@ -320,7 +333,8 @@ class Graph_Point{
      * Connect the points on a graph
      *
      */
-    private function connect_points(){
+    private function connect_points()
+    {
         foreach($this->points as $point){
             
             if(is_null($point->value) ){
@@ -344,7 +358,8 @@ class Graph_Point{
      * Draw the basic graph and plot the points
      *
      */
-    public function draw(){
+    public function draw()
+    {
         
         //imagerectangle($this->im, $this->axis_offset, $this->graph_height, $this->width, 0, $this->ink['white']);
         
@@ -399,7 +414,8 @@ class Graph_Point{
      * @param string $color red, orange, yellow, green, blue, purple
      * @param string $label The line label
      */
-    public function add_horizontal_line($y, $color='red', $label=''){
+    public function add_horizontal_line($y, $color='red', $label='')
+    {
         
         if(!array_key_exists($color, $this->ink)){
             throw(new \Exception("Ink color must be in ".implode(",", array_keys($this->ink))));
@@ -416,7 +432,8 @@ class Graph_Point{
      *
      * @return unknown
      */
-    public function output(){
+    public function output()
+    {
         return $this->im;
     }
 

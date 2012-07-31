@@ -15,7 +15,8 @@ class Controller_HTTP extends Controller{
      * @param string $name The key of the session
      * @param string $value The value of the session
      */
-    public function set_session($key, $value){
+    public function set_session($key, $value)
+    {
         $_SESSION[$key] = $value;
     }
   
@@ -24,7 +25,8 @@ class Controller_HTTP extends Controller{
      * 
      * @param string $key The key of the session
      */
-    public function unset_session($key){
+    public function unset_session($key)
+    {
         if(isset($_SESSION[$key])){
             unset($_SESSION[$key]);
         }
@@ -55,7 +57,8 @@ class Controller_HTTP extends Controller{
      *  through the HTTP protocol. This means that the cookie won't be 
      * accessible by scripting languages, such as JavaScript. 
      */
-    public function set_cookie($name, $value='', $expire=0, $path='/', $domain='', $secure=false, $httponly=false){
+    public function set_cookie($name, $value='', $expire=0, $path='/', $domain='', $secure=false, $httponly=false)
+    {
         setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
     }
     
@@ -64,7 +67,8 @@ class Controller_HTTP extends Controller{
      * @param string $name The cookie name 
      * @param string path The path to clear, defaults to /
      */
-    public function unset_cookie($name, $path='/'){
+    public function unset_cookie($name, $path='/')
+    {
         setcookie($name , '' , time()-86400 , '/' , '' , 0 );
         if(isset($_COOKIE) && isset($_COOKIE[$name])){
             unset( $_COOKIE[$name] ); 
@@ -78,7 +82,8 @@ class Controller_HTTP extends Controller{
      * Sends a content type header
      * @param integer $type The content type e.g. image/jpeg audio/mpeg3 text/plain
      */
-    public function set_content_type($type){
+    public function set_content_type($type)
+    {
         $this->send_header('Content-Type', $type);
     }
     
@@ -88,7 +93,8 @@ class Controller_HTTP extends Controller{
      * @param string $value  The value to send e.g. text/plain.  If a value is 
      * set then a colon+space is added between header and value
      */
-    public function send_header($header, $value=''){
+    public function send_header($header, $value='')
+    {
         if(!empty($value)){
             $header .= ': '.$value;
         }
@@ -101,7 +107,8 @@ class Controller_HTTP extends Controller{
      * @param string $err_str The error string to send, defaults sent for
      * 400, 401, 403, 404, 405, 410, 415, 500, 501 unless specified
      */
-    public function send_error($error_num, $err_str=''){
+    public function send_error($error_num, $err_str='')
+    {
         
         if(empty($err_str)){
             switch($error_num){
@@ -159,7 +166,8 @@ class Controller_HTTP extends Controller{
      * 303 See Other
      * 307 Temporary Redirect
      */
-    public function send_redirect($url, $type=302){
+    public function send_redirect($url, $type=302)
+    {
         header("Location: $url",TRUE,$type);
     }
     
@@ -170,7 +178,8 @@ class Controller_HTTP extends Controller{
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_get($key, $default_val=null){
+    public function get_get($key, $default_val=null)
+    {
        return $this->request->get_get($key, $default_val);
     }
     
@@ -180,7 +189,8 @@ class Controller_HTTP extends Controller{
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_post($key, $default_val=null){
+    public function get_post($key, $default_val=null)
+    {
        return $this->request->get_post($key, $default_val);
     }
     
@@ -190,7 +200,8 @@ class Controller_HTTP extends Controller{
      * @param string $key The key to look for
      * @return mixed the string value or null if not found
      */
-    public function get_cookie($key, $default_val=null){
+    public function get_cookie($key, $default_val=null)
+    {
        return $this->request->get_cookie($key, $default_val);
     }
 
@@ -201,7 +212,8 @@ class Controller_HTTP extends Controller{
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_session($key, $default_val=null){
+    public function get_session($key, $default_val=null)
+    {
        return $this->request->get_session($key, $default_val);
     }
     
@@ -211,7 +223,8 @@ class Controller_HTTP extends Controller{
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_arg($arg_num, $default_val=null){
+    public function get_arg($arg_num, $default_val=null)
+    {
        return $this->request->get_arg($arg_num, $default_val);
     }
     
@@ -221,7 +234,8 @@ class Controller_HTTP extends Controller{
      * @param string $realm the realm beings used
      * @return boolean  
      */
-    public function require_basic_auth($check_auth='', $realm='Please enter your username and password'){
+    public function require_basic_auth($check_auth='', $realm='Please enter your username and password')
+    {
         
         $authorized = false;
         if (!isset($_SERVER['PHP_AUTH_USER'])) {

@@ -18,7 +18,8 @@ class ICalendar_Organizer extends ICalendar_Attendee{
      *
      * @return string
      */
-    public function  __toString() {
+    public function  __toString() 
+    {
 
         return "ORGANIZER;CN=\"".$this->dname."\":MAILTO:".$this->email;
     }

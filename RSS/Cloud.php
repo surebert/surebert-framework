@@ -30,7 +30,8 @@ class RSS_Cloud{
      * @param string $protocol
      * @return object
      */
-    public function __construct($domain, $port, $path, $registerProcedure, $protocol){
+    public function __construct($domain, $port, $path, $registerProcedure, $protocol)
+    {
         
         $this->domain = $domain;
         $this->port = $port;

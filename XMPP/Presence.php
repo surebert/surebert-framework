@@ -19,7 +19,8 @@ class XMPP_Presence extends XMPP_Packet{
      * Creates a new DOMDocument
      * @param string $xml Optional XML string to base the Document on
      */
-    public function __construct($xml = ''){
+    public function __construct($xml = '')
+    {
         parent::__construct('1.0', 'UTF-8');
         
         if(!empty($xml)){
@@ -53,7 +54,8 @@ class XMPP_Presence extends XMPP_Packet{
      * @param boolean $as_string Determines if node is returned as xml node or string, true by default
      * @return string
      */
-    public function get_status($as_string=true){
+    public function get_status($as_string=true)
+    {
         $nodes = $this->doc->getElementsByTagName('status');
         $node =$nodes->item(0);
         if($node){
@@ -73,7 +75,8 @@ class XMPP_Presence extends XMPP_Packet{
      * @param boolean $as_string Determines if node is returned as xml node or string, true by default
      * @return string
      */
-    public function get_show($as_string=true){
+    public function get_show($as_string=true)
+    {
         $nodes = $this->doc->getElementsByTagName('show');
         $node =$nodes->item(0);
         if($node){
@@ -93,7 +96,8 @@ class XMPP_Presence extends XMPP_Packet{
      * @param boolean $as_string Determines if node is returned as xml node or string, true by default
      * @return string
      */
-    public function get_priority($as_string=true){
+    public function get_priority($as_string=true)
+    {
         $nodes = $this->doc->getElementsByTagName('priority');
         $node =$nodes->item(0);
         if($node){
@@ -112,7 +116,8 @@ class XMPP_Presence extends XMPP_Packet{
      *
      * @param string $status The status message to display in human readible format
      */
-    public function set_status($status){
+    public function set_status($status)
+    {
 
         $node = $this->get_status(false);
         if(!$node){
@@ -131,7 +136,8 @@ class XMPP_Presence extends XMPP_Packet{
      * dnd - The entity or resource is busy (dnd = "Do Not Disturb").
      * xa - The entity or resource is away for an extended period (xa = "eXtended Away").
      */
-    public function set_show($show){
+    public function set_show($show)
+    {
 
         if($show == 'unavailable') {
             $this->set_type($show);
@@ -151,7 +157,8 @@ class XMPP_Presence extends XMPP_Packet{
      * Sets the priority of the presence
      * @param integer $priority
      */
-    public function set_priority($priority=1){
+    public function set_priority($priority=1)
+    {
 
         $node = $this->get_priority(false);
         if(!$node){
@@ -174,7 +181,8 @@ class XMPP_Presence extends XMPP_Packet{
      * error -- An error has occurred regarding processing or delivery of a previously-sent presence stanza.
      * @return boolean If it is written or not
      */
-    public function set_type($type){
+    public function set_type($type)
+    {
         $attr = $this->createAttribute('type');
         $this->doc->appendChild($attr);
         $attr->appendChild($this->createTextNode($type));

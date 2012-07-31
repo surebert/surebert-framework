@@ -24,14 +24,16 @@ class Cache_APC implements Cache_Base{
      * Creates namespace for the data, as the cache may be shared between different apps. 
      * @param $namespace The namespace required when sharing memcache server.  Must be totall unique, e.g. the name of your app?
      */
-    public function __construct($namespace){
+    public function __construct($namespace)
+    {
         $this->namespace = $namespace;
     }
     
     /**
      * Store the cache data in APC
      */
-    public function store($key, $data, $lifetime = 0) {
+    public function store($key, $data, $lifetime = 0) 
+    {
         
         $key = $this->namespace.$key;
         
@@ -45,7 +47,8 @@ class Cache_APC implements Cache_Base{
     /**
      * Fetches the cache from APC
      */
-    public function fetch($key) {
+    public function fetch($key) 
+    {
         $key = $this->namespace.$key;
         
         return apc_fetch($key);
@@ -54,7 +57,8 @@ class Cache_APC implements Cache_Base{
     /**
      * Deletes cache data
      */
-    public function delete($key) {
+    public function delete($key) 
+    {
     
         $deleted = false;
         
@@ -78,7 +82,8 @@ class Cache_APC implements Cache_Base{
     /**
      * Clears the whole cache
      */
-    public function clear_all(){
+    public function clear_all()
+    {
         return apc_clear_cache('user');
     }
     
@@ -87,7 +92,8 @@ class Cache_APC implements Cache_Base{
      * @param $key
      * @return boolean If the catalog is stored or not
      */
-    private function catalog_key_add($key, $lifetime){
+    private function catalog_key_add($key, $lifetime)
+    {
         
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();
@@ -100,7 +106,8 @@ class Cache_APC implements Cache_Base{
      * @param $key
      * @return boolean If the catalog is stored or not
      */
-    private function catalog_key_delete($key){
+    private function catalog_key_delete($key)
+    {
         
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();
@@ -114,7 +121,8 @@ class Cache_APC implements Cache_Base{
      * Loads the current catalog
      * @return Array a list of all keys stored in the cache
      */
-    public function get_keys(){
+    public function get_keys()
+    {
     
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();

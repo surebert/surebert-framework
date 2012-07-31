@@ -14,7 +14,8 @@
  *    public $uname = 'you bot name';
  *    public $pass = 'your bot pass';
  *
- *    public serve_hello(\sb\XMPP_Message $message, $str){
+ *    public serve_hello(\sb\XMPP_Message $message, $str)
+    {
  *        return 'hello '.$message->get_from().' you said '.$message->get_body();
  *
  *    }
@@ -43,7 +44,8 @@ class XMPP_Bot_Helper extends XMPP_Client{
      * @return string
      *
      */
-    public function serve_help($message){
+    public function serve_help($message)
+    {
 
         $commands = Array("I can respond to the following commands");
 
@@ -67,7 +69,8 @@ class XMPP_Bot_Helper extends XMPP_Client{
      * @secret true
      * @return string The debug message data
      */
-    public function serve_debug(\sb\XMPP_Message $message, $command){
+    public function serve_debug(\sb\XMPP_Message $message, $command)
+    {
 
         $str = '';
         switch($command){
@@ -97,7 +100,8 @@ class XMPP_Bot_Helper extends XMPP_Client{
      * Get the commands available for help menu
      * @return Array Key=command names, value=php docs first sentence
      */
-    protected function get_methods() {
+    protected function get_methods() 
+    {
 
         if(!empty($this->methods)){
             return $this->methods;
@@ -128,7 +132,8 @@ class XMPP_Bot_Helper extends XMPP_Client{
      * Fires when a new message is received
      * @param string $message
      */
-    protected function on_message(\sb\XMPP_Message $message_in){
+    protected function on_message(\sb\XMPP_Message $message_in)
+    {
 
         $str = $message_in->get_body();
         $str = trim((String) $str);
@@ -170,7 +175,8 @@ class XMPP_Bot_Helper extends XMPP_Client{
      * @param \sb\XMPP_Message $message
      * @return string
      */
-    public function method_not_found(\sb\XMPP_Message $message){
+    public function method_not_found(\sb\XMPP_Message $message)
+    {
         $body = $message->get_body();
 
         if($body == '?'){
@@ -184,7 +190,8 @@ class XMPP_Bot_Helper extends XMPP_Client{
      * @param integer $error_code
      * @param string $error_str
      */
-    protected function on_error($error_code, $error_str){
+    protected function on_error($error_code, $error_str)
+    {
 
         if($error_code === 0){
             echo "\n\n".$error_str;
@@ -198,7 +205,8 @@ class XMPP_Bot_Helper extends XMPP_Client{
      * Fires when presence packets are received and keeps track of online buddies
      * @param \sb\XMPP_Presence $presence
      */
-   protected function on_presence(\sb\XMPP_Presence $presence){
+   protected function on_presence(\sb\XMPP_Presence $presence)
+    {
             //do something with
     }
 

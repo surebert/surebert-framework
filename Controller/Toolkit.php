@@ -38,7 +38,8 @@ class Controller_Toolkit extends Controller{
      * Removes comments from javascript
      * @author paul.visco@roswellpark.org
      */
-    public function filter_output($output){
+    public function filter_output($output)
+    {
         if(!isset($this->request->get['sb_comments'])){
             return preg_replace("~/\*\*.*?\*/~s", "", $output);
         } else {
@@ -50,7 +51,8 @@ class Controller_Toolkit extends Controller{
      * Concatenates the javascript/surebert files and turns them into cache if caching is enable
      * @param $files
      */
-    protected function concat_files($files = Array(), $version=''){
+    protected function concat_files($files = Array(), $version='')
+    {
 
         if($files[0] == 'sb' && strstr(Gateway::$agent, 'MSIE')){
 
@@ -136,7 +138,8 @@ class Controller_Toolkit extends Controller{
      * @param string $root The root to load
      * @return string The file data
      */
-    protected function grab_file($file, $root){
+    protected function grab_file($file, $root)
+    {
         $data = '';
         
         if(is_file($root.'/'.$file)){
@@ -176,7 +179,8 @@ class Controller_Toolkit extends Controller{
      * view being displayed.  If it is included in another view do not do this
      * as you don't want HTML being served as javascript
      */
-    protected function add_javascript_headers(){
+    protected function add_javascript_headers()
+    {
 
         if(!$this->included){
             header("Content-type: application/x-javascript");
@@ -188,7 +192,8 @@ class Controller_Toolkit extends Controller{
      * Serves out individual files or sb by default. e.g. /surebert/load or /surebert/load/colors.rand
      * @servable true
      */
-    public function load(){
+    public function load()
+    {
         $surebert = $this->request->args;
 
         if(empty($surebert)){
@@ -206,7 +211,8 @@ class Controller_Toolkit extends Controller{
      * Serves out the most common surebert toolkit files
      * @servable true
      */
-    public function basic(){
+    public function basic()
+    {
         if(!isset($this->request->get['noexpire'])){
             header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 259200));
         }

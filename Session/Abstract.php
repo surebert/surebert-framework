@@ -19,7 +19,8 @@ abstract class Session_Abstract extends Session{
      * @param $session_life_time integer
      * @return unknown_type
      */
-    public function __construct($db, $session_life_time=null){
+    public function __construct($db, $session_life_time=null)
+    {
         
         $this->db = $db;
         

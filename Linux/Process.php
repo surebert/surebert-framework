@@ -35,7 +35,8 @@ class Linux_Process{
      *
      * @param mixed $data The process ID to manage if a integer, else the command if string
      */
-    public function __construct($data=false){
+    public function __construct($data=false)
+    {
         if(preg_match("~^\d+$~", $data)){
             $this->set_pid($data);
         } else if(is_string($data)){
@@ -48,7 +49,8 @@ class Linux_Process{
      * Sets the command to execute
      * @param string $command
      */
-    protected function set_command($command){
+    protected function set_command($command)
+    {
         $this->command = $command;
     }
 
@@ -56,7 +58,8 @@ class Linux_Process{
      * Sets the pid of the process
      * @param integer $pid
      */
-    protected function set_pid($pid){
+    protected function set_pid($pid)
+    {
         $this->pid = $pid;
     }
 
@@ -65,7 +68,8 @@ class Linux_Process{
      *
      * @return integer
      */
-    public function get_pid(){
+    public function get_pid()
+    {
         return $this->pid;
     }
 
@@ -73,7 +77,8 @@ class Linux_Process{
      * Gets the process CPU and memory usage
      * @return <type>
      */
-    public function get_usage(){
+    public function get_usage()
+    {
         $command = 'ps u -p '.$this->pid;
         exec($command, $op);
         if (isset($op[1])){
@@ -92,7 +97,8 @@ class Linux_Process{
      * Gets the status of the process, running or not
      * @return boolean
      */
-    public function status(){
+    public function status()
+    {
         $command = 'ps -p '.$this->pid;
         exec($command,$op);
         if (!isset($op[1])){
@@ -102,7 +108,8 @@ class Linux_Process{
         return true;
     }
 
-    public function start(){
+    public function start()
+    {
         if ($this->command != ''){
             $command = 'nohup '.$this->command.' > /dev/null 2>&1 & echo $!';
             exec($command ,$op);
@@ -114,7 +121,8 @@ class Linux_Process{
         }
     }
 
-    public function stop(){
+    public function stop()
+    {
         $command = 'kill '.$this->pid;
         exec($command);
         if ($this->status() == false){

@@ -14,7 +14,8 @@
  */
 namespace sb;
 
-class PDO_BackupMysql {
+class PDO_BackupMysql 
+    {
 
     /**
      * An array of databases to ignore
@@ -60,7 +61,8 @@ class PDO_BackupMysql {
      * @param string $db_user The mysql database user
      * @param string $db_pass The mysql database pass
      */
-    public function __construct($db_host, $db_user, $db_pass) {
+    public function __construct($db_host, $db_user, $db_pass) 
+    {
 
         $this->db_host = $db_host;
         $this->db_user = $db_user;
@@ -72,7 +74,8 @@ class PDO_BackupMysql {
     /**
      * Initiates the backup process
      */
-    public function backup() {
+    public function backup() 
+    {
 
         $this->check_dump_dir();
         $this->connect_to_db();
@@ -84,7 +87,8 @@ class PDO_BackupMysql {
      * nobackup_* are ignore
      * @param Array $array
      */
-    public function set_ignore($array) {
+    public function set_ignore($array) 
+    {
 
         if (is_array($array)) {
             $this->ignore = $array;
@@ -97,14 +101,16 @@ class PDO_BackupMysql {
      * Sets the directory in which the dump files are stored
      * @param string $dir 
      */
-    public function set_dump_destination($dir = 'dumps/') {
+    public function set_dump_destination($dir = 'dumps/') 
+    {
         $this->dump_dir = $dir;
     }
 
     /**
      * Connects to the database
      */
-    protected function connect_to_db() {
+    protected function connect_to_db() 
+    {
         try {
             $this->db = new PDO("mysql:dbname=;" . $this->db_host, $this->db_user, $this->db_pass);
             $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
@@ -118,7 +124,8 @@ class PDO_BackupMysql {
     /**
      * check to make sure dump directory exists and if not create it
      */
-    protected function check_dump_dir() {
+    protected function check_dump_dir() 
+    {
 
         if (!is_dir($this->dump_dir)) {
             mkdir($this->dump_dir, 0700, true);
@@ -148,7 +155,8 @@ class PDO_BackupMysql {
     /**
      * Dump the database files and gzip, add version number
      */
-    protected function dump_databases() {
+    protected function dump_databases() 
+    {
 
         foreach ($this->db->query("SHOW DATABASES") as $list) {
             $database = $list->Database;
@@ -182,7 +190,8 @@ class PDO_BackupMysql {
      * Send messages to stdout
      * @param string $message
      */
-    protected function log($message) {
+    protected function log($message) 
+    {
 
         if ($this->debug == true) {
             file_put_contents("php://stdout", $message . "\n");
@@ -198,7 +207,8 @@ class PDO_BackupMysql {
      * @param boolean $del Should directory itself be deleted upon completion
      * @return boolean
      */
-    protected function recursive_delete($dir, $del = 0) {
+    protected function recursive_delete($dir, $del = 0) 
+    {
 
         if (substr($dir, 0, 1) == '/') {
             die("You cannot delete root directories");
@@ -222,7 +232,8 @@ class PDO_BackupMysql {
     /**
      * Stamp the final time and move the dump file into the newest version directory
      */
-    public function __destruct() {
+    public function __destruct() 
+    {
         $ms = round(microtime(true) - $this->start, 2);
         $this->log($ms . 'ms elapsed');
         rename($this->dump_dir . 'dump.log', $this->dump_dir . '1/dump.log');

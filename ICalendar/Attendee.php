@@ -30,7 +30,8 @@ class ICalendar_Attendee{
      * @param string $dname The display name
      * @param string $email The email
      */
-    public function __construct($dname, $email){
+    public function __construct($dname, $email)
+    {
         $this->dname = $dname;
         $this->email = $email;
     }
@@ -39,7 +40,8 @@ class ICalendar_Attendee{
      * Returns the Attendee in iCalendar format
      * @return <type>
      */
-    public function  __toString() {
+    public function  __toString() 
+    {
         return 'ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN="'.$this->dname.'":MAILTO:'.$this->email;
     }
 }

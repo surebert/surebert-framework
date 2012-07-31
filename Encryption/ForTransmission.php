@@ -26,7 +26,8 @@ class Encryption_ForTransmission{
      * Sets the key used for encryption
      * @param $key  String of any length, longer is better
      */
-    public function __construct($key){
+    public function __construct($key)
+    {
         
         if(empty($key)){
             throw(new \Exception("Cannot use empty key for encryption"));
@@ -39,7 +40,8 @@ class Encryption_ForTransmission{
      * Encrypts a string
      * @param $string The string of data to encrypt
      */
-    public function encrypt($string){
+    public function encrypt($string)
+    {
         $td = mcrypt_module_open($this->cypher, '', $this->mode, '');
         $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
         mcrypt_generic_init($td, $this->key, $iv);
@@ -52,7 +54,8 @@ class Encryption_ForTransmission{
      * Decrypts a string
      * @param $string The data to decrypt
      */
-    public function decrypt($string){
+    public function decrypt($string)
+    {
         
         $decrypted = "";
         $td = mcrypt_module_open($this->cypher, '', $this->mode, '');

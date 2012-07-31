@@ -43,7 +43,8 @@ class Ajax_Response{
      *
      * @param mixed object/xml/string/boolean $content
      */
-    public function __construct($content = null){
+    public function __construct($content = null)
+    {
         
         if(!is_null($content)){
             $this->set_content($content);
@@ -59,7 +60,8 @@ class Ajax_Response{
      *
      * @param string $content_type e.g application/xml
      */
-    public function set_content_type($content_type = 'text/html'){
+    public function set_content_type($content_type = 'text/html')
+    {
         $this->headers['Content-Type'] = $content_type;
     }
     
@@ -70,7 +72,8 @@ class Ajax_Response{
      * 
      * @todo if someone wants to bother with xml add it, and if so what determines if it is xml, an xml object, a string detected, etc
      */
-    public function set_content($content){
+    public function set_content($content)
+    {
         
         if(is_bool($content)){
             
@@ -96,7 +99,8 @@ class Ajax_Response{
      * @param string $key
      * @param string $val
      */
-    public function add_customer_header($key, $val){
+    public function add_customer_header($key, $val)
+    {
         $this->headers[$key] = $val;
     }
     
@@ -104,7 +108,8 @@ class Ajax_Response{
      * Echos the response to the browser.
      *
      */
-    public function dispatch(){
+    public function dispatch()
+    {
 
         foreach($this->headers as $header=>$val){
             header($header.': '.$val);

@@ -16,7 +16,8 @@ class Logger_BlackHole extends Logger_Base{
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    protected function __write($data, $log_type){
+    protected function __write($data, $log_type)
+    {
         return true;
     }
 

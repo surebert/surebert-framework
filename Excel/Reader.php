@@ -6,7 +6,8 @@
  */
 namespace sb;
 
-class Excel_Reader extends Excel_ReaderBackend {
+class Excel_Reader extends Excel_ReaderBackend 
+    {
 
     /**
      * Loads the spreadsheet
@@ -18,7 +19,8 @@ class Excel_Reader extends Excel_ReaderBackend {
      * $data = new \sb\Excel_Reader('/path/to/excelfile.xls');
      * </code>
      */
-    public function __construct($file='', $read_extended_info=true, $outputEncoding='') {
+    public function __construct($file='', $read_extended_info=true, $outputEncoding='') 
+    {
 
         $this->set_UTF_encoder('iconv');
         if ($outputEncoding != '') {
@@ -45,7 +47,8 @@ class Excel_Reader extends Excel_ReaderBackend {
      * @param int $sheet
      * @return string
      */
-    public function value($row, $col, $sheet=0) {
+    public function value($row, $col, $sheet=0) 
+    {
         return $this->val($row, $col, $sheet);
     }
 
@@ -62,7 +65,8 @@ class Excel_Reader extends Excel_ReaderBackend {
      * </code>
      *
      */
-    public function read_cells($func, $sheet=0) {
+    public function read_cells($func, $sheet=0) 
+    {
         $rows = $this->rowcount();
         $cols = $this->colcount();
         for ($r = 1; $r <= $rows; $r++) {
@@ -96,7 +100,8 @@ class Excel_Reader extends Excel_ReaderBackend {
      * @param int $sheet
      * @return string
      */
-    public function info($row, $col, $type='', $sheet=0) {
+    public function info($row, $col, $type='', $sheet=0) 
+    {
         $col = $this->get_col($col);
         if (array_key_exists('cellsInfo', $this->sheets[$sheet])
                 && array_key_exists($row, $this->sheets[$sheet]['cellsInfo'])
@@ -107,15 +112,18 @@ class Excel_Reader extends Excel_ReaderBackend {
         return "";
     }
 
-    public function type($row, $col, $sheet=0) {
+    public function type($row, $col, $sheet=0) 
+    {
         return $this->info($row, $col, 'type', $sheet);
     }
 
-    public function raw($row, $col, $sheet=0) {
+    public function raw($row, $col, $sheet=0) 
+    {
         return $this->info($row, $col, 'raw', $sheet);
     }
 
-    public function rowspan($row, $col, $sheet=0) {
+    public function rowspan($row, $col, $sheet=0) 
+    {
         $val = $this->info($row, $col, 'rowspan', $sheet);
         if ($val == "") {
             return 1;
@@ -123,7 +131,8 @@ class Excel_Reader extends Excel_ReaderBackend {
         return $val;
     }
 
-    public function colspan($row, $col, $sheet=0) {
+    public function colspan($row, $col, $sheet=0) 
+    {
         $val = $this->info($row, $col, 'colspan', $sheet);
         if ($val == "") {
             return 1;
@@ -131,28 +140,34 @@ class Excel_Reader extends Excel_ReaderBackend {
         return $val;
     }
 
-    public function rowcount($sheet=0) {
+    public function rowcount($sheet=0) 
+    {
         return $this->sheets[$sheet]['numRows'];
     }
 
-    public function colcount($sheet=0) {
+    public function colcount($sheet=0) 
+    {
         return $this->sheets[$sheet]['numCols'];
     }
 
-    public function colwidth($col, $sheet=0) {
+    public function colwidth($col, $sheet=0) 
+    {
         // Col width is actually the width of the number 0. So we have to estimate and come close
         return $this->colInfo[$sheet][$col]['width'] / 9142 * 200;
     }
 
-    public function colhidden($col, $sheet=0) {
+    public function colhidden($col, $sheet=0) 
+    {
         return!!$this->colInfo[$sheet][$col]['hidden'];
     }
 
-    public function rowheight($row, $sheet=0) {
+    public function rowheight($row, $sheet=0) 
+    {
         return $this->rowInfo[$sheet][$row]['height'];
     }
 
-    public function rowhidden($row, $sheet=0) {
+    public function rowhidden($row, $sheet=0) 
+    {
         return!!$this->rowInfo[$sheet][$row]['hidden'];
     }
 

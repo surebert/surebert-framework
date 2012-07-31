@@ -5,7 +5,8 @@
  */
 namespace sb;
 
-class PDO_RecordPager {
+class PDO_RecordPager 
+    {
 
     /**
      * The connection object to your database
@@ -62,7 +63,8 @@ class PDO_RecordPager {
      *
      * @param PDO $db
      */
-    public function __construct(PDO $db) {
+    public function __construct(PDO $db) 
+    {
         $this->db = $db;
     }
 
@@ -90,7 +92,8 @@ class PDO_RecordPager {
      * </code>
      *
      */
-    public function get_page($pagenum = 1, PDO_RecordPage $ret = null) {
+    public function get_page($pagenum = 1, PDO_RecordPage $ret = null) 
+    {
 
         $pagenum = ($pagenum<1)?1:$pagenum;
 
@@ -180,7 +183,8 @@ class PDO_RecordPager {
      *
      * </code>
      */
-    public function flipto($field, $value) {
+    public function flipto($field, $value) 
+    {
 
         $ret->found = 0;
         $ret->page = new stdClass();

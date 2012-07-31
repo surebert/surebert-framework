@@ -14,7 +14,8 @@
  */
 namespace sb;
 
-class Socket_Client {
+class Socket_Client 
+    {
 
     /**
      *
@@ -44,7 +45,8 @@ class Socket_Client {
      * @param integer $port The port to connect to e.g. 80
      * @param integer $timeout The timeout to wait before dropping connection e.g. 10
      */
-    public function __construct($host, $port, $timeout=10) {
+    public function __construct($host, $port, $timeout=10) 
+    {
 
         $this->count_instance();
 
@@ -58,7 +60,8 @@ class Socket_Client {
     /**
      * Keeps track of instances
      */
-    public function count_instance() {
+    public function count_instance() 
+    {
 
         self::$instances++;
         $this->unique_id = self::$instances;
@@ -68,7 +71,8 @@ class Socket_Client {
      * Open the connection
      * @return boolean Throws exception on error
      */
-    public function open() {
+    public function open() 
+    {
 
         $this->log('open socket connection');
         $this->socket = fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
@@ -85,7 +89,8 @@ class Socket_Client {
      * Closes the connection.  Automatically is called on __destruct
      * @return boolean
      */
-    public function close() {
+    public function close() 
+    {
         $this->log('close socket connection');
 
         $state = fclose($this->socket);
@@ -101,7 +106,8 @@ class Socket_Client {
      * @param String $data The data to send
      * @return boolean
      */
-    public function write($data) {
+    public function write($data) 
+    {
 
         return fwrite($this->socket, $data);
     }
@@ -111,7 +117,8 @@ class Socket_Client {
      * @param integer $byte_count The amount of data to read, if not set, it reads until feof
      * @return string The data read from the socket
      */
-    public function read($byte_count=null) {
+    public function read($byte_count=null) 
+    {
 
         $this->log('read from  socket');
         $buffer = '';
@@ -132,7 +139,8 @@ class Socket_Client {
     /**
      * Closes the connection if the user forgot
      */
-    public function __destruct() {
+    public function __destruct() 
+    {
         if ($this->socket) {
             $this->close();
         }
@@ -143,7 +151,8 @@ class Socket_Client {
      * @param string $message
      * @todo convert to sb_Logger
      */
-    protected function log($message) {
+    protected function log($message) 
+    {
 
         echo "\n\n" . $this->unique_id . ': ' . $message;
     }

@@ -102,7 +102,8 @@ class Email_Attachment{
      * @param String $mime_type Optional The mime type of the file
      *
      */
-    public function __construct($filepath=null, $mime_type=null){
+    public function __construct($filepath=null, $mime_type=null)
+    {
 
         if($mime_type){
             $this->mime_type = $mime_type;
@@ -120,7 +121,8 @@ class Email_Attachment{
     /**
      * Zips the attachment before sending and sets the proper mime type
      */
-    public function zip(){
+    public function zip()
+    {
 
         if(empty($this->filepath)){
             throw(new \Exception("Must set \sb\Email_Attachment::file_path before zipping attachment"));
@@ -165,7 +167,8 @@ class Email_Attachment{
      * @param string $gnupg_path Optional The path to your .gnupg directory, must be
      * readible by apache, by default served out of /private/resources e.g. ROOT.'/private/resources/.gnupg
      */
-    public function pgp_encrypt($pgp_encrypt_key, $gnupg_path='') {
+    public function pgp_encrypt($pgp_encrypt_key, $gnupg_path='') 
+    {
 
         if(empty($gnupg_path)){
             $gnupg_path = ROOT.'/private/resources/.gnupg';
@@ -194,7 +197,8 @@ class Email_Attachment{
      * @param string $encoding  either 0-5 or the actual strings
      * 7bit, 8bit, binary, base64, quoted prinatble
      */
-    public function set_encoding($encoding){
+    public function set_encoding($encoding)
+    {
 
         $this->encoding = $encoding;
 

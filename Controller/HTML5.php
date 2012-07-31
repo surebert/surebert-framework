@@ -13,7 +13,8 @@ class Controller_HTML5 extends Controller_HTTP{
     /**
      * Assigns the sb_HTML_HeadMeta property
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->meta = new HTML_HeadMeta();
     }
     
@@ -60,7 +61,8 @@ class Controller_HTML5 extends Controller_HTTP{
      * Creates a javascript include tag
      * @param $scripts array/string The file names or an array of file names to include
      */
-    public function include_javascript($scripts){
+    public function include_javascript($scripts)
+    {
 
         $src = (!is_array($scripts)) ? Array($scripts) : $scripts;
         $html = '';
@@ -78,7 +80,8 @@ class Controller_HTML5 extends Controller_HTTP{
      * Renders the HTML head
      * @param $custom_head_markup string A string of data to include in the HTML head, right before </head>
      */
-    public function html_head($custom_head_markup=''){
+    public function html_head($custom_head_markup='')
+    {
 
         if(!empty($custom_head_markup)){$this->custom_head_markup = $custom_head_markup;}
 

@@ -39,7 +39,8 @@
  */
 namespace sb;
 
-class ICalendar_Event {
+class ICalendar_Event 
+    {
 
     /**
      * The summary of the event
@@ -104,7 +105,8 @@ class ICalendar_Event {
      * @param string $uid The unqiue ID of the event, assigned if not provided
      * required for cancel, update
      */
-    public function __construct($uid=''){
+    public function __construct($uid='')
+    {
         $this->uid = $uid;
 
     }
@@ -114,7 +116,8 @@ class ICalendar_Event {
      * @param string $dtstart The begin time of the event in any format strtotime can handle
      * @param string $dtend The endtime of the event in any format strtotime can handle
      */
-    public function set_time($dtstart, $dtend) {
+    public function set_time($dtstart, $dtend) 
+    {
         $this->dtstart = $dtstart;
         $this->dtend = $dtend;
     }
@@ -124,7 +127,8 @@ class ICalendar_Event {
      *
      * @param \sb\ICalendar_Attendee $attendee
      */
-    public function set_organizer(ICalendar_Organizer $attendee) {
+    public function set_organizer(ICalendar_Organizer $attendee) 
+    {
         $this->organizer = $attendee;
     }
 
@@ -135,14 +139,16 @@ class ICalendar_Event {
      *
      * @param \sb\ICalendar_Attendee $attendee
      */
-    public function add_attendee(ICalendar_Attendee $attendee) {
+    public function add_attendee(ICalendar_Attendee $attendee) 
+    {
         $this->attendees[] = $attendee;
     }
 
     /**
      * Sends HTML headers used to make browser recognize .ics file
      */
-    public function send_html_headers() {
+    public function send_html_headers() 
+    {
 
         header('Content-type: text/calendar; charset=utf-8');
         header('Content-Disposition: inline; filename=calendar.ics');
@@ -152,7 +158,8 @@ class ICalendar_Event {
      * Saves the ics packet as a file
      * @param string $file_path
      */
-    public function to_file($file_path) {
+    public function to_file($file_path) 
+    {
         $ics = $this->__toString();
         file_put_contents($file_path, $ics);
     }
@@ -164,7 +171,8 @@ class ICalendar_Event {
      *
      * @return boolean
      */
-    public function send() {
+    public function send() 
+    {
         $subject = 'EVENT';
         if($this->method == 'CANCEL'){
 
@@ -196,7 +204,8 @@ class ICalendar_Event {
      * Converts the Event object into a string in ICalendar .ics format
      * @return string
      */
-    public function  __toString() {
+    public function  __toString() 
+    {
 
         if(empty($this->organizer)) {
             throw(new \Exception('You must add an event organizer'));

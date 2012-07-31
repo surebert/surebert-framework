@@ -6,7 +6,8 @@
  */
 namespace sb;
 
-class Web_SOAP_WeatherGovParametersType {
+class Web_SOAP_WeatherGovParametersType 
+    {
   public $maxt; // boolean
   public $mint; // boolean
   public $temp; // boolean
@@ -71,13 +72,15 @@ class Web_SOAP_WeatherGovParametersType {
  * $result = $weather->LatLonListZipCode(14209);
  * </code>
  */
-class Web_SOAP_WeatherGov extends SoapClient {
+class Web_SOAP_WeatherGov extends SoapClient 
+    {
 
   private static $classmap = array(
                                     'weatherParametersType' => '\sb\Web_SOAP_WeatherGovParametersType',
                                    );
 
-  public function __construct($wsdl = "http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl", $options = array()) {
+  public function __construct($wsdl = "http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl", $options = array()) 
+    {
     foreach(self::$classmap as $key => $value) {
       if(!isset($options['classmap'][$key])) {
         $options['classmap'][$key] = $value;
@@ -103,7 +106,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param weatherParametersType $weatherParameters
    * @return string
    */
-  public function NDFDgen($latitude, $longitude, $product, $startTime, $endTime, weatherParametersType $weatherParameters) {
+  public function NDFDgen($latitude, $longitude, $product, $startTime, $endTime, weatherParametersType $weatherParameters) 
+    {
     return $this->__soapCall('NDFDgen', array($latitude, $longitude, $product, $startTime, $endTime, $weatherParameters),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -128,7 +132,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param weatherParametersType $weatherParameters
    * @return string
    */
-  public function NDFDgenLatLonList($listLatLon, $product, $startTime, $endTime, weatherParametersType $weatherParameters) {
+  public function NDFDgenLatLonList($listLatLon, $product, $startTime, $endTime, weatherParametersType $weatherParameters) 
+    {
     return $this->__soapCall('NDFDgenLatLonList', array($listLatLon, $product, $startTime, $endTime, $weatherParameters),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -149,7 +154,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param decimal $resolution
    * @return string
    */
-  public function LatLonListSubgrid($lowerLeftLatitude, $lowerLeftLongitude, $upperRightLatitude, $upperRightLongitude, $resolution) {
+  public function LatLonListSubgrid($lowerLeftLatitude, $lowerLeftLongitude, $upperRightLatitude, $upperRightLongitude, $resolution) 
+    {
     return $this->__soapCall('LatLonListSubgrid', array($lowerLeftLatitude, $lowerLeftLongitude, $upperRightLatitude, $upperRightLongitude, $resolution),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -169,7 +175,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param decimal $endPoint2Lon
    * @return string
    */
-  public function LatLonListLine($endPoint1Lat, $endPoint1Lon, $endPoint2Lat, $endPoint2Lon) {
+  public function LatLonListLine($endPoint1Lat, $endPoint1Lon, $endPoint2Lat, $endPoint2Lon) 
+    {
     return $this->__soapCall('LatLonListLine', array($endPoint1Lat, $endPoint1Lon, $endPoint2Lat, $endPoint2Lon),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -186,7 +193,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param string $zipCodeList
    * @return string
    */
-  public function LatLonListZipCode($zipCodeList) {
+  public function LatLonListZipCode($zipCodeList) 
+    {
     return $this->__soapCall('LatLonListZipCode', array($zipCodeList),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -203,7 +211,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param integer $displayLevel
    * @return string
    */
-  public function LatLonListCityNames(integer $displayLevel) {
+  public function LatLonListCityNames(integer $displayLevel) 
+    {
     return $this->__soapCall('LatLonListCityNames', array($displayLevel),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -225,7 +234,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param decimal $resolution
    * @return string
    */
-  public function LatLonListSquare($centerPointLat, $centerPointLon, $distanceLat, $distanceLon, $resolution) {
+  public function LatLonListSquare($centerPointLat, $centerPointLon, $distanceLat, $distanceLon, $resolution) 
+    {
     return $this->__soapCall('LatLonListSquare', array($centerPointLat, $centerPointLon, $distanceLat, $distanceLon, $resolution),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -242,7 +252,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param string $sector
    * @return string
    */
-  public function CornerPoints($sector) {
+  public function CornerPoints($sector) 
+    {
     return $this->__soapCall('CornerPoints', array($sector),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -268,7 +279,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param weatherParametersType $weatherParameters
    * @return string
    */
-  public function GmlLatLonList($listLatLon, $requestedTime, $featureType, weatherParametersType $weatherParameters) {
+  public function GmlLatLonList($listLatLon, $requestedTime, $featureType, weatherParametersType $weatherParameters) 
+    {
     return $this->__soapCall('GmlLatLonList', array($listLatLon, $requestedTime, $featureType, $weatherParameters),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -296,7 +308,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param string $propertyName
    * @return string
    */
-  public function GmlTimeSeries($listLatLon, $startTime, $endTime, $compType, $featureType, $propertyName) {
+  public function GmlTimeSeries($listLatLon, $startTime, $endTime, $compType, $featureType, $propertyName) 
+    {
     return $this->__soapCall('GmlTimeSeries', array($listLatLon, $startTime, $endTime, $compType, $featureType, $propertyName),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -319,7 +332,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param string $format
    * @return string
    */
-  public function NDFDgenByDay($latitude, $longitude, date $startDate, integer $numDays, $format) {
+  public function NDFDgenByDay($latitude, $longitude, date $startDate, integer $numDays, $format) 
+    {
     return $this->__soapCall('NDFDgenByDay', array($latitude, $longitude, $startDate, $numDays, $format),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''
@@ -342,7 +356,8 @@ class Web_SOAP_WeatherGov extends SoapClient {
    * @param string $format
    * @return string
    */
-  public function NDFDgenByDayLatLonList($listLatLon, date $startDate, integer $numDays, $format) {
+  public function NDFDgenByDayLatLonList($listLatLon, date $startDate, integer $numDays, $format) 
+    {
     return $this->__soapCall('NDFDgenByDayLatLonList', array($listLatLon, $startDate, $numDays, $format),       array(
             'uri' => 'http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl',
             'soapaction' => ''

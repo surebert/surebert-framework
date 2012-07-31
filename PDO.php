@@ -71,7 +71,8 @@ class PDO extends \PDO{
      * </code>
      *
      */
-    public function s2o($sql, $params=null, $class_name=''){
+    public function s2o($sql, $params=null, $class_name='')
+    {
 
         
         //if it has parameters then prepare the statement and execute with the parameters
@@ -136,7 +137,8 @@ class PDO extends \PDO{
      * </code>
      *
      */
-    public static function paramify($data, $omit=Array()){
+    public static function paramify($data, $omit=Array())
+    {
         
         $params = Array();
 
@@ -161,7 +163,8 @@ class PDO extends \PDO{
      * @param string $sql
      * @return PDOStatement A PDO_statment instance
      */
-    public function prepare($sql, $driver_options=array()){
+    public function prepare($sql, $driver_options=array())
+    {
         
         $md5 = md5($sql);
         

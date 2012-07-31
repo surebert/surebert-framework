@@ -16,7 +16,8 @@
  */
 namespace sb;
 
-class REST_Client {
+class REST_Client 
+    {
 
     /**
      * The URL being fetched
@@ -114,7 +115,8 @@ class REST_Client {
      * @param array $default_settings settings to override the default properties of 
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      */
-    public function __construct($url = '', $default_settings = Array()) {
+    public function __construct($url = '', $default_settings = Array()) 
+    {
         $this->url = $url;
         $this->set_default_settings($default_settings);
     }
@@ -126,7 +128,8 @@ class REST_Client {
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function get($data = '', $settings = Array()) {
+    public function get($data = '', $settings = Array()) 
+    {
         return $this->process_curl('GET', $data, $settings);
     }
 
@@ -137,7 +140,8 @@ class REST_Client {
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function post($data = '', $settings = Array()) {
+    public function post($data = '', $settings = Array()) 
+    {
         return $this->process_curl('POST', $data, $settings);
     }
 
@@ -148,7 +152,8 @@ class REST_Client {
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function delete($data = '', $settings = Array()) {
+    public function delete($data = '', $settings = Array()) 
+    {
         return $this->process_curl('DELETE', $data, $settings);
     }
 
@@ -159,7 +164,8 @@ class REST_Client {
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function put($data = '', $settings = Array()) {
+    public function put($data = '', $settings = Array()) 
+    {
         return $this->process_curl('PUT', $data, $settings);
     }
 
@@ -168,7 +174,8 @@ class REST_Client {
      * @param array $default_settings settings to override the default properties of 
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      */
-    public function set_default_settings($default_settings) {
+    public function set_default_settings($default_settings) 
+    {
         foreach ($default_settings as $setting => $val) {
             if (property_exists(get_class(), $setting)) {
                 $this->$setting = $val;
@@ -182,7 +189,8 @@ class REST_Client {
      * @param string $pass The password
      * @param string $type The auth type basic, ntlm, digest 
      */
-    public function set_authentication($uname = '', $pass = '', $type = 'basic') {
+    public function set_authentication($uname = '', $pass = '', $type = 'basic') 
+    {
         $this->authentication['uname'] = $uname;
         $this->authentication['pass'] = $pass;
         $this->authentication['type'] = $type;
@@ -192,7 +200,8 @@ class REST_Client {
      * Sets the timeout for the request
      * @param int $timeout defaults to 30 seconds
      */
-    public function set_timeout($timeout = 30) {
+    public function set_timeout($timeout = 30) 
+    {
         $this->timeout = is_int($timeout) ? $timeout : 30;
     }
 
@@ -200,7 +209,8 @@ class REST_Client {
      * Sets any headers to send with the request
      * @param array $headers
      */
-    public function set_headers($headers = Array()) {
+    public function set_headers($headers = Array()) 
+    {
         $this->headers = is_array($headers) ? $headers : Array();
     }
 
@@ -208,7 +218,8 @@ class REST_Client {
      * Sets the user agent for the request
      * @param string $agent
      */
-    public function set_user_agent($agent = 'sb_REST_Client') {
+    public function set_user_agent($agent = 'sb_REST_Client') 
+    {
         $this->agent = $agent;
     }
 
@@ -216,7 +227,8 @@ class REST_Client {
      * File path to the cookie file
      * @param string $cookie_file
      */
-    public function set_cookie_file($cookie_file) {
+    public function set_cookie_file($cookie_file) 
+    {
         $this->cookie_file = $cookie_file;
     }
 
@@ -224,7 +236,8 @@ class REST_Client {
      * Sets the debug level to use
      * @param int $debug
      */
-    public function set_debug_state($debug = 2) {
+    public function set_debug_state($debug = 2) 
+    {
         $this->debug = $debug;
     }
 
@@ -233,7 +246,8 @@ class REST_Client {
      * @param string $event on_error, on_http_error, on_body and on_headers events
      * @param Callable $callable any function to parse the data
      */
-    public function set_callback($event, Callable $callable) {
+    public function set_callback($event, Callable $callable) 
+    {
         $this->$event = $callable;
     }
 
@@ -241,7 +255,8 @@ class REST_Client {
      * Gets an array of all of the current settings
      * @return array 
      */
-    public function get_settings() {
+    public function get_settings() 
+    {
         return get_object_vars($this);
     }
 
@@ -253,7 +268,8 @@ class REST_Client {
      * @param array $override_settings settings to override the default properties of 
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout, on_http_error, on_headers, on_body
      */
-    protected function process_curl($method, $data, $override_settings = Array()) {
+    protected function process_curl($method, $data, $override_settings = Array()) 
+    {
 
         $settings = get_object_vars($this);
         foreach ($override_settings as $setting => $val) {

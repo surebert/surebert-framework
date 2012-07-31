@@ -15,7 +15,8 @@ class Logger_StdOut extends Logger_Base{
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    protected function __write($data, $log_type){
+    protected function __write($data, $log_type)
+    {
         return file_put_contents("php://stdout", "\n\n".date('Y/m/d H:i:s')."\n".$data);
     }
 

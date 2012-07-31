@@ -8,7 +8,8 @@ namespace sb;
 
 class Session{
 
-    public function __construct(){
+    public function __construct()
+    {
         session_start();
     }
 
@@ -17,7 +18,8 @@ class Session{
      * @param $key The key to store it by
      * @param $val The value to store
      */
-    public function set($key, $val){
+    public function set($key, $val)
+    {
         $_SESSION[$key] = $val;
     }
     
@@ -26,7 +28,8 @@ class Session{
      * @param $key The key it is stored by
      * @return * The value stored
      */
-    public function get($key){
+    public function get($key)
+    {
         return $_SESSION[$key];
     }
     

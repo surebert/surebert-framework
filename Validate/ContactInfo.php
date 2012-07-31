@@ -19,7 +19,8 @@ class Validate_ContactInfo{
      * @param string $check_mx_records Check the MX record at the dns to make sure the mail host exists
      * @return \sb\Validate_Results
      */
-    public static function email($email, $check_mx_records=true){
+    public static function email($email, $check_mx_records=true)
+    {
 
         $result = new \sb\Validate_Results();
         $result->value = $email;
@@ -52,7 +53,8 @@ class Validate_ContactInfo{
 
      * @return \sb\Validate_Results The message property includes the city if it exists
      */
-    public static function zip($zip, $check_usps=true){
+    public static function zip($zip, $check_usps=true)
+    {
 
         $result = new \sb\Validate_Results();
         $result->value = $zip;
@@ -100,7 +102,8 @@ class Validate_ContactInfo{
 
      * @return \sb\Validate_Results
      */
-    public static function phone($phone){
+    public static function phone($phone)
+    {
 
         $result = new \sb\Validate_Results();
         $result->value = $phone;
@@ -126,7 +129,8 @@ class Validate_ContactInfo{
 
      * @return \sb\Validate_Results
      */
-    public static function url($url, $check_url=true){
+    public static function url($url, $check_url=true)
+    {
 
         $result = new \sb\Validate_Results();
         $result->value = $url;
@@ -175,7 +179,8 @@ class Validate_ContactInfo{
      * @param string $state
      * @return \sb\Validate_Results
      */
-    public static function state($state){
+    public static function state($state)
+    {
 
         $result = new \sb\Validate_Results();
         $result->value = $state;
@@ -203,7 +208,8 @@ class Validate_ContactInfo{
      * @param string $province
      * @return \sb\Validate_Results
      */
-    public static function province($province){
+    public static function province($province)
+    {
 
         $result = new \sb\Validate_Results();
         $result->value = $province;

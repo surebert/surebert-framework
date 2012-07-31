@@ -33,7 +33,8 @@ class Graph_Bar3D{
     public $colors;
     public $title = "";
 
-    public function __construct($width=200, $height=100, $padding=1){
+    public function __construct($width=200, $height=100, $padding=1)
+    {
 
         $this->width =$width;
         $this->height = $height;
@@ -45,7 +46,8 @@ class Graph_Bar3D{
     }
 
 
-    public function hexrgb ($hexstr){
+    public function hexrgb ($hexstr)
+    {
       $int = hexdec($hexstr);
 
       return array("r" => 0xFF & ($int >> 0x10),
@@ -53,7 +55,8 @@ class Graph_Bar3D{
                    "b" => 0xFF & $int);
     }
 
-    public function setColors($front, $top, $right, $background, $text="#000000"){
+    public function setColors($front, $top, $right, $background, $text="#000000")
+    {
 
 
         $front = $this->hexrgb($front);
@@ -71,7 +74,8 @@ class Graph_Bar3D{
 
     }
 
-    public function draw(){
+    public function draw()
+    {
 
         $columns  = count($this->values);
         $column_width = floor($this->width / $columns)-3 ;

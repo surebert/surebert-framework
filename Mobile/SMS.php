@@ -56,7 +56,8 @@ class Mobile_SMS{
      * @param string $message
      * @return boolean
      */
-    public function send($message){
+    public function send($message)
+    {
         
         $send_to = str_replace("-","", $this->send_to['num']).'@'.self::$carriers[$this->send_to['carrier']];
         

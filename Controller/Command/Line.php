@@ -32,7 +32,8 @@ class Command_Line extends Controller_Base{
      * Blocks non command line calls unless overridden
      * @param boolean $allow_from_anywhere Allows connections from elsewhere if true
      */
-    public function __construct($allow_from_anywhere=false){
+    public function __construct($allow_from_anywhere=false)
+    {
         $this->allow_from_anywhere = $allow_from_anywhere;
         if(!Gateway::$command_line && !$allow_from_anywhere){
             die('You can only use this command from the terminal');
@@ -44,7 +45,8 @@ class Command_Line extends Controller_Base{
     /**
      * Sets teh start time etc,
      */
-    protected function start(){
+    protected function start()
+    {
         $this->start_time = microtime(true);
         $this->log(date('Y/m/d H:i:s')." - Begin Process ".  get_called_class());
         
@@ -60,7 +62,8 @@ class Command_Line extends Controller_Base{
      * Sets the memory limit for the command
      * @param integer $memory_in_MB
      */
-    public function set_memory_limit($memory_in_MB=200){
+    public function set_memory_limit($memory_in_MB=200)
+    {
         ini_set('memory_limit', $memory_in_MB.'M');
     }
 
@@ -68,7 +71,8 @@ class Command_Line extends Controller_Base{
      * Sets the maximum execution time for the script
      * @param integer $time_in_seconds
      */
-    public function set_max_execution_time($time_in_seconds=3600){
+    public function set_max_execution_time($time_in_seconds=3600)
+    {
         ini_set('max_execution_time',$time_in_seconds);
     }
 
@@ -76,7 +80,8 @@ class Command_Line extends Controller_Base{
      * Determines the peak memory usage
      * @return string The value in b, KB, or MB depending on size
      */
-    protected function get_memory_usage() {
+    protected function get_memory_usage() 
+    {
         $mem_usage = memory_get_peak_usage(true);
         $str = '';
         if ($mem_usage < 1024) {
@@ -93,7 +98,8 @@ class Command_Line extends Controller_Base{
      * Logs to std out
      * @param string $message
      */
-    protected function log($message, $type="MESSAGE"){
+    protected function log($message, $type="MESSAGE")
+    {
 
         $type = strtoupper($type);
 
@@ -122,17 +128,20 @@ class Command_Line extends Controller_Base{
      * Logs error to std out
      * @param string $message
      */
-    protected function error($message){
+    protected function error($message)
+    {
         $this->log($message, 'ERROR');
     }
 
-    protected function on_error($message){
+    protected function on_error($message)
+    {
         return true;
     }
     /**
      * Calculates time
      */
-    public function __destruct(){
+    public function __destruct()
+    {
         $milliseconds = round((microtime(true) - $this->start_time)*1000, 2);
         $this->log('PEAK MEMORY USAGE: '.$this->get_memory_usage(), 'MESSAGE');
         $this->log('TOTAL ERRORS: '.$this->number_of_errors, 'MESSAGE');

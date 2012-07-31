@@ -34,7 +34,8 @@ class Text_Bling{
      *
      * @return unknown
      */
-    public static function get_javascript($clear=1){
+    public static function get_javascript($clear=1)
+    {
         $js = self::$javascript;
         if($clear ==1){
             self::$javascript ='';
@@ -49,7 +50,8 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function emoticons_to_html($str){
+    public static function emoticons_to_html($str)
+    {
         
         $str = str_replace (" :)", ' <img src="/media/emot/icon_biggrin.gif" alt="big_grin" />', $str);
         $str = str_replace (" :(", ' <img src="/media/emot/icon_cry.gif" alt="cry"  />', $str);
@@ -65,7 +67,8 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function parse_css($str){
+    public static function parse_css($str)
+    {
 
         return  preg_replace_callback("~\[css=(.*?)\](.*?)\[\/css\]~s", function($match){
             return '<span style="'.str_replace(Array('javascript', 'expression'), '', $match[1]).'">'.$match[2].'</span>';
@@ -80,7 +83,8 @@ class Text_Bling{
      * @param boolean $media Determines if media is parsed into html
      * @return string The cleaned text
      */
-    public static function clean($str, $allow_email=false){
+    public static function clean($str, $allow_email=false)
+    {
         
         $str = self::typo_fix($str);
         
@@ -116,7 +120,8 @@ class Text_Bling{
      * @param string $str
      * @return string $str;
      */
-    public static function misc_tags($str){
+    public static function misc_tags($str)
+    {
         
         ##hortizontal row
         $str =  str_replace('[hr]', '<hr style="clear:both;" />', $str);
@@ -137,7 +142,8 @@ class Text_Bling{
      * @return string
      * @todo combine numlist and list into one
      */
-    public static function lists_to_html($str){
+    public static function lists_to_html($str)
+    {
 
         $str = preg_replace_callback('/(?:(?:^|\n)[#\*].*)+\n?/m', function($match){
             
@@ -191,7 +197,8 @@ class Text_Bling{
         return $str;
     }
     
-    public static function tables_to_html($str){
+    public static function tables_to_html($str)
+    {
         
         //add the new ones
         preg_match_all("~\[table\](.*?)\[/table\]~s",$str, $tables);
@@ -242,7 +249,8 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function links_to_html($str, $allow_email=false, $link_markup=null){
+    public static function links_to_html($str, $allow_email=false, $link_markup=null)
+    {
         
         ### Convert Email Tags ###
         if(!$allow_email){
@@ -279,7 +287,8 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function add_searches($str){
+    public static function add_searches($str)
+    {
         
         ### make google searches ###
         preg_match_all( "/\[google\](.*?)\[\/google\]/s", $str, $matches );
@@ -309,7 +318,8 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function colorize_instant_messages($str){
+    public static function colorize_instant_messages($str)
+    {
         
         preg_match_all( "/\[im\](.*?)\[\/im\]/s", $str, $matches );
         
@@ -340,7 +350,8 @@ class Text_Bling{
      *
      * @param unknown_type $str
      */
-    public static function convert_quotes($str){
+    public static function convert_quotes($str)
+    {
 
         $r = "/\[q(?:uote)?\](.*?)\[\/q(?:uote)?\]/is";
         while(preg_match($r, $str)){
@@ -356,7 +367,8 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function strip_bling($str){
+    public static function strip_bling($str)
+    {
         return preg_replace('~\[.*?](.*?)\[.*?]~', "$1", $str);
     }
     
@@ -366,7 +378,8 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function strip_all($str){
+    public static function strip_all($str)
+    {
         $str = stripslashes($str);
         $str = strip_tags($str);
         $str = Strings::unicode_urldecode($str);
@@ -387,7 +400,8 @@ class Text_Bling{
      * @return string
      * 
      */
-    public static function typo_fix($str){
+    public static function typo_fix($str)
+    {
         
         //mistakes
         $common_typos = array(
@@ -468,7 +482,8 @@ class Text_Bling{
      * @param string $str
      * @return string $str;
      */
-    public static function text_styles($str){
+    public static function text_styles($str)
+    {
                 
         ##bold
         $str = preg_replace("~\[b\](.*?)\[/b\]~is", '<strong class="tb_b">$1</strong>', $str);

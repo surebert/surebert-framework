@@ -57,7 +57,8 @@ class Session_Mysql extends Session_Abstract{
      * @param $session_life_time integer
      * @return unknown_type
      */
-    public function __construct(PDO $db, $session_life_time=null){
+    public function __construct(PDO $db, $session_life_time=null)
+    {
         
         $this->db = $db;
         
@@ -84,7 +85,8 @@ class Session_Mysql extends Session_Abstract{
      * Opens the session, not needed for db based sessions
      * @return boolean
      */
-    public function open(){
+    public function open()
+    {
          return true;
     }
     
@@ -92,7 +94,8 @@ class Session_Mysql extends Session_Abstract{
      * Closes the session, not needed for db based sessions
      * @return boolean
      */
-    public function close(){
+    public function close()
+    {
         return true;
     }
     
@@ -100,7 +103,8 @@ class Session_Mysql extends Session_Abstract{
      * Closes the session, not needed for db based sessions
      * @return boolean
      */
-    public function read($session_id){
+    public function read($session_id)
+    {
 
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
@@ -141,7 +145,8 @@ class Session_Mysql extends Session_Abstract{
      * @param $session_id
      * @return boolean
      */
-    public function update_access($session_id){
+    public function update_access($session_id)
+    {
         
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
@@ -172,7 +177,8 @@ class Session_Mysql extends Session_Abstract{
      * @param $data The session data to write
      * @return boolean
      */
-    public function write($session_id, $data){
+    public function write($session_id, $data)
+    {
         
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
@@ -221,7 +227,8 @@ class Session_Mysql extends Session_Abstract{
      * @param $data The session data to write
      * @return boolean
      */
-    private function insert($session_id, $data){
+    private function insert($session_id, $data)
+    {
         
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
@@ -251,7 +258,8 @@ class Session_Mysql extends Session_Abstract{
      * @param $data
      * @return boolean
      */
-    private function update($session_id, $data){
+    private function update($session_id, $data)
+    {
         
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
@@ -281,7 +289,8 @@ class Session_Mysql extends Session_Abstract{
      * Destroys a sessions by deleting it from the database
      * @return unknown_type
      */
-    public function destroy($session_id){
+    public function destroy($session_id)
+    {
 
         $sql = "
         DELETE FROM
@@ -308,7 +317,8 @@ class Session_Mysql extends Session_Abstract{
      * Garbage collects any open sessions that are no longer valid
      * @return boolean
      */
-    public function gc(){
+    public function gc()
+    {
 
          $sql = "
             DELETE FROM
@@ -330,7 +340,8 @@ class Session_Mysql extends Session_Abstract{
      * regenerate the session id
      * @return boolean
      */
-    public function regenerate_id(){
+    public function regenerate_id()
+    {
 
         $old_session_id = session_id();
         

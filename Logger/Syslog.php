@@ -68,7 +68,8 @@ class Logger_Syslog{
      * *  e.g. ls, su, php limit to alphnum < 32 chars, details can go in contents if longer is required
      *
     */
-    public function __construct($process, $hostname=''){
+    public function __construct($process, $hostname='')
+    {
 
         $this->process = $this->check_length($process, 32, 'process');
         $this->hostname = $hostname ? $hostname : php_uname('n');
@@ -78,7 +79,8 @@ class Logger_Syslog{
      *
      * @param string $agent Sets the user agent that produced the message within the system
      */
-    public function set_agent($ip, $identifier){
+    public function set_agent($ip, $identifier)
+    {
         $this->agent .= '|'.$ip.'|'.$identifier.'|';
     }
 
@@ -127,7 +129,8 @@ class Logger_Syslog{
      *  @param integer $time The tstamp to override the current time
      *    @return object This so you can chain ->send or ->save
      */
-    public function set_message($content, $severity=5, $facility=16, $time=null){
+    public function set_message($content, $severity=5, $facility=16, $time=null)
+    {
 
         $this->content = $this->check_length($content);
 
@@ -158,7 +161,8 @@ class Logger_Syslog{
      * @param The optional time to use, any format that strtotime understands
      * @return string
      */
-    protected function get_tstamp($time=null){
+    protected function get_tstamp($time=null)
+    {
         $time = !is_null($time) ? strtotime($time) : time();
         $month      = date("M", $time);
         $day        = substr("  ".date("j", $time), -2);
@@ -171,7 +175,8 @@ class Logger_Syslog{
      * @param string $message The raw message to send
      * @return object This so you can chain ->send or ->save
      */
-    public function set_raw_message($message){
+    public function set_raw_message($message)
+    {
         $this->message = $message;
         return $this;
     }
@@ -182,7 +187,8 @@ class Logger_Syslog{
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    public function save($log_dir=''){
+    public function save($log_dir='')
+    {
         if(empty($log_dir)){
             $log_dir = ROOT.'/private/logs/syslog/';
         }
@@ -198,7 +204,8 @@ class Logger_Syslog{
      * Returns the current message for debugging
      * @return string
      */
-    public function debug(){
+    public function debug()
+    {
         return $this->message;
     }
 
@@ -208,7 +215,8 @@ class Logger_Syslog{
      * @param integer $timeout The timeout on the udp connection
      * @return string message returned or error string
      */
-    public function send($server='', $port=514, $timeout = 0){
+    public function send($server='', $port=514, $timeout = 0)
+    {
         if(!empty($server)){
             $this->server = $server;
         }
@@ -242,7 +250,8 @@ class Logger_Syslog{
      * @param string $type The type of thing to check packet or process
      * @return string The string truncated to max length
      */
-    protected function check_length($str, $max_length='', $type='packet'){
+    protected function check_length($str, $max_length='', $type='packet')
+    {
         $max_length = $max_length ? $max_length : $this->max_length;
         if($max_length == -1){
             return $str;

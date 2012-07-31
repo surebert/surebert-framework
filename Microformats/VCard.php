@@ -6,7 +6,8 @@
  */
 namespace sb;
 
-class Microformats_VCard {
+class Microformats_VCard 
+    {
     private $output;
     private $output_format;
     private $first_name;
@@ -64,142 +65,187 @@ class Microformats_VCard {
         $this->rev = (string) date('Ymd\THi00\Z', time());
         $this->set_language($lang);
     }
-    private function set_string($var, $value = '') {
+    private function set_string($var, $value = '') 
+    {
         if (strlen(trim($value)) > 0) {
             $this->$var = (string) $value;
         }
     }
-    public function set_first_name($string = '') {
+    public function set_first_name($string = '') 
+    {
         $this->set_string('first_name', $string);
     }
-    public function set_middle_name($string = '') {
+    public function set_middle_name($string = '') 
+    {
         $this->set_string('middle_name', $string);
     }
-    public function set_last_name($string = '') {
+    public function set_last_name($string = '') 
+    {
         $this->set_string('last_name', $string);
     }
-    public function set_education_title($string = '') {
+    public function set_education_title($string = '') 
+    {
         $this->set_string('edu_title', $string);
     }
-    public function set_addon($string = '') {
+    public function set_addon($string = '') 
+    {
         $this->set_string('addon', $string);
     }
-    public function set_nick_name($string = '') {
+    public function set_nick_name($string = '') 
+    {
         $this->set_string('nickname', $string);
     }
-    public function set_company($string = '') {
+    public function set_company($string = '') 
+    {
         $this->set_string('company', $string);
     }
-    public function set_organisation($string = '') {
+    public function set_organisation($string = '') 
+    {
         $this->set_string('organisation', $string);
     }
-    public function set_department($string = '') {
+    public function set_department($string = '') 
+    {
         $this->set_string('department', $string);
     }
-    public function set_job_title($string = '') {
+    public function set_job_title($string = '') 
+    {
         $this->set_string('job_title', $string);
     }
-    public function set_note($string = '') {
+    public function set_note($string = '') 
+    {
         $this->set_string('note', $string);
     }
-    public function set_telephone_work($string = '') {
+    public function set_telephone_work($string = '') 
+    {
         $this->phones_work[] = $string;
     }
-    public function set_telephone_home($string = '', $num=1) {
+    public function set_telephone_home($string = '', $num=1) 
+    {
         $this->phones_home[] = $string;
     }
-    public function set_cell_phone($string = '') {
+    public function set_cell_phone($string = '') 
+    {
         $this->set_string('tel_cell_voice', $string);
     }
-    public function set_carphone($string = '') {
+    public function set_carphone($string = '') 
+    {
         $this->set_string('tel_car_voice', $string);
     }
-    public function set_pager($string = '') {
+    public function set_pager($string = '') 
+    {
         $this->set_string('tel_pager_voice', $string);
     }
-    public function set_additional_telephone($string = '') {
+    public function set_additional_telephone($string = '') 
+    {
         $this->set_string('tel_additional', $string);
     }
-    public function set_fax_work($string = '') {
+    public function set_fax_work($string = '') 
+    {
         $this->set_string('tel_work_fax', $string);
     }
-    public function set_fax_home($string = '') {
+    public function set_fax_home($string = '') 
+    {
         $this->set_string('tel_home_fax', $string);
     }
-    public function set_ISDN($string = '') {
+    public function set_ISDN($string = '') 
+    {
         $this->set_string('tel_isdn', $string);
     }
-    public function set_preferred_telephone($string = '') {
+    public function set_preferred_telephone($string = '') 
+    {
         $this->set_string('tel_preferred', $string);
     }
-    public function set_telex($string = '') {
+    public function set_telex($string = '') 
+    {
         $this->set_string('tel_telex', $string);
     }
-    public function set_work_street($string = '') {
+    public function set_work_street($string = '') 
+    {
         $this->set_string('work_street', $string);
     }
-    public function set_work_ZIP($string = '') {
+    public function set_work_ZIP($string = '') 
+    {
         $this->set_string('work_zip', $string);
     }
-    public function set_work_city($string = '') {
+    public function set_work_city($string = '') 
+    {
         $this->set_string('work_city', $string);
     }
-    public function set_work_region($string = '') {
+    public function set_work_region($string = '') 
+    {
         $this->set_string('work_region', $string);
     }
-    public function set_work_country($string = '') {
+    public function set_work_country($string = '') 
+    {
         $this->set_string('work_country', $string);
     }
-    public function set_home_street($string = '') {
+    public function set_home_street($string = '') 
+    {
         $this->set_string('home_street', $string);
     }
-    public function set_home_ZIP($string = '') {
+    public function set_home_ZIP($string = '') 
+    {
         $this->set_string('home_zip', $string);
     }
-    public function set_home_city($string = '') {
+    public function set_home_city($string = '') 
+    {
         $this->set_string('home_city', $string);
     }
-    public function set_home_region($string = '') {
+    public function set_home_region($string = '') 
+    {
         $this->set_string('home_region', $string);
     }
-    public function set_home_country($string = '') {
+    public function set_home_country($string = '') 
+    {
         $this->set_string('home_country', $string);
     }
-    public function set_postal_street($string = '') {
+    public function set_postal_street($string = '') 
+    {
         $this->set_string('postal_street', $string);
     }
-    public function set_postal_ZIP($string = '') {
+    public function set_postal_ZIP($string = '') 
+    {
         $this->set_string('postal_zip', $string);
     }
-    public function set_postal_city($string = '') {
+    public function set_postal_city($string = '') 
+    {
         $this->set_string('postal_city', $string);
     }
-    public function set_postal_region($string = '') {
+    public function set_postal_region($string = '') 
+    {
         $this->set_string('postal_region', $string);
     }
-    public function set_postal_country($string = '') {
+    public function set_postal_country($string = '') 
+    {
         $this->set_string('postal_country', $string);
     }
-    public function set_URL_work($string = '') {
+    public function set_URL_work($string = '') 
+    {
         $this->set_string('url_work', $string);
     }
-    public function set_role($string = '') {
+    public function set_role($string = '') 
+    {
         $this->set_string('role', $string);
     }
-    public function set_email($string = '') {
+    public function set_email($string = '') 
+    {
         $this->set_string('email', $string);
     }
-    private function set_language($isocode = '') {
+    private function set_language($isocode = '') 
+    {
         $this->lang = (string) (($this->is_valid_language_code($isocode) == true) ? ';LANGUAGE=' . $isocode : '');
     }
-    public function set_birthday($timestamp) {
+    public function set_birthday($timestamp) 
+    {
         $this->birthday = (int) date('Ymd', $timestamp);
     }
-    public function set_photo($type, $photo) {
+    public function set_photo($type, $photo) 
+    {
         $this->photo = "PHOTO;TYPE=$type;ENCODING=BASE64:" . base64_encode($photo);
     }
 
-    private function quoted_printable_encode($quotprint) {
+    private function quoted_printable_encode($quotprint) 
+    {
 
         $quotprint = (string) str_replace('\r\n', chr(13) . chr(10), $quotprint);
         $quotprint = (string) str_replace('\n', chr(13) . chr(10), $quotprint);
@@ -207,10 +253,12 @@ class Microformats_VCard {
         $quotprint = (string) str_replace('\=0D=0A', '=0D=0A', $quotprint);
         return (string) $quotprint;
     }
-    public static function is_valid_language_code($code) {
+    public static function is_valid_language_code($code) 
+    {
         return (boolean) ((preg_match('(^([a-zA-Z]{2})((_|-)[a-zA-Z]{2})?$)', trim($code)) > 0) ? true : false);
     }
-    private function generate_card_output($format) {
+    private function generate_card_output($format) 
+    {
         $this->output_format = (string) $format;
         if ($this->output_format == 'vcf') {
             $this->output = (string) "BEGIN:VCARD\r\n";
@@ -290,20 +338,23 @@ class Microformats_VCard {
             $this->output .= (string) "END:VCARD\r\n";
         }
     }
-    public function get_card_output($format = "vcf") {
+    public function get_card_output($format = "vcf") 
+    {
         if (!isset($this->output) || $this->output_format != $format) {
             $this->generate_card_output($format);
         }
         return (string) $this->output;
     }
-    public function output_file($format = 'vcf') {
+    public function output_file($format = 'vcf') 
+    {
         if ($format == 'vcf') {
             header('Content-Type: text/x-vcard');
             header('Content-Disposition: attachment; filename=vCard_' . date('Y-m-d_H-m-s') . '.vcf');
             echo $this->get_card_output('vcf');
         }
     }
-    private function get_card_file_path() {
+    private function get_card_file_path() 
+    {
         $path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
         $port = (string) (($_SERVER['SERVER_PORT'] != 80) ? ':' . $_SERVER['SERVER_PORT'] : '');
         return (string) 'http://' . $_SERVER['SERVER_NAME'] . $port . $path_parts["dirname"] . '/' . $this->download_dir . '/' . $this->card_filename;

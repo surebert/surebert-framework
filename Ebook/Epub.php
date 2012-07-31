@@ -73,7 +73,8 @@ class Ebook_Epub{
     }
 
 
-    protected function create_archive() {
+    protected function create_archive() 
+    {
 
         $this->zip->addFromString('mimetype', 'application/epub+zip');
         if($this->zip->addEmptyDir('META-INF/')) {
@@ -84,7 +85,8 @@ class Ebook_Epub{
 
     }
 
-    protected function create_container_xml(){
+    protected function create_container_xml()
+    {
 
         $xml = new DOMDocument('1.0', 'UTF-8');
         $container = $xml->appendChild($xml->createElement('container'));
@@ -106,7 +108,8 @@ class Ebook_Epub{
      * @param <type> $mime_type
      * @return <type>
      */
-    public function add_global_css_file($filename,  $data='', $file_id=null, $mime_type=null) {
+    public function add_global_css_file($filename,  $data='', $file_id=null, $mime_type=null) 
+    {
 
         $this->global_style_sheets[] = basename($filename);
         return $this->add_file($filename, $data, $file_id, 'text/css');
@@ -117,7 +120,8 @@ class Ebook_Epub{
      * @param string $filename
      * @return <type>
      */
-    public function file_to_mime($filename){
+    public function file_to_mime($filename)
+    {
         return \sb\Files::file_to_mime($filename);
     }
 
@@ -126,7 +130,8 @@ class Ebook_Epub{
      * @param <type> $filename
      * @param <type> $data
      */
-    public function add_file($filename,  $data='', $file_id=null, $media_type=null) {
+    public function add_file($filename,  $data='', $file_id=null, $media_type=null) 
+    {
 
         if(is_file($filename)){
             $data = file_get_contents($filename);
@@ -145,22 +150,26 @@ class Ebook_Epub{
 
     }
 
-    protected function set_title($title){
+    protected function set_title($title)
+    {
         $this->title = $title;
         $this->opf->set_title($title);
         $this->ncx->set_title($title);
     }
 
-    public function set_author($author, $sort_key=''){
+    public function set_author($author, $sort_key='')
+    {
         $this->opf->set_author($author, $sort_key);
         $this->ncx->set_author($author);
     }
 
-    public function set_description($description){
+    public function set_description($description)
+    {
         return $this->opf->set_descrtiption($description);
     }
 
-    public function set_language($lang='en'){
+    public function set_language($lang='en')
+    {
 
         if (mb_strlen($language) != 2) {
             throw(new \Exception("language must be two char language code e.g. en, de"));
@@ -168,12 +177,14 @@ class Ebook_Epub{
         return $this->opf->set_language($lang);
     }
 
-    public function set_date($date=null){
+    public function set_date($date=null)
+    {
         $this->date = $date ?: time();
         return $this->opf->set_date($this->date);
     }
 
-    public function set_identifier($identifier, $identifier_type){
+    public function set_identifier($identifier, $identifier_type)
+    {
         if ($identifier_type != "URI" && $identifier_type != "ISBN" && $identifier_type != "UUID") {
             throw(new \Exception("Identifier type must be ISBN, UUID, or URI"));
         }
@@ -181,7 +192,8 @@ class Ebook_Epub{
         $this->identifier_type = $identifier_type;
     }
 
-    public function add_chapter_raw($title, $contents='', $linear='yes', $autosplit=false){
+    public function add_chapter_raw($title, $contents='', $linear='yes', $autosplit=false)
+    {
         $this->chapter_count++;
         if(is_file($contents)){
             $src = basename($contents);
@@ -198,13 +210,15 @@ class Ebook_Epub{
 
     }
 
-    public function add_chapter(\sb\Ebook_Epub_Chapter $chapter, $linear='yes'){
+    public function add_chapter(\sb\Ebook_Epub_Chapter $chapter, $linear='yes')
+    {
         $chapter->add_css($this->global_style_sheets);
         $this->add_chapter_raw($chapter->title, $chapter->saveXML(), $linear);
         return $chapter;
     }
 
-    public function add_cover($data){
+    public function add_cover($data)
+    {
         if(is_file($data)){
             $data = file_get_contents($data);
         }
@@ -215,7 +229,8 @@ class Ebook_Epub{
 
     }
 
-    public function output(){
+    public function output()
+    {
 
         $this->date = $this->date ?: time();
         $this->opf->formatOutput = true;
@@ -244,7 +259,8 @@ class Ebook_Epub{
         \sb\Files::read_chunked($this->tmp_file);
     }
 
-    protected function debug($str){
+    protected function debug($str)
+    {
         file_put_contents("php://stdout", $str."\n");
     }
 }

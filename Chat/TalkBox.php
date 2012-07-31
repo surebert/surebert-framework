@@ -124,7 +124,8 @@ class Chat_TalkBox{
         
     }
     
-    public function destroy_room(){
+    public function destroy_room()
+    {
         
         if($room =='master'){return;}
         
@@ -158,7 +159,8 @@ class Chat_TalkBox{
         
     }
     
-    public function create_room($room){
+    public function create_room($room)
+    {
             
             $this->room = $room;
             
@@ -204,7 +206,8 @@ class Chat_TalkBox{
             
     }
     
-    public function insert(sb_Chat_Line $line){
+    public function insert(sb_Chat_Line $line)
+    {
         
         if(empty($line->message)){return 0;}
         
@@ -248,7 +251,8 @@ class Chat_TalkBox{
     public $loaded_from_backup = 0;
     
 
-    public function display($id, $dir ="up", $limit=10){
+    public function display($id, $dir ="up", $limit=10)
+    {
         
         $ltgt = ($dir == "up") ? ">" : "<";
         

@@ -18,7 +18,8 @@ class Files_ForceDownload{
      *
      */
 
-    public static function send($file, $display_file_name=''){
+    public static function send($file, $display_file_name='')
+    {
         $display_file_name = $display_file_name ? $display_file_name : basename($file);
         $display_file_name = str_replace(" ", "_", $display_file_name);
         header("HTTP/1.1 200 OK");
@@ -41,7 +42,8 @@ class Files_ForceDownload{
      * @param string $path The path to the file or directory
      * @return string 
      */
-    public static function file_to_zip($path){
+    public static function file_to_zip($path)
+    {
         if(is_file($path) || is_dir($path)){
             $zip = new ZipArchive;
             $zip_file = ROOT.'/private/cache/zip/'.md5(microtime(true));

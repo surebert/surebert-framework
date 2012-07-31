@@ -14,7 +14,8 @@ class HTML{
      * @param string $charset The charset from  htmlspecialchars
      * @return type 
      */
-    public static function escape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') {
+    public static function escape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') 
+    {
         
         if (is_string($mixed)) {
             $mixed = htmlspecialchars($mixed, $quote_style, $charset);
@@ -40,7 +41,8 @@ class HTML{
      * @param string $charset The charset from  htmlspecialchars
      * @return type 
      */
-    public static function unescape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') {
+    public static function unescape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') 
+    {
         
         if (is_string($mixed)) {
             $mixed = str_replace('&amp;', '&', $mixed);

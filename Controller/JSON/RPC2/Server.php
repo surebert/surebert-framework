@@ -7,7 +7,8 @@
  */
 namespace sb;
 
-class Controller_JSON_RPC2_Server extends Controller_Base {
+class Controller_JSON_RPC2_Server extends Controller_Base 
+    {
 
     /**
      * The transport method to listen for data on
@@ -43,7 +44,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
     /**
      * Create an instance, called by gateway
      */
-    public function __construct() {
+    public function __construct() 
+    {
         
         if (isset($_SERVER) && isset($_SERVER['HTTP_PHP_SERIALIZE_RESPONSE'])) {
             $this->php_serialize_response = true;
@@ -54,7 +56,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * Determines is gzencoding is used
      * @param $level Integer A number between 0-9, the compression level, higher takes longer
      */
-    public function use_gz_encoding($level) {
+    public function use_gz_encoding($level) 
+    {
         $this->gz_encode_level = $level;
     }
 
@@ -62,7 +65,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * Sets the key that data is encrypted with and turns on encryption, the client must use the same key
      * @param $key String
      */
-    public function use_encryption($key) {
+    public function use_encryption($key) 
+    {
         $this->encryptor = new \sb\Encryption\ForTransmission($key);
         $this->encryption_key = $key;
 
@@ -77,7 +81,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * @return Array - Object once json_encoded
      * @servable true
      */
-    public function get_methods($html = true) {
+    public function get_methods($html = true) 
+    {
 
         $arr = Array();
 
@@ -122,7 +127,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * @return Object with return_type and phpdoc property
      * @servable true
      */
-    protected function get_phpdoc($method) {
+    protected function get_phpdoc($method) 
+    {
 
         if (method_exists($this, $method)) {
             $reflect = new ReflectionMethod($this, $method);
@@ -150,7 +156,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * @param $arr
      * @return string HTML
      */
-    protected function methods_to_html($methods) {
+    protected function methods_to_html($methods) 
+    {
 
         $html = '<style type="text/css">li{background-color:#c8c8d4;}h1{font-size:1.0em;padding:3px 0 3px 10px;color:white;background-color:#8181bd;}pre{color:#1d1d4d;}</style><ol>';
         foreach ($methods as $method => $comments) {
@@ -166,19 +173,22 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * method you can use to log the json request
      * @param string $json_request The input json
      */
-    protected function log_request($json_request){}
+    protected function log_request($json_request)
+    {}
     
     /**
      * method you can use to log the json response
      * @param string $json_request The output json
      */
-    protected function log_response($json_response){}
+    protected function log_response($json_response)
+    {}
     
     /**
      * Parses the request
      * @param $json_request_str
      */
-    protected function get_response($json_request_str='') {
+    protected function get_response($json_request_str='') 
+    {
 
         $response = new \sb\JSON\RPC2_Response();
 
@@ -297,7 +307,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * @param $json_request_str String This optional argument can be used for debugging the server.  A \sb\JSON\RPC2_Request formatted JSON string e.g. {"method":"add","params":[1,2],"id":"abc123"}
      * @return string JSON encoded \sb\JSON\RPC2_Response
      */
-    public function render() {
+    public function render() 
+    {
         $args = func_get_args();
         
         $json_request_str = isset($args[0]) ? $args[0] : '';
@@ -360,7 +371,8 @@ class Controller_JSON_RPC2_Server extends Controller_Base {
      * Will also server get_methods/methods as HTML list of available calls
      * @return type 
      */
-    public function not_found() {
+    public function not_found() 
+    {
         if (isset($this->request->path_array[1])) {
             switch ($this->request->path_array[1]) {
                 case 'methods':

@@ -20,7 +20,8 @@ class JS{
      * @param string $html The innerHTML to set
      * @return string
      */
-    public static function set_html($id, $html){
+    public static function set_html($id, $html)
+    {
         $js = '$("'.$id.'").html('.json_encode($html).');';
         return self::exec_header($js);
     }
@@ -29,7 +30,8 @@ class JS{
      * Executes a script at a certain path
      * @param string $script_path full path
      */
-    public static function exec_script($script_path, $context=null){
+    public static function exec_script($script_path, $context=null)
+    {
         header('Content-type: text/javascript');
         if(!is_null($context)){
             if(is_object($context)){
@@ -49,7 +51,8 @@ class JS{
      * @param string $class The class to use for the notification 'error', 'success', etc
      * @return string
      */
-    public static function notify($message, $class='success'){
+    public static function notify($message, $class='success')
+    {
         return self::exec_header("sb.notify(".json_encode($message).", ".json_encode($class).");");
     }
     
@@ -57,7 +60,8 @@ class JS{
      * Executes the full response text, can be called more than once
      * @param type $js 
      */
-    public static function exec_response($js){
+    public static function exec_response($js)
+    {
         header('Content-type: text/javascript');
         echo $js;
     }
@@ -66,7 +70,8 @@ class JS{
      * Executes a response header
      * @param type $js 
      */
-    public static function exec_header($js){
+    public static function exec_header($js)
+    {
         header("sb_on_response".(self::$sb_on_response_headers++).": ".$js);
         
     }

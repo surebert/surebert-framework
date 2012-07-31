@@ -7,9 +7,11 @@
  * @author paul.visco@roswellpark.org
  * @package Text
  */
-class Text_Diff {
+class Text_Diff 
+    {
 
-    public static function compare($old, $new) {
+    public static function compare($old, $new) 
+    {
         
         $maxlen = 0;
         foreach ($old as $oindex => $ovalue) {
@@ -34,7 +36,8 @@ class Text_Diff {
                 self::compare(array_slice($old, $omax + $maxlen), array_slice($new, $nmax + $maxlen)));
     }
 
-    public static function html($old, $new) {
+    public static function html($old, $new) 
+    {
         
         $html = '';
         $old = str_replace("\n", "\n ", $old);

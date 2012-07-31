@@ -222,7 +222,8 @@ class RSS_Feed extends \DomDocument{
      * @param string $link The link to the feed
      * @param string $description A description of the feed
      */
-    public function __construct($title='', $link='', $description=''){
+    public function __construct($title='', $link='', $description='')
+    {
         
         parent::__construct();
         
@@ -241,7 +242,8 @@ class RSS_Feed extends \DomDocument{
      * @param \sb\RSS_Item $item
      * @return \sb\RSS_Item the reference to the item
      */
-    public function add_item(RSS_Item &$item){
+    public function add_item(RSS_Item &$item)
+    {
         
         $this->items[] = $item;
         return $item;
@@ -255,7 +257,8 @@ class RSS_Feed extends \DomDocument{
      *
      * @return string
      */
-    public function display(){
+    public function display()
+    {
         
         //add feed properties
         $this->channel_properties_to_DOM();
@@ -276,7 +279,8 @@ class RSS_Feed extends \DomDocument{
     * @param string $nodeValue
     * @return object DOM node
     */
-    private function create_node($nodeName, $nodeValue, $cdata = false){
+    private function create_node($nodeName, $nodeValue, $cdata = false)
+    {
         $node = $this->createElement($nodeName);
         if($cdata){
             $text = $this->createCDATASection($nodeValue);
@@ -294,7 +298,8 @@ class RSS_Feed extends \DomDocument{
      *
      * @param \sb\RSS_Item $item
      */
-    private function append_item(\sb\RSS_Item $item){
+    private function append_item(\sb\RSS_Item $item)
+    {
         
         $new_item = $this->createElement("item");
         
@@ -332,7 +337,8 @@ class RSS_Feed extends \DomDocument{
      * Converts all the feed object properties into RSS DOM nodes and adds them to the channel node
      *
      */
-    private function channel_properties_to_DOM(){
+    private function channel_properties_to_DOM()
+    {
       
         
         foreach(get_object_vars($this) as $key=>$val){

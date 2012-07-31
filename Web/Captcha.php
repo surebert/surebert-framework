@@ -75,7 +75,8 @@ class Web_Captcha{
      * </code>
      * @param string $background The path to the background 8 bit png, make sure it is 128 color or less.  If left out, the image has a black background.
      */
-    public function __construct($background='', $color=''){
+    public function __construct($background='', $color='')
+    {
         
         if(file_exists($background)){
             $this->image = imagecreatefrompng($background);
@@ -102,7 +103,8 @@ class Web_Captcha{
      *
      * @return string
      */
-    private function create_word(){
+    private function create_word()
+    {
         
         $this->word ='';
         for($x=0;$x<rand(5,7);$x++){
@@ -116,7 +118,8 @@ class Web_Captcha{
      * Adds interference as circles int he backgroun the make it more difficult to parse.  This is optional
      *
      */
-    public function add_interference(){
+    public function add_interference()
+    {
         
         for($i=0;$i<20;$i++){
             $radius =  rand(0,150);
@@ -130,7 +133,8 @@ class Web_Captcha{
      * @param arary $filters AN array of GD filter constants to run on the image
      * @return resource THe image is returned and can be used with imagepng to display or export to file
      */
-    public function draw($filters=Array()){
+    public function draw($filters=Array())
+    {
         
         $word = $this->create_word();
     

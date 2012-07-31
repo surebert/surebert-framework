@@ -6,7 +6,8 @@
  */
 namespace sb;
 
-class Controller {
+class Controller 
+    {
 
     /**
      * Set to true if the view is loaded from within another view via \sb\Gateway::render_request, otherwise false
@@ -54,7 +55,8 @@ class Controller {
      * @param $output
      * @return string
      */
-    public function filter_output($output) {
+    public function filter_output($output) 
+    {
         return $output;
     }
 
@@ -63,7 +65,8 @@ class Controller {
      *
      * @param sb\Request $request The request instance fed to the view
      */
-    final public function set_request(\sb\Request $request) {
+    final public function set_request(\sb\Request $request) 
+    {
 
         $this->request = $request;
 
@@ -75,7 +78,8 @@ class Controller {
      * If you return false from this method then no output is rendered.
      * @return boolean determines if anything should render anything or not, false == no render
      */
-    public function on_before_render($method = '') {
+    public function on_before_render($method = '') 
+    {
 
         return true;
     }
@@ -91,7 +95,8 @@ class Controller {
      * local variables in the view
      * 
      */
-    public function render() {
+    public function render() 
+    {
 
         $args = func_get_args();
         $template = isset($args[0]) ? $args[0] : '';
@@ -167,7 +172,8 @@ class Controller {
      * local variables in the view
      * @return string 
      */
-    protected function get_view($_view_path, $extract_vars = null) {
+    protected function get_view($_view_path, $extract_vars = null) 
+    {
 
         //extract class vars to local vars for view
         if ($this->extract) {
@@ -210,7 +216,8 @@ class Controller {
      * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
      */
-    public function render_view($path, $extract_vars = null) {
+    public function render_view($path, $extract_vars = null) 
+    {
 
         //capture view to buffer
         ob_start();
@@ -222,7 +229,8 @@ class Controller {
     /**
      * Default request not fullfilled
      */
-    public function not_found() {
+    public function not_found() 
+    {
 
         $file = ROOT . '/private/views/errors/404.view';
         if (is_file($file)) {

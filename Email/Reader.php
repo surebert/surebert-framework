@@ -125,7 +125,8 @@ class Email_Reader{
      * @param integer $port
      *
      */
-    public function __construct($address, $pass, $host, $protocol, $port=''){
+    public function __construct($address, $pass, $host, $protocol, $port='')
+    {
         
         $this->log("\n-----------------".date('m/d/y H:i:s')."------------------\n");
         
@@ -157,7 +158,8 @@ class Email_Reader{
      *
      * @param string $message
      */
-    public function log($message){
+    public function log($message)
+    {
 
         if(!empty($this->log_file)){
             //echo $message;
@@ -169,7 +171,8 @@ class Email_Reader{
      * Opens the inbox and returns the connection status
      *
      */
-    public function open(){
+    public function open()
+    {
 
         //check for mail
         $host = "{".$this->host.":".$this->port."/".$this->protocol."/notls}INBOX";
@@ -194,7 +197,8 @@ class Email_Reader{
      *
      * @param boolean $expunge true expunges
      */
-    public function close($expunge){
+    public function close($expunge)
+    {
         //expunge emails set to delete if delete_after_read is set
         if($expunge) {
             imap_close($this->inbox, CL_EXPUNGE);
@@ -209,7 +213,8 @@ class Email_Reader{
      * @param integer $index
      * @return boolean Deleted state
      */
-    public function undelete_message($index){
+    public function undelete_message($index)
+    {
 
         $delete = imap_undelete($this->inbox, $index);
         return $delete;
@@ -221,7 +226,8 @@ class Email_Reader{
      * @param integer $index
      * @return boolean Deleted state
      */
-    public function delete_message($index){
+    public function delete_message($index)
+    {
 
         $delete = imap_delete($this->inbox, $index);
         return $delete;
@@ -232,7 +238,8 @@ class Email_Reader{
      *
      * @return integer
      */
-    public function count_messages(){
+    public function count_messages()
+    {
 
         $check = imap_check($this->inbox);
         return $this->email_count = $check->Nmsgs;
@@ -245,7 +252,8 @@ class Email_Reader{
      * @param sb_Email $email
      * @param object $header
      */
-    public function parse_header_info(Email &$email, $header){
+    public function parse_header_info(Email &$email, $header)
+    {
         
         //map the most useful header info to the email object itself
         $email->all_headers = $header;
@@ -273,7 +281,8 @@ class Email_Reader{
      * @param object $part The current part
      * @param string $part_id The id of the part
      */
-    private function examine_part(&$email, $part){
+    private function examine_part(&$email, $part)
+    {
         //echo '<br />'.$part->part_id.' '.$part->type.' '.$part->dparameters[0]->value;
         
         //get subtype JPEG, WAV, HTML, PLAIN, etc
@@ -335,7 +344,8 @@ class Email_Reader{
      *
      * @return returns the array of all email objects found
      */
-    public function fetch_messages(){
+    public function fetch_messages()
+    {
 
         //count the messages
         $this->count_messages();

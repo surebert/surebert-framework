@@ -27,7 +27,8 @@ class SSH2_Client{
      * @param string $host The host server to connect to
      * @param integer $port The port to connect on
      */
-    public function __construct($host, $port=22){
+    public function __construct($host, $port=22)
+    {
 
         if(!function_exists('ssh2_connect')){
             throw new \Exception("You must install pecl ssh2 extension to use \sb\SFTP_Client");
@@ -45,7 +46,8 @@ class SSH2_Client{
      * @param string $uname The user name to log in with
      * @param <type> $pass The password to login in with
      */
-    public function login($uname, $pass){
+    public function login($uname, $pass)
+    {
         
         if (!@ssh2_auth_password($this->connection, $uname, $pass)){
             throw new \Exception("Could not authenticate with credentials given.");
@@ -61,8 +63,10 @@ class SSH2_Client{
      * @param string $private_key_file The private key file to use id (id_rsa), make sure it is readible by your script
      * @param string $pass The passphrase of the keyfile to use if one is required
      */
-    public function login_with_key($uname, $public_key_file, $private_key_file, $pass=''){
-        if (!ssh2_auth_pubkey_file($this->connection, $uname, $public_key_file, $private_key_file, $pass)){
+    public function login_with_key($uname, $public_key_file, $private_key_file, $pass='')
+    {
+        if (!ssh2_auth_pubkey_file($this->connection, $uname, $public_key_file, $private_key_file, $pass))
+    {
             throw new \Exception("Could not authenticate with credentials given.");
         }
 
@@ -76,7 +80,8 @@ class SSH2_Client{
      * @param boolean $return_stream If true, returns stream instead of data string
      * @return mixed If return stream, stream is returned else the data from the command on the remote machine as a string
      */
-    public function exec($command, $timeout = 30, $return_stream = false) {
+    public function exec($command, $timeout = 30, $return_stream = false) 
+    {
 
         $stream = @ssh2_exec($this->connection, $command);
 
@@ -102,7 +107,8 @@ class SSH2_Client{
      * @param integer $port The port to tunnel to via the ssh2 client
      * @return stream The tunnel stream
      */
-    public function tunnel($host, $port){
+    public function tunnel($host, $port)
+    {
         $stream = @ssh2_tunnel($this->connection, $command);
         if(!$stream){
             throw new \Exception('Cannot create tunnel to: '.$host.' on port'.$port);

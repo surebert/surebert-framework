@@ -14,7 +14,8 @@ class Event_Unchangeable extends _Event{
      * @param array $data 
      * @param mixed $subject The subject of the event
      */
-    public function __construct($data=Array(), $subject=false){
+    public function __construct($data=Array(), $subject=false)
+    {
         
         $this->args = $data;
         $this->set_subject($subject);
@@ -26,7 +27,8 @@ class Event_Unchangeable extends _Event{
      * @param mixed $value The value to set it to
      * @throws sb_Event_Unchangeable_Exception 
      */
-    public function __set($name, $value){
+    public function __set($name, $value)
+    {
         if($name == 'args'){
             throw(new sb_Event_Unchangeable_Exception());
         }
@@ -36,7 +38,8 @@ class Event_Unchangeable extends _Event{
      * Stops programmer who wrote listener from overriding the args
      * @throws \sb\Event_Unchangeable_Exception 
      */
-    public function set_args(){
+    public function set_args()
+    {
         throw(new \sb\Event_Unchangeable_Exception());
     }
     
@@ -44,7 +47,8 @@ class Event_Unchangeable extends _Event{
      * Stops programmer who wrote listener from overriding the args
      * @throws \sb\Event_Unchangeable_Exception 
      */
-    public function set_arg(){
+    public function set_arg()
+    {
         throw(new \sb\Event_Unchangeable_Exception());
     }
 }

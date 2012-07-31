@@ -8,7 +8,8 @@
 
 namespace sb;
 
-class Request {
+class Request 
+    {
 
     /**
      * The path as a string eg. /surebert/load
@@ -74,7 +75,8 @@ class Request {
      * Creates a new request instance
      * @param $request The string request with args e.g. /_surebert/custom/strings.numPad
      */
-    public function __construct($request) {
+    public function __construct($request) 
+    {
 
         if (preg_match("~\?(.*)$~", $request, $match)) {
             $request = preg_replace("~\?.*$~", '', $request);
@@ -109,7 +111,8 @@ class Request {
      * @param $cookie
      * @param $files
      */
-    public function set_input(&$post, &$cookie, &$files, &$data) {
+    public function set_input(&$post, &$cookie, &$files, &$data) 
+    {
 
         $this->post = $post;
         $this->cookie = $cookie;
@@ -121,7 +124,8 @@ class Request {
      * Sets the input argument delimeter and parses it
      * @param $input_args_delimiter
      */
-    public function set_input_args_delimiter($input_args_delimiter) {
+    public function set_input_args_delimiter($input_args_delimiter) 
+    {
 
         //parse arguments by removing path
         $args = preg_replace("~^.{" . strlen($this->path) . "}/?~", "", $this->request);
@@ -150,7 +154,8 @@ class Request {
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_get($key, $default_val = null) {
+    public function get_get($key, $default_val = null) 
+    {
 
         if (isset($this->get[$key])) {
             return $this->get[$key];
@@ -165,7 +170,8 @@ class Request {
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_post($key, $default_val = null) {
+    public function get_post($key, $default_val = null) 
+    {
         if (isset($this->post[$key])) {
             return $this->post[$key];
         }
@@ -179,7 +185,8 @@ class Request {
      * @param string $key The key to look for
      * @return mixed the string value or null if not found
      */
-    public function get_cookie($key, $default_val = null) {
+    public function get_cookie($key, $default_val = null) 
+    {
         if (isset($this->cookie[$key])) {
             return $this->cookie[$key];
         }
@@ -193,7 +200,8 @@ class Request {
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_session($key, $default_val = null) {
+    public function get_session($key, $default_val = null) 
+    {
 
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
@@ -208,7 +216,8 @@ class Request {
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_arg($arg_num, $default_val = null) {
+    public function get_arg($arg_num, $default_val = null) 
+    {
         if (isset($this->args[$arg_num])) {
             return $this->args[$arg_num];
         }
@@ -221,7 +230,8 @@ class Request {
 /**
  * Stores configuration variables
  */
-class Config {
+class Config 
+    {
 
     /**
      * Stores all the data
@@ -234,7 +244,8 @@ class Config {
      * @param string $key The key to get the value for
      * @return string value
      */
-    public static function get($key) {
+    public static function get($key) 
+    {
         return isset(self::$hash[$key]) ? self::$hash[$key] : null;
     }
 
@@ -243,7 +254,8 @@ class Config {
      * @param string $key The key to set
      * @param mixed $val The value to set
      */
-    public static function set($key, $val) {
+    public static function set($key, $val) 
+    {
         self::$hash[$key] = $val;
     }
 
@@ -251,7 +263,8 @@ class Config {
      * A dump of the entire config value array
      * @return array
      */
-    public static function dump() {
+    public static function dump() 
+    {
         return print_r(self::$hash, 1);
     }
 

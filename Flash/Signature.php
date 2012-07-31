@@ -175,7 +175,8 @@ class Flash_Signature{
      * @param string $id The unqiue transaction id of the Flash_Signature
      
      */
-    public function __construct($id=null, $db=null){
+    public function __construct($id=null, $db=null)
+    {
         
         if(is_null($id) && empty($this->id)){
             //create the randomized unqiue sec id
@@ -218,7 +219,8 @@ class Flash_Signature{
      * @param array $Flash_Signature_color The ink color of the Flash_Signatures specified as an Array(r,g,b) e.g. Array(255,0,45);
      * @param array $security_stamp_color The security stamp  color of the Flash_Signatures specified as an Array(r,g,b) e.g. Array(255,0,45);
      */
-    public function to_img($format, $file=null, $quality=100, $width=null, $height=null, $thickness=null, $bg_color=null, $Flash_Signature_color=null, $security_stamp_color=null){
+    public function to_img($format, $file=null, $quality=100, $width=null, $height=null, $thickness=null, $bg_color=null, $Flash_Signature_color=null, $security_stamp_color=null)
+    {
         
         
         if(is_integer($thickness)){
@@ -280,7 +282,8 @@ class Flash_Signature{
      * @param string $path a set of comma delimited x,y values of points that is plotted
      */
     
-    private function draw(){
+    private function draw()
+    {
         
         $i=0;
 
@@ -324,7 +327,8 @@ class Flash_Signature{
      * @param int $new_width the desired width of the image, can be proportional to new_height if set to *
      * @param int $new_height the desired height of the image, can be proportional to new_width if set to 
      */
-    private function resize_image($new_width ='*', $new_height='*'){
+    private function resize_image($new_width ='*', $new_height='*')
+    {
     
         
         //create proportial height or width if either is set to be proportional
@@ -353,7 +357,8 @@ class Flash_Signature{
      * @param int $y the y position of the text on the image
      * @param array $color the color of the text on the image expressed as an array(r,g,b);
      */
-    private function write($text, $x, $y, $color=''){
+    private function write($text, $x, $y, $color='')
+    {
     
         if(is_array($color) && count($color) == 3){
             $font_color = imagecolorallocate($this->data, $color[0], $color[1], $color[2]);
@@ -369,7 +374,8 @@ class Flash_Signature{
      *
      * @param PDO $db
      */
-    public function save($db=null){
+    public function save($db=null)
+    {
         
         if($db instanceof PDO){
             $this->db = $db;
@@ -406,7 +412,8 @@ class Flash_Signature{
      *
      * @param integer $id The Flash_Signature transaction_id
      */
-    public function load($db=null){
+    public function load($db=null)
+    {
         
         if($db instanceof PDO){
             $this->db = $db;
@@ -439,7 +446,8 @@ class Flash_Signature{
      * Destroys the reference to the image pointer
      *
      */
-    public function __destruct(){
+    public function __destruct()
+    {
         if(isset($this->image)){
             imagedestroy($this->image);
         } 

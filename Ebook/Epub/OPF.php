@@ -34,7 +34,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
 
     protected $date_format = 'Y-m-d\TH:i:s.000000P';
 
-    public function  __construct($version='1.0', $encoding='UTF-8') {
+    public function  __construct($version='1.0', $encoding='UTF-8') 
+    {
         parent::__construct($version, $encoding);
 
         $this->create_package();
@@ -43,7 +44,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
         $this->create_spine();
     }
 
-    public function create_package(){
+    public function create_package()
+    {
         $this->package = $this->appendChild($this->createElement('package'));
         $this->package->setAttribute('xmlns', 'http://www.idpf.org/2007/opf');
         //TODO get book identifier
@@ -51,7 +53,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
         $this->package->setAttribute('version', '2.0');
     }
 
-    public function create_metadata(){
+    public function create_metadata()
+    {
         $this->metadata = $this->package->appendChild($this->createElement('metadata'));
         $this->metadata->setAttribute('xmlns:dc', 'http://purl.org/dc/elements/1.1/');
         //$this->metadata->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
@@ -59,12 +62,14 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
         //$this->metadata->setAttribute('xmlns:dcterms', 'http://purl.org/dc/terms/');
     }
 
-    public function create_manifest(){
+    public function create_manifest()
+    {
         $this->manifest = $this->package->appendChild($this->createElement('manifest'));
         $this->add_file('book.ncx', 'application/x-dtbncx+xml', 'ncx');
     }
 
-    public function create_spine(){
+    public function create_spine()
+    {
         $this->spine = $this->package->appendChild($this->createElement('spine'));
         $this->spine->setAttribute('toc', 'ncx');
     }
@@ -74,21 +79,24 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
      * @param string $idref
      * @param string $linear
      */
-    public function add_to_spine($idref, $linear='yes'){
+    public function add_to_spine($idref, $linear='yes')
+    {
         $itemref = $this->spine->appendChild($this->createElement('itemref'));
         $itemref->setAttribute('idref', $idref);
         $itemref->setAttribute('linear', 'yes');
         return $itemref;
     }
 
-    public function set_title($title){
+    public function set_title($title)
+    {
         $this->title = $this->metadata->appendChild($this->createElement('dc:title'));
         $txt = $this->createTextNode($title);
         $this->title->appendChild($txt);
         return $txt;
     }
 
-    public function set_description($description){
+    public function set_description($description)
+    {
         $this->description = $this->metadata->appendChild($this->createElement('dc:description'));
         $txt = $this->createTextNode($description);
         $this->description->appendChild($txt);
@@ -102,7 +110,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
      *
      * @param $language
      */
-    public function set_language($language=en){
+    public function set_language($language=en)
+    {
         if (mb_strlen($language) != 2) {
             throw(new \Exception("language must be two char language code e.g. en, de"));
         }
@@ -113,7 +122,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
 
     }
 
-    public function set_publisher($publisher){
+    public function set_publisher($publisher)
+    {
         $this->publisher = $this->metadata->appendChild($this->createElement('dc:publisher'));
         $txt = $this->createTextNode($publisher);
         $this->publisher->appendChild($txt);
@@ -121,14 +131,16 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
     }
 
     //publisher URL
-    public function set_relation($relation){
+    public function set_relation($relation)
+    {
         $this->relation = $this->metadata->appendChild($this->createElement('dc:relation'));
         $txt = $this->createTextNode($relation);
         $this->relation->appendChild($txt);
         return $txt;
     }
 
-    public function add_file($href, $media_type, $file_id){
+    public function add_file($href, $media_type, $file_id)
+    {
         $item = $this->manifest->appendChild($this->createElement('item'));
         $item->setAttribute('id', $file_id ?: md5(microtime(true)));
         $item->setAttribute('href', $href);
@@ -136,7 +148,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
         return $item;
     }
 
-    public function set_identifier($identifier, $identifier_type){
+    public function set_identifier($identifier, $identifier_type)
+    {
         $this->identifier = $this->metadata->appendChild($this->createElement('dc:language'));
 
         $this->metadata->setAttribute('opf:scheme', $identifier_type);
@@ -151,7 +164,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
      * @param string $author Used for the dc:creator metadata parameter in the OPF file
      * @param string $sort_key is basically how the name is to be sorted, usually it's "Lastname, First names" where the $author is the straight "Firstnames Lastname"
      */
-    public function set_author($author, $sort_key=''){
+    public function set_author($author, $sort_key='')
+    {
         $this->creator = $this->metadata->appendChild($this->createElement('dc:creator'));
         $this->creator->setAttribute('opf:role', "aut");
         $txt = $this->createTextNode($author);
@@ -161,21 +175,24 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
         }
     }
 
-    public function set_source($url){
+    public function set_source($url)
+    {
         $this->source = $this->metadata->appendChild($this->createElement('dc:source'));
         $txt = $this->createTextNode($url);
         $this->source->appendChild($txt);
         return $txt;
     }
 
-    public function set_rights($rights){
+    public function set_rights($rights)
+    {
         $this->rights = $this->metadata->appendChild($this->createElement('dc:rights'));
         $txt = $this->createTextNode($url);
         $this->rights->appendChild($txt);
         return $txt;
     }
 
-    public function set_date($date=null){
+    public function set_date($date=null)
+    {
         $date = $date ?: time();
 
         $this->date = $this->metadata->appendChild($this->createElement('dc:date'));
@@ -184,7 +201,8 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
         return $txt;
     }
 
-    public function  saveXML($node=null, $options = null) {
+    public function  saveXML($node=null, $options = null) 
+    {
         if(!$this->language){
             $this->set_language('en');
         }

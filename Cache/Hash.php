@@ -35,14 +35,16 @@ class Cache_Hash implements Cache_Base{
      * @param $port The port to access the memcache server on
      * @param $namespace The namespace required when sharing memcache server.  Must be totall unique, e.g. the name of your app?
      */
-    public function __construct(){
+    public function __construct()
+    {
 
     }
 
     /**
      * Store the cache data in memcache
      */
-    public function store($key, $data, $lifetime = 0) {
+    public function store($key, $data, $lifetime = 0) 
+    {
         
         if($lifetime != 0){
             $lifetime = time() + $lifetime;
@@ -62,7 +64,8 @@ class Cache_Hash implements Cache_Base{
     /**
      * Fetches the cache from memcache
      */
-    public function fetch($key) {
+    public function fetch($key) 
+    {
 
         if(!array_key_exists($key, $this->hash)){
             return false;
@@ -83,7 +86,8 @@ class Cache_Hash implements Cache_Base{
     /**
      * Deletes cache data
      */
-    public function delete($key) {
+    public function delete($key) 
+    {
 
         $deleted = false;
 
@@ -106,7 +110,8 @@ class Cache_Hash implements Cache_Base{
     /**
      * Clears the whole cache
      */
-    public function clear_all(){
+    public function clear_all()
+    {
         return $this->hash = Array();
     }
 
@@ -115,7 +120,8 @@ class Cache_Hash implements Cache_Base{
      * @param $key
      * @return boolean If the catalog is stored or not
      */
-    private function catalog_key_add($key, $lifetime){
+    private function catalog_key_add($key, $lifetime)
+    {
 
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();
@@ -128,7 +134,8 @@ class Cache_Hash implements Cache_Base{
      * @param $key
      * @return boolean If the catalog is stored or not
      */
-    private function catalog_key_delete($key){
+    private function catalog_key_delete($key)
+    {
 
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();
@@ -142,7 +149,8 @@ class Cache_Hash implements Cache_Base{
      * Loads the current catalog
      * @return Array a list of all keys stored in the cache
      */
-    public function get_keys(){
+    public function get_keys()
+    {
 
         $catalog = $this->fetch($this->catalog_key);
     

@@ -41,7 +41,8 @@ class JSON_RPC2_Error{
      * @param $message Sets the human readible message
      * @param $data Sets amy addition data which must send with the error
      */
-    public function __construct($code=null, $message=null, $data=null){
+    public function __construct($code=null, $message=null, $data=null)
+    {
         $this->code = $code;
         $this->message = $message;
         $this->data = $data;

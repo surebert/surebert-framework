@@ -14,7 +14,8 @@ class Logger_FileSystem extends Logger_Base{
     * Creates a filesystem type logger
     * @param $agent String The agent string
     */
-    public function __construct($agent = '', $log_root=''){
+    public function __construct($agent = '', $log_root='')
+    {
         
         parent::__construct($agent);
         $log_root = !empty($log_root) ? $log_root : ROOT.'/private/logs';
@@ -26,7 +27,8 @@ class Logger_FileSystem extends Logger_Base{
      * Allows the setting of the log root
      * @param <type> $log_root
      */
-    public function set_log_root($log_root){
+    public function set_log_root($log_root)
+    {
         $this->_log_root = $log_root;
     }
 
@@ -35,7 +37,8 @@ class Logger_FileSystem extends Logger_Base{
      * @param $log Sting the log type.  Should be in the $enabled_logs array
      * @return string The path to the log directory to be used
      */
-    private function __get_log_path($log){
+    private function __get_log_path($log)
+    {
         
         $dir = $this->_log_root.'/'.$log.'/';
     
@@ -52,7 +55,8 @@ class Logger_FileSystem extends Logger_Base{
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    protected function __write($data, $log_type){
+    protected function __write($data, $log_type)
+    {
         return file_put_contents($this->__get_log_path($log_type).date('Y_m_d').'.log', "\n\n".date('Y/m/d H:i:s')."\t".$this->_agent_str."\n".$data, FILE_APPEND);
     }
 }

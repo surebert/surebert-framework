@@ -15,7 +15,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * 
      * @return string
      */
-    protected function get_base_url(){
+    protected function get_base_url()
+    {
         return $this->request->path;
     }
     
@@ -23,7 +24,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * Sets the root where the logs are stored by default /private/logs
      * @return string
      */
-    protected function get_root(){
+    protected function get_root()
+    {
         return ROOT.'/private/logs/';
     }
     
@@ -31,7 +33,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * Loads the HTML navigation
      * @return string 
      */
-    protected function get_nav(){
+    protected function get_nav()
+    {
         return '<p style="float:right;"><a href="'.$this->get_base_url().'">back to log home</a></p>';
     }
     
@@ -40,7 +43,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * @param string $sort_by The column to sort by name, size
      * @return string  HTML
      */
-    protected function log_types_to_html_table($sort_by='name', $reverse=false){
+    protected function log_types_to_html_table($sort_by='name', $reverse=false)
+    {
         
         $directories = \sb\Files::get_files($this->get_root(), true);
         foreach($directories as &$dir){
@@ -99,7 +103,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * methods used to write it
      * @return string HTML
      */
-    protected function dates_to_html_table($log_type, $sort_by='name', $reverse=false){
+    protected function dates_to_html_table($log_type, $sort_by='name', $reverse=false)
+    {
         $log_type = preg_replace("~[^\w]~", "", $log_type);
         $files = \sb\Files::get_files($this->get_root().$log_type, false);
         rsort($files);
@@ -161,7 +166,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * @param string $path
      * @return string 
      */
-    protected function file_to_html_textarea($path){
+    protected function file_to_html_textarea($path)
+    {
         if(is_file($path)){
             $contents = file_get_contents($path);
         } else {
@@ -179,7 +185,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * @param integer $lines The number of lines
      * @return string 
      */
-    protected function file_to_html_textarea_tail($path, $lines=50){
+    protected function file_to_html_textarea_tail($path, $lines=50)
+    {
         
         $handle = fopen($path, "r");
         $linecounter = $lines;
@@ -224,7 +231,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * @return type 
      * @servable true
      */
-    public function index(){
+    public function index()
+    {
         
         $command = $this->get_get('command');
         $html = '';
@@ -280,7 +288,8 @@ class Controller_Logviewer_FileSystem extends Controller_HTML5{
      * @return type 
      * @servable true
      */
-    public function export(){
+    public function export()
+    {
         
         $log_type = $this->get_get('log_type');
         $date_file = $this->get_get('date_file');

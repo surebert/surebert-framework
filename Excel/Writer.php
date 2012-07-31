@@ -7,7 +7,8 @@
  */
 namespace sb;
 
-class Excel_Writer {
+class Excel_Writer 
+    {
 
     /**
      * The beginning of file marker
@@ -38,7 +39,8 @@ class Excel_Writer {
      * $excel->output_with_headers('hello.xls');
      * </code>
      */
-    public function __construct() {
+    public function __construct() 
+    {
         $this->bof = pack("s*", 0x809, 0x08, 0x00, 0x10, 0x0042, 0x04E4);
         $this->eof = pack("s*", 0x0A, 0x00);
         $this->contents = $this->bof;
@@ -52,7 +54,8 @@ class Excel_Writer {
      * @param the type of value (string|integer). Autodetects by default
      * @return boolean Success
      * */
-    public function set_cell($cell, $value, $type = "auto") {
+    public function set_cell($cell, $value, $type = "auto") 
+    {
         if ($type == "auto") {
             $type = gettype($value);
         }
@@ -106,7 +109,8 @@ class Excel_Writer {
      * @param array An array of values
      * @return boolean Success
      * */
-    public function set_row($row, $values) {
+    public function set_row($row, $values) 
+    {
 
         if (!is_array($values)) {
             trigger_error("Values must be an array.", E_USER_ERROR);
@@ -133,7 +137,8 @@ class Excel_Writer {
      * @param array An array of values
      * @return Success
      * */
-    public function set_column($col, $values) {
+    public function set_column($col, $values) 
+    {
         if (!is_array($values)) {
             trigger_error("Values must be an array.", E_USER_ERROR);
             return false;
@@ -158,7 +163,8 @@ class Excel_Writer {
      *
      * @return void
      * */
-    public function output_with_headers($filename='output.xls') {
+    public function output_with_headers($filename='output.xls') 
+    {
         header("Expires: " . date("r", 0));
         header("Last-Modified: " . gmdate("r") . " GMT");
         header("Content-Type: application/x-msexcel");
@@ -171,7 +177,8 @@ class Excel_Writer {
      * @param string $filepath The filepath to save to
      * @return boolean
      */
-    public function to_file($filepath) {
+    public function to_file($filepath) 
+    {
         if (is_file($filepath)) {
             return file_put_contents($filepath, $this->__toString());
         }
@@ -183,7 +190,8 @@ class Excel_Writer {
      *
      * @return an XLS string
      * */
-    public function __toString() {
+    public function __toString() 
+    {
         return $this->contents . $this->eof;
     }
 
@@ -194,7 +202,8 @@ class Excel_Writer {
      * @param string An Excel cell reference such as A1, B7
      * @return array An associative array of row/column integers
      * */
-    protected function ref_to_array($ref) {
+    protected function ref_to_array($ref) 
+    {
         $offset = 64;
 
         $len = strlen($ref);

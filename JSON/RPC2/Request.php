@@ -45,7 +45,8 @@ class JSON_RPC2_Request{
      * @param $params Array/Object The params to send
      * @param $id String The Id of the request
      */
-    public function __construct($json = null){
+    public function __construct($json = null)
+    {
         
         $num_args = func_num_args();
         

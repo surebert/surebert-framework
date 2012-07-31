@@ -23,7 +23,8 @@ class sb_Ebook_Epub_Chapter{
 
     public $title;
 
-    public function  __construct($title, $html='', $css='') {
+    public function  __construct($title, $html='', $css='') 
+    {
         $this->title = $title;
 
         $this->xml = new DomDocument('1.0', 'UTF-8');
@@ -39,22 +40,26 @@ class sb_Ebook_Epub_Chapter{
 
     }
 
-    protected function create_html(){
+    protected function create_html()
+    {
         $this->html = $this->xml->appendChild($this->xml->createElement('html'));
         $this->html->setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
     }
 
-    protected function create_head($title_txt){
+    protected function create_head($title_txt)
+    {
         $this->head = $this->html->appendChild($this->xml->createElement('head'));
         $title = $this->head->appendChild($this->xml->createElement('title'));
         $title->appendChild($this->xml->createTextNode($title_txt));
     }
 
-    protected function create_body(){
+    protected function create_body()
+    {
         $this->body = $this->html->appendChild($this->xml->createElement('body'));
     }
 
-    public function add_css($href=''){
+    public function add_css($href='')
+    {
 
         if($href){
             if(is_string($href)){
@@ -74,13 +79,15 @@ class sb_Ebook_Epub_Chapter{
 
     }
 
-    public function set_body_innerHTML($html){
+    public function set_body_innerHTML($html)
+    {
         $fragment = $this->xml->createDocumentFragment();
         $fragment->appendXML($html);
         $this->body->appendChild($fragment);
 
     }
-    public function saveXML(){
+    public function saveXML()
+    {
         return $this->xml->saveXML();
     }
 

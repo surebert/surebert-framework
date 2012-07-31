@@ -10,7 +10,8 @@
  */
 namespace sb;
 
-class Password_Random {
+class Password_Random 
+    {
     /**
      * The length of password to generate
      * @var integer
@@ -51,7 +52,8 @@ class Password_Random {
     /**
      * Generates the password randomly
      */
-    protected function generate(){
+    protected function generate()
+    {
 
         $this->password = '';
 
@@ -93,7 +95,8 @@ class Password_Random {
     /**
      * Randomly capitalize one of the letters in the password
      */
-    protected function randomly_capitalize(){
+    protected function randomly_capitalize()
+    {
         $chars = str_split ($this->password);
         $letter_positions = Array();
         foreach($chars as $key=>$char){
@@ -110,7 +113,8 @@ class Password_Random {
         $this->password = implode('', $chars);
     }
 
-    public function __toString(){
+    public function __toString()
+    {
         return $this->password;
     }
 }

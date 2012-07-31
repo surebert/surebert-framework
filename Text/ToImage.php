@@ -49,7 +49,8 @@ class Text_ToImage{
      * imagegif($im);
      * </code>
     */
-    public function __construct($width, $height, $background_color = '', $text_color = ''){
+    public function __construct($width, $height, $background_color = '', $text_color = '')
+    {
         $this->image = imagecreate($width, $height);
         
         
@@ -80,7 +81,8 @@ class Text_ToImage{
      * @param integer $y    The y position to start drawing on the image
      * @return resource A png image resource that can be used by imagepng, imagegif for output
      */
-    public function draw($text, $size=12, $x=0, $y=0){
+    public function draw($text, $size=12, $x=0, $y=0)
+    {
         
         imagettftext($this->image, $size, $this->rotation, $x, $y, $this->text_color, $this->font, $text);
         

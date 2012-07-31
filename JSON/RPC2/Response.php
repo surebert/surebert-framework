@@ -34,7 +34,8 @@ class JSON_RPC2_Response{
      * Popultes the properties from json recieved
      * @param $json JSON encoded \sb\JSON_RPC2_Response
      */
-    public function __construct($json = null){
+    public function __construct($json = null)
+    {
         
             if(!is_null($json)){
 

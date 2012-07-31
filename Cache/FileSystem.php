@@ -49,7 +49,8 @@ class Cache_FileSystem implements Cache_Base{
      * @param string $file_path Optional The filepath to store the cache in, must be writable
      *
      */
-    public function __construct($file_path =''){
+    public function __construct($file_path ='')
+    {
 
         if(empty($file_path)){
             $file_path = ROOT.'/private/cache/';
@@ -60,7 +61,8 @@ class Cache_FileSystem implements Cache_Base{
     /**
      * Stores the cached data in /private/cache filesystem
      */
-    public function store($key, $data, $lifetime = 0){
+    public function store($key, $data, $lifetime = 0)
+    {
         
         $file_path = $this->get_file_path($key);
         $dir = dirname($file_path);
@@ -108,7 +110,8 @@ class Cache_FileSystem implements Cache_Base{
     /**
      * Retreives data from /private/cache
      */
-    public function fetch($key){
+    public function fetch($key)
+    {
         
         $file_name = $this->get_file_path($key);
         if (!file_exists($file_name) || !is_readable($file_name)) {
@@ -140,7 +143,8 @@ class Cache_FileSystem implements Cache_Base{
     /**
      * Deletes data from /private/cache
      */
-    public function delete($key){
+    public function delete($key)
+    {
         
         $file = $this->get_file_path($key);
         
@@ -158,7 +162,8 @@ class Cache_FileSystem implements Cache_Base{
      * Delete all the info in the cache regardless of the key
      * @return boolean
      */
-    public function clear_all(){
+    public function clear_all()
+    {
         
         $this->clear_dir($this->file_path.'/sb_Cache');
     }
@@ -168,7 +173,8 @@ class Cache_FileSystem implements Cache_Base{
      * @param $dir
      * @return boolean
      */
-    protected function clear_dir($dir){
+    protected function clear_dir($dir)
+    {
         
         $iterator = new DirectoryIterator($dir);
         foreach ($iterator as $file){
@@ -193,18 +199,21 @@ class Cache_FileSystem implements Cache_Base{
      * @param $key
      * @return string The path of the cache file
      */
-    protected function get_file_path($key){
+    protected function get_file_path($key)
+    {
         return $this->file_path.'/sb_Cache'.$key;
     }
     
-    protected function catalog_key_add($key, $lifetime){
+    protected function catalog_key_add($key, $lifetime)
+    {
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();
         $catalog[$key] = ($lifetime == 0) ? $lifetime : $lifetime+time();
         return $this->store($this->catalog_key, $catalog);
     }
     
-    protected function cataglog_key_delete(){
+    protected function cataglog_key_delete()
+    {
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();
         if(isset($catalog[$key])){
@@ -218,7 +227,8 @@ class Cache_FileSystem implements Cache_Base{
      * Sets the file path to cache in
      * @return string
      */
-    public function set_cache_dir($file_path){
+    public function set_cache_dir($file_path)
+    {
         if(substr($file_path, -1, 1) != '/'){
             $file_path .= '/';
         }
@@ -230,7 +240,8 @@ class Cache_FileSystem implements Cache_Base{
      * Loads the current catalog
      * @return Array a list of all keys stored in the cache
      */
-    public function get_keys(){
+    public function get_keys()
+    {
         $catalog = $this->fetch($this->catalog_key);
         $catalog = is_array($catalog) ? $catalog : Array();
         ksort($catalog);

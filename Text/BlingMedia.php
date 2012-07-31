@@ -87,7 +87,8 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function maps_to_html($str){
+    public static function maps_to_html($str)
+    {
         
         switch(self::$map_type){
             
@@ -140,7 +141,8 @@ class Text_BlingMedia extends Text_Bling{
                     $state = self::$default_state;
                     
                     if (substr_count($data[$x], ",") != 0)
-                    {
+                
+    {
                         $info = explode(",",$data[$x]);
                         $addr = $info[0];
                         $city = $info[1];
@@ -161,13 +163,15 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function user_flash_to_swf($str){
+    public static function user_flash_to_swf($str)
+    {
         
         preg_match_all( "/\[flash\](.*?)\[\/flash\]/s", $str, $matches );
         $count = count($matches[1]);
 
         for($x=0;$x<$count;$x++)
-        {
+    
+    {
             $swf = self::$content_path.'/'.$matches[1][$x];
             $path = ROOT.'/public/'.$swf;
             
@@ -228,7 +232,8 @@ class Text_BlingMedia extends Text_Bling{
         return $str;
     }
 
-    public static function mp3_to_audio($str){
+    public static function mp3_to_audio($str)
+    {
         $path = self::$content_path;
         return  preg_replace_callback("~\[mp3\](.*?)\[\/mp3\]~s", function($match) use ($path){
         $uniqid = 'mp3'.uniqid();
@@ -249,7 +254,8 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function external_video_to_player($str){
+    public static function external_video_to_player($str)
+    {
 
         ### Youtube videos ###
         $width = self::$flash_player_size['width'];
@@ -291,7 +297,8 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function nonflash_media_to_html($str){
+    public static function nonflash_media_to_html($str)
+    {
         
         preg_match_all( "~\[(wav|mid|amr|3gp|mp4|avi|ogg)\](.*?)\[\/(wav|mid|amr|3gp|mp4|avi|ogg)\]~s", $str, $matches );
 
@@ -338,7 +345,8 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function pdf_to_link($str){
+    public static function pdf_to_link($str)
+    {
         
         preg_match_all( "~\[pdf\](.*?)\[/pdf\]~s", $str, $matches );
         $count = count($matches[1]);
@@ -357,7 +365,8 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function txt_to_link($str){
+    public static function txt_to_link($str)
+    {
         
         preg_match_all( "~\[txt](.*?)\[/txt]~s", $str, $matches );
         $count = count($matches[1]);
@@ -374,7 +383,8 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function images_to_html($str){
+    public static function images_to_html($str)
+    {
         
         preg_match_all( "/\[(draw|img)=?(\w+)?\](.*?)\[\/(?:draw|img)\]/s", $str, $matches );
     
@@ -461,7 +471,8 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str The text to clean
      * @return string The cleaned text
      */
-    public static function parse($str){
+    public static function parse($str)
+    {
         $str = parent::clean($str);
         $str = self::pdf_to_link($str);
         $str = self::txt_to_link($str);

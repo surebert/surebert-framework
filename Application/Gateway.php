@@ -24,7 +24,8 @@ $sb_start = microtime(true);
  * @package Gateway
  *
  */
-class Gateway {
+class Gateway 
+    {
 
     /**
      * The main controller being served by the request
@@ -142,7 +143,8 @@ class Gateway {
      * Turn data into an appropriate json AJAX response
      * @param mixed $data
      */
-    public function json_encode($data) {
+    public function json_encode($data) 
+    {
         $response = new Ajax\Response();
         $response->set_content($data);
         $response->dispatch();
@@ -153,7 +155,8 @@ class Gateway {
      * @param mixed $request Either an instance of Request or a string with the path to the view e.g. /user/run
      * @return string The rendered view data
      */
-    public static function render_request($request, $included = true) {
+    public static function render_request($request, $included = true) 
+    {
 
         if ($request instanceof Request && method_exists('\App', 'filter_all_input')) {
 
@@ -176,7 +179,8 @@ class Gateway {
 
             $path = str_replace('_', '/', $controller_class) . '.php';
 
-            if (!is_file(ROOT . '/private/controllers/' . $path)) {
+            if (!is_file(ROOT . '/private/controllers/' . $path)) 
+    {
 
                 if ($controller == 'surebert') {
                     $controller_class = '\sb\Controller_Toolkit';
@@ -222,7 +226,8 @@ class Gateway {
         return $controller->render();
     }
 
-    public static function process_controller_method($class, $method) {
+    public static function process_controller_method($class, $method) 
+    {
 
         $servable = false;
         $http_method = 'post';
@@ -290,7 +295,8 @@ class Gateway {
      *
      * @param string $class_name
      */
-    public static function sb_autoload($class_name) {
+    public static function sb_autoload($class_name) 
+    {
 
         if(strstr($class_name, "\\")){
             
@@ -348,9 +354,11 @@ class Gateway {
             }
         } else if (substr($class_name, 0, 4) == 'mod/') {
             require(ROOT . '/' . $class_name . '.php');
-        } else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
+        } else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) 
+    {
             require(ROOT . '/private/models/' . $class_name . '.php');
-        } else if (file_exists(ROOT . '/private/resources/' . $class_name . '.php')) {
+        } else if (file_exists(ROOT . '/private/resources/' . $class_name . '.php')) 
+    {
             require(ROOT . '/private/resources/' . $class_name . '.php');
         } else {
             foreach (Gateway::$mods as $mod) {
@@ -367,7 +375,8 @@ class Gateway {
      * Require a new mod.  Will load the init.php if it exists
      * @param type $mod_name 
      */
-    public static function require_mod($mod_name) {
+    public static function require_mod($mod_name) 
+    {
         if (!in_array($mod_name, Gateway::$mods)) {
             Gateway::$mods[] = $mod_name;
         }
@@ -381,7 +390,8 @@ class Gateway {
      *
      * @param $path The path to the file from ROOT of the framework e.g. /public/surebert/sb.js
      */
-    public static function file_require($path) {
+    public static function file_require($path) 
+    {
 
         require(ROOT . $path);
     }
@@ -391,7 +401,8 @@ class Gateway {
      * @param $path The path to the file from ROOT
      * @return string or false if file not found
      */
-    public static function file_read($path) {
+    public static function file_read($path) 
+    {
         $contents = '';
         if (is_file(ROOT . $path)) {
             $fh = fopen(ROOT . $path, "r");
@@ -413,7 +424,8 @@ class Gateway {
      * Initializes the gateway by determining the
      * @param $argv array Command line arguments
      */
-    public static function init($argv = null) {
+    public static function init($argv = null) 
+    {
     
         spl_autoload_extensions('.php');
         spl_autoload_register("sb\Gateway::sb_autoload");

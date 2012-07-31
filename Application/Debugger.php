@@ -26,7 +26,8 @@ class Application_Debugger{
      * @param string $file The file the error occurred in
      * @param integer $line The line the error occurred on
      */
-    public static function error_handler($code, $message, $file, $line) {
+    public static function error_handler($code, $message, $file, $line) 
+    {
         
         if (error_reporting() === 0) {
             // This error code is not included in error_reporting
@@ -39,7 +40,8 @@ class Application_Debugger{
      * Handles acceptions and turns them into strings
      * @param Exception $e
      */
-    public static function exception_handler(Exception $e){
+    public static function exception_handler(Exception $e)
+    {
         
         $message = 'Code: ' . $e->getCode() . "\n" .
                 'Path: ' . Gateway::$request->path . "\n" .
@@ -76,7 +78,8 @@ class Application_Debugger{
     /**
      * Shutdown function catches additional parse errors
      */
-    public static function shutdown(){
+    public static function shutdown()
+    {
         if(is_null($e = error_get_last()) === false){ 
             self::exception_handler(new sb_Exception($e['type'], $e['message'], $e['file'], $e['line']));
         }
@@ -87,7 +90,8 @@ class Application_Debugger{
      * @param boolean $display_errors Should errors be dumped to output
      * @param type $show_trace Should trace message be shown
      */
-    public static function init($error_reporting_level=E_ALL, $display_errors=true, $show_trace=true){
+    public static function init($error_reporting_level=E_ALL, $display_errors=true, $show_trace=true)
+    {
         
         error_reporting($error_reporting_level);
         ini_set("display_errors", $display_errors ? true : false);
@@ -107,7 +111,8 @@ class sb_Exception extends Exception{
 
     private $context = null;
 
-    public function __construct($code, $message, $file, $line, $context = null){
+    public function __construct($code, $message, $file, $line, $context = null)
+    {
         parent::__construct($message, $code);
         $this->file = $file;
         $this->line = $line;

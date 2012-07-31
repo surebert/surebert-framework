@@ -10,7 +10,8 @@
 
 namespace sb;
 
-class HTML_HeadMeta {
+class HTML_HeadMeta 
+    {
 
     /**
      *

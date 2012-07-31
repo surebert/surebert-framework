@@ -20,14 +20,16 @@ class sb_Ebook_Epub_NCX extends DOMDocument{
     public $head;
     public $formatOutput = true;
 
-    public function  __construct($version='1.0', $encoding='UTF-8') {
+    public function  __construct($version='1.0', $encoding='UTF-8') 
+    {
         parent::__construct($version, $encoding);
 
         $this->create_doc();
         $this->create_head();
     }
 
-    public function create_doc(){
+    public function create_doc()
+    {
         $this->ncx = $this->appendChild($this->createElement('ncx'));
         $this->ncx->setAttribute('xmlns', 'http://www.daisy.org/z3986/2005/ncx/');
         $this->ncx->setAttribute('version', '2005-1');
@@ -35,26 +37,30 @@ class sb_Ebook_Epub_NCX extends DOMDocument{
 
     }
 
-    public function create_head(){
+    public function create_head()
+    {
         $this->head = $this->ncx->appendChild($this->createElement('head'));
         $this->title = $this->ncx->appendChild($this->createElement('docTitle'));
         $this->author = $this->ncx->appendChild($this->createElement('docAuthor'));
         $this->navmap = $this->ncx->appendChild($this->createElement('navmap'));
     }
 
-    public function set_title($title){
+    public function set_title($title)
+    {
         $title_txt = $this->title->appendChild($this->createElement('text'));
         $title_txt->appendChild($this->createTextNode($title));
         return $title_txt;
     }
 
-    public function set_author($author){
+    public function set_author($author)
+    {
         $author_txt = $this->author->appendChild($this->createElement('text'));
         $author_txt->appendChild($this->createTextNode($author));
         return $this->author;
     }
 
-    public function add_navpoint_to_navmap($id, $play_order, $name, $src){
+    public function add_navpoint_to_navmap($id, $play_order, $name, $src)
+    {
         $nav_point = $this->navmap->appendChild($this->createElement('navPoint'));
         $nav_point->setAttribute('id', $id);
         $nav_point->setAttribute('playOrder', $play_order);

@@ -29,7 +29,8 @@ class RSS_Image{
      * @param string $url The url of the image
      * @return sbRSSImage
      */
-    public function __construct($title, $url){
+    public function __construct($title, $url)
+    {
         
         $this->title = $title;
         $this->url = $url;

@@ -50,7 +50,8 @@ class Event{
      * @param array $args 
      * @param mixed $subject The subject of the event
      */
-    public function __construct($args=Array(), $subject=false){
+    public function __construct($args=Array(), $subject=false)
+    {
         
         $this->set_args($args);
         $this->set_subject($subject);
@@ -59,21 +60,24 @@ class Event{
     /**
      * Stops propagation of the event by dispatcher 
      */
-    public function stop_propagation(){
+    public function stop_propagation()
+    {
         $this->stopped_propagation = 1;
     }
     
     /**
      * Gets the nmae of the event being dispatched
      */
-    public function get_name(){
+    public function get_name()
+    {
         return $this->name;
     }
     
     /**
      * Sets the event name being dispatched
      */
-    public function set_name($name){
+    public function set_name($name)
+    {
         $this->name = $name;
     }
     
@@ -82,7 +86,8 @@ class Event{
      * @param type $key The key to set
      * @param type $val The value to set for the key
      */
-    public function set_arg($key, $val=''){
+    public function set_arg($key, $val='')
+    {
         $this->args[$key] = $val;
     }
     
@@ -90,7 +95,8 @@ class Event{
      * Sets the events _args property
      * @param array $args
      */
-    public function set_args(Array $args){
+    public function set_args(Array $args)
+    {
         $this->args = $args;
     }
     
@@ -99,7 +105,8 @@ class Event{
      * @param string $key the specific key to fetch
      * @return mixed Whatever value the key holds or the full array if no key is specified
      */
-    public function get_arg($key=''){
+    public function get_arg($key='')
+    {
         
         if(isset($this->args[$key])){
             return $this->args[$key];
@@ -112,7 +119,8 @@ class Event{
      * Gets the event _args as a whole array
      * @return mixed Whatever value the key holds or the full array if no key is specified
      */
-    public function get_args(){
+    public function get_args()
+    {
         return $this->args;
     }
     
@@ -120,7 +128,8 @@ class Event{
      * The subject of the event e.g. in a car.crash event it could be an instance of Car
      * @param mixed $subject 
      */
-    public function set_subject($subject=''){
+    public function set_subject($subject='')
+    {
          $this->subject = $subject;
     }
     
@@ -128,7 +137,8 @@ class Event{
      * Gets the subject of the event e.g. in a car.crash event it could be an instance of Car
      * @return type 
      */
-    public function get_subject(){
+    public function get_subject()
+    {
         return $this->subject;
     }
     
@@ -136,7 +146,8 @@ class Event{
      * Gets the event dispatcher that dispatched this event
      * @return \sb\Event_Dispatcher
      */
-    public function get_dispatcher(){
+    public function get_dispatcher()
+    {
         return $this->dispatcher;
     }
     
@@ -144,7 +155,8 @@ class Event{
      * Sets the event dispatcher that dispatched this event
      * @param \sb\Event_Dispatcher $dispatcher 
      */
-    public function set_dispatcher(Event_Dispatcher $dispatcher){
+    public function set_dispatcher(Event_Dispatcher $dispatcher)
+    {
         $this->dispatcher = $dispatcher;
     }
     
@@ -153,7 +165,8 @@ class Event{
      * stop_propagation was called
      * @param type $listener 
      */
-    public function set_last_listener($listener){
+    public function set_last_listener($listener)
+    {
         $this->last_listener = $listener;
     }
     
@@ -162,7 +175,8 @@ class Event{
      * stop_propagation was called
      * @param type $listener 
      */
-    public function get_last_listener($listener){
+    public function get_last_listener($listener)
+    {
         return $this->last_listener;
     }
 }

@@ -53,7 +53,8 @@ abstract class Logger_Base{
     * \App::$logger->files($obj);
     * </code>
     */
-    public function __construct($agent = ''){
+    public function __construct($agent = '')
+    {
     
         $this->_agent_str = !empty($agent) ? $agent : Gateway::$remote_addr;
     }
@@ -63,7 +64,8 @@ abstract class Logger_Base{
      *
      * @param string $str It is a string instead of an object as it may require specific formating for your needs e.g. "\t".App::$user->uname."\t".App::$user->roswell_id."\t".App::$user->ip
      */
-    public function set_agent_string($str){
+    public function set_agent_string($str)
+    {
         $this->_agent_str = $str;
     }
     
@@ -73,7 +75,8 @@ abstract class Logger_Base{
      * @param $arguments The arguments passed to the missing method, of which [0] is the message or object
      * @return boolean If the log is written or not
      */
-    public function __call($log_type, $arguments){
+    public function __call($log_type, $arguments)
+    {
 
         //if logging is not enabled, just return true
         if(!$this->enabled){

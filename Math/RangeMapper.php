@@ -14,7 +14,8 @@ namespace sb;
 
 class Math_RangeMapper{
  
-    public function __construct($toRange, $fromRange){
+    public function __construct($toRange, $fromRange)
+    {
         $this->toRange = $toRange;
         $this->fromRange = $fromRange;
         $toRangeDifference = $toRange[1]-$toRange[0];
@@ -28,7 +29,8 @@ class Math_RangeMapper{
 
     }
     
-    public function convert($fromRangeNumber){
+    public function convert($fromRangeNumber)
+    {
         if($this->ratio == 1){
             return $this->toRange[1];
         }

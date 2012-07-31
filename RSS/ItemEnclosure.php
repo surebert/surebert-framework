@@ -47,7 +47,8 @@ class RSS_ItemEnclosure{
      * @return unknown
      *
      */
-    public function __construct($url, $length, $type){
+    public function __construct($url, $length, $type)
+    {
         
         $this->url = $url;
         $this->length = $length;

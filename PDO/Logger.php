@@ -7,11 +7,13 @@
  */
 namespace sb;
 
-class PDO_Statement_Logger extends \PDOStatement {
+class PDO_Statement_Logger extends \PDOStatement 
+    {
 
     public $connection;
 
-    protected function __construct($connection='') {
+    protected function __construct($connection='') 
+    {
 
         $this->connection = $connection;
     }
@@ -28,7 +30,8 @@ class PDO_Statement_Logger extends \PDOStatement {
      * @param array $bound_input_params input params to bind Array(':myparam' => 1)
      * @return boolean
      */
-    public function execute($bound_input_params = Array()) {
+    public function execute($bound_input_params = Array()) 
+    {
         $log = "Executing: ".$this->queryString;
 
         if(count($bound_input_params)>0) {
@@ -52,7 +55,8 @@ class PDO_Statement_Logger extends \PDOStatement {
      * @param <type> $driverdata
      * @return boolean
      */
-    public function bindParam($paramno, &$param, $type=null, $maxlen=null, $driverdata=null) {
+    public function bindParam($paramno, &$param, $type=null, $maxlen=null, $driverdata=null) 
+    {
         $log = 'Binding Parameters: '.$paramno.'='.$param;
         if(!is_null($type)) {
             $log .= '| Type: '.$type;
@@ -83,7 +87,8 @@ class PDO_Statement_Logger extends \PDOStatement {
      * @param <type> $driverdata
      * @return <type>
      */
-    public function bindColumn($column, &$param, $type=null, $maxlen=null, $driverdata=null) {
+    public function bindColumn($column, &$param, $type=null, $maxlen=null, $driverdata=null) 
+    {
         $log = 'Binding Column: '.$column.'='.$param;
         if(!is_null($type)) {
             $log .= '| Type: '.$type;
@@ -115,7 +120,8 @@ class PDO_Statement_Logger extends \PDOStatement {
      * @param <type> $driverdata
      * @return <type>
      */
-    public function bindValue($paramno, $param, $type=null) {
+    public function bindValue($paramno, $param, $type=null) 
+    {
         $log = 'Binding Value: '.$paramno.'='.$param;
         if(!is_null($type)) {
             $log .= '| Type: '.$type;
@@ -136,7 +142,8 @@ class PDO_Statement_Logger extends \PDOStatement {
  * @package PDO
  *
  */
-class PDO_Logger extends PDO_Debugger {
+class PDO_Logger extends PDO_Debugger 
+    {
 
     /**
      * An instance of \sb\Logger_Base used to do the logging
@@ -176,7 +183,8 @@ class PDO_Logger extends PDO_Debugger {
      *
      * @param $logger \sb\Logger_Base An instance of \sb\Logge_rBase or one is created using FileSystem logging
      */
-    public function set_logger($logger=null) {
+    public function set_logger($logger=null) 
+    {
 
         if($logger instanceOf Logger_Base) {
             $this->logger = $logger;
@@ -189,7 +197,8 @@ class PDO_Logger extends PDO_Debugger {
      * Only logs for a specific SBF_ID
      * @param string $sbf_id The SBF_ID to log for
      */
-    public function log_only_for_SBF_ID($sbf_id) {
+    public function log_only_for_SBF_ID($sbf_id) 
+    {
         $this->sbf_id = $sbf_id;
     }
 
@@ -197,7 +206,8 @@ class PDO_Logger extends PDO_Debugger {
      * Additionally Logs the errors
      * {@inheritdoc }
      */
-    public function s2o($sql, $params=null, $class_name='', $prepare_and_store=1) {
+    public function s2o($sql, $params=null, $class_name='', $prepare_and_store=1) 
+    {
         try {
             return parent::s2o($sql, $params, $class_name, $prepare_and_store);
         } catch(Exception $e) {
@@ -218,7 +228,8 @@ class PDO_Logger extends PDO_Debugger {
      * @param string $sql
      * @return object PDO result set
      */
-    public function query($sql) {
+    public function query($sql) 
+    {
 
         $this->write_to_log("Querying: ".$sql);
         return parent::query($sql);
@@ -230,7 +241,8 @@ class PDO_Logger extends PDO_Debugger {
      * @param string $sql
      * @return integer The number of rows affected
      */
-    public function exec($sql) {
+    public function exec($sql) 
+    {
         $this->write_to_log("Exec: ".$sql);
         $result = parent::exec($sql);
         return $result;
@@ -242,7 +254,8 @@ class PDO_Logger extends PDO_Debugger {
      * @param string $sql
      * @return PDO_Statement A PDO_statment instance
      */
-    public function prepare($sql, $options=null) {
+    public function prepare($sql, $options=null) 
+    {
 
         $md5 = md5($sql);
 
@@ -261,7 +274,8 @@ class PDO_Logger extends PDO_Debugger {
      *
      * @param string $message The string to log
      */
-    public function write_to_log($message) {
+    public function write_to_log($message) 
+    {
 
         if(is_null($this->logger)) {
             $this->set_logger();

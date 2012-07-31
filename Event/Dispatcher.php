@@ -31,7 +31,8 @@ class Event_Dispatcher{
      * @param \sb\Logger_Base $logger 
      * @param string $log_name The name of the log to log to
      */
-    public function set_logger(\sb\Logger_Base $logger, $log_name='event_dispatcher'){
+    public function set_logger(\sb\Logger_Base $logger, $log_name='event_dispatcher')
+    {
         $this->log_name = $log_name;
         $this->logger = $logger;
     }
@@ -42,7 +43,8 @@ class Event_Dispatcher{
      * @param Closure $callback Any callable function with \sb\Event or decendent as only arg
      * @return int The unique id of the listener, used to cancel it
      */
-    public function add_listener($event_name, $callback) {
+    public function add_listener($event_name, $callback) 
+    {
         if (!isset($this->listeners[$event_name])) {
             $this->listeners[$event_name] = array();
         }
@@ -56,7 +58,8 @@ class Event_Dispatcher{
      * @param string $event_name e.g. car.crash, blog.load, user.profile.update
      * @param int $listener_id The int returned frmo the add_listener method
      */
-    public function remove_listener($event_name, $listener_id) {
+    public function remove_listener($event_name, $listener_id) 
+    {
         if (isset($this->listeners[$event_name])){
             $this->listeners[$event_name][$listener_id] = null;
         }
@@ -67,7 +70,8 @@ class Event_Dispatcher{
      * @param string $evt e.g. car.crash, blog.load, user.profile.update
      * 
      */
-    public function clear_listeners($event_name=''){
+    public function clear_listeners($event_name='')
+    {
         
         if($event_name){
             unset($this->listeners[$event_name]);
@@ -81,7 +85,8 @@ class Event_Dispatcher{
      * Can be helpful when trying to decide what to subscribe to
      * @return array 
      */
-    public function get_listening_events(){
+    public function get_listening_events()
+    {
         $i = array_keys($this->listeners);
         sort($i);
         return $i;
@@ -96,7 +101,8 @@ class Event_Dispatcher{
      * @return \sb\Event The event that was past to the dispatcher, after it has 
      * been passed through each listener where it can be altered
      */
-    public  function dispatch($event_name, Event $e, $allow_partial_match = false){
+    public  function dispatch($event_name, Event $e, $allow_partial_match = false)
+    {
         $e->set_dispatcher($this);
         $e->set_name($event_name);
         $listeners = Array();

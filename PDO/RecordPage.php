@@ -7,7 +7,8 @@
  */
 namespace sb;
 
-class PDO_RecordPage {
+class PDO_RecordPage 
+    {
 
     /**
      * The page number that this object is set to
@@ -38,12 +39,14 @@ class PDO_RecordPage {
      */
     public $rows = array();
 
-    public function prev_page(){
+    public function prev_page()
+    {
         if($this->page_null == 1){return 0;}
         return ($this->current_page <= 1)?1:$this->current_page - 1;
     }
     
-    public function next_page(){
+    public function next_page()
+    {
         if($this->page_null == 1){return 0;}
         return ($this->current_page >= $this->page_count)?$this->page_count:$this->current_page + 1;
     }

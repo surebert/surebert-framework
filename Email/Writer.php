@@ -11,7 +11,8 @@
  */
 namespace sb;
 
-class Email_Writer {
+class Email_Writer 
+    {
 
 /**
  * An instance of sb_Logger for logging the emails sent
@@ -61,7 +62,8 @@ class Email_Writer {
      *
      * </code>
      */
-    public function __construct($logger=null, $remote_addr='', $http_host='') {
+    public function __construct($logger=null, $remote_addr='', $http_host='') 
+    {
 
         if($logger instanceOf Logger_Base) {
             $this->logger = $logger;
@@ -79,7 +81,8 @@ class Email_Writer {
      * Sends the emails in the $emails array that were attached using add_email_to_outbox, logs progress if log file is specified
      *
      */
-    public function send($email=0) {
+    public function send($email=0) 
+    {
 
         if($email instanceof Email) {
             $this->add_email_to_outbox($email);
@@ -144,7 +147,8 @@ class Email_Writer {
      * @param \sb\Email $email
      * @return boolean false if it has injectors, true if added to outbox
      */
-    public function add_email_to_outbox(Email $email) {
+    public function add_email_to_outbox(Email $email) 
+    {
     
         if($this->check_headers_for_injection($email)) {
             return 0;
@@ -162,7 +166,8 @@ class Email_Writer {
      * @param $email \sb\Email
      * @param $sent Boolean, was the email sent or not
      */
-    private function log_email($email, $sent) {
+    private function log_email($email, $sent) 
+    {
 
         $message = "\nEmail sent at ".date('m/d/y h:i:s');
         $message .= "\nFrom:".$email->from. '@'.$this->remote_addr;
@@ -201,7 +206,8 @@ class Email_Writer {
      *
      * @param \sb\Email $email
      */
-    private function add_security_info(Email &$email) {
+    private function add_security_info(Email &$email) 
+    {
 
         $email->body .= "\n\nFor security purposes the following information was recorded: \nSending IP: ".$this->remote_addr." \nSending Host: ".$this->http_host;
 
@@ -216,7 +222,8 @@ class Email_Writer {
      * @param \sb\Email $email
      * @return boolean
      */
-    private function check_headers_for_injection(Email $email) {
+    private function check_headers_for_injection(Email $email) 
+    {
     //try and catch injection attempts and alert admin user
         if (preg_match("~\r|:~i",$email->to) || preg_match("~\r|:~i",$email->from)) {
             return true;

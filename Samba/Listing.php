@@ -8,7 +8,8 @@
  */
 namespace sb;
 
-class Samba_Listing {
+class Samba_Listing 
+    {
 
     /**
      * The name of the windows resource
@@ -44,7 +45,8 @@ class Samba_Listing {
      * Prints the full path of the resource
      * @return string
      */
-    public function fullpath() {
+    public function fullpath() 
+    {
         return Samba_Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
     }
 
@@ -52,7 +54,8 @@ class Samba_Listing {
      * Returns the datemodified data as unix timestamp
      * @return string
      */
-    public function unix_datemodified() {
+    public function unix_datemodified() 
+    {
         return strtotime($this->datemodified);
     }
 
@@ -60,7 +63,8 @@ class Samba_Listing {
      * Normalizes name as windows is case insesntive
      * @return string
      */
-    public function normalize_name() {
+    public function normalize_name() 
+    {
         return strtolower($this->name);
     }
 

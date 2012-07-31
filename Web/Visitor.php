@@ -56,7 +56,8 @@ class Web_Visitor{
      * @param string $dname The display name of the visitor
      * @param boolean $mobl If the user is coming from mobile site or not
      */
-    public function __construct($uname='guest', $dname='', $mobl=0){
+    public function __construct($uname='guest', $dname='', $mobl=0)
+    {
 
         $this->uname = $uname;
         $this->dname = $dname;
@@ -70,7 +71,8 @@ class Web_Visitor{
      * Logs a \sb\Web_Visitor in the database
      * @param PDO $db Optional database connection to use for \sb\Web_Vistors
      */
-    public function log($db=null){
+    public function log($db=null)
+    {
         
         if($db instanceof PDO){
             \sb\Web_Visitors::$db=$db;

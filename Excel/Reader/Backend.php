@@ -5,7 +5,8 @@
  * @package Excel
  */
 namespace sb;
-abstract class Excel_Reader_Backend {
+abstract class Excel_Reader_Backend 
+    {
     const NUM_BIG_BLOCK_DEPOT_BLOCKS_POS = 0x2c;
     const SMALL_BLOCK_DEPOT_BLOCK_POS = 0x3c;
     const ROOT_START_BLOCK_POS = 0x30;
@@ -75,7 +76,8 @@ abstract class Excel_Reader_Backend {
     protected $defaultColWidth = 0;
     public $ole_data = '';
 
-    public function get_workbook() {
+    public function get_workbook() 
+    {
         if ($this->props[$this->wrkbook]['size'] < self::SMALL_BLOCK_THRESHOLD) {
             $rootdata = $this->read_data($this->props[$this->rootentry]['startBlock']);
             $streamData = '';
@@ -107,7 +109,8 @@ abstract class Excel_Reader_Backend {
         }
     }
 
-    public function read($sFileName) {
+    public function read($sFileName) 
+    {
         // check if file exist and is readable (Darko Miljanovic)
         if (!is_readable($sFileName)) {
             $this->error = 1;
@@ -195,7 +198,8 @@ abstract class Excel_Reader_Backend {
         $this->read_property_sets();
     }
 
-    protected function read_data($bl) {
+    protected function read_data($bl) 
+    {
         $block = $bl;
         $pos = 0;
         $data = '';
@@ -207,7 +211,8 @@ abstract class Excel_Reader_Backend {
         return $data;
     }
 
-    protected function read_property_sets() {
+    protected function read_property_sets() 
+    {
         $offset = 0;
         while ($offset < strlen($this->entry)) {
             $d = substr($this->entry, $offset, self::PROPERTY_STORAGE_BLOCK_SIZE);
@@ -235,17 +240,20 @@ abstract class Excel_Reader_Backend {
         }
     }
 
-    protected function my_hex($d) {
+    protected function my_hex($d) 
+    {
         if ($d < 16)
             return "0" . dechex($d);
         return dechex($d);
     }
 
-    protected function v($data, $pos) {
+    protected function v($data, $pos) 
+    {
         return ord($data[$pos]) | ord($data[$pos + 1]) << 8;
     }
 
-    protected function dump_hex_data($data, $pos, $length) {
+    protected function dump_hex_data($data, $pos, $length) 
+    {
         $info = "";
         for ($i = 0; $i <= $length; $i++) {
             $info .= ( $i == 0 ? "" : " ") . $this->my_hex(ord($data[$pos + $i])) . (ord($data[$pos + $i]) > 31 ? "[" . $data[$pos + $i] . "]" : '');
@@ -253,7 +261,8 @@ abstract class Excel_Reader_Backend {
         return $info;
     }
 
-    protected function get_col($col) {
+    protected function get_col($col) 
+    {
         if (is_string($col)) {
             $col = strtolower($col);
             if (array_key_exists($col, $this->colnames)) {
@@ -427,7 +436,8 @@ abstract class Excel_Reader_Backend {
         "Slanted medium dash-dotte" => "2px dashed"
     );
 
-    protected function read_16_bit_string($data, $start) {
+    protected function read_16_bit_string($data, $start) 
+    {
         $len = 0;
         while (ord($data[$start + $len]) + ord($data[$start + $len + 1]) > 0)
             $len++;
@@ -435,7 +445,8 @@ abstract class Excel_Reader_Backend {
     }
 
     // ADDED by Matt Kruse for better formatting
-    protected function format_value($format, $num, $f) {
+    protected function format_value($format, $num, $f) 
+    {
         // 49==TEXT format
         // http://code.google.com/p/php-excel-reader/issues/detail?id=7
         if ((!$f && $format == "%s") || ($f == 49) || ($format == "GENERAL")) {
@@ -512,7 +523,8 @@ abstract class Excel_Reader_Backend {
     /**
      * Set the encoding method
      */
-    protected function set_output_encoding($encoding) {
+    protected function set_output_encoding($encoding) 
+    {
         $this->_defaultEncoding = $encoding;
     }
 
@@ -521,7 +533,8 @@ abstract class Excel_Reader_Backend {
      *  set iconv if you would like use 'iconv' for encode UTF-16LE to your encoding
      *  set mb if you would like use 'mb_convert_encoding' for encode UTF-16LE to your encoding
      */
-    protected function set_UTF_encoder($encoder = 'iconv') {
+    protected function set_UTF_encoder($encoder = 'iconv') 
+    {
         $this->_encoderFunction = '';
         if ($encoder == 'iconv') {
             $this->_encoderFunction = function_exists('iconv') ? 'iconv' : '';
@@ -530,7 +543,8 @@ abstract class Excel_Reader_Backend {
         }
     }
 
-    protected function set_row_col_offset($iOffset) {
+    protected function set_row_col_offset($iOffset) 
+    {
         $this->_rowoffset = $iOffset;
         $this->_coloffset = $iOffset;
     }
@@ -538,14 +552,16 @@ abstract class Excel_Reader_Backend {
     /**
      * Set the default number format
      */
-    protected function set_default_format($sFormat) {
+    protected function set_default_format($sFormat) 
+    {
         $this->_defaultFormat = $sFormat;
     }
 
     /**
      * Force a column to use a certain format
      */
-    protected function set_column_format($column, $sFormat) {
+    protected function set_column_format($column, $sFormat) 
+    {
         $this->_columnsFormat[$column] = $sFormat;
     }
 
@@ -554,7 +570,8 @@ abstract class Excel_Reader_Backend {
      *
      * @return bool
      */
-    protected function parse() {
+    protected function parse() 
+    {
         $pos = 0;
         $data = $this->data;
 
@@ -888,7 +905,8 @@ abstract class Excel_Reader_Backend {
     /**
      * Parse a worksheet
      */
-    protected function parse_sheet($spos) {
+    protected function parse_sheet($spos) 
+    {
         $cont = true;
         $data = $this->data;
         // read BOF
@@ -1154,18 +1172,21 @@ abstract class Excel_Reader_Backend {
             $this->sheets[$this->sn]['numCols'] = $this->sheets[$this->sn]['maxcol'];
     }
 
-    protected function is_date($spos) {
+    protected function is_date($spos) 
+    {
         $xfindex = ord($this->data[$spos + 4]) | ord($this->data[$spos + 5]) << 8;
         return ($this->xfRecords[$xfindex]['type'] == 'date');
     }
 
-    protected function gm_get_date($ts = null) {
+    protected function gm_get_date($ts = null) 
+    {
         $k = array('seconds', 'minutes', 'hours', 'mday', 'wday', 'mon', 'year', 'yday', 'weekday', 'month', 0);
         return(array_combine($k, explode(":", gmdate('s:i:G:j:w:n:Y:z:l:F:U', is_null($ts) ? time() : $ts))));
     }
 
     // Get the details for a particular cell
-    protected function get_cell_details($spos, $numValue, $column) {
+    protected function get_cell_details($spos, $numValue, $column) 
+    {
         $xfindex = ord($this->data[$spos + 4]) | ord($this->data[$spos + 5]) << 8;
         $xfrecord = $this->xfRecords[$xfindex];
         $type = $xfrecord['type'];
@@ -1228,7 +1249,8 @@ abstract class Excel_Reader_Backend {
         );
     }
 
-    protected function create_number($spos) {
+    protected function create_number($spos) 
+    {
         $rknumhigh = $this->get_int_4d($this->data, $spos + 10);
         $rknumlow = $this->get_int_4d($this->data, $spos + 6);
         $sign = ($rknumhigh & 0x80000000) >> 31;
@@ -1246,7 +1268,8 @@ abstract class Excel_Reader_Backend {
         return $value;
     }
 
-    protected function addcell($row, $col, $string, $info=null) {
+    protected function addcell($row, $col, $string, $info=null) 
+    {
         $this->sheets[$this->sn]['maxrow'] = max($this->sheets[$this->sn]['maxrow'], $row + $this->_rowoffset);
         $this->sheets[$this->sn]['maxcol'] = max($this->sheets[$this->sn]['maxcol'], $col + $this->_coloffset);
         $this->sheets[$this->sn]['cells'][$row + $this->_rowoffset][$col + $this->_coloffset] = $string;
@@ -1257,7 +1280,8 @@ abstract class Excel_Reader_Backend {
         }
     }
 
-    protected function get_IEEE754($rknum) {
+    protected function get_IEEE754($rknum) 
+    {
         if (($rknum & 0x02) != 0) {
             $value = $rknum >> 2;
         } else {
@@ -1282,7 +1306,8 @@ abstract class Excel_Reader_Backend {
         return $value;
     }
 
-    protected function encode_UTF_16($string) {
+    protected function encode_UTF_16($string) 
+    {
         $result = $string;
         if ($this->_defaultEncoding) {
             switch ($this->_encoderFunction) {
@@ -1295,7 +1320,8 @@ abstract class Excel_Reader_Backend {
         return $result;
     }
 
-    protected function get_int_4d($data, $pos) {
+    protected function get_int_4d($data, $pos) 
+    {
         $value = ord($data[$pos]) | (ord($data[$pos + 1]) << 8) | (ord($data[$pos + 2]) << 16) | (ord($data[$pos + 3]) << 24);
         if ($value >= 4294967294) {
             $value = -2;
@@ -1303,7 +1329,8 @@ abstract class Excel_Reader_Backend {
         return $value;
     }
 
-    public function val($row, $col, $sheet=0) {
+    public function val($row, $col, $sheet=0) 
+    {
         $col = $this->get_col($col);
         if (array_key_exists($row, $this->sheets[$sheet]['cells']) && array_key_exists($col, $this->sheets[$sheet]['cells'][$row])) {
             return $this->sheets[$sheet]['cells'][$row][$col];
