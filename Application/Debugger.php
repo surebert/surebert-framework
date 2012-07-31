@@ -26,21 +26,21 @@ class Application_Debugger{
      * @param string $file The file the error occurred in
      * @param integer $line The line the error occurred on
      */
-    public static function error_handler($code, $message, $file, $line) 
+    public static function errorHandler($code, $message, $file, $line) 
     {
-        
-        if (error_reporting() === 0) {
+
+        if (\error_reporting() === 0) {
             // This error code is not included in error_reporting
             return false;
         }
-        throw new sb_Exception($code, $message, $file, $line);
+        throw new Exception($code, $message, $file, $line);
     }
 
     /**
      * Handles acceptions and turns them into strings
      * @param Exception $e
      */
-    public static function exception_handler(Exception $e)
+    public static function exceptionHandler(Exception $e)
     {
         
         $message = 'Code: ' . $e->getCode() . "\n" .
@@ -50,25 +50,25 @@ class Application_Debugger{
                 'Line: ' . $e->getLine() . "\n";
 
         if (self::$show_trace) {
-            $message .= "Trace: \n\t" . str_replace("\n", "\n\t", print_r($e->getTrace(), 1));
+            $message .= "Trace: \n\t" . \str_replace("\n", "\n\t", \print_r($e->getTrace(), 1));
         }
         
-        if(method_exists("\App", "exception_handler")){
+        if(\method_exists("\App", "exception_handler")){
             if(\App::exception_handler($e, $message) === false){
                 return false;
             }
         }
-    
-        if(ini_get("display_errors") == true){
+
+        if (\ini_get("display_errors") == true) {
             if (Gateway::$command_line) {
-                file_put_contents('php://stderr', "\n" . $message  . "\n");
+                \file_put_contents('php://stderr', "\n" . $message  . "\n");
             } else {
                 echo '<pre style="background-color:red;padding:10px;color:#FFF;">' . $message . '</pre>';
             }
         }
-        
+
         if (!isset(\App::$logger)) {
-            \App::$logger = new sb_Logger_FileSystem();
+            \App::$logger = new Logger_FileSystem();
         }
 
         \App::$logger->exceptions($message);
@@ -80,8 +80,8 @@ class Application_Debugger{
      */
     public static function shutdown()
     {
-        if(is_null($e = error_get_last()) === false){ 
-            self::exception_handler(new sb_Exception($e['type'], $e['message'], $e['file'], $e['line']));
+        if (\is_null($e = \error_get_last()) === false) {
+            self::exception_handler(new Exception($e['type'], $e['message'], $e['file'], $e['line']));
         }
     }
     /**
@@ -90,32 +90,15 @@ class Application_Debugger{
      * @param boolean $display_errors Should errors be dumped to output
      * @param type $show_trace Should trace message be shown
      */
-    public static function init($error_reporting_level=E_ALL, $display_errors=true, $show_trace=true)
+    public static function init($error_reporting_level = E_ALL, $display_errors = true, $show_trace = true)
     {
-        
-        error_reporting($error_reporting_level);
-        ini_set("display_errors", $display_errors ? true : false);
+
+        \error_reporting($error_reporting_level);
+        \ini_set("display_errors", $display_errors ? true : false);
         self::$show_trace = $show_trace ? true : false;
-        set_error_handler('sb_Application_Debugger::error_handler');
-        set_exception_handler('sb_Application_Debugger::exception_handler');
-        register_shutdown_function('sb_Application_Debugger::shutdown');
+        \set_error_handler('\sb\Application_Debugger::errorHandler');
+        \set_exception_handler('\sb\Application_Debugger::exceptionHandler');
+        \register_shutdown_function('\sb\Application_Debugger::shutdown');
     }
 }
 
-/**
- * Used to throw custom exceptions
- * @author paul.visco@roswellpark.org
- * @package sb_Exception
- */
-class sb_Exception extends Exception{
-
-    private $context = null;
-
-    public function __construct($code, $message, $file, $line, $context = null)
-    {
-        parent::__construct($message, $code);
-        $this->file = $file;
-        $this->line = $line;
-        $this->context = $context;
-    }
-};

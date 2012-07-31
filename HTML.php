@@ -19,7 +19,7 @@ class HTML{
         
         if (is_string($mixed)) {
             $mixed = htmlspecialchars($mixed, $quote_style, $charset);
-        } else if (is_object($mixed) || is_array($mixed)) {
+        } elseif (is_object($mixed) || is_array($mixed)) {
             foreach ($mixed as $k => &$v) {
                 if ($v) {
                     if (is_object($mixed)) {
@@ -50,7 +50,7 @@ class HTML{
             $mixed = str_replace('&quot;', '"', $mixed);
             $mixed = str_replace('&lt;', '<', $mixed);
             $mixed = str_replace('&gt;', '>', $mixed);
-        } else if (is_object($mixed) || is_array($mixed)) {
+        } elseif (is_object($mixed) || is_array($mixed)) {
             foreach ($mixed as $k => &$v) {
                 if ($v) {
                     if (is_object($mixed)) {

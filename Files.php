@@ -162,7 +162,7 @@ class Files{
         $mime = self::filename_to_mime($file);
         if($mime){
             return $mime;
-        } else if(class_exists('finfo') && is_file($file)){
+        } elseif(class_exists('finfo') && is_file($file)){
             $finfo = @new finfo(FILEINFO_MIME, "/usr/share/misc/magic");
 
             if($finfo){
@@ -204,7 +204,7 @@ class Files{
           $name = $file->getFilename();
           if ($file->isDir() && $name != '.' && $name != '..') {
              rmdir($file->getPathname());
-          } else if($file->isFile()){
+          } elseif($file->isFile()){
              unlink($file->getPathname());
           }
         }
@@ -269,7 +269,7 @@ class Files{
                  'mtime' => $file->getMTime(),
                  'name' => $file->getBaseName());
              
-          } else if (!$get_directories && $file->isFile()){
+          } elseif (!$get_directories && $file->isFile()){
               $arr[] = $file->getBasename();
             }
         }
@@ -289,11 +289,11 @@ class Files{
         if($size<1024) {
             return $size." bytes";
         }
-        else if($size<(1024*1024)) {
+        elseif($size<(1024*1024)) {
             $size=round($size/1024,1);
             return $size." KB";
         }
-        else if($size<(1024*1024*1024)) {
+        elseif($size<(1024*1024*1024)) {
             $size=round($size/(1024*1024),1);
             return $size." MB";
         }

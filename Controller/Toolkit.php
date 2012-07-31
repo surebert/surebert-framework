@@ -62,7 +62,7 @@ class Controller_Toolkit extends Controller{
         $root = false;
         if(empty($version)){
             $root = SUREBERT_TOOLKIT_PATH;
-        } else if(is_numeric($version)){
+        } elseif(is_numeric($version)){
             $root = $this->toolkit_root.'/tags/'.$version;
         } else {
             $root = $this->toolkit_root.'/'.$version;
@@ -79,7 +79,7 @@ class Controller_Toolkit extends Controller{
         if($binary){
             if($match[1] == 'swf'){
                 header("Content-type: application/x-shockwave-flash");
-            } else if($match[1] == 'gif' || $match[1] == 'png'){
+            } elseif($match[1] == 'gif' || $match[1] == 'png'){
                 header("Content-type: image/".$match[1]);
             }
         } else {

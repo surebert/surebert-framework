@@ -296,7 +296,7 @@ class Excel_Workbook extends \DOMDocument{
 
         if($strlen== 1){
             $col_index += ($letters[$match[1]]+1);
-        } else if($strlen > 1){
+        } elseif($strlen > 1){
             $arr = str_split($match[1]);
             $last = array_pop($arr);
             foreach($arr as $letter){

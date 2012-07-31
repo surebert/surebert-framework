@@ -410,7 +410,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
                 $message = new \sb\XMPP_Message($xml);
                 $message->client = $this;
                 $this->on_message($message);
-            } else if(substr($xml, 0, 9 ) == '<presence'){
+            } elseif(substr($xml, 0, 9 ) == '<presence'){
 
                 $presence = new \sb\XMPP_Presence($xml);
                 $from = $presence->get_from();
@@ -423,7 +423,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
                     if($from && $type == 'unavailable'){
                         unset($this->buddies_online[$from]);
                         $this->log('NOTICE: '.$from.' is unavailable');
-                    } else if($from){
+                    } elseif($from){
 
                         $this->buddies_online[$from] = $status;
                         $this->log('NOTICE: '.$from.' is '.$status);
@@ -465,7 +465,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
         if($xml instanceof \SimpleXMLElement){
             $xml = $xml->asXML();
-        } else if($xml instanceof \DOMDocument){
+        } elseif($xml instanceof \DOMDocument){
             $xml = $xml->saveXML();
         }
 

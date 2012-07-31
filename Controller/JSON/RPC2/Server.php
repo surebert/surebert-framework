@@ -198,7 +198,7 @@ class Controller_JSON_RPC2_Server extends Controller_Base
             
             if(isset(Gateway::$cmd_options) && isset(Gateway::$cmd_options['json_request'])){
                 $json_request_str = Gateway::$cmd_options['json_request'];
-            } else if ($this->method == 'post' || $this->method == 'both') {
+            } elseif ($this->method == 'post' || $this->method == 'both') {
                 $json_request_str = file_get_contents("php://input");
             }
             
@@ -327,10 +327,10 @@ class Controller_JSON_RPC2_Server extends Controller_Base
                     || ($code <= -32000 && $code >= -32099)) {
                     $status = 500;
                     $message = 'Internal Server Error';
-                } else if ($code == -32600) {
+                } elseif ($code == -32600) {
                     $message = 'Bad Request';
                     $status = 400;
-                } else if ($code == -32601) {
+                } elseif ($code == -32601) {
 
                     $override = $this->not_found();
                     if(!is_null($override)){

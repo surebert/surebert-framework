@@ -348,7 +348,7 @@ class RSS_Feed extends \DomDocument{
                 $this->channel->appendChild($this->create_node($key, $val, $key == 'description'));
             
             //parse image    
-            } else if ($this->{$key} instanceof \sb\RSS_Image){
+            } elseif ($this->{$key} instanceof \sb\RSS_Image){
             
             
                 $image = $this->createElement('image');
@@ -362,7 +362,7 @@ class RSS_Feed extends \DomDocument{
                 $this->channel->appendChild($image);
             
             //parse cloud
-            } else if ($this->{$key} instanceof \sb\RSS_Cloud){
+            } elseif ($this->{$key} instanceof \sb\RSS_Cloud){
                 
                 $cloud = $this->createElement('cloud');
                 foreach($this->{$key} as $n=>$v){
@@ -371,13 +371,13 @@ class RSS_Feed extends \DomDocument{
                 
                 $this->channel->appendChild($cloud);
             
-            } else if($key == 'categories'){
+            } elseif($key == 'categories'){
                 foreach($this->{$key} as $category){
                     $this->channel->appendChild($this->create_node('category', $category));
                 }
                 
             //parse skipHours and skipDays
-            } else if($key == 'skipHours' || $key == 'skipDays'){
+            } elseif($key == 'skipHours' || $key == 'skipDays'){
                 
                 $node = $this->createElement($key);
                 $nodeName = ($key =='skipHours') ? 'hour' : 'day';

@@ -102,7 +102,7 @@ class PDO_RecordPager
             throw(new \Exception("The SQL statement '$this->sql' is not valid."));
 
         }
-        else if( !(stristr(($this->sql), 'SELECT')) || (stristr(($this->sql), 'LIMIT'))) {
+        elseif( !(stristr(($this->sql), 'SELECT')) || (stristr(($this->sql), 'LIMIT'))) {
 
             throw(new \Exception("SQL must be a 'SELECT' statment with no 'LIMIT' clause"));
 

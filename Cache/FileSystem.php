@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Stores cached data in the file system
  * 
@@ -8,21 +9,20 @@
  */
 namespace sb;
 
-class Cache_FileSystem implements Cache_Base{
-    
+class Cache_FileSystem implements Cache_Base
+{
+
     /**
      * The key to store the catalog in
      * @var string
      */
     protected $catalog_key = '/sb_Cache_Catalog';
 
-
     /**
      * The file path that the cache is stored in
      * @var string
      */
     protected $file_path = '';
-
 
     /**
      * Sets the filepath of the file system cache, defaults to ROOT/private/cache/
@@ -49,177 +49,177 @@ class Cache_FileSystem implements Cache_Base{
      * @param string $file_path Optional The filepath to store the cache in, must be writable
      *
      */
-    public function __construct($file_path ='')
+    public function __construct($file_path = '')
     {
 
-        if(empty($file_path)){
-            $file_path = ROOT.'/private/cache/';
+        if (empty($file_path)) {
+            $file_path = ROOT . '/private/cache/';
         }
 
-        $this->set_cache_dir($file_path);
+        $this->setCacheDir($file_path);
     }
+
     /**
      * Stores the cached data in /private/cache filesystem
      */
     public function store($key, $data, $lifetime = 0)
     {
-        
-        $file_path = $this->get_file_path($key);
-        $dir = dirname($file_path);
-        
-        if(!is_dir($dir)){
-            try{
-                mkdir($dir, 0777, true);
-            } catch (Exception $e){
-                throw new \Exception('Could create cache directory: '.$file_path." - ".$e->getMessage());
+
+        $file_path = $this->getFilePath($key);
+        $dir = \dirname($file_path);
+
+        if (!is_dir($dir)) {
+            try {
+                \mkdir($dir, 0777, true);
+            } catch (Exception $e) {
+                throw new \Exception('Could create cache directory: ' . $file_path . " - " . $e->getMessage());
             }
         }
 
-        try{
-            $fh = fopen($file_path, 'a+');
-        } catch (Exception $e){
-            throw new \Exception('Could not write to cache: '.$file_path." - ".$e->getMessage());
+        try {
+            $fh = \fopen($file_path, 'a+');
+        } catch (Exception $e) {
+            throw new \Exception('Could not write to cache: ' . $file_path . " - " . $e->getMessage());
         }
-        
-        //exclusive lock
-        flock($fh, LOCK_EX); 
 
-        fseek($fh,0); 
-    
-        ftruncate($fh,0); 
-    
-        if($lifetime != 0){
+        //exclusive lock
+        \flock($fh, LOCK_EX);
+
+        \fseek($fh, 0);
+
+        \ftruncate($fh, 0);
+
+        if ($lifetime != 0) {
             $lifetime = time() + $lifetime;
         }
-        
-        $data = serialize(array($lifetime, $data));
-        
-        if (fwrite($fh, $data)===false){
-            throw new \Exception('Could not write to cache: '.$file_path);
+
+        $data = \serialize(array($lifetime, $data));
+
+        if (\fwrite($fh, $data) === false) {
+            throw new \Exception('Could not write to cache: ' . $file_path);
         }
-        
-        fclose($fh);
-        
-        if($key != $this->catalog_key){
+
+        \fclose($fh);
+
+        if ($key != $this->catalog_key) {
             $this->catalog_key_add($key, $lifetime);
         }
         return true;
-        
     }
-    
+
     /**
      * Retreives data from /private/cache
      */
     public function fetch($key)
     {
-        
+
         $file_name = $this->get_file_path($key);
-        if (!file_exists($file_name) || !is_readable($file_name)) {
+        if (!\file_exists($file_name) || !\is_readable($file_name)) {
             return false;
         } else {
-            $h = fopen($file_name,'r');
+            $h = \fopen($file_name, 'r');
             //lock file
-            flock($h,LOCK_SH); 
+            \flock($h, LOCK_SH);
         }
-        
-        $data = file_get_contents($file_name);
-        
+
+        $data = \file_get_contents($file_name);
+
         //release lock
-        fclose($h); 
-        
-        $data = @unserialize($data);
-    
+        \fclose($h);
+
+        $data = @\unserialize($data);
+
         //check to see if it expired
-        if($data && ($data[0] == 0 || time() <= $data[0])){
+        if ($data && ($data[0] == 0 || time() <= $data[0])) {
             return $data[1];
         } else {
             $this->delete($key);
             return false;
         }
-        
+
         return $data[1];
     }
-    
+
     /**
      * Deletes data from /private/cache
      */
     public function delete($key)
     {
-        
+
         $file = $this->get_file_path($key);
-        
-        if(is_dir($file)){
+
+        if (\is_dir($file)) {
             $this->clear_dir($file);
-            rmdir($file);
-        } else if(file_exists($file)){
-            return unlink($file);
+            \rmdir($file);
+        } elseif (\file_exists($file)) {
+            return \unlink($file);
         } else {
             return false;
         }
     }
-    
+
     /**
      * Delete all the info in the cache regardless of the key
      * @return boolean
      */
-    public function clear_all()
+    public function clearAll()
     {
-        
-        $this->clear_dir($this->file_path.'/sb_Cache');
+
+        $this->clearDir($this->file_path . '/sb_Cache');
     }
-    
+
     /**
      * Clears out the contents of a cache directory
      * @param $dir
      * @return boolean
      */
-    protected function clear_dir($dir)
+    protected function clearDir($dir)
     {
-        
-        $iterator = new DirectoryIterator($dir);
-        foreach ($iterator as $file){
 
-          if ($file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
-             $this->clear_dir($file->getPathname());
-             if(!rmdir($file->getPathname())){
-                 return false;
-             }
-          } else if($file->isFile()){
-            if(!unlink($file->getPathname())){
-                return false;
+        $iterator = new \DirectoryIterator($dir);
+        foreach ($iterator as $file) {
+
+            if ($file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
+                $this->clear_dir($file->getPathname());
+                if (!\rmdir($file->getPathname())) {
+                    return false;
+                }
+            } elseif ($file->isFile()) {
+                if (!\unlink($file->getPathname())) {
+                    return false;
+                }
             }
-          }
         }
 
         return true;
     }
-    
+
     /**
      * takes the cache key and turns it into a file request, makes directory if required
      * @param $key
      * @return string The path of the cache file
      */
-    protected function get_file_path($key)
+    protected function getFilePath($key)
     {
-        return $this->file_path.'/sb_Cache'.$key;
+        return $this->file_path . '/sb_Cache' . $key;
     }
-    
-    protected function catalog_key_add($key, $lifetime)
+
+    protected function catalogKeyAdd($key, $lifetime)
     {
         $catalog = $this->fetch($this->catalog_key);
-        $catalog = is_array($catalog) ? $catalog : Array();
-        $catalog[$key] = ($lifetime == 0) ? $lifetime : $lifetime+time();
+        $catalog = \is_array($catalog) ? $catalog : Array();
+        $catalog[$key] = ($lifetime == 0) ? $lifetime : $lifetime + time();
         return $this->store($this->catalog_key, $catalog);
     }
-    
-    protected function cataglog_key_delete()
+
+    protected function catalogKeyDelete()
     {
         $catalog = $this->fetch($this->catalog_key);
-        $catalog = is_array($catalog) ? $catalog : Array();
-        if(isset($catalog[$key])){
+        $catalog = \is_array($catalog) ? $catalog : Array();
+        if (isset($catalog[$key])) {
             unset($catalog[$key]);
         };
-        
+
         return $this->store('/sb_Cache_Catalog', $catalog);
     }
 
@@ -227,9 +227,9 @@ class Cache_FileSystem implements Cache_Base{
      * Sets the file path to cache in
      * @return string
      */
-    public function set_cache_dir($file_path)
+    public function setCacheDir($file_path)
     {
-        if(substr($file_path, -1, 1) != '/'){
+        if (\substr($file_path, -1, 1) != '/') {
             $file_path .= '/';
         }
 
@@ -240,11 +240,11 @@ class Cache_FileSystem implements Cache_Base{
      * Loads the current catalog
      * @return Array a list of all keys stored in the cache
      */
-    public function get_keys()
+    public function getKeys()
     {
         $catalog = $this->fetch($this->catalog_key);
-        $catalog = is_array($catalog) ? $catalog : Array();
-        ksort($catalog);
+        $catalog = \is_array($catalog) ? $catalog : Array();
+        \ksort($catalog);
         return $catalog;
     }
 }

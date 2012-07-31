@@ -105,7 +105,7 @@ class PDO extends \PDO{
       
         if(substr(ltrim($sql), 0, 1) != 'S'){
             return $stmt;
-        } else if(!empty($class_name)){
+        } elseif(!empty($class_name)){
             if(class_exists($class_name)){
                 return $stmt->fetchAll(\PDO::FETCH_CLASS, $class_name);
             }

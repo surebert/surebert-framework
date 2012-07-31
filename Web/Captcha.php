@@ -81,7 +81,7 @@ class Web_Captcha{
         if(file_exists($background)){
             $this->image = imagecreatefrompng($background);
             
-        } else if(!empty($this->clouds)){
+        } elseif(!empty($this->clouds)){
             $this->image = imagecreatefromstring(base64_decode($this->clouds));
         } else {
             $this->image = imagecreate(200, 200);

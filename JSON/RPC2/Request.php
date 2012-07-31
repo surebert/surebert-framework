@@ -95,7 +95,7 @@ class JSON_RPC2_Request{
                 }
             }
             
-        } else if($num_args > 1){
+        } elseif($num_args > 1){
             $this->method = $args[0];
             $this->params = $args[1];
             $this->id = isset($args[2]) ? $args[2] : uniqid();

@@ -8,8 +8,9 @@
  */
 namespace sb;
 
-class Ajax_Response{
-    
+class Ajax_Response
+{
+
     /**
      * The body of the response to be sent back to the browser
      *
@@ -22,7 +23,7 @@ class Ajax_Response{
      * @var string
      */
     public $callback = null;
-    
+
     /**
      * An array of headers to be passed back to the browser.
      *
@@ -31,7 +32,7 @@ class Ajax_Response{
     private $headers = Array(
         'Content-Type' => 'text/html'
     );
-    
+
     /**
      * Sets up a ajax repsonse for dispatch
      * 
@@ -45,65 +46,65 @@ class Ajax_Response{
      */
     public function __construct($content = null)
     {
-        
-        if(!is_null($content)){
+
+        if (!\is_null($content)) {
             $this->set_content($content);
         }
 
-        if(isset(Gateway::$request->get['sb_callback'])){
+        if (isset(Gateway::$request->get['sb_callback'])) {
             $this->callback = Gateway::$request->get['sb_callback'];
         }
     }
-    
+
     /**
      * Sets the content type header passed to the browser
      *
      * @param string $content_type e.g application/xml
      */
-    public function set_content_type($content_type = 'text/html')
+    public function setContentType($content_type = 'text/html')
     {
         $this->headers['Content-Type'] = $content_type;
     }
-    
+
     /**
      * Sets the content to send back to the browser and sets the content type based on the type of content passed
      *
      * @param mixed object/bool/xml/string $content
      * 
-     * @todo if someone wants to bother with xml add it, and if so what determines if it is xml, an xml object, a string detected, etc
+     * @todo if someone wants to bother with xml add it, and if so what 
+     * determines if it is xml, an xml object, a string detected, etc
      */
-    public function set_content($content)
+    public function setContent($content)
     {
-        
-        if(is_bool($content)){
-            
-            $this->set_content_type('boolean/value');
+
+        if (\is_bool($content)) {
+
+            $this->setContentType('boolean/value');
             $this->content = $content ? 1: 0;
-            
-        } else if(is_object($content) || is_array($content)){
-            
-            $this->set_content_type('application/json');
-            $this->content = json_encode($content);
-            
+
+        } elseif (\is_object($content) || \is_array($content)) {
+
+            $this->setContentType('application/json');
+            $this->content = \json_encode($content);
+
         } else {
-            $this->set_content_type('text/html');
+            $this->setContentType('text/html');
             $this->content = $content;
         }
-        
-        
+
     }
-    
+
     /**
      * Adds a custom header to be passed to the browser
      *
      * @param string $key
      * @param string $val
      */
-    public function add_customer_header($key, $val)
+    public function addCustomHeader($key, $val)
     {
         $this->headers[$key] = $val;
     }
-    
+
     /**
      * Echos the response to the browser.
      *
@@ -111,16 +112,17 @@ class Ajax_Response{
     public function dispatch()
     {
 
-        foreach($this->headers as $header=>$val){
+        foreach ($this->headers as $header => $val) {
             header($header.': '.$val);
         }
 
         //wrap in callback if set
-        if(!is_null($this->callback)){
+        if (!\is_null($this->callback)) {
             echo $this->callback.'('.$this->content.');';
         } else {
             echo $this->content;
         }
-        
+
     }
 }
+

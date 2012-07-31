@@ -79,7 +79,7 @@ class Password_Random
             $new_char = $chars[rand(0, $chars_length-1)];
             if(strstr($this->password, $new_char)){
                 $char = $new_char;
-            } else if(strstr($this->password, $integer)){
+            } elseif(strstr($this->password, $integer)){
                 $char = $integer;
             } else {
                 $char = rand(0, 1) ? $new_char : $integer;

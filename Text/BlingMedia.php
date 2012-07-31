@@ -265,7 +265,7 @@ class Text_BlingMedia extends Text_Bling{
             if(strstr($match[1], 'v=')){
                 preg_match("~v=(.*)~", $match[1], $swf);
                 $swf = $swf[1];
-            } else if(preg_match("~[\w-]{11}~", $match[1], $swf)){
+            } elseif(preg_match("~[\w-]{11}~", $match[1], $swf)){
                 $swf = $swf[0];
             }
 
@@ -312,7 +312,7 @@ class Text_BlingMedia extends Text_Bling{
                 
                 if($matches[1][$x] == "ogg"){
                     $qt .='<audio controls="true" src="'.self::$content_path.'/'.$matches[2][$x].'" height="35" width="460" tabindex="0"></audio>';
-                } else if($matches[1][$x] == "avi"){
+                } elseif($matches[1][$x] == "avi"){
 
                     $qt .= '<embed src="'.$media.'" width="400" height="300" scale="aspect" controller="true" autoplay="true" />';
                 

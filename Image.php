@@ -172,7 +172,7 @@ class Image{
             $this->height['dest'] = $height;
         
         //if the height is not specified, make it relative to the width
-        } else if ($height == -1){
+        } elseif ($height == -1){
             
             $this->width['dest'] = $width;
             $this->height['dest'] = ($width * $this->height['orig']) / $this->width['orig'];
@@ -364,11 +364,11 @@ class Image{
     {
             $this->to_jpg();
             
-        } else if ($this->type == "png") {
+        } elseif ($this->type == "png") {
         
             $this->to_png();
             
-        } else if ($this->type == "gif") {
+        } elseif ($this->type == "gif") {
         
             $this->to_gif();
         }
@@ -393,12 +393,12 @@ class Image{
             header("Content-type: image/jpeg");
             imagejpeg($image);
             
-        } else if ($this->type == "png") {
+        } elseif ($this->type == "png") {
         
             header("Content-type: image/png");
             imagepng($image);
             
-        } else if ($this->type == "gif") {
+        } elseif ($this->type == "gif") {
         
             header("Content-type: image/gif");
             imagegif($image);
@@ -418,11 +418,11 @@ class Image{
     {
             $this->to_jpg();
             
-        } else if ($this->type == "png") {
+        } elseif ($this->type == "png") {
         
             $this->to_png();
             
-        } else if ($this->type == "gif") {
+        } elseif ($this->type == "gif") {
         
             $this->to_gif();
         }

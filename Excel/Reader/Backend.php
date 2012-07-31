@@ -1220,7 +1220,7 @@ abstract class Excel_Reader_Backend
             $hours = floor($totalseconds / (60 * 60));
             $mins = floor($totalseconds / 60) % 60;
             $string = date($format, mktime($hours, $mins, $secs, $dateinfo["mon"], $dateinfo["mday"], $dateinfo["year"]));
-        } else if ($type == 'number') {
+        } elseif ($type == 'number') {
             $rectype = 'number';
             $formatted = $this->format_value($format, $numValue, $formatIndex);
             $string = $formatted['string'];

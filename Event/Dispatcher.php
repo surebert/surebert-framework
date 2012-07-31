@@ -117,7 +117,7 @@ class Event_Dispatcher{
                 }
             }
             
-        } else if(isset($this->listeners[$event_name])){
+        } elseif(isset($this->listeners[$event_name])){
             $listeners = $this->listeners[$event_name];
         }
         

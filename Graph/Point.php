@@ -395,7 +395,7 @@ class Graph_Point{
             //add point label
             if($point->y <= 5){
                 $posy = $point->y+5;
-            } else if($point->y >= $this->graph_height-5){
+            } elseif($point->y >= $this->graph_height-5){
                 $posy = $point->y-20;
             } else {
                 $posy = $point->y-15;

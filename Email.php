@@ -264,7 +264,7 @@ class Email{
 
         if($outbox instanceof Email_Writer){
             self::$outbox = $outbox;
-        } else if(!self::$outbox){
+        } elseif(!self::$outbox){
             self::$outbox = new Email_Writer();
         }
 

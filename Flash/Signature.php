@@ -181,7 +181,7 @@ class Flash_Signature{
         if(is_null($id) && empty($this->id)){
             //create the randomized unqiue sec id
             $this->id = md5(uniqid(rand()));
-        } else if(is_string($id)){
+        } elseif(is_string($id)){
             $this->id = $id;
             
         }
@@ -300,7 +300,7 @@ class Flash_Signature{
                     $x2=$x1;
                     $y2=$y1;
             
-                } else if ($x2 == -1 || $y2 == -1){
+                } elseif ($x2 == -1 || $y2 == -1){
                     $key = key ($point);
                     $i=$i+2;
                 } else {

@@ -219,7 +219,7 @@ class PDO_BackupMysql
             $name = $file->getFilename();
             if ($file->isDir() && $name != '.' && $name != '..') {
                 rmdir($file->getPathname());
-            } else if ($file->isFile()) {
+            } elseif ($file->isFile()) {
                 unlink($file->getPathname());
             }
         }

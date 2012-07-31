@@ -67,7 +67,7 @@ class Email_Writer
 
         if($logger instanceOf Logger_Base) {
             $this->logger = $logger;
-        } else if(isset(\App::$logger) && \App::$logger instanceof Logger_Base) {
+        } elseif(isset(\App::$logger) && \App::$logger instanceof Logger_Base) {
             $this->logger = \App::$logger;
         } else {
             $this->logger = new Logger_FileSystem();

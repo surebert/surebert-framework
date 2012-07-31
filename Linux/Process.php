@@ -39,7 +39,7 @@ class Linux_Process{
     {
         if(preg_match("~^\d+$~", $data)){
             $this->set_pid($data);
-        } else if(is_string($data)){
+        } elseif(is_string($data)){
             $this->set_command($data);
             $this->start();
         }
