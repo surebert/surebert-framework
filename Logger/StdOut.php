@@ -21,4 +21,3 @@ class Logger_StdOut extends Logger_Base{
     }
 
 }
-?>

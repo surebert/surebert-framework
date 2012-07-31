@@ -117,4 +117,3 @@ class Controller_XHTML extends Controller_HTTP{
     }
 }
 
-?>

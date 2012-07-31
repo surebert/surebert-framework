@@ -361,4 +361,3 @@ class Microformats_VCard
     }
 }
 
-?>

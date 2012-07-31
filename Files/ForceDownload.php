@@ -80,4 +80,3 @@ class Files_ForceDownload{
 
 }
 
-?>

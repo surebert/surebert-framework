@@ -71,4 +71,3 @@ class Encryption_ForTransmission{
     
 }
 
-?>

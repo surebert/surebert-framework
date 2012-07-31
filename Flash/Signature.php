@@ -455,4 +455,3 @@ class Flash_Signature{
     
 }
 
-?>

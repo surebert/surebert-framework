@@ -63,4 +63,3 @@ class SSH2_Shell extends SSH2_Client{
         return fwrite($this->shell, $command.PHP_EOL);
     }
 }
-?>

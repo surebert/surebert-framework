@@ -24,4 +24,3 @@ class ICalendar_Organizer extends ICalendar_Attendee{
         return "ORGANIZER;CN=\"".$this->dname."\":MAILTO:".$this->email;
     }
 }
-?>

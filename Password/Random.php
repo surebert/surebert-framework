@@ -119,4 +119,3 @@ class Password_Random
     }
 }
 
-?>

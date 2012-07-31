@@ -385,4 +385,3 @@ class Controller_JSON_RPC2_Server extends Controller_Base
     }
 
 }
-?>

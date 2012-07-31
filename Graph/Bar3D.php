@@ -132,4 +132,3 @@ class Graph_Bar3D{
     }
 }
 
-?>

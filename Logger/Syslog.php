@@ -266,4 +266,3 @@ class Logger_Syslog{
         return $str;
     }
 }
-?>

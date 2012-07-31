@@ -160,4 +160,3 @@ class Strings{
         return htmlentities(strip_tags(stripslashes(($str))));
     }
 }
-?>

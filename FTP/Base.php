@@ -59,4 +59,3 @@ interface FTP_Base{
     public function chmod($remote_path, $mode);
 
 }
-?>

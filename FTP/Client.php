@@ -211,4 +211,3 @@ class FTP_Client implements FTP_Base{
         ftp_close($this->connection);
     }
 }
-?>

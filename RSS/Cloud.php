@@ -43,4 +43,3 @@ class RSS_Cloud{
     }
 }
 
-?>

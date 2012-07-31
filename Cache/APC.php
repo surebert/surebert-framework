@@ -136,4 +136,3 @@ class Cache_APC implements Cache_Base{
     }
     
 }
-?>

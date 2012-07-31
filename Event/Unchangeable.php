@@ -63,4 +63,3 @@ class Event_Unchangeable_Exception extends \Exception{
     protected $code = 1;
 }
 
-?>

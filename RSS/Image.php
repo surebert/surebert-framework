@@ -41,4 +41,3 @@ class RSS_Image{
     
 }
 
-?>

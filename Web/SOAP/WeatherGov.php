@@ -365,4 +365,3 @@ class Web_SOAP_WeatherGov extends SoapClient
       );
   }
 };
-?>

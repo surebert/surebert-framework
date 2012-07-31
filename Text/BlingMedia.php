@@ -490,4 +490,3 @@ class Text_BlingMedia extends Text_Bling{
     
 }
 
-?>

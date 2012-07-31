@@ -42,4 +42,3 @@ class Math_RangeMapper{
 
 
 
-?>

@@ -190,4 +190,3 @@ class XMPP_Presence extends XMPP_Packet{
 
 }
 
-?>

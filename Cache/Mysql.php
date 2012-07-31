@@ -201,4 +201,3 @@ class Cache_Mysql implements Cache_Base{
     }
     
 }
-?>

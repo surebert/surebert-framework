@@ -16,4 +16,3 @@ class Chat_Line{
     public $ip;
 }
 
-?>

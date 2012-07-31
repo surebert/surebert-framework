@@ -29,4 +29,3 @@ class Session_Memcache extends Session{
     }
     
 }
-?>

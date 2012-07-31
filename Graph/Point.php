@@ -439,4 +439,3 @@ class Graph_Point{
 
 }
 
-?>

@@ -540,4 +540,3 @@ class Text_Bling{
         return $str;
     }
 }
-?>

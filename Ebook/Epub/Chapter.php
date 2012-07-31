@@ -92,4 +92,3 @@ class sb_Ebook_Epub_Chapter{
     }
 
 }
-?>

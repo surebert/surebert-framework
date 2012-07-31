@@ -164,4 +164,3 @@ class Cache_Memcache implements Cache_Base{
     }
     
 }
-?>

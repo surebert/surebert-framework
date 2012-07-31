@@ -377,4 +377,3 @@ class JSON_RPC2_Client
 
 }
 
-?>

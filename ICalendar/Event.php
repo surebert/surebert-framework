@@ -256,4 +256,3 @@ class ICalendar_Event
         return implode("\n", $ics);
     }
 }
-?>

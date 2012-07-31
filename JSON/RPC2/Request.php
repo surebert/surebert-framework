@@ -105,4 +105,3 @@ class JSON_RPC2_Request{
 
 }
 
-?>

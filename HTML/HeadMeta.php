@@ -32,4 +32,3 @@ class HTML_HeadMeta
     public $author;
 
 }
-?>

@@ -106,4 +106,3 @@ abstract class Logger_Base{
      */
     abstract protected function __write($data, $log_type);
 }
-?>

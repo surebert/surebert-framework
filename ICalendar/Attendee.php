@@ -46,4 +46,3 @@ class ICalendar_Attendee{
     }
 }
 
-?>

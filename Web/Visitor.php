@@ -83,4 +83,3 @@ class Web_Visitor{
     }
 }
 
-?>

@@ -384,4 +384,3 @@ class Excel_Reader_HTML extends Excel_Reader
 
 }
 
-?>

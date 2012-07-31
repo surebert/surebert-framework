@@ -83,4 +83,3 @@ class sb_Socket_StreamingClient extends sb_Socket_Client
     }
 
 }
-?>

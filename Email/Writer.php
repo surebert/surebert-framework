@@ -234,4 +234,3 @@ class Email_Writer
     }
 }
 
-?>

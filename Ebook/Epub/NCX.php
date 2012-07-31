@@ -75,4 +75,3 @@ class sb_Ebook_Epub_NCX extends DOMDocument{
     }
 
 }
-?>

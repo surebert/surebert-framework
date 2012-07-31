@@ -173,4 +173,3 @@ class Excel_Reader extends Excel_ReaderBackend
 
 }
 
-?>

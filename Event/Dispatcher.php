@@ -171,4 +171,3 @@ class Event_Dispatcher{
     }
 }
 
-?>

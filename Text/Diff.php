@@ -61,4 +61,3 @@ class Text_Diff
 
 }
 
-?>

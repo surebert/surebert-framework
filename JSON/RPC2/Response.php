@@ -70,4 +70,3 @@ class JSON_RPC2_Response{
     
 }
 
-?>

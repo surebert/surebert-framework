@@ -79,4 +79,3 @@ class Controller_REST extends Controller_HTTP{
     }
     
 }
-?>

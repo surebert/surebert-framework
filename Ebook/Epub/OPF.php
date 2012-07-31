@@ -214,4 +214,3 @@ class sb_Ebook_Epub_OPF extends DOMDocument{
         return parent::saveXML($node, $options);
     }
 }
-?>

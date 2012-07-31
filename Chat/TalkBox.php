@@ -287,4 +287,3 @@ class Chat_TalkBox{
     }
     
 }
-?>

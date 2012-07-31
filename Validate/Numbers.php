@@ -19,4 +19,3 @@ class Validate_Numbers{
             ctype_digit((string)$int);
     }
 }
-?>

@@ -272,4 +272,3 @@ class Controller_Toolkit extends Controller{
         return $str;
     }
 }
-?>

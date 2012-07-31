@@ -310,4 +310,3 @@ class Excel_Workbook extends \DOMDocument{
     }
 
 }
-?>

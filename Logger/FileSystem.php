@@ -60,4 +60,3 @@ class Logger_FileSystem extends Logger_Base{
         return file_put_contents($this->__get_log_path($log_type).date('Y_m_d').'.log', "\n\n".date('Y/m/d H:i:s')."\t".$this->_agent_str."\n".$data, FILE_APPEND);
     }
 }
-?>

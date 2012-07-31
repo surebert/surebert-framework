@@ -69,4 +69,3 @@ class Samba_Listing
     }
 
 };
-?>

@@ -290,4 +290,3 @@ class PDO_Logger extends PDO_Debugger
 
 }
 
-?>

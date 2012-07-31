@@ -89,4 +89,3 @@ abstract class Session_Abstract extends Session{
     
 }
 
-?>

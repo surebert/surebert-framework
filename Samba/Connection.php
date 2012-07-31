@@ -270,4 +270,3 @@ class Samba_Connection
 
 }
 
-?>

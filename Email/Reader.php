@@ -432,4 +432,3 @@ class Email_Reader{
     }
 }
 
-?>

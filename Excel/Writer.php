@@ -237,4 +237,3 @@ class Excel_Writer
 
 }
 
-?>

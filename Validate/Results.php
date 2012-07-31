@@ -32,4 +32,3 @@ class Validate_Results{
     public $value;
 
 }
-?>

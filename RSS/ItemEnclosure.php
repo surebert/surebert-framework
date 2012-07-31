@@ -59,4 +59,3 @@ class RSS_ItemEnclosure{
     
 }
 
-?>

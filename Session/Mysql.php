@@ -355,4 +355,3 @@ class Session_Mysql extends Session_Abstract{
     
 }
 
-?>

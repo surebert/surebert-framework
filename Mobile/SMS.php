@@ -78,4 +78,3 @@ class Mobile_SMS{
     
 }
 
-?>

@@ -59,4 +59,3 @@ class PDO_Debugger extends PDO{
 
 }
 
-?>

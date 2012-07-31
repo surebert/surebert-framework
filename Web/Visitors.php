@@ -275,4 +275,3 @@ class Web_VisitorCount{
     public $guests = 0;
     public $users = 0;
 }
-?>

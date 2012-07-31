@@ -22,4 +22,3 @@ class Logger_BlackHole extends Logger_Base{
     }
 
 }
-?>

@@ -258,4 +258,3 @@ class Controller_HTTP extends Controller{
         return $authorized;
     }
 }
-?>

@@ -212,4 +212,3 @@ class XMPP_Bot_Helper extends XMPP_Client{
 
 }
 
-?>

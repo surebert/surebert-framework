@@ -219,4 +219,3 @@ class PDO_RecordPager
 
     }
 }
-?>

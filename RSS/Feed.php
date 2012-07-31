@@ -393,4 +393,3 @@ class RSS_Feed extends \DomDocument{
         }    
     }
 }
-?>

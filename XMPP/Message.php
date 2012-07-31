@@ -152,4 +152,3 @@ class XMPP_Message extends XMPP_Packet{
     }
 
 }
-?>

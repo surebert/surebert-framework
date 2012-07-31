@@ -49,4 +49,3 @@ class JSON_RPC2_Error{
     }
     
 }
-?>

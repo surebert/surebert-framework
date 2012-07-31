@@ -45,4 +45,3 @@ class Web_WeatherFeed{
     public $icon;
 }
 
-?>

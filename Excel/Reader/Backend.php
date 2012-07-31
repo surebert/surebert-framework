@@ -1340,4 +1340,3 @@ abstract class Excel_Reader_Backend
 
 }
 
-?>

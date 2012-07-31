@@ -117,4 +117,3 @@ abstract class XMPP_Packet extends \DOMDocument
     }
     
 }
-?>

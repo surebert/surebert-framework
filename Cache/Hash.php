@@ -165,4 +165,3 @@ class Cache_Hash implements Cache_Base{
 
 }
 
-?>

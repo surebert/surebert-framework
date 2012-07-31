@@ -603,4 +603,3 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
     
 }
 
-?>
