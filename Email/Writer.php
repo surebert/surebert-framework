@@ -46,19 +46,19 @@ class Email_Writer {
     /**
      * Creates a new outbox to send from
      *
-	 * @param \sb\Logger $logger optional
-	 *
-	 * <code>
-	 * //instanciate the email writer
-	 * $myEmailWriter = new \sb\Email_Writer();
-	 *
-	 * //add an instance of \sb\Email to the outbox, you can add as many as you want
-	 * $myEmailWriter->add_email_to_outbox($myMail);
-	 *
-	 * //then send, you could add more emails before sending
-	 * var_dump($myEmailWriter->send());
-	 *
-	 * </code>
+     * @param \sb\Logger $logger optional
+     *
+     * <code>
+     * //instanciate the email writer
+     * $myEmailWriter = new \sb\Email_Writer();
+     *
+     * //add an instance of \sb\Email to the outbox, you can add as many as you want
+     * $myEmailWriter->add_email_to_outbox($myMail);
+     *
+     * //then send, you could add more emails before sending
+     * var_dump($myEmailWriter->send());
+     *
+     * </code>
      */
     public function __construct($logger=null, $remote_addr='', $http_host='') {
 
@@ -66,9 +66,9 @@ class Email_Writer {
             $this->logger = $logger;
         } else if(isset(\App::$logger) && \App::$logger instanceof Logger_Base) {
             $this->logger = \App::$logger;
-		} else {
-			$this->logger = new Logger_FileSystem();
-		}
+        } else {
+            $this->logger = new Logger_FileSystem();
+        }
 
         $this->remote_addr = (!empty($remote_addr)) ? $remote_addr : Gateway::$remote_addr;
         $this->http_host = (!empty($http_host)) ? $http_host : (isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : php_uname('n')) ;
@@ -92,26 +92,26 @@ class Email_Writer {
 
             //all email goes to DEBUG_EMAIL if specified
             if(defined("DEBUG_EMAIL")) {
-				$email->debug_info = "\n\nDEBUG MODE: Should be sent to: ".$email->to." when not in debug mode!";
+                $email->debug_info = "\n\nDEBUG MODE: Should be sent to: ".$email->to." when not in debug mode!";
                 $email->debug_info .=  "\nDEBUG MODE: Should be sent from: ".$email->from." when not in debug mode!";
 
                 $email->to = DEBUG_EMAIL;
                 $email->from = DEBUG_EMAIL;
 
-				if(!empty($email->cc)){
-					$email->debug_info .=  "\nDEBUG MODE: Should be be CCed to: ".implode(", ", $email->cc)." when not in debug mode!";
-					$email->cc = Array();
-				}
+                if(!empty($email->cc)){
+                    $email->debug_info .=  "\nDEBUG MODE: Should be be CCed to: ".implode(", ", $email->cc)." when not in debug mode!";
+                    $email->cc = Array();
+                }
 
-				if(!empty($email->bcc)){
-					$email->debug_info .=  "\nDEBUG MODE: Should be be BCCed to: ".implode(", ", $email->bcc)." when not in debug mode!";
-					$email->bcc = Array();
-				}
-				
-				$email->body .= $email->debug_info;
-				if(!empty($email->body_HTML)){
-					$email->body_HTML .= nl2br($email->debug_info);
-				}
+                if(!empty($email->bcc)){
+                    $email->debug_info .=  "\nDEBUG MODE: Should be be BCCed to: ".implode(", ", $email->bcc)." when not in debug mode!";
+                    $email->bcc = Array();
+                }
+                
+                $email->body .= $email->debug_info;
+                if(!empty($email->body_HTML)){
+                    $email->body_HTML .= nl2br($email->debug_info);
+                }
             }
 
             $email->construct_multipart_message();
@@ -130,7 +130,7 @@ class Email_Writer {
         }
 
         if($sent_emails == count($this->emails)) {
-			$this->emails = Array();
+            $this->emails = Array();
             return true;
         } else {
             return false;
@@ -166,7 +166,7 @@ class Email_Writer {
         $message = "\nEmail sent at ".date('m/d/y h:i:s');
         $message .= "\nFrom:".$email->from. '@'.$this->remote_addr;
         $message .= "\nTo: ".$email->to;
-		foreach($email->cc as $cc) {
+        foreach($email->cc as $cc) {
             $message .="\nCc:".$cc;
         }
         foreach($email->bcc as $bcc) {

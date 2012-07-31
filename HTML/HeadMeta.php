@@ -11,23 +11,23 @@
 namespace sb;
 class HTML_HeadMeta {
 
-	/**
-	 *
-	 * @var The description of an HTML page
-	 */
-	public $description;
+    /**
+     *
+     * @var The description of an HTML page
+     */
+    public $description;
 
-	/**
-	 *
-	 * @var The meta keywords of an HTML page
-	 */
-	public $keywords;
+    /**
+     *
+     * @var The meta keywords of an HTML page
+     */
+    public $keywords;
 
-	/**
-	 *
-	 * @var The meta author of an HTML page
-	 */
-	public $author;
+    /**
+     *
+     * @var The meta author of an HTML page
+     */
+    public $author;
 
 }
 ?>

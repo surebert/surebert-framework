@@ -8,14 +8,14 @@
 namespace sb;
 class Files_Mime{
 
-	public $mime_types = <<<'MIME'
+    public $mime_types = <<<'MIME'
 ai application/postscript
 aif audio/x-aiff
 aifc audio/x-aiff
 aiff audio/x-aiff
 asc text/plain
 atom application/atom+xml
-au 	audio/basic
+au     audio/basic
 avi video/x-msvideo
 bcpio application/x-bcpio
 bin application/octet-stream
@@ -37,13 +37,13 @@ dmg application/octet-stream
 dms application/octet-stream
 doc application/msword
 dtd application/xml-dtd
-dv 	video/x-dv
+dv     video/x-dv
 dvi application/x-dvi
 dxr application/x-director
 eps application/postscript
 etx text/x-setext
 exe application/octet-stream
-ez 	application/andrew-inset
+ez     application/andrew-inset
 gif image/gif
 gram application/srgs
 grxml application/srgs+xml

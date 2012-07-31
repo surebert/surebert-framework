@@ -8,22 +8,22 @@
  */
 namespace sb;
 class Web_Visitor{
-	/**
+    /**
      * The IP address of the visitor
      * @var string
      */
-	public $ip;
+    public $ip;
     /**
      * The tstamp of the visit
      * @var integer
      */
-	public $tstamp;
+    public $tstamp;
 
     /**
      * The unique user name of the visitor in your system, or guest
      * @var string
      */
-	public $uname;
+    public $uname;
     
     /**
      * The display name of the visitor in your system
@@ -35,19 +35,19 @@ class Web_Visitor{
      * The user agent of the visitor in short SF, FF, IE, bot etc
      * @var string
      */
-	public $agent;
+    public $agent;
 
     /**
      * The full agent string if the short name was not determined
      * @var string
      */
-	public $agent_str;
+    public $agent_str;
 
     /**
      * If the user coming from a mobile device
      * @var boolean
      */
-	public $mobl;
+    public $mobl;
 
     /**
      * Creates a new \sb\Web_Visitor

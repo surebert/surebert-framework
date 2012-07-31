@@ -57,21 +57,21 @@ class Controller_HTTP extends Controller{
     public function set_cookie($name, $value='', $expire=0, $path='/', $domain='', $secure=false, $httponly=false){
         setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
     }
-	
-	/**
-	 * Unsets a cookie value by setting it to expire
-	 * @param string $name The cookie name 
-	 * @param string path The path to clear, defaults to /
-	 */
-	public function unset_cookie($name, $path='/'){
-		setcookie($name , '' , time()-86400 , '/' , '' , 0 );
-		if(isset($_COOKIE) && isset($_COOKIE[$name])){
-			unset( $_COOKIE[$name] ); 
-		}
-		if(isset($this->request->cookie[$name])){
-			unset($this->request->cookie[$name]); 
-		}
-	}
+    
+    /**
+     * Unsets a cookie value by setting it to expire
+     * @param string $name The cookie name 
+     * @param string path The path to clear, defaults to /
+     */
+    public function unset_cookie($name, $path='/'){
+        setcookie($name , '' , time()-86400 , '/' , '' , 0 );
+        if(isset($_COOKIE) && isset($_COOKIE[$name])){
+            unset( $_COOKIE[$name] ); 
+        }
+        if(isset($this->request->cookie[$name])){
+            unset($this->request->cookie[$name]); 
+        }
+    }
     
     /**
      * Sends a content type header
@@ -213,34 +213,34 @@ class Controller_HTTP extends Controller{
     public function get_arg($arg_num, $default_val=null){
        return $this->request->get_arg($arg_num, $default_val);
     }
-	
-	/**
-	 * Added option for requesting basic auth.  ONLY USE OVER SSL
-	 * @param callable $check_auth  the callable that determines success or not
-	 * @param string $realm the realm beings used
-	 * @return boolean  
-	 */
-	public function require_basic_auth($check_auth='', $realm='Please enter your username and password'){
-		
-		$authorized = false;
-		if (!isset($_SERVER['PHP_AUTH_USER'])) {
-			header('WWW-Authenticate: Basic realm="'.$realm.'"');
-			header('HTTP/1.0 401 Unauthorized');
-			echo 'You must authenticate to continue';
-		} else {
-			
-			if(is_callable($check_auth)){
-				$authorized = $check_auth($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-			}
-			
-			if(!$authorized){
-				session_unset();
-				unset($_SERVER['PHP_AUTH_USER']);
-				return $this->require_basic_auth($check_auth, $realm);
-			}
-		}
-		
-		return $authorized;
-	}
+    
+    /**
+     * Added option for requesting basic auth.  ONLY USE OVER SSL
+     * @param callable $check_auth  the callable that determines success or not
+     * @param string $realm the realm beings used
+     * @return boolean  
+     */
+    public function require_basic_auth($check_auth='', $realm='Please enter your username and password'){
+        
+        $authorized = false;
+        if (!isset($_SERVER['PHP_AUTH_USER'])) {
+            header('WWW-Authenticate: Basic realm="'.$realm.'"');
+            header('HTTP/1.0 401 Unauthorized');
+            echo 'You must authenticate to continue';
+        } else {
+            
+            if(is_callable($check_auth)){
+                $authorized = $check_auth($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+            }
+            
+            if(!$authorized){
+                session_unset();
+                unset($_SERVER['PHP_AUTH_USER']);
+                return $this->require_basic_auth($check_auth, $realm);
+            }
+        }
+        
+        return $authorized;
+    }
 }
 ?>

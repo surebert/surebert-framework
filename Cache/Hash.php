@@ -16,143 +16,143 @@
 namespace sb;
 class Cache_Hash implements Cache_Base{
 
-	/**
-	 * The key to store the catalog in
-	 * @var string
-	 */
-	private $catalog_key = '/sb_Cache_Catalog';
+    /**
+     * The key to store the catalog in
+     * @var string
+     */
+    private $catalog_key = '/sb_Cache_Catalog';
 
-	/**
-	 * The hash array that the data is stored in
-	 * @var Array
-	 */
-	public $hash = Array();
+    /**
+     * The hash array that the data is stored in
+     * @var Array
+     */
+    public $hash = Array();
 
-	/**
-	 * Constructs the mysql cache, pass the db connection to the constructor
-	 * @param $host The hostname the memcache server is stored on
-	 * @param $port The port to access the memcache server on
-	 * @param $namespace The namespace required when sharing memcache server.  Must be totall unique, e.g. the name of your app?
-	 */
-	public function __construct(){
+    /**
+     * Constructs the mysql cache, pass the db connection to the constructor
+     * @param $host The hostname the memcache server is stored on
+     * @param $port The port to access the memcache server on
+     * @param $namespace The namespace required when sharing memcache server.  Must be totall unique, e.g. the name of your app?
+     */
+    public function __construct(){
 
-	}
+    }
 
-	/**
-	 * Store the cache data in memcache
-	 */
-	public function store($key, $data, $lifetime = 0) {
-		
-		if($lifetime != 0){
-	    	$lifetime = time() + $lifetime;
-	    }
+    /**
+     * Store the cache data in memcache
+     */
+    public function store($key, $data, $lifetime = 0) {
+        
+        if($lifetime != 0){
+            $lifetime = time() + $lifetime;
+        }
 
-	    $data = array($lifetime, $data);
+        $data = array($lifetime, $data);
 
-		$this->hash[$key] = $data;
+        $this->hash[$key] = $data;
 
-		if($key != $this->catalog_key){
-	    	$this->catalog_key_add($key, $lifetime);
-	    }
+        if($key != $this->catalog_key){
+            $this->catalog_key_add($key, $lifetime);
+        }
 
-	    return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Fetches the cache from memcache
-	 */
-	public function fetch($key) {
+    /**
+     * Fetches the cache from memcache
+     */
+    public function fetch($key) {
 
-		if(!array_key_exists($key, $this->hash)){
-			return false;
-		}
-		
-		$data = $this->hash[$key];
+        if(!array_key_exists($key, $this->hash)){
+            return false;
+        }
+        
+        $data = $this->hash[$key];
 
-		//check to see if it expired
-		if($data && ($data[0] == 0 || time() <= $data[0])){
-			return $data[1];
-		} else {
-			$this->delete($key);
-			return false;
-		}
-		
-	}
+        //check to see if it expired
+        if($data && ($data[0] == 0 || time() <= $data[0])){
+            return $data[1];
+        } else {
+            $this->delete($key);
+            return false;
+        }
+        
+    }
 
-	/**
-	 * Deletes cache data
-	 */
-	public function delete($key) {
+    /**
+     * Deletes cache data
+     */
+    public function delete($key) {
 
-		$deleted = false;
+        $deleted = false;
 
-		$catalog = array_keys($this->get_keys());
-		foreach($catalog as $k){
+        $catalog = array_keys($this->get_keys());
+        foreach($catalog as $k){
 
-			if($k == $key){
-				unset($this->hash[$key]);
-				if($delete){
-					$this->catalog_key_delete($k);
-					$deleted = true;
-				}
-			}
+            if($k == $key){
+                unset($this->hash[$key]);
+                if($delete){
+                    $this->catalog_key_delete($k);
+                    $deleted = true;
+                }
+            }
 
-		}
+        }
 
-		return $deleted;
-	}
+        return $deleted;
+    }
 
-	/**
-	 * Clears the whole cache
-	 */
-	public function clear_all(){
-		return $this->hash = Array();
-	}
+    /**
+     * Clears the whole cache
+     */
+    public function clear_all(){
+        return $this->hash = Array();
+    }
 
-	/**
-	 * Keeps track of the data stored in the cache to make deleting groups of data possible
-	 * @param $key
-	 * @return boolean If the catalog is stored or not
-	 */
-	private function catalog_key_add($key, $lifetime){
+    /**
+     * Keeps track of the data stored in the cache to make deleting groups of data possible
+     * @param $key
+     * @return boolean If the catalog is stored or not
+     */
+    private function catalog_key_add($key, $lifetime){
 
-		$catalog = $this->fetch($this->catalog_key);
-		$catalog = is_array($catalog) ? $catalog : Array();
-		$catalog[$key] = ($lifetime == 0) ? $lifetime : $lifetime+time();
-		return $this->store($this->catalog_key, $catalog);
-	}
+        $catalog = $this->fetch($this->catalog_key);
+        $catalog = is_array($catalog) ? $catalog : Array();
+        $catalog[$key] = ($lifetime == 0) ? $lifetime : $lifetime+time();
+        return $this->store($this->catalog_key, $catalog);
+    }
 
-	/**
-	 * Delete keys from the data catalog
-	 * @param $key
-	 * @return boolean If the catalog is stored or not
-	 */
-	private function catalog_key_delete($key){
+    /**
+     * Delete keys from the data catalog
+     * @param $key
+     * @return boolean If the catalog is stored or not
+     */
+    private function catalog_key_delete($key){
 
-		$catalog = $this->fetch($this->catalog_key);
-		$catalog = is_array($catalog) ? $catalog : Array();
-		if(isset($catalog[$key])){
-			unset($catalog[$key]);
-		};
-		return $this->store($this->catalog_key, $catalog);
-	}
+        $catalog = $this->fetch($this->catalog_key);
+        $catalog = is_array($catalog) ? $catalog : Array();
+        if(isset($catalog[$key])){
+            unset($catalog[$key]);
+        };
+        return $this->store($this->catalog_key, $catalog);
+    }
 
-	/**
-	 * Loads the current catalog
-	 * @return Array a list of all keys stored in the cache
-	 */
-	public function get_keys(){
+    /**
+     * Loads the current catalog
+     * @return Array a list of all keys stored in the cache
+     */
+    public function get_keys(){
 
-		$catalog = $this->fetch($this->catalog_key);
-	
-		$catalog = is_array($catalog) ? $catalog : Array();
-		$arr = Array();
-		foreach($catalog as $k=>$v){
-			$arr[$k] = $v;
-		}
-		ksort($arr);
-		return $arr;
-	}
+        $catalog = $this->fetch($this->catalog_key);
+    
+        $catalog = is_array($catalog) ? $catalog : Array();
+        $arr = Array();
+        foreach($catalog as $k=>$v){
+            $arr[$k] = $v;
+        }
+        ksort($arr);
+        return $arr;
+    }
 
 }
 

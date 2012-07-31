@@ -7,229 +7,229 @@
 namespace sb;
 class Controller {
 
-	/**
-	 * Set to true if the view is loaded from within another view via \sb\Gateway::render_request, otherwise false
-	 *
-	 * @var boolean
-	 */
-	public $included = false;
+    /**
+     * Set to true if the view is loaded from within another view via \sb\Gateway::render_request, otherwise false
+     *
+     * @var boolean
+     */
+    public $included = false;
 
-	/**
-	 * The requested data and input
-	 * @var \sb\Request
-	 */
-	public $request;
+    /**
+     * The requested data and input
+     * @var \sb\Request
+     */
+    public $request;
 
-	/**
-	 * The argument delimeter e.g. the comma in: /view/action/1,2,3
-	 * @var string
-	 */
-	protected $input_args_delimiter = '/';
+    /**
+     * The argument delimeter e.g. the comma in: /view/action/1,2,3
+     * @var string
+     */
+    protected $input_args_delimiter = '/';
 
-	/**
-	 * Determines if the controller's public properties become
-	 * local vars in the views or not
-	 * @var boolean 
-	 */
-	protected $extract = false;
+    /**
+     * Determines if the controller's public properties become
+     * local vars in the views or not
+     * @var boolean 
+     */
+    protected $extract = false;
 
-	/**
-	 * Determines which file is loaded in the view directory if one is not specified.  When not set renders index.view.  To set just use template name minus the .view extension e.g. $this->default-file = index;
-	 *
-	 * @var string
-	 */
-	protected $default_file = 'index';
-	
-	/**
-	 * An array of REGex to callable that routes requests that are not otherwise servable
-	 * @var array 
-	 */
-	public $routing_patterns = Array();
+    /**
+     * Determines which file is loaded in the view directory if one is not specified.  When not set renders index.view.  To set just use template name minus the .view extension e.g. $this->default-file = index;
+     *
+     * @var string
+     */
+    protected $default_file = 'index';
+    
+    /**
+     * An array of REGex to callable that routes requests that are not otherwise servable
+     * @var array 
+     */
+    public $routing_patterns = Array();
 
-	/**
-	 * Filters the output after the view is rendered but before
-	 * it is displayed so that you can filter the output
-	 *
-	 * @param $output
-	 * @return string
-	 */
-	public function filter_output($output) {
-		return $output;
-	}
+    /**
+     * Filters the output after the view is rendered but before
+     * it is displayed so that you can filter the output
+     *
+     * @param $output
+     * @return string
+     */
+    public function filter_output($output) {
+        return $output;
+    }
 
-	/**
-	 * Sets the request paramter
-	 *
-	 * @param sb\Request $request The request instance fed to the view
-	 */
-	final public function set_request(\sb\Request $request) {
+    /**
+     * Sets the request paramter
+     *
+     * @param sb\Request $request The request instance fed to the view
+     */
+    final public function set_request(\sb\Request $request) {
 
-		$this->request = $request;
+        $this->request = $request;
 
-		$request->set_input_args_delimiter($this->input_args_delimiter);
-	}
+        $request->set_input_args_delimiter($this->input_args_delimiter);
+    }
 
-	/**
-	 * Fires before any response is rendered by he controller allowing you to make decisions, check input args, etc before the output is rendered.
-	 * If you return false from this method then no output is rendered.
-	 * @return boolean determines if anything should render anything or not, false == no render
-	 */
-	public function on_before_render($method = '') {
+    /**
+     * Fires before any response is rendered by he controller allowing you to make decisions, check input args, etc before the output is rendered.
+     * If you return false from this method then no output is rendered.
+     * @return boolean determines if anything should render anything or not, false == no render
+     */
+    public function on_before_render($method = '') {
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Render the response based on the request
-	 *
-	 * I had to remove default arguments in order to get around issue with incompatbile
-	 * child class methods when E_STRICT is enabled.  I am keeping them in phpdoc
-	 * 
-	 * @param String $template the template to use e.g. /dance
-	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view
-	 * 
-	 */
-	public function render() {
+    /**
+     * Render the response based on the request
+     *
+     * I had to remove default arguments in order to get around issue with incompatbile
+     * child class methods when E_STRICT is enabled.  I am keeping them in phpdoc
+     * 
+     * @param String $template the template to use e.g. /dance
+     * @param mixed $extact_vars extracts the keys of an object or array into
+     * local variables in the view
+     * 
+     */
+    public function render() {
 
-		$args = func_get_args();
-		$template = isset($args[0]) ? $args[0] : '';
-		$extract_vars = isset($args[1]) ? $args[1] : null;
+        $args = func_get_args();
+        $template = isset($args[0]) ? $args[0] : '';
+        $extract_vars = isset($args[1]) ? $args[1] : null;
 
-		$output = '';
+        $output = '';
 
-		//capture view to buffer
-		ob_start();
-		//if no method is set, use index, for the IndexController that would be request path array 0
+        //capture view to buffer
+        ob_start();
+        //if no method is set, use index, for the IndexController that would be request path array 0
 
-		if (get_class($this) == 'IndexController') {
-			$method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
-		} else {
-			$method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
-		}
-		
-		//return the servable method
-		$response = \sb\Gateway::process_controller_method($this, $method);
+        if (get_class($this) == 'IndexController') {
+            $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
+        } else {
+            $method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
+        }
+        
+        //return the servable method
+        $response = \sb\Gateway::process_controller_method($this, $method);
 
-		if ($response['exists']) {
-			return $response['data'];
-		}
+        if ($response['exists']) {
+            return $response['data'];
+        }
 
-		//if no matching controller and direct view rendering is allowed
-		if (\sb\Gateway::$allow_direct_view_rendering) {
-			//set default path
-			$path = $this->request->path;
+        //if no matching controller and direct view rendering is allowed
+        if (\sb\Gateway::$allow_direct_view_rendering) {
+            //set default path
+            $path = $this->request->path;
 
-			//if there is a template render that
-			if (!empty($template)) {
+            //if there is a template render that
+            if (!empty($template)) {
 
-				if (isset($this->request->path_array[1])) {
-					$path = preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
-				} else {
-					$path .= $template;
-				}
-			} else if (isset($this->request->path_array[1])) {
+                if (isset($this->request->path_array[1])) {
+                    $path = preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
+                } else {
+                    $path .= $template;
+                }
+            } else if (isset($this->request->path_array[1])) {
 
-				$template = $this->request->path_array[1];
-			} else {
-				$path .= '/'.$this->default_file;
-			}
+                $template = $this->request->path_array[1];
+            } else {
+                $path .= '/'.$this->default_file;
+            }
 
-			$this->template = $template;
+            $this->template = $template;
 
-			if($this->get_view($path, $extract_vars)){
-				$output = ob_get_clean();
-				return $this->filter_output($output);
-			}
-		}
-		
-		if(isset($this->routing_patterns)){
-			foreach($this->routing_patterns as $pattern=>$method){
-				if(preg_match($pattern, \sb\Gateway::$request->request)){
-					if(is_callable($method)){
-						return $this->filter_output(call_user_func($method, $pattern));
-					} else if(is_string($method) && is_callable(Array($this, $method))){
-						return $this->filter_output($this->$method($pattern));
-					}
+            if($this->get_view($path, $extract_vars)){
+                $output = ob_get_clean();
+                return $this->filter_output($output);
+            }
+        }
+        
+        if(isset($this->routing_patterns)){
+            foreach($this->routing_patterns as $pattern=>$method){
+                if(preg_match($pattern, \sb\Gateway::$request->request)){
+                    if(is_callable($method)){
+                        return $this->filter_output(call_user_func($method, $pattern));
+                    } else if(is_string($method) && is_callable(Array($this, $method))){
+                        return $this->filter_output($this->$method($pattern));
+                    }
 
-				}
-			}
-		}
-		
-		$this->not_found();
-	}
+                }
+            }
+        }
+        
+        $this->not_found();
+    }
 
-	/**
-	 * Renders the actual .view template
-	 * @param string $view_path The path to the template e.g. /blah/foo
-	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view
-	 * @return string 
-	 */
-	protected function get_view($_view_path, $extract_vars = null) {
+    /**
+     * Renders the actual .view template
+     * @param string $view_path The path to the template e.g. /blah/foo
+     * @param mixed $extact_vars extracts the keys of an object or array into
+     * local variables in the view
+     * @return string 
+     */
+    protected function get_view($_view_path, $extract_vars = null) {
 
-		//extract class vars to local vars for view
-		if ($this->extract) {
-			extract(get_object_vars($this));
-		}
+        //extract class vars to local vars for view
+        if ($this->extract) {
+            extract(get_object_vars($this));
+        }
 
-		if (!is_null($extract_vars)) {
-			if (is_object($extract_vars)) {
-				$extract_vars = get_object_vars($extract_vars);
-			}
-			if (is_array($extract_vars)) {
-				extract($extract_vars);
-			}
-		}
+        if (!is_null($extract_vars)) {
+            if (is_object($extract_vars)) {
+                $extract_vars = get_object_vars($extract_vars);
+            }
+            if (is_array($extract_vars)) {
+                extract($extract_vars);
+            }
+        }
 
-		$_pwd = ROOT . '/private/views/' . $_view_path . '.view';
+        $_pwd = ROOT . '/private/views/' . $_view_path . '.view';
 
-		if (!is_file($_pwd)) {
-			$_pwd = false;
-			foreach (\sb\Gateway::$mods as $mod) {
-				$m = ROOT . '/mod/' . $mod . '/views/' . $_view_path . '.view';
-				if (is_file($m)) {
-					$_pwd = $m;
-					break;
-				}
-			}
-		}
+        if (!is_file($_pwd)) {
+            $_pwd = false;
+            foreach (\sb\Gateway::$mods as $mod) {
+                $m = ROOT . '/mod/' . $mod . '/views/' . $_view_path . '.view';
+                if (is_file($m)) {
+                    $_pwd = $m;
+                    break;
+                }
+            }
+        }
 
-		if ($_pwd) {
-			require($_pwd);
-			return true;
-		}
-		return false;
-		return $this->not_found($_view_path);
-	}
+        if ($_pwd) {
+            require($_pwd);
+            return true;
+        }
+        return false;
+        return $this->not_found($_view_path);
+    }
 
-	/**
-	 * Include an arbitrary .view template within the $this of the view
-	 * @param string $view_path  e.g. .interface/cp
-	 * @param mixed $extact_vars extracts the keys of an object or array into
-	 * local variables in the view
-	 */
-	public function render_view($path, $extract_vars = null) {
+    /**
+     * Include an arbitrary .view template within the $this of the view
+     * @param string $view_path  e.g. .interface/cp
+     * @param mixed $extact_vars extracts the keys of an object or array into
+     * local variables in the view
+     */
+    public function render_view($path, $extract_vars = null) {
 
-		//capture view to buffer
-		ob_start();
+        //capture view to buffer
+        ob_start();
 
-		$this->get_view($path, $extract_vars);
-		return ob_get_clean();
-	}
+        $this->get_view($path, $extract_vars);
+        return ob_get_clean();
+    }
 
-	/**
-	 * Default request not fullfilled
-	 */
-	public function not_found() {
+    /**
+     * Default request not fullfilled
+     */
+    public function not_found() {
 
-		$file = ROOT . '/private/views/errors/404.view';
-		if (is_file($file)) {
-			include_once($file);
-		} else {
-			header("HTTP/1.0 404 Not Found");
-		}
-	}
+        $file = ROOT . '/private/views/errors/404.view';
+        if (is_file($file)) {
+            include_once($file);
+        } else {
+            header("HTTP/1.0 404 Not Found");
+        }
+    }
 
 }
 ?>

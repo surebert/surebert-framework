@@ -8,99 +8,99 @@
 namespace sb;
 class Email_Attachment{
 
-	/**
-	 * The extension of the attachment file
-	 *
-	 * @var string
-	 */
-	public $extension='';
+    /**
+     * The extension of the attachment file
+     *
+     * @var string
+     */
+    public $extension='';
 
-	/**
-	 * The file name of the file attachment e.g. gif, jpg, png, wav, mp3, etc
-	 *
-	 * @var string
-	 */
-	public $name='';
+    /**
+     * The file name of the file attachment e.g. gif, jpg, png, wav, mp3, etc
+     *
+     * @var string
+     */
+    public $name='';
 
-	/**
-	 * The path to the attachment on the local drive after reading or before writing
-	 *
-	 * @var string
-	 */
-	public $filepath='';
+    /**
+     * The path to the attachment on the local drive after reading or before writing
+     *
+     * @var string
+     */
+    public $filepath='';
 
-	/**
-	 * The encoding type of the attchment
-	 *
-	 * //when read from \sb\Email_Reader 0 = 7bit, 1= 8bit, 2=binary, 3=base64, 4=quoted prinatble, 5=other
-	 * //otherwise use full name
-	 * @var mixed string/integer
-	 */
-	public $encoding = 'base64';
+    /**
+     * The encoding type of the attchment
+     *
+     * //when read from \sb\Email_Reader 0 = 7bit, 1= 8bit, 2=binary, 3=base64, 4=quoted prinatble, 5=other
+     * //otherwise use full name
+     * @var mixed string/integer
+     */
+    public $encoding = 'base64';
 
-	/**
-	 * The subtype of the attachment
-	 *
-	 * JPEG, WAV, HTML, PLAIN, etc
-	 *
-	 * @var string
-	 */
-	public $subtype;
+    /**
+     * The subtype of the attachment
+     *
+     * JPEG, WAV, HTML, PLAIN, etc
+     *
+     * @var string
+     */
+    public $subtype;
 
-	/**
-	 * The type of the attachment
-	 *
-	 * type 0 = text, 1 = multipart, 2 = message, 3 = application, 4 = audio, 5= image, 6= video, 7 = other
-	 *
-	 * @var interger
-	 */
-	public $type = 5;
+    /**
+     * The type of the attachment
+     *
+     * type 0 = text, 1 = multipart, 2 = message, 3 = application, 4 = audio, 5= image, 6= video, 7 = other
+     *
+     * @var interger
+     */
+    public $type = 5;
 
-	/**
-	 * The file size in K
-	 *
-	 * @var float
-	 */
-	public $sizeK;
+    /**
+     * The file size in K
+     *
+     * @var float
+     */
+    public $sizeK;
 
-	/**
-	 * The binary content of the attachment
-	 *
-	 * @var string
-	 */
-	public $contents;
+    /**
+     * The binary content of the attachment
+     *
+     * @var string
+     */
+    public $contents;
 
-	/**
-	 * The mime type of the attachment, used when sending
-	 *
-	 * @var string e.g. image/jpeg
-	 */
-	public $mime_type;
+    /**
+     * The mime type of the attachment, used when sending
+     *
+     * @var string e.g. image/jpeg
+     */
+    public $mime_type;
 
     /**
      * Creates an email attachment
-	 *
-	 * <code>
-	 * $attachment = new \sb\Email_Attachment($filepath, $mime_type);
-	 * //an instance of \sb\Email
-	 * $email->add_attachment($attachment);
-	 *
-	 *
-	 * //OR from string/blob data
-	 * $attachment = new \sb\Email_Attachment();
-	 * $attachment->contents = $data_from_db;
-	 * $attachment->mime_type = "image/jpeg";
-	 * $attachment->name = "picture.jpg";
-	 * $email->add_attachment($attachment);
-	 *
-	 * //if you wish to zip
-	 * $attachment->zip();
-	 * </code>
-	 *
+     *
+     * <code>
+     * $attachment = new \sb\Email_Attachment($filepath, $mime_type);
+     * //an instance of \sb\Email
+     * $email->add_attachment($attachment);
+     *
+     *
+     * //OR from string/blob data
+     * $attachment = new \sb\Email_Attachment();
+     * $attachment->contents = $data_from_db;
+     * $attachment->mime_type = "image/jpeg";
+     * $attachment->name = "picture.jpg";
+     * $email->add_attachment($attachment);
+     *
+     * //if you wish to zip
+     * $attachment->zip();
+     * </code>
+     *
      * @param String $filepath Optional The path to the file to attach
-	 * @param String $mime_type Optional The mime type of the file
-	 *
-	 */
+     * @param String $mime_type Optional The mime type of the file
+     *
+     */
     public function __construct($filepath=null, $mime_type=null){
 
         if($mime_type){
@@ -187,17 +187,17 @@ class Email_Attachment{
         $this->name .= '.pgp';
     }
 
-	/**
-	 * Sets the encoding type of the attachment
-	 * 
-	 * @param string $encoding  either 0-5 or the actual strings
-	 * 7bit, 8bit, binary, base64, quoted prinatble
-	 */
-	public function set_encoding($encoding){
+    /**
+     * Sets the encoding type of the attachment
+     * 
+     * @param string $encoding  either 0-5 or the actual strings
+     * 7bit, 8bit, binary, base64, quoted prinatble
+     */
+    public function set_encoding($encoding){
 
-		$this->encoding = $encoding;
+        $this->encoding = $encoding;
 
-	}
+    }
 
 
 }

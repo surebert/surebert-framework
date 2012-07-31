@@ -12,25 +12,25 @@
  */
 namespace sb;
 class RSS_Cloud{
-	
-	public $domain;
-	public $port;
-	public $path;
-	public $registerProcedure;
-	public $protocol;
-	
-	/**
-	 * Used to create a RSS_Cloud object
-	 *
-	 * @param string $domain
-	 * @param integer $port
-	 * @param string $path
-	 * @param string $registerProcedure
-	 * @param string $protocol
-	 * @return object
-	 */
-	public function __construct($domain, $port, $path, $registerProcedure, $protocol){
-		
+    
+    public $domain;
+    public $port;
+    public $path;
+    public $registerProcedure;
+    public $protocol;
+    
+    /**
+     * Used to create a RSS_Cloud object
+     *
+     * @param string $domain
+     * @param integer $port
+     * @param string $path
+     * @param string $registerProcedure
+     * @param string $protocol
+     * @return object
+     */
+    public function __construct($domain, $port, $path, $registerProcedure, $protocol){
+        
         $this->domain = $domain;
         $this->port = $port;
         $this->path = $path;
@@ -38,7 +38,7 @@ class RSS_Cloud{
         $this->protocol = $protocol;
         
         return true;
-	}
+    }
 }
 
 ?>

@@ -10,14 +10,14 @@
  *
  * <code>
  * class BotDemo extends \sb\Bot_Helper{
- *	public $status = 'thinking';
- *	public $uname = 'you bot name';
- *	public $pass = 'your bot pass';
+ *    public $status = 'thinking';
+ *    public $uname = 'you bot name';
+ *    public $pass = 'your bot pass';
  *
- *	public serve_hello(\sb\XMPP_Message $message, $str){
- *		return 'hello '.$message->get_from().' you said '.$message->get_body();
+ *    public serve_hello(\sb\XMPP_Message $message, $str){
+ *        return 'hello '.$message->get_from().' you said '.$message->get_body();
  *
- *	}
+ *    }
  *
  * $bot = new Bot_Demo();
  * </code>
@@ -28,161 +28,161 @@
 namespace sb;
 class XMPP_Bot_Helper extends XMPP_Client{
 
-	/**
-	 * The status to display for the bot
-	 * @var string
-	 */
+    /**
+     * The status to display for the bot
+     * @var string
+     */
     protected $status = 'helping';
 
-	/**
-	 * Display a list of commands the bot can understand.
-	 *
-	 * This list is based on any public methods that begin with serve_
-	 *
-	 * @return string
-	 *
-	 */
-	public function serve_help($message){
+    /**
+     * Display a list of commands the bot can understand.
+     *
+     * This list is based on any public methods that begin with serve_
+     *
+     * @return string
+     *
+     */
+    public function serve_help($message){
 
-		$commands = Array("I can respond to the following commands");
+        $commands = Array("I can respond to the following commands");
 
-		foreach($this->get_methods() as $name=>$desc){
-			$commands[] = $name.' - '.$desc;
-		}
-		$str = implode("\n\n", $commands);
-		unset($commands);
+        foreach($this->get_methods() as $name=>$desc){
+            $commands[] = $name.' - '.$desc;
+        }
+        $str = implode("\n\n", $commands);
+        unset($commands);
 
-		return 'Hello '.ucfirst(preg_replace("~\..*?$~", '', $message->get_from())).', '.$str;
-	}
+        return 'Hello '.ucfirst(preg_replace("~\..*?$~", '', $message->get_from())).', '.$str;
+    }
 
 
-	/**
-	 * Debug messages for auditing bot
-	 *
-	 * @param \sb\XMPP_Message $message Has additional ->arguments property which is
-	 * the message body minus the method name
-	 * @param string $srguments The arguments passed to the command
-	 *
-	 * @secret true
-	 * @return string The debug message data
-	 */
-	public function serve_debug(\sb\XMPP_Message $message, $command){
+    /**
+     * Debug messages for auditing bot
+     *
+     * @param \sb\XMPP_Message $message Has additional ->arguments property which is
+     * the message body minus the method name
+     * @param string $srguments The arguments passed to the command
+     *
+     * @secret true
+     * @return string The debug message data
+     */
+    public function serve_debug(\sb\XMPP_Message $message, $command){
 
-		$str = '';
-		switch($command){
-			case 'memory':
-				$str = 'I am currently using: '.$this->get_memory_usage();
-				$str .= "\nMy peak usage: ".$this->get_memory_usage(true);
-				break;
+        $str = '';
+        switch($command){
+            case 'memory':
+                $str = 'I am currently using: '.$this->get_memory_usage();
+                $str .= "\nMy peak usage: ".$this->get_memory_usage(true);
+                break;
 
-			case 'buddies':
-				$str = 'My buddies that are online: '.print_r($this->buddies_online, 1);
-				break;
+            case 'buddies':
+                $str = 'My buddies that are online: '.print_r($this->buddies_online, 1);
+                break;
 
-			default:
-				if(method_exists($this, 'on_debug')){
-						$str = $this->on_debug($message, $command);
-				}
-		}
+            default:
+                if(method_exists($this, 'on_debug')){
+                        $str = $this->on_debug($message, $command);
+                }
+        }
 
-		if(empty($str)){
-			$str = 'I do not know how to debug that ;(';
-		}
+        if(empty($str)){
+            $str = 'I do not know how to debug that ;(';
+        }
 
-		return $str;
-	}
+        return $str;
+    }
 
-	/**
-	 * Get the commands available for help menu
-	 * @return Array Key=command names, value=php docs first sentence
-	 */
-	protected function get_methods() {
+    /**
+     * Get the commands available for help menu
+     * @return Array Key=command names, value=php docs first sentence
+     */
+    protected function get_methods() {
 
-		if(!empty($this->methods)){
-			return $this->methods;
-		} else {
-			$this->methods = Array();
-			$methods = get_class_methods($this);
+        if(!empty($this->methods)){
+            return $this->methods;
+        } else {
+            $this->methods = Array();
+            $methods = get_class_methods($this);
 
-			foreach($methods as $method) {
-				if(substr($method, 0, 6) == 'serve_'){
+            foreach($methods as $method) {
+                if(substr($method, 0, 6) == 'serve_'){
 
-					$reflect = new \ReflectionMethod($this, $method);
+                    $reflect = new \ReflectionMethod($this, $method);
 
-					if($reflect) {
-						$phpdoc = $reflect->getDocComment();
-						if(!preg_match('~@secret~', $phpdoc) && preg_match("~ \*(.*)\n~", $phpdoc, $match)){
-							$this->methods[preg_replace("~^serve_~", '', $method)] = $match[1];
-						}
-					}
+                    if($reflect) {
+                        $phpdoc = $reflect->getDocComment();
+                        if(!preg_match('~@secret~', $phpdoc) && preg_match("~ \*(.*)\n~", $phpdoc, $match)){
+                            $this->methods[preg_replace("~^serve_~", '', $method)] = $match[1];
+                        }
+                    }
 
-				}
-			}
+                }
+            }
 
-			return $this->methods;
-		}
-	}
+            return $this->methods;
+        }
+    }
 
-	/**
-	 * Fires when a new message is received
-	 * @param string $message
-	 */
+    /**
+     * Fires when a new message is received
+     * @param string $message
+     */
     protected function on_message(\sb\XMPP_Message $message_in){
 
-		$str = $message_in->get_body();
-		$str = trim((String) $str);
+        $str = $message_in->get_body();
+        $str = trim((String) $str);
 
-		if(!empty($str)){
+        if(!empty($str)){
 
-			if(preg_match("~(\w+) ?(.*)?~", $str, $match)){
-				$action = 'serve_'.strtolower($match[1]);
-				$argument_str = $match[2];
+            if(preg_match("~(\w+) ?(.*)?~", $str, $match)){
+                $action = 'serve_'.strtolower($match[1]);
+                $argument_str = $match[2];
 
-				if(method_exists($this, $action)){
-					$data = $this->{$action}($message_in, $argument_str);
-				}
+                if(method_exists($this, $action)){
+                    $data = $this->{$action}($message_in, $argument_str);
+                }
 
-			}
+            }
 
-			if(!isset($data)){
-				$data = $this->method_not_found($message_in);
-			}
+            if(!isset($data)){
+                $data = $this->method_not_found($message_in);
+            }
 
-			if($data){
-				$message_out = new \sb\XMPP_Message();
-				$message_out->set_to($message_in->get_from());
-				$message_out->set_body($data);
-				$this->send_message($message_out);
-			}
-		}
+            if($data){
+                $message_out = new \sb\XMPP_Message();
+                $message_out->set_to($message_in->get_from());
+                $message_out->set_body($data);
+                $this->send_message($message_out);
+            }
+        }
 
 
-		unset($message_in);
-		unset($message_out);
-		unset($action);
-		unset($args);
+        unset($message_in);
+        unset($message_out);
+        unset($action);
+        unset($args);
 
     }
 
-	/**
-	 * Mirrors the words sent to it
-	 * @param \sb\XMPP_Message $message
-	 * @return string
-	 */
-	public function method_not_found(\sb\XMPP_Message $message){
-		$body = $message->get_body();
+    /**
+     * Mirrors the words sent to it
+     * @param \sb\XMPP_Message $message
+     * @return string
+     */
+    public function method_not_found(\sb\XMPP_Message $message){
+        $body = $message->get_body();
 
-		if($body == '?'){
-			return $this->serve_help($message);
-		}
-		return 'Want to know what I can do, type: help';
-	}
+        if($body == '?'){
+            return $this->serve_help($message);
+        }
+        return 'Want to know what I can do, type: help';
+    }
 
-	/**
-	 * Fires when error packet is received
-	 * @param integer $error_code
-	 * @param string $error_str
-	 */
+    /**
+     * Fires when error packet is received
+     * @param integer $error_code
+     * @param string $error_str
+     */
     protected function on_error($error_code, $error_str){
 
         if($error_code === 0){
@@ -193,13 +193,13 @@ class XMPP_Bot_Helper extends XMPP_Client{
         }
     }
 
-	/**
-	 * Fires when presence packets are received and keeps track of online buddies
-	 * @param \sb\XMPP_Presence $presence
-	 */
+    /**
+     * Fires when presence packets are received and keeps track of online buddies
+     * @param \sb\XMPP_Presence $presence
+     */
    protected function on_presence(\sb\XMPP_Presence $presence){
-			//do something with
-	}
+            //do something with
+    }
 
 }
 

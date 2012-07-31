@@ -8,11 +8,11 @@
  */
 namespace sb;
 class Chat_Line{
-	public $id;
-	public $uname;
-	public $message;
-	public $time;
-	public $ip;
+    public $id;
+    public $uname;
+    public $message;
+    public $time;
+    public $ip;
 }
 
 ?>

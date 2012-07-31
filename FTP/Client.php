@@ -10,190 +10,190 @@
 namespace sb;
 class FTP_Client implements FTP_Base{
 
-	/**
-	 * Instantiates an FTP connection
-	 * @param string $host The host to connect to
-	 * @param integer $port the port to connect to, 21 is default
-	 * @param integer $timeout The time to wait before aborting if not connection is created
-	 */
-	public function __construct($host, $port=21, $timeout=30){
-		$this->connection = ftp_connect($host, $port, $timeout);
-		if(!$this->connection){
-			throw new \Exception("Could not connect to $host on port $port.");
-		}
-	}
-
-	/**
-	 * Login to a remote server with uname and pass based credentials
-	 * @param string $uname The user name to login with
-	 * @param string $pass The password to login with
-	 */
-	public function login($uname, $pass, $passive=false){
-        if (!ftp_login($this->connection, $uname, $pass)){
-            throw new \Exception("Could not authenticate with credentials given.");
-		}
-
-		if($passive){
-			 ftp_pasv($this->connection, true);
-		}
-
-		return true;
+    /**
+     * Instantiates an FTP connection
+     * @param string $host The host to connect to
+     * @param integer $port the port to connect to, 21 is default
+     * @param integer $timeout The time to wait before aborting if not connection is created
+     */
+    public function __construct($host, $port=21, $timeout=30){
+        $this->connection = ftp_connect($host, $port, $timeout);
+        if(!$this->connection){
+            throw new \Exception("Could not connect to $host on port $port.");
+        }
     }
 
-	/**
-	 * Get a file from the remote machine
-	 *
-	 * @param string $remote_file The path to the remote file to read
-	 * @param string $local_file The path to the local file to write
-	 * @param const $mode FTP_ASCII or FTP_BINARY default FTP_ASCII
-	 */
-	public function get($remote_file, $local_file, $mode=null){
-		$mode = $mode ? $mode : FTP_ASCII;
-		if (!@ftp_get($this->connection, $local_file, $remote_file, $mode)) {
-			 throw new \Exception("Could not get remote file:". $remote_file);
-		}
+    /**
+     * Login to a remote server with uname and pass based credentials
+     * @param string $uname The user name to login with
+     * @param string $pass The password to login with
+     */
+    public function login($uname, $pass, $passive=false){
+        if (!ftp_login($this->connection, $uname, $pass)){
+            throw new \Exception("Could not authenticate with credentials given.");
+        }
 
-		return true;
-	}
+        if($passive){
+             ftp_pasv($this->connection, true);
+        }
 
-	/**
-	 * Put a file on the remote machine
-	 * @param string $local_file The path to the local file to read
-	 * @param string $remote_file The path to the remote file to write
-	 * @param const $mode FTP_ASCII or FTP_BINARY default FTP_ASCII
-	 */
-	public function put($local_file, $remote_file, $mode=null){
-		$mode = $mode ? $mode : FTP_ASCII;
-		if(!@ftp_put($this->connection, $remote_file, $local_file, $mode)) {
-			throw new \Exception("Could not authenticate with credentials given.");
-		}
+        return true;
+    }
 
-		return true;
-	}
+    /**
+     * Get a file from the remote machine
+     *
+     * @param string $remote_file The path to the remote file to read
+     * @param string $local_file The path to the local file to write
+     * @param const $mode FTP_ASCII or FTP_BINARY default FTP_ASCII
+     */
+    public function get($remote_file, $local_file, $mode=null){
+        $mode = $mode ? $mode : FTP_ASCII;
+        if (!@ftp_get($this->connection, $local_file, $remote_file, $mode)) {
+             throw new \Exception("Could not get remote file:". $remote_file);
+        }
 
-	/**
-	 * Removes a remote file - be careful!
-	 * @param string $remote_file Remote file
-	 */
-	public function delete($remote_file){
-		if (!@ftp_delete($this->connection, $remote_file)) {
-			 throw new \Exception("Could not get delete remote file:". $remote_file);
-		}
+        return true;
+    }
 
-		return true;
-	}
+    /**
+     * Put a file on the remote machine
+     * @param string $local_file The path to the local file to read
+     * @param string $remote_file The path to the remote file to write
+     * @param const $mode FTP_ASCII or FTP_BINARY default FTP_ASCII
+     */
+    public function put($local_file, $remote_file, $mode=null){
+        $mode = $mode ? $mode : FTP_ASCII;
+        if(!@ftp_put($this->connection, $remote_file, $local_file, $mode)) {
+            throw new \Exception("Could not authenticate with credentials given.");
+        }
 
-	/**
-	 * Creates a remote directory
-	 * @param string $path Delete Remote path
-	 */
-	public function mkdir($path){
-		if(@ftp_mkdir($this->connection, $path)){
-			throw new \Exception("Could not create remote directory: ".$path);
-		}
+        return true;
+    }
 
-		return true;
-	}
+    /**
+     * Removes a remote file - be careful!
+     * @param string $remote_file Remote file
+     */
+    public function delete($remote_file){
+        if (!@ftp_delete($this->connection, $remote_file)) {
+             throw new \Exception("Could not get delete remote file:". $remote_file);
+        }
 
-	/**
-	 * Removes a remote directory - be careful!
-	 * @param string $path Delete remote path
-	 */
-	public function rmdir($path){
-		if(@ftp_rmdir($this->connection, $path)){
-			throw new \Exception("Could not remove remote directory: ".$path);
-		}
+        return true;
+    }
 
-		return true;
-	}
+    /**
+     * Creates a remote directory
+     * @param string $path Delete Remote path
+     */
+    public function mkdir($path){
+        if(@ftp_mkdir($this->connection, $path)){
+            throw new \Exception("Could not create remote directory: ".$path);
+        }
 
-	/**
-	 * Gets the size of a remote file
-	 * @param string $remote_file path to remote file
-	 * @return integer The size of the file in bytes
-	 */
-	public function size($remote_file){
-		$size = @ftp_size($this->connection, $remote_file);
-		if($size && $size != -1){
-			return $size;
-		} else {
-			throw new \Exception("Could not get remote file size: ".$path);
-		}
-	}
+        return true;
+    }
 
-	/**
-	 * Change the file mode of a remote file
-	 * @param string $remote_file The path to the remote file
-	 * @param integer $mode The file mode e.g. 0644, 0777
-	 * @return boolean
-	 */
-	public function chmod($remote_file, $mode){
-		$mode = octdec(str_pad($mode, 4, '0', STR_PAD_LEFT));
-		$mode = (int) $mode;
+    /**
+     * Removes a remote directory - be careful!
+     * @param string $path Delete remote path
+     */
+    public function rmdir($path){
+        if(@ftp_rmdir($this->connection, $path)){
+            throw new \Exception("Could not remove remote directory: ".$path);
+        }
 
-		if (!@ftp_chmod($conn_id, $mode, $file) !== false) {
-			throw new \Exception("Could not change remote file to mode: ".$mode);
-		}
+        return true;
+    }
 
-		return true;
-	}
+    /**
+     * Gets the size of a remote file
+     * @param string $remote_file path to remote file
+     * @return integer The size of the file in bytes
+     */
+    public function size($remote_file){
+        $size = @ftp_size($this->connection, $remote_file);
+        if($size && $size != -1){
+            return $size;
+        } else {
+            throw new \Exception("Could not get remote file size: ".$path);
+        }
+    }
 
-	/**
-	 * Change workign directory
-	 * @param string $directory The path to change to
-	 * @return boolean
-	 */
-	public function chdir($directory){
-		if(!@ftp_chdir($this->connection, $directory)){
-			throw new \Exception("Could not change to remote directory: ".$directory);
-		}
+    /**
+     * Change the file mode of a remote file
+     * @param string $remote_file The path to the remote file
+     * @param integer $mode The file mode e.g. 0644, 0777
+     * @return boolean
+     */
+    public function chmod($remote_file, $mode){
+        $mode = octdec(str_pad($mode, 4, '0', STR_PAD_LEFT));
+        $mode = (int) $mode;
 
-		return true;
-	}
+        if (!@ftp_chmod($conn_id, $mode, $file) !== false) {
+            throw new \Exception("Could not change remote file to mode: ".$mode);
+        }
 
-	/**
-	 * List files in remote directory
-	 * @param string $directory The path
-	 * @return array
-	 */
-	public function nlist($directory){
-		$list = ftp_nlist($this->connection, $directory);
-		if(!$list){
-			throw new \Exception("Could list files in remote directory: ".$directory);
-		}
+        return true;
+    }
 
-		return $list;
-	}
+    /**
+     * Change workign directory
+     * @param string $directory The path to change to
+     * @return boolean
+     */
+    public function chdir($directory){
+        if(!@ftp_chdir($this->connection, $directory)){
+            throw new \Exception("Could not change to remote directory: ".$directory);
+        }
 
-	/**
-	 * List files in remote directory
-	 * @param string $directory The path
-	 * @return array
-	 */
-	public function rawlist($directory){
-		$list = ftp_rawlist($this->connection, $directory);
-		if(!$list){
-			throw new \Exception("Could raw list files in remote directory: ".$directory);
-		}
+        return true;
+    }
 
-		return $list;
-	}
+    /**
+     * List files in remote directory
+     * @param string $directory The path
+     * @return array
+     */
+    public function nlist($directory){
+        $list = ftp_nlist($this->connection, $directory);
+        if(!$list){
+            throw new \Exception("Could list files in remote directory: ".$directory);
+        }
 
-	/**
-	 * Send a raw command to the server
-	 * @param string $command The command to send
-	 * @return array
-	 */
-	public function raw($command){
-		return ftp_raw($this->connection, $command);
-	}
+        return $list;
+    }
+
+    /**
+     * List files in remote directory
+     * @param string $directory The path
+     * @return array
+     */
+    public function rawlist($directory){
+        $list = ftp_rawlist($this->connection, $directory);
+        if(!$list){
+            throw new \Exception("Could raw list files in remote directory: ".$directory);
+        }
+
+        return $list;
+    }
+
+    /**
+     * Send a raw command to the server
+     * @param string $command The command to send
+     * @return array
+     */
+    public function raw($command){
+        return ftp_raw($this->connection, $command);
+    }
 
 
-	/**
-	 * Closes the FTP connection
-	 */
-	public function  __destruct() {
-		ftp_close($this->connection);
-	}
+    /**
+     * Closes the FTP connection
+     */
+    public function  __destruct() {
+        ftp_close($this->connection);
+    }
 }
 ?>

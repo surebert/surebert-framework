@@ -8,28 +8,28 @@
  */
 class Validate_Results{
 
-	/**
-	 * Is the string valid or not
-	 *
-	 * @var boolean
-	 */
-	public $valid;
+    /**
+     * Is the string valid or not
+     *
+     * @var boolean
+     */
+    public $valid;
 
-	/**
-	 * The reason it is valid or not
-	 *
-	 * @var string
-	 */
-	public $message;
+    /**
+     * The reason it is valid or not
+     *
+     * @var string
+     */
+    public $message;
 
-	/**
-	 * An object with additional data properties specific to the validation
-	 *
-	 * @var object
-	 */
-	public $data;
+    /**
+     * An object with additional data properties specific to the validation
+     *
+     * @var object
+     */
+    public $data;
 
-	public $value;
+    public $value;
 
 }
 ?>
