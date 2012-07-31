@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This class is used to drive a talkbox chat block on a site
  *
@@ -8,7 +9,9 @@
  */
 namespace sb;
 
-class Chat_Line{
+class Chat_Line
+{
+
     public $id;
     public $uname;
     public $message;
