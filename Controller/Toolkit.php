@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Creates concatenated javascript files for the surebert toolkit from the arguments it is fed
  * @author paul.visco@roswellpark.org
@@ -6,10 +7,11 @@
  */
 namespace sb;
 
-class Controller_Toolkit extends Controller{
+class Controller_Toolkit extends Controller
+{
 
     public $input_args_delimiter = ',';
-    
+
     /**
      * Determines if caching is used
      * @var boolean
@@ -38,10 +40,10 @@ class Controller_Toolkit extends Controller{
      * Removes comments from javascript
      * @author paul.visco@roswellpark.org
      */
-    public function filter_output($output)
+    public function filterOutput($output)
     {
-        if(!isset($this->request->get['sb_comments'])){
-            return preg_replace("~/\*\*.*?\*/~s", "", $output);
+        if (!isset($this->request->get['sb_comments'])) {
+            return \preg_replace("~/\*\*.*?\*/~s", "", $output);
         } else {
             return $output;
         }
@@ -51,49 +53,48 @@ class Controller_Toolkit extends Controller{
      * Concatenates the javascript/surebert files and turns them into cache if caching is enable
      * @param $files
      */
-    protected function concat_files($files = Array(), $version='')
+    protected function concatFiles($files = Array(), $version = '')
     {
 
-        if($files[0] == 'sb' && strstr(Gateway::$agent, 'MSIE')){
+        if ($files[0] == 'sb' && \strstr(Gateway::$agent, 'MSIE')) {
 
-            array_unshift($files, 'js1_5');
+            \array_unshift($files, 'js1_5');
         }
 
         $root = false;
-        if(empty($version)){
+        if (empty($version)) {
             $root = SUREBERT_TOOLKIT_PATH;
-        } elseif(is_numeric($version)){
-            $root = $this->toolkit_root.'/tags/'.$version;
+        } elseif (\is_numeric($version)) {
+            $root = $this->toolkit_root . '/tags/' . $version;
         } else {
-            $root = $this->toolkit_root.'/'.$version;
+            $root = $this->toolkit_root . '/' . $version;
         }
 
-        if(!is_dir($root)){
-            $root = $this->toolkit_root.'trunk';
+        if (!is_dir($root)) {
+            $root = $this->toolkit_root . 'trunk';
         }
 
-        $this->version = basename($root);
+        $this->version = \basename($root);
 
-        $binary = preg_match("~\.(swf|gif|png)$~", $files[0], $match);
+        $binary = \preg_match("~\.(swf|gif|png)$~", $files[0], $match);
 
-        if($binary){
-            if($match[1] == 'swf'){
-                header("Content-type: application/x-shockwave-flash");
-            } elseif($match[1] == 'gif' || $match[1] == 'png'){
-                header("Content-type: image/".$match[1]);
+        if ($binary) {
+            if ($match[1] == 'swf') {
+                \header("Content-type: application/x-shockwave-flash");
+            } elseif ($match[1] == 'gif' || $match[1] == 'png') {
+                \header("Content-type: image/" . $match[1]);
             }
         } else {
-            $this->add_javascript_headers();
-            echo '//v '.$this->version.' - '.date('m/d/Y H:i:s')."\n";
-
+            $this->addJavascriptHeaders();
+            echo '//v ' . $this->version . ' - ' . date('m/d/Y H:i:s') . "\n";
         }
 
-        if($this->cache_enable){
+        if ($this->cache_enable) {
             $cache = isset(\App::$cache) ? \App::$cache : new Cache_FileSystem();
-            $key = '/toolkit/'.md5(implode(",", $files).$version);
+            $key = '/toolkit/' . \md5(implode(",", $files) . $version);
 
             $data = $cache->fetch($key);
-            if($data){
+            if ($data) {
                 echo $data;
                 return true;
             }
@@ -101,74 +102,73 @@ class Controller_Toolkit extends Controller{
 
         $surebert = $this->default_files;
         $this->loaded_files = Array();
-        foreach($files as $file){
-            if($binary){
+        foreach ($files as $file) {
+            if ($binary) {
                 $surebert[] = $file;
             } else {
 
-                $surebert[] = str_replace('.', '/', $file).'.js';
+                $surebert[] = \str_replace('.', '/', $file) . '.js';
             }
         }
         ob_start();
 
-        foreach($surebert as $file){
-            echo $this->grab_file($file, $root);
+        foreach ($surebert as $file) {
+            echo $this->grabFile($file, $root);
         }
 
-        $js = ob_get_clean();
+        $js = \ob_get_clean();
 
-        if(isset($this->request->get['manifest'])){
+        if (isset($this->request->get['manifest'])) {
             $m = $this->request->get['manifest'];
-            if($m == 'js'){
-                return json_encode($this->loaded_files);
+            if ($m == 'js') {
+                return \json_encode($this->loaded_files);
             } else {
-                return print_r($this->loaded_files, 1);
+                return \print_r($this->loaded_files, 1);
             }
         }
-        if($this->cache_enable){
+        if ($this->cache_enable) {
             $cache->store($key, $js);
         }
 
         return $js;
-
     }
+
     /**
      * Grabs a file
      * @param string $file The file to load
      * @param string $root The root to load
      * @return string The file data
      */
-    protected function grab_file($file, $root)
+    protected function grabFile($file, $root)
     {
         $data = '';
-        
-        if(is_file($root.'/'.$file)){
+
+        if (\is_file($root . '/' . $file)) {
 
             $this->loaded_files[] = $file;
 
-            $file = $root.'/'.$file;
+            $file = $root . '/' . $file;
 
-            $data = file_get_contents($file);
-            if(!strstr($file, 'sb.js')){
-                preg_match_all("~sb\.include\([\"'](.*?)[\"']~", $data, $includes);
+            $data = \file_get_contents($file);
+            if (!\strstr($file, 'sb.js')) {
+                \preg_match_all("~sb\.include\([\"'](.*?)[\"']~", $data, $includes);
 
-                if($includes[1]){
+                if ($includes[1]) {
                     $precludes = '';
-                    foreach($includes[1] as $include){
-                        $include = str_replace('.', '/', $include).'.js';
-                        if(!in_array($include, $this->loaded_files)){
-                            $precludes .= $this->grab_file($include, $root);
+                    foreach ($includes[1] as $include) {
+                        $include = \str_replace('.', '/', $include) . '.js';
+                        if (!\in_array($include, $this->loaded_files)) {
+                            $precludes .= $this->grabFile($include, $root);
                         }
                     }
 
-                    $data = $precludes."\n".$data;
+                    $data = $precludes . "\n" . $data;
                 }
-
             }
-
         } else {
 
-            echo"\nthrow('ERROR: ".$file." Surebert module \"".basename($file)."\" could not be located by /surebert/load ');";
+            echo"\nthrow('ERROR: " . $file . " Surebert module \""
+            . \basename($file) . "\" could not be located by /surebert/load ');";
         }
 
         return $data;
@@ -179,13 +179,12 @@ class Controller_Toolkit extends Controller{
      * view being displayed.  If it is included in another view do not do this
      * as you don't want HTML being served as javascript
      */
-    protected function add_javascript_headers()
+    protected function addJavascriptHeaders()
     {
 
-        if(!$this->included){
-            header("Content-type: application/x-javascript");
+        if (!$this->included) {
+            \header("Content-type: application/x-javascript");
         }
-
     }
 
     /**
@@ -196,15 +195,15 @@ class Controller_Toolkit extends Controller{
     {
         $surebert = $this->request->args;
 
-        if(empty($surebert)){
+        if (empty($surebert)) {
 
             $surebert = Array('sb');
         }
 
-        if($surebert[0] == 'sb'){
+        if ($surebert[0] == 'sb') {
             echo "var sbBase = '/surebert/load/';\n";
         }
-        echo $this->concat_files($surebert);
+        echo $this->concatFiles($surebert);
     }
 
     /**
@@ -213,17 +212,16 @@ class Controller_Toolkit extends Controller{
      */
     public function basic()
     {
-        if(!isset($this->request->get['noexpire'])){
-            header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 259200));
+        if (!isset($this->request->get['noexpire'])) {
+            \header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 259200));
         }
 
-        header("Content-type: application/x-javascript");
+        \header("Content-type: application/x-javascript");
         $version = '';
-        if(isset($this->request->get['v'])){
-            if(is_numeric($this->request->get['v'])){
+        if (isset($this->request->get['v'])) {
+            if (\is_numeric($this->request->get['v'])) {
                 $version = $this->request->get['v'];
             }
-
         }
 
         /**
@@ -259,16 +257,16 @@ class Controller_Toolkit extends Controller{
             "events.idListener",
             "widget.notifier",
             "json.rpc2"
-
         );
 
-        $protocol = isset($_SERVER['SERVER_PORT']) &&  $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http';
-        
-        
-        $str = "if(!sbBase){var sbBase = '".$protocol."://".Gateway::$http_host."/surebert/load/';}\n";
+        $protocol = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http';
 
-        $surebert = array_merge($surebert, $this->request->args);
-        $str .= $this->concat_files($surebert, $version);
+
+        $str = "if(!sbBase){var sbBase = '" . $protocol . "://" . Gateway::$http_host . "/surebert/load/';}\n";
+
+        $surebert = \array_merge($surebert, $this->request->args);
+        $str .= $this->concatFiles($surebert, $version);
         return $str;
     }
 }
+

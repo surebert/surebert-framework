@@ -51,19 +51,19 @@ class Controller_REST extends Controller_HTTP{
      */
     public function render()
     {
-        if($this->on_before_render() === false){
-            return $this->not_found();
+        if($this->onBeforeRender() === false){
+            return $this->notFound();
         }
 
         $method = Gateway::$request_method;
-        if(method_exists($this, $method)){
-            $reflection = new ReflectionMethod($this, $method);
+        if(\method_exists($this, $method)){
+            $reflection = new \ReflectionMethod($this, $method);
 
             //check for phpdocs
             $docs = $reflection->getDocComment();
             $servable = false;
             if (!empty($docs)) {
-                if (preg_match("~@servable (true|false)~", $docs, $match)) {
+                if (\preg_match("~@servable (true|false)~", $docs, $match)) {
                     $servable = $match[1] == 'true' ? true : false;
                 }
             }
@@ -71,10 +71,10 @@ class Controller_REST extends Controller_HTTP{
             if($servable){
                 return $this->filter_output($this->$method());
             } else {
-                return $this->filter_output($this->not_found($method));
+                return $this->filter_output($this->notFound($method));
             }
         } else {
-            return $this->filter_output($this->not_found($method));
+            return $this->filter_output($this->notFound($method));
         }
     }
     

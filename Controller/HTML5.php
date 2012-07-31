@@ -5,10 +5,10 @@
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
-
 namespace sb;
 
-class Controller_HTML5 extends Controller_HTTP{
+class Controller_HTML5 extends Controller_HTTP
+{
 
     /**
      * Assigns the sb_HTML_HeadMeta property
@@ -17,7 +17,7 @@ class Controller_HTML5 extends Controller_HTTP{
     {
         $this->meta = new HTML_HeadMeta();
     }
-    
+
     /**
      * The doc type of the HTML page
      *
@@ -34,7 +34,7 @@ class Controller_HTML5 extends Controller_HTTP{
 
     /**
      * The meta tags for the HTML head - author, description, keywords
-     * You can add additional properties on the fly, they will be rendered in the $this->html_head() method
+     * You can add additional properties on the fly, they will be rendered in the $this->htmlHead() method
      * @var \sb\HTML_HeadMeta
      */
     public $meta;
@@ -61,16 +61,16 @@ class Controller_HTML5 extends Controller_HTTP{
      * Creates a javascript include tag
      * @param $scripts array/string The file names or an array of file names to include
      */
-    public function include_javascript($scripts)
+    public function includeJavascript($scripts)
     {
 
-        $src = (!is_array($scripts)) ? Array($scripts) : $scripts;
+        $src = (!\is_array($scripts)) ? Array($scripts) : $scripts;
         $html = '';
-        foreach($scripts as $s){
-            if(!strstr($s, '/')){
-                $s = '/js/'.$s;
+        foreach ($scripts as $s) {
+            if (!\strstr($s, '/')) {
+                $s = '/js/' . $s;
             }
-            $html .= "\n".'<script type="text/javascript" src="'.$s.'"></script>';
+            $html .= "\n" . '<script type="text/javascript" src="' . $s . '"></script>';
         }
 
         return $html;
@@ -80,43 +80,43 @@ class Controller_HTML5 extends Controller_HTTP{
      * Renders the HTML head
      * @param $custom_head_markup string A string of data to include in the HTML head, right before </head>
      */
-    public function html_head($custom_head_markup='')
+    public function htmlHead($custom_head_markup = '')
     {
 
-        if(!empty($custom_head_markup)){$this->custom_head_markup = $custom_head_markup;}
+        if (!empty($custom_head_markup)) {
+            $this->custom_head_markup = $custom_head_markup;
+        }
 
-        $html = $this->doc_type."\n";
-        $html .= '<html>'."\n";
-        $html .= '<head>'."\n";
-        $html .= '<meta http-equiv="Content-Type" content="text/html; charset='.$this->charset.'" />'."\n";
+        $html = $this->doc_type . "\n";
+        $html .= '<html>' . "\n";
+        $html .= '<head>' . "\n";
+        $html .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->charset . '" />' . "\n";
 
-        $html .= '<title>'.$this->title.'</title>'."\n";
+        $html .= '<title>' . $this->title . '</title>' . "\n";
 
-        if($this->meta instanceof HTML_HeadMeta){
+        if ($this->meta instanceof HTML_HeadMeta) {
 
-            foreach(get_object_vars($this->meta) as $key=>$val){
-                $html .= '<meta name="'.$key.'" content="'.$val.'" />'."\n";
+            foreach (\get_object_vars($this->meta) as $key => $val) {
+                $html .= '<meta name="' . $key . '" content="' . $val . '" />' . "\n";
             }
         }
 
         $html .= '<style type="text/css">';
 
-        foreach($this->styles as $style){
-            if(!preg_match("~^(http|/)~", $style)){
-                $style = '/css/'.$style;
+        foreach ($this->styles as $style) {
+            if (!preg_match("~^(http|/)~", $style)) {
+                $style = '/css/' . $style;
             }
-            $html .= "@import '".$style."';\n";
-
+            $html .= "@import '" . $style . "';\n";
         }
         $html .= "</style>\n";
 
-        if(!empty($this->custom_head_markup)){
+        if (!empty($this->custom_head_markup)) {
             $html.= $this->custom_head_markup;
         }
 
         $html.= "</head>\n";
         return $html;
     }
-
 }
 
