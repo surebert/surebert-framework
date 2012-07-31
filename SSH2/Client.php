@@ -17,6 +17,7 @@
  * @package SSH2
  */
 namespace sb;
+
 class SSH2_Client{
 
     protected $connection;

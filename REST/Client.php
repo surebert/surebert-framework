@@ -15,6 +15,7 @@
  *  
  */
 namespace sb;
+
 class REST_Client {
 
     /**

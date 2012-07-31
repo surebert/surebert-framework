@@ -9,6 +9,7 @@
  *
  */
 namespace sb;
+
 class Image{
     /**
      * The file path to the original image file being edited

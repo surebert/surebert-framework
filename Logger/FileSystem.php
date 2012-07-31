@@ -7,6 +7,7 @@
  * 
  */
 namespace sb;
+
 class Logger_FileSystem extends Logger_Base{
     
     /**

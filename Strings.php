@@ -6,6 +6,7 @@
  * @package Strings
  */
 namespace sb;
+
 class Strings{
     
     /**

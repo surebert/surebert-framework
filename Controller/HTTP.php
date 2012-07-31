@@ -6,6 +6,7 @@
  * @package Controller
  */
 namespace sb;
+
 class Controller_HTTP extends Controller{
   
      /**

@@ -6,6 +6,7 @@
  * @package XMPP
  */
 namespace sb;
+
 class XMPP_Message extends XMPP_Packet{
 
     /**

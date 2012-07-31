@@ -7,6 +7,7 @@
  */
 
 namespace sb;
+
 class Controller_HTML5 extends Controller_HTTP{
 
     /**

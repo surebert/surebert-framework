@@ -14,6 +14,7 @@
  * @package Logger
  */
 namespace sb;
+
 class Logger_Syslog{
 
     /**

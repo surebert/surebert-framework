@@ -6,6 +6,7 @@
  * @package Files
  */
 namespace sb;
+
 class Files_Mime{
 
     public $mime_types = <<<'MIME'

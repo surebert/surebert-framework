@@ -11,6 +11,7 @@
  * //basically 50 from the range of 10 to 100 is equivalent to 13.33 in the range of 8 to 20
  */
 namespace sb;
+
 class Math_RangeMapper{
  
     public function __construct($toRange, $fromRange){

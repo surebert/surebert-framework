@@ -31,6 +31,7 @@
  * @package Web
  */
 namespace sb;
+
 class Web_Visitors{
 
     /**

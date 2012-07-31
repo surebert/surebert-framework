@@ -5,6 +5,7 @@
  * Adapted from http://code.google.com/p/collabtiv/source/browse/include/class.vCard.php?r=1
  */
 namespace sb;
+
 class Microformats_VCard {
     private $output;
     private $output_format;

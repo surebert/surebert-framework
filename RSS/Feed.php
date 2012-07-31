@@ -7,6 +7,7 @@
  * @package RSS
 */
 namespace sb;
+
 class RSS_Feed extends \DomDocument{
     
     /**

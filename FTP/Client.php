@@ -8,6 +8,7 @@
  * @package FTP
  */
 namespace sb;
+
 class FTP_Client implements FTP_Base{
 
     /**

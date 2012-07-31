@@ -45,6 +45,7 @@
  * </code>
  */
 namespace sb;
+
 class Flash_Signature{
     
     /**

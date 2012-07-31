@@ -5,6 +5,7 @@
  * @package Excel
  */
 namespace sb;
+
 class Excel_Reader extends Excel_ReaderBackend {
 
     /**

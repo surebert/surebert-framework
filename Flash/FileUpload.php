@@ -8,6 +8,7 @@
  * 
  */
 namespace sb;
+
 class Flash_FileUpload{
     
     /**

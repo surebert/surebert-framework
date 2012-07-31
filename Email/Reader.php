@@ -8,6 +8,7 @@
  * 
  */
 namespace sb;
+
 class Email_Reader{
 
     /**

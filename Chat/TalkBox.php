@@ -31,6 +31,7 @@
  * 
  */
 namespace sb;
+
 class Chat_TalkBox{
     
     /**

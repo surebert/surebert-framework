@@ -7,6 +7,7 @@
  * 
  */
 namespace sb;
+
 class Event_Unchangeable extends _Event{
     /**
      * Sets the data for the event

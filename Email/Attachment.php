@@ -6,6 +6,7 @@
  * @package Email
  */
 namespace sb;
+
 class Email_Attachment{
 
     /**

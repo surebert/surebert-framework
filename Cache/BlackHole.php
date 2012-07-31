@@ -13,6 +13,7 @@
  * 
  */
 namespace sb;
+
 class Cache_BlackHole implements Cache_Base{
     
     /**

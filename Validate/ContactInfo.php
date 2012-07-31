@@ -6,6 +6,7 @@
  *
  */
 namespace sb;
+
 class Validate_ContactInfo{
 
 

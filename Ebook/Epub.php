@@ -19,6 +19,7 @@ $ebook->output();
  * @package Epub
  */
 namespace sb;
+
 class Ebook_Epub{
 
     public $global_style_sheets = Array();

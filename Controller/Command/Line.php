@@ -6,6 +6,7 @@
  * @package Controller
  */
 namespace sb;
+
 class Command_Line extends Controller_Base{
 
     /**

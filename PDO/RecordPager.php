@@ -4,6 +4,7 @@
  * @package PDO
  */
 namespace sb;
+
 class PDO_RecordPager {
 
     /**

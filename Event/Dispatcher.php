@@ -6,6 +6,7 @@
  * @package Event
  */
 namespace sb;
+
 class Event_Dispatcher{
     /**
      * The listeners array which holds all of the listeners

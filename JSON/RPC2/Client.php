@@ -6,6 +6,7 @@
  * @package JSON_RPC2
  */
 namespace sb;
+
 class JSON_RPC2_Client {
 
     /**

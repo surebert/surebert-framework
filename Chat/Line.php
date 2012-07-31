@@ -7,6 +7,7 @@
  *
  */
 namespace sb;
+
 class Chat_Line{
     public $id;
     public $uname;

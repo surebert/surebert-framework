@@ -11,6 +11,7 @@
  * 
  */
 namespace sb;
+
 class Web_Captcha{
     /**
      * The characters allowed in the captcha word

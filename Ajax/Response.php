@@ -7,6 +7,7 @@
  * @package sb_Ajax
  */
 namespace sb;
+
 class Ajax_Response{
     
     /**

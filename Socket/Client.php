@@ -13,6 +13,7 @@
  * @package Socket
  */
 namespace sb;
+
 class Socket_Client {
 
     /**

@@ -7,6 +7,7 @@
  *
  */
 namespace sb;
+
 class Cache_FileSystem implements Cache_Base{
     
     /**

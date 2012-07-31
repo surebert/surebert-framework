@@ -6,6 +6,7 @@
  * @package Logger
  */
  namespace sb;
+
 class Logger_StdOut extends Logger_Base{
 
     /**

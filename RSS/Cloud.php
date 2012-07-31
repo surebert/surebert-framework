@@ -11,6 +11,7 @@
  *
  */
 namespace sb;
+
 class RSS_Cloud{
     
     public $domain;

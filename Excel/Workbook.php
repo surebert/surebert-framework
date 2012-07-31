@@ -6,6 +6,7 @@
  * @package Excel
  */
 namespace sb;
+
 class Excel_Workbook extends \DOMDocument{
 
     /**

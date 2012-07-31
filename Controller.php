@@ -5,6 +5,7 @@
  * @package Controller
  */
 namespace sb;
+
 class Controller {
 
     /**

@@ -9,6 +9,7 @@
  */
 
 namespace sb;
+
 class HTML_HeadMeta {
 
     /**

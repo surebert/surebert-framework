@@ -7,6 +7,7 @@
  * @package PDO
  */
 namespace sb;
+
 class PDO extends \PDO{
     
     /**

@@ -38,6 +38,7 @@
  * @author paul.visco@roswellpark.org, gregary.dean@roswellpark.org
  */
 namespace sb;
+
 class ICalendar_Event {
 
     /**

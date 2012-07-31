@@ -7,6 +7,7 @@
  *
  */
 namespace sb;
+
 class Samba_Listing {
 
     /**

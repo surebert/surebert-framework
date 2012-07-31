@@ -6,6 +6,7 @@
  * @package PDO
  */
 namespace sb;
+
 class PDO_Statement_Logger extends \PDOStatement {
 
     public $connection;

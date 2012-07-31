@@ -25,6 +25,7 @@
  * @package XMPP
  */
 namespace sb;
+
 class XMPP_Client extends Socket_StreamingClient{
 
     /**

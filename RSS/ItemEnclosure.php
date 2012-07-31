@@ -9,6 +9,7 @@
  *
  */
 namespace sb;
+
 class RSS_ItemEnclosure{
     
     /**

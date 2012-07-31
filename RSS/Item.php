@@ -6,6 +6,7 @@
  * @package RSS
  */
 namespace sb;
+
 class RSS_Item{
     
     /**

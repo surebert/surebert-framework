@@ -14,6 +14,7 @@
  * @package SSH2
  */
 namespace sb;
+
 class SSH2_Shell extends SSH2_Client{
 
     /**

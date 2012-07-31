@@ -6,6 +6,7 @@
  *
  */
 namespace sb;
+
 class Excel_Writer {
 
     /**

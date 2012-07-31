@@ -7,6 +7,7 @@
  * 
  */
 namespace sb;
+
 class Web_WeatherFeed{
     
     /**

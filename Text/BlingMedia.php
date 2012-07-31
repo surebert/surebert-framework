@@ -13,6 +13,7 @@
  * @package Text
  */
 namespace sb;
+
 class Text_BlingMedia extends Text_Bling{
     /**
      * The map format used, for embedded yahoo maps, set type to 'yahoo' and make sure to include yahoo map api script on your page <script type="text/javascript" src="http://maps.yahooapis.com/v3.04/fl/javascript/apiloader.js?appid=YOUR_API_KEY"></script>, You will need to repalce YOUR_API_KEY with your own yahoo flahs map API key

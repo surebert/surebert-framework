@@ -22,6 +22,7 @@ header("Content-type: image/gif");
 imagegif($chunkChart->graph);
 */
 namespace sb;
+
 class Graph_Bar3D{
 
     public $values = array();

@@ -5,6 +5,7 @@
  * @package Session
  */
 namespace sb;
+
 class Session{
 
     public function __construct(){

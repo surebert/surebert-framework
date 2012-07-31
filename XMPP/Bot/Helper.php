@@ -26,6 +26,7 @@
  * @package XMPP
  */
 namespace sb;
+
 class XMPP_Bot_Helper extends XMPP_Client{
 
     /**

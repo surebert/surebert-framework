@@ -5,6 +5,7 @@
  * @package Validate
  */
 namespace sb;
+
 class Validate_Numbers{
 
     /**

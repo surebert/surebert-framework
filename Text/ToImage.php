@@ -5,6 +5,7 @@
  * @package Text
  */
 namespace sb;
+
 class Text_ToImage{
 
     /**

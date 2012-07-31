@@ -15,6 +15,7 @@ $plain_text = $encryptor>decrypt($encrypted_data);
 </code>
  */
 namespace sb;
+
 class Encryption_ForTransmission{
     
     protected $cypher = 'rijndael-256';

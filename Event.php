@@ -5,6 +5,7 @@
  * @author: paul.visco@roswellpark.org 
  */
 namespace sb;
+
 class Event{
     
     /**

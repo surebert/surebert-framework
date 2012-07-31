@@ -5,6 +5,7 @@
  * @package Web_SOAP
  */
 namespace sb;
+
 class Web_SOAP_WeatherGovParametersType {
   public $maxt; // boolean
   public $mint; // boolean

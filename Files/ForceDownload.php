@@ -7,6 +7,7 @@
  * @package Files
  */
 namespace sb;
+
 class Files_ForceDownload{
 
     /**

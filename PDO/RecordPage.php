@@ -6,6 +6,7 @@
  * @package PDO
  */
 namespace sb;
+
 class PDO_RecordPage {
 
     /**

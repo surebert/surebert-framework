@@ -5,6 +5,7 @@
  * @package _Identifiers
  */
 namespace sb;
+
 class Identifiers_UUID {
 
     /**

@@ -9,6 +9,7 @@
  * @package Password
  */
 namespace sb;
+
 class Password_Random {
     /**
      * The length of password to generate

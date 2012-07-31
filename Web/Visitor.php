@@ -7,6 +7,7 @@
  *
  */
 namespace sb;
+
 class Web_Visitor{
     /**
      * The IP address of the visitor

@@ -10,6 +10,7 @@
  *
  */
 namespace sb;
+
 class Email_Writer {
 
 /**

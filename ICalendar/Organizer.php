@@ -10,6 +10,7 @@
  * @author paul.visco@roswellpark.org
  */
 namespace sb;
+
 class ICalendar_Organizer extends ICalendar_Attendee{
 
     /**

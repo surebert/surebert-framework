@@ -20,6 +20,7 @@
  * @package SFTP
  */
 namespace sb;
+
 class SFTP_Client extends SSH2_Client implements FTP_Base{
 
     protected $sftp;
