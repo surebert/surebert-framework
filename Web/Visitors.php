@@ -27,7 +27,7 @@
  *
  * </code>
  * 
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Web
  */
 namespace sb;
@@ -259,7 +259,7 @@ class Web_Visitors{
 /**
  * Represents all online users
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  */
 class Web_VisitorCount{
 

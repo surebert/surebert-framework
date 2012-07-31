@@ -1,7 +1,7 @@
 <?php
 /**
  * Various functions for working with files
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Files
  *
  */

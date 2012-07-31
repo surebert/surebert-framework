@@ -2,7 +2,7 @@
 /**
  * Used to log application state to the log files.
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Logger
  */
  namespace sb;

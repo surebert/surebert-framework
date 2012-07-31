@@ -2,7 +2,7 @@
 /**
  * Describes an email attachment, when found they are attached to \sb\Email objects
  *
- * @author Visco
+ * @author paul.visco@roswellpark.org
  * @package Email
  */
 namespace sb;

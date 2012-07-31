@@ -2,7 +2,7 @@
 /**
  * Data object that  holds listing information for Windows share lisitngs
  *
- * @author Paul Visco, Anthony Cashaw
+ * @author paul.visco@roswellpark.org, Anthony Cashaw
  * @package Samba
  *
  */

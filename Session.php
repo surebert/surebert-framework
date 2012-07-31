@@ -1,7 +1,7 @@
 <?php
 /**
  * Base class for custom sessions
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Session
  */
 namespace sb;

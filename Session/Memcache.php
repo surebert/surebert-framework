@@ -1,7 +1,7 @@
 <?php
 /**
  * Save the sessions on a memcache server, requires memcache server be installed and running on the host and port specified
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Session
  */
 namespace sb;

@@ -1,7 +1,7 @@
 <?php
 /**
  * Stores data in APC - requires the apc extension is installed
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @version 1.0 01/23/2009 05/14/2009
  * @package Cache
  */

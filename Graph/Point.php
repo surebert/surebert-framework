@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to plot simple point and line graphs.  Requires \sb\Math_RangeMapper
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Graph
  * 
  */

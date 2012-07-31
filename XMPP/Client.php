@@ -21,7 +21,7 @@
  * $client = new ClientDemo();
  * </code>
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package XMPP
  */
 namespace sb;

@@ -2,7 +2,7 @@
 /**
  * Used to handle http requests
  * 
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Controller
  */
 namespace sb;

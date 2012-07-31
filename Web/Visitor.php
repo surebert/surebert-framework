@@ -2,7 +2,7 @@
 /**
  * Models an online visitor - usage requires \sb\Web_Visitors
  * 
- * @author Paul Visco 
+ * @author paul.visco@roswellpark.org 
  * @package Web
  *
  */

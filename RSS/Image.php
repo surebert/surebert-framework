@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to create an \sb\RSSFeed image for the channel
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package RSS
  */
 namespace sb;

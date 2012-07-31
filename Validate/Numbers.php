@@ -1,7 +1,7 @@
 <?php
 /**
  * Validates numbers
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Validate
  */
 namespace sb;

@@ -1,7 +1,7 @@
 <?php
 /**
  * This class is used to convert text strings into true type font based png images
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Text
  */
 namespace sb;

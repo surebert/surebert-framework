@@ -15,7 +15,7 @@ $ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 3', '<h1>Chapter 3</h1><
 $ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 4', '<h1>Chapter 4</h1><p>blah blah</p>'));
 $ebook->output();
  * </code>
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Epub
  */
 namespace sb;

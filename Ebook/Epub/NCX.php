@@ -5,7 +5,7 @@
 			. "\t\t<meta name=\"dtb:depth\" content=\"2\" />\n"
 			. "\t\t<meta name=\"dtb:totalPageCount\" content=\"0\" />\n"
 			. "\t\t<meta name=\"dtb:maxPageNumber\" content=\"0\" />\n"
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package sb_Epub
  */
 class sb_Ebook_Epub_NCX extends DOMDocument{

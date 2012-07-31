@@ -6,7 +6,7 @@
  * 
  * more info http://cyber.law.harvard.edu/rss/rss.html#ltcloudgtSubelementOfLtchannelgt
  * 
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package RSS
  *
  */

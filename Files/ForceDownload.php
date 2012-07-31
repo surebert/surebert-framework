@@ -3,7 +3,7 @@
  * Used to create views which force download of specific files
  *
  * You can add additional properties on the fly
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Files
  */
 namespace sb;

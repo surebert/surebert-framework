@@ -1,7 +1,7 @@
 <?php
 /**
  * Models a JSONRPC 2 response error as per the spec proposal at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package JSON_RPC2
  */
 namespace sb;

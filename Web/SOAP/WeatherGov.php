@@ -1,7 +1,7 @@
 <?php
 /**
  * Describes the parameters returned from the govt weather SOAP service
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Web_SOAP
  */
 namespace sb;
@@ -62,7 +62,7 @@ class Web_SOAP_WeatherGovParametersType {
 /**
  * Web_SOAP_WeatherGov class  This is used to lookup weather information
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Web_SOAP
  * 
  * <code>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Models a JSON RPC2 Response from the \sb\JSON_RPC2_Server
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package JSON_RPC2
  */
 class JSON_RPC2_Response{

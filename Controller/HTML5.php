@@ -2,7 +2,7 @@
 
 /**
  * A ControllerClass that all HTML Controllers could/should extend
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Controller
  */
 

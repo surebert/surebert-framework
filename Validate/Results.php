@@ -2,7 +2,7 @@
 /**
  * Validation results object returned from sb_Validate methods
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Validate
  *
  */

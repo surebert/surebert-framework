@@ -10,7 +10,7 @@
  * $syslog->set_message('hello log', 1, 11)->save()
  * //OR
  * $syslog->set_message('hello log', 1, 11)->send('mylogserver.com');
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Logger
  */
 namespace sb;

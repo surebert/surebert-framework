@@ -6,7 +6,7 @@
  * use the following in your htaccess file for that directory: 
  * AddType application/x-httpd-php .png
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Web
  * 
  */

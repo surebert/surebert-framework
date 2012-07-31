@@ -2,7 +2,7 @@
 /**
  * The properties of the weather reading that are returned
  *
- * @author Visco
+ * @author paul.visco@roswellpark.org
  * @package Web
  * 
  */

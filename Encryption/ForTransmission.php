@@ -1,7 +1,7 @@
 <?php
 /**
  * Interface for encrypting and decrypting data for network transmission
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Encrytion
 <code>
 

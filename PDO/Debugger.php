@@ -3,7 +3,7 @@
 /**
  * Extends native PDO class for logging and debugging
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package PDO
  */
 namespace sb;

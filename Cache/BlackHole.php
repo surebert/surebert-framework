@@ -8,7 +8,7 @@
  * echo $cache->fetch('/my/key');
  * </code>
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Cache
  * 
  */

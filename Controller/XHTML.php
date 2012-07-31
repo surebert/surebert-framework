@@ -2,7 +2,7 @@
 
 /**
  * An ControllerClass that all HTML views could/should extend
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Controller
  */
 namespace sb\Controller;

@@ -2,7 +2,7 @@
 /**
  * The JSON_RPC2_Client used to send the request
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package JSON_RPC2
  */
 namespace sb;

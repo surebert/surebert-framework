@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to respond to javascript requests
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package JS
  */
 namespace sb;

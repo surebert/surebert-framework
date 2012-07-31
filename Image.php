@@ -3,7 +3,7 @@
 /**
  * This class is used to edit images.
  * 
- * @author Paul Visco 10/26/2005
+ * @author paul.visco@roswellpark.org 10/26/2005
  * @package Image
  * 
  *

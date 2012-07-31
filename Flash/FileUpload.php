@@ -3,7 +3,7 @@
  * Models a file uploaded with the flash multifile uploader
  * 
  * You can laos extend this class and add a on_save method which can handle different file upload types by extension, etc
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Flash
  * 
  */

@@ -2,7 +2,7 @@
 /**
  * Used to create command line utilities
  * 
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Controller
  */
 namespace sb;

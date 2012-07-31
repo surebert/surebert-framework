@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to cache data in various formats
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Cache
  */
 

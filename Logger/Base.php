@@ -2,7 +2,7 @@
 /**
  * Abstract class base for logging
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Logger
  *
  */

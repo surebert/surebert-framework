@@ -5,7 +5,7 @@
  *
  * If DEBUG_EMAIL constant is defined, then all email goes to that address.
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Email
  *
  */

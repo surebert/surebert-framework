@@ -9,7 +9,7 @@
  * echo $conn->read();
  * </code>
  * 
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Socket
  */
 namespace sb;

@@ -2,7 +2,7 @@
 /**
  * This class is used to drive a talkbox chat block on a site
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Chat
  *
  */

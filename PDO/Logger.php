@@ -131,7 +131,7 @@ class PDO_Statement_Logger extends \PDOStatement {
 /**
  * Extends native PDO class for logging and debugging
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package PDO
  *
  */

@@ -1,7 +1,7 @@
 <?php
 /**
  * Creates concatenated javascript files for the surebert toolkit from the arguments it is fed
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Controller
  */
 namespace sb;
@@ -36,7 +36,7 @@ class Controller_Toolkit extends Controller{
 
 	/**
 	 * Removes comments from javascript
-	 * @author visco
+	 * @author paul.visco@roswellpark.org
 	 */
 	public function filter_output($output){
 		if(!isset($this->request->get['sb_comments'])){

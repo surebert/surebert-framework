@@ -2,7 +2,7 @@
 /**
  * Manages a streaming socket connection
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @version 0.1 05-05-2009 05-05-2009
  * @package sb_Socket
  *

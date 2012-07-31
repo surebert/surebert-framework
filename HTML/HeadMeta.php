@@ -3,7 +3,7 @@
  * An an object to represent the head meta data of an sb_HTMLView
  *
  * You can add additional properties on the fly
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @version 1.0 12/08/08 12/08/08
  * @package sb\HTML
  */

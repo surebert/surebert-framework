@@ -2,7 +2,7 @@
 /**
  * Extends native Exception class for debugging PDO with sb_PDO_Debugger
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package PDO
  */
 namespace sb;

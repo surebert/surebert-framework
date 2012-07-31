@@ -2,7 +2,7 @@
 
 /**
  * Based on the description of an RSS 2.0 item at http://cyber.law.harvard.edu/rss/rss.html
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package RSS
  */
 namespace sb;

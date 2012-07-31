@@ -2,7 +2,7 @@
 /**
  * Models a presence packet for sending and receiving
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package XMPP
  */
 namespace sb;

@@ -2,7 +2,7 @@
 /**
  * Logs to blackHole - nothing - so that you can estimate logging performance hit
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Logger
  *
  */

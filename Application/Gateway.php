@@ -3,7 +3,7 @@
 /**
  * Initializes a surebert framework project
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Gateway
  *
  */

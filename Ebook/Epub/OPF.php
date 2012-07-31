@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to model an epub OPF
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Epub
  */
 class sb_Ebook_Epub_OPF extends DOMDocument{

@@ -3,7 +3,7 @@
 /**
  * A secure Flash_Signature object which holds the data for each Flash_Signature
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Flash
  * 
  * <code>

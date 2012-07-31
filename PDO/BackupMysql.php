@@ -9,7 +9,7 @@
  * it is deleted.  Each time the script is run, the dump directories increment by 1.
  *
  * The db credetials should be for root or a user that has SELECT access to every database
- * @author Paul Visco paul.visco@roswellpark.org
+ * @author paul.visco@roswellpark.org
  * @package PDO
  */
 namespace sb;

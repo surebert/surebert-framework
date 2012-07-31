@@ -2,7 +2,7 @@
 
 /**
  * Used to create excel xml documents
- * @author Paul Visco paul.visco@roswellpark.org
+ * @author paul.visco@roswellpark.org
  * @package Excel
  */
 namespace sb;

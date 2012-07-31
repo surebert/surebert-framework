@@ -2,7 +2,7 @@
 /**
  * Stores data in Memcache, requires memcache server be installed and running on the host and port specified
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Cache
  *
  */

@@ -9,7 +9,7 @@
  * echo \sb\Text_Bling::get_javascript();
  * </code>
  *
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Text
  */
 namespace sb;

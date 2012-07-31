@@ -8,7 +8,7 @@
 	. "<title>Test Book</title>\n"
 	. "</head>\n"
 	. "<body>\n";
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package sb_Epub
  */
 class sb_Ebook_Epub_Chapter{

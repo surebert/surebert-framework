@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to process REST requests, methods must have @servable true to be accessible
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Controller
  */
 namespace sb;

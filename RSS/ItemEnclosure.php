@@ -4,7 +4,7 @@
  * 
  * 
  * This can be used when creating podcasts, each item would get an MP3
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package RSS
  *
  */

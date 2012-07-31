@@ -14,7 +14,7 @@
  * )
  * </code>
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Session
  *
  */

@@ -2,7 +2,7 @@
 /**
  * Object to represent an email used by sb_EmailReader and sb_EmailWriter
  * 
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Email
  *
  */

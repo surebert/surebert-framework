@@ -3,7 +3,7 @@
 /**
  * Extends native PDO class for logging and debugging
  * 
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package PDO
  */
 namespace sb;
@@ -120,7 +120,7 @@ class PDO extends \PDO{
 	 * @param array/object $data The object/hash to convert to a bindParams compatible hash with the colon in front of each key so that it can be used as a bid param array
 	 * @param array $omit An simple array of key names to omit from the array
 	 * @return array The input data as an array designed for passing to pdo's execute or bindParams
-	 * @author Paul Visco
+	 * @author paul.visco@roswellpark.org
 	 * @version 1.0
 	 * <code>
 	 * $question = new Question();

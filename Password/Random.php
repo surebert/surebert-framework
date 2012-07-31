@@ -5,7 +5,7 @@
  *
  * Makes sure at least one
  *
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Password
  */
 namespace sb;

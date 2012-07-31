@@ -1,7 +1,7 @@
 <?php
 /**
  * Used to easily convert XMPP_Packets from simpleXML to string and back
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package XMPP
  */
 namespace sb;

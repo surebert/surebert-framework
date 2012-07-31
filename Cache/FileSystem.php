@@ -2,7 +2,7 @@
 /**
  * Stores cached data in the file system
  * 
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Cache
  *
  */

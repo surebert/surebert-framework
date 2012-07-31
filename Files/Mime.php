@@ -2,7 +2,7 @@
 /**
  * Handles mime types for files
  * 
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package Files
  */
 namespace sb;

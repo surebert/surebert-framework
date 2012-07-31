@@ -1,7 +1,7 @@
 <?php
 /**
  * Describe the most basic user in any sb framework system.  All users should extend this user
- * @author visco
+ * @author paul.visco@roswellpark.org
  * @package User
  *
  */

@@ -3,7 +3,7 @@
 /**
  * Describes and creates RSS 2.0 feeds. Remember to validate http://feedvalidator.org/check.cgi
  * 
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package RSS
 */
 namespace sb;

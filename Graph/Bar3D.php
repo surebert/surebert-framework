@@ -2,7 +2,7 @@
 
 /**
  * Used to draw bar graphs
- * @author Paul Visco
+ * @author paul.visco@roswellpark.org
  * @package Graph
  *
  */
