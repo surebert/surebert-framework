@@ -10,7 +10,7 @@
   var_dump(func_get_args());
   }
   ));
- * $response = $x->get(Array('ticket' => '49d75185-e71b-42f1-9298-ac0382dd2e26'));
+ * $response = $client->get(Array('ticket' => '49d75185-e71b-42f1-9298-ac0382dd2e26'));
  * </code>
  *  
  */
