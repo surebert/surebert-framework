@@ -74,16 +74,42 @@ class sb_Event_Dispatcher{
 		}
 	}
 	
-	/**
+    /**
 	 * Grab an array of all currently listened for events.
-	 * Can be helpful when trying to decide what to subscribe to
+     * @param string event_name The event name to check for or all if empty
 	 * @return array 
 	 */
-	public function get_listening_events(){
-		$i = array_keys($this->listeners);
-		sort($i);
-		return $i;
-	}
+    public function get_listeners($event_name=''){
+        if(empty($event_name)){
+            $i = array_keys($this->listeners);
+            sort($i);
+            return $i;
+        }
+        
+        if(isset($this->listeners[$event_name])){
+            return $this->listeners[$event_name];
+        }
+        
+        return Array();
+    }
+    
+    /**
+	 * Count all currently listened for events.
+     * @param string event_name The event name to check for or all if empty
+	 * @return integer 
+	 */
+    public function count_listeners($event_name=''){
+        
+        if(empty($event_name)){
+            return count($this->listeners);
+        }
+        
+        if(isset($this->listeners[$event_name])){
+            return count($this->listeners[$event_name]);
+        }
+        
+        return 0;
+    }
 	
 	/**
 	 * Dispatches the named event to the listeners
