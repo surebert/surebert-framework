@@ -150,12 +150,18 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 		
 		if(is_dir($file)){
 			$this->clear_dir($file);
-			rmdir($file);
+			$deleted = rmdir($file);
 		} else if(file_exists($file)){
-			return unlink($file);
+			$deleted = unlink($file);
 		} else {
-			return false;
+			$deleted = false;
 		}
+        
+        if($deleted){
+            $this->catalog_key_delete($key);
+        }
+        
+        return $deleted;
 	}
 	
 	/**
@@ -201,6 +207,12 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 		return $this->file_path.'/sb_Cache'.$key;
 	}
 	
+    /**
+     * Adds a catalog key to the catalog
+     * @param string $key
+     * @param integer $lifetime the lifetime in seconds
+     * @return boolean
+     */
 	protected function catalog_key_add($key, $lifetime){
 		$catalog = $this->fetch($this->catalog_key);
 		$catalog = is_array($catalog) ? $catalog : Array();
@@ -208,7 +220,12 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 		return $this->store($this->catalog_key, $catalog);
 	}
 	
-	protected function cataglog_key_delete(){
+    /**
+     * Deletes a key from the catalog
+     * @param string $key The key to delete
+     * @return boolean
+     */
+	protected function catalog_key_delete($key){
 		$catalog = $this->fetch($this->catalog_key);
 		$catalog = is_array($catalog) ? $catalog : Array();
 		if(isset($catalog[$key])){
@@ -238,7 +255,7 @@ class sb_Cache_FileSystem implements sb_Cache_Base{
 		$catalog = $this->fetch($this->catalog_key);
 		$catalog = is_array($catalog) ? $catalog : Array();
 		ksort($catalog);
-		return $catalog;
+		return array_keys($catalog);
 	}
 }
 
