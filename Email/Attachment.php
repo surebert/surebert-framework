@@ -103,15 +103,16 @@ class sb_Email_Attachment{
 	 */
     public function __construct($filepath=null, $mime_type=null){
 
-        if($mime_type){
-            $this->mime_type = $mime_type;
-        }
-
         if($filepath){
             $this->filepath = $filepath;
             $this->contents = file_get_contents($filepath);
             $this->name = basename($filepath);
-            sb_Files::file_to_mime($this->filepath);
+            if($mime_type){
+                $this->mime_type = $mime_type;
+            } else {
+                $this->mime_type = sb_Files::file_to_mime($filepath);
+            }
+            
         }
 
     }
