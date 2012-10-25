@@ -6,7 +6,6 @@
  * If DEBUG_EMAIL constant is defined, then all email goes to that address.
  *
  * @author Paul Visco
- * @version 2.25 06/08/03 06/16/09
  * @package sb_Email
  *
  */
@@ -85,8 +84,7 @@ class sb_Email_Writer {
         }
 
         $sent_emails=0;
-
-        foreach($this->emails as &$email) {
+        foreach($this->emails as $email) {
 
             $this->add_security_info($email);
 
@@ -115,7 +113,6 @@ class sb_Email_Writer {
             }
 
             $email->construct_multipart_message();
-
             if(mail($email->to, $email->subject, $email->body, $email->_header_text)) {
 
                 $email->sent = 1;
@@ -129,8 +126,9 @@ class sb_Email_Writer {
 
         }
 
-        if($sent_emails == count($this->emails)) {
-			$this->emails = Array();
+        $all_sent = $sent_emails == count($this->emails);
+        $this->emails = Array();
+        if($all_sent) {
             return true;
         } else {
             return false;
