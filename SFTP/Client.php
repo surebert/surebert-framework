@@ -6,10 +6,10 @@
  *
  * <code>
  * try{
- *        $client = new \sb\SFTP_Client("server.com", 1027);
+ *        $client = new \sb\SFTP\Client("server.com", 1027);
  *        $client->login("uname", "pass");
  *        OR
- *        $client->login_with_key('uname', 'id_rsa.pub', 'id_rsa', '');
+ *        $client->loginWithKey('uname', 'id_rsa.pub', 'id_rsa', '');
  *        $client->put("/tmp/to_be_sent", "/tmp/to_be_received");
  *        $client->get("/tmp/to_be_received", "/tmp/to_be_sent_new");
  * } catch (Exception $e){
@@ -19,9 +19,9 @@
  *
  * @package SFTP
  */
-namespace sb;
+namespace sb\SFTP;
 
-class SFTP_Client extends SSH2_Client implements FTP_Base{
+class Client extends \sb\SSH2\Client implements \sb\FTP\Base{
 
     protected $sftp;
 
@@ -38,7 +38,7 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
     /**
      * Connects to the SFTP subsystem
      */
-    protected function sftp_connect()
+    protected function connect()
     {
         $this->sftp = ssh2_sftp($this->connection);
         if (!$this->sftp){
@@ -56,7 +56,7 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
     {
 
         if(parent::login($uname, $pass)){
-            $this->sftp_connect();
+            $this->connect();
         }
 
         return true;
@@ -69,12 +69,12 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
      * @param string $private_key_file The private key file to use id (id_rsa), make sure it is readible by your script
      * @param string $pass The passphrase of the keyfile to use if one is required
      */
-    public function login_with_key($uname, $public_key_file, $private_key_file, $pass='')
+    public function loginWithKey($uname, $public_key_file, $private_key_file, $pass='')
     {
 
          if(parent::login($uname, $public_key_file, $private_key_file, $pass))
     {
-            $this->sftp_connect();
+            $this->connect();
         }
 
         return true;
@@ -90,7 +90,7 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
     {
 
         if(!is_null($mode)){
-            return $this->scp_send($local_path, $remote_path, $mode);
+            return $this->scpSend($local_path, $remote_path, $mode);
             return true;
         }
         $stream = @fopen("ssh2.sftp://".$this->sftp.$remote_file, 'w');
@@ -179,7 +179,7 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
      * @param string $from The old path/file name
      * @param string $to The new path/file name
      */
-    public function rename_remote_file($from, $to)
+    public function renameRemoteFile($from, $to)
     {
         if(@ssh2_sftp_rename($this->sftp, $from, $to)){
             throw new \Exception("Could not rename file from $from to $to");
@@ -228,7 +228,7 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
      * @param string $path The path to the file to get stats for
      * @return Array with size, gid, uid, atime, mtime, mode keys
      */
-    public function get_file_stats($path)
+    public function getFileStats($path)
     {
         $stats = @ssh2_sftp_stat($this->sftp, $path);
         if(!$stats['size']){
@@ -257,7 +257,7 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
      * @param string $symlink_path The path to the symlink you want to create
      * @return boolean success or failure
      */
-    public function ssh2_sftp_symlink($orig_path, $symlink_path)
+    public function ssh2SftpSymlink($orig_path, $symlink_path)
     {
         $result = @ssh2_sftp_symlink($this->sftp, $orig_path, $symlink_path);
         if(!$result){
@@ -285,9 +285,9 @@ class SFTP_Client extends SSH2_Client implements FTP_Base{
      * @param int $mode The file mode to set for the remote file
      * @return boolean
      */
-    protected function scp_send($local_path, $remote_path, $mode=0644)
+    protected function scpSend($local_path, $remote_path, $mode=0644)
     {
-        if(@ssh2_scp_send($connection, $remote_path, $remote_path, $mode)){
+        if(@ssh2_scpSend($connection, $remote_path, $remote_path, $mode)){
             throw new \Exception("Could send file with scp: ".$local_path.' to '.$remote_path);
         }
     }

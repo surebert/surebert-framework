@@ -1,12 +1,14 @@
 <?php
+
 /**
  * Represents and Calendar meeting request attendee or organizer
  * @package sb_ICalendar
  * @author paul.visco@roswellpark.org
  */
-namespace sb;
+namespace sb\ICalendar;
 
-class ICalendar_Attendee{
+class Attendee
+{
 
     /**
      * The display name of the attendee e.g Visco, Paul
@@ -24,7 +26,9 @@ class ICalendar_Attendee{
      * Creates a new construct
      *
      * <code>
-     * new \sb\ICalendar_Attendee('Visco, Paul', 'paul.visco@roswellpark.org')
+     * new \sb\ICalendar\Attendee(
+     *      'Visco, Paul', 
+     * 'paul.visco@roswellpark.org');
      * </code>
      *
      * @param string $dname The display name
@@ -40,9 +44,12 @@ class ICalendar_Attendee{
      * Returns the Attendee in iCalendar format
      * @return <type>
      */
-    public function  __toString() 
+    public function __toString()
     {
-        return 'ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN="'.$this->dname.'":MAILTO:'.$this->email;
+        return 'ATTENDEE;ROLE=REQ-PARTICIPANT;'
+        .'PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN="'
+        . $this->dname
+        . '":MAILTO:' . $this->email;
     }
 }
 

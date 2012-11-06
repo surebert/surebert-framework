@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Used to create an .ics doc for an ICalendar event
  * RFC 2446 http://tools.ietf.org/html/rfc2446
@@ -6,19 +7,19 @@
  * Tested with entouage, outlook, mail.app, owa, android, iphone, and blackbery
  *
  * <code>
- * $event = new \sb\ICalendar_Event();
+ * $event = new \sb\ICalendar\Event();
  * $event->location = '901 Washington #3';
  * $event->summary = 'Ride for Roswell Meeting';
- * $event->set_time('11/26/2009 13:30', '11/26/2009 14:30');
- * $event->add_attendee(new \sb\ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
- * $event->add_attendee(new \sb\ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
- * $event->set_organizer(new \sb\ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
+ * $event->setTime('11/26/2009 13:30', '11/26/2009 14:30');
+ * $event->addAttendee(new \sb\ICalendar\Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
+ * $event->addAttendee(new \sb\ICalendar\Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
+ * $event->setOrganizer(new \sb\ICalendar\Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
  *
  * //view contents
  * echo $event->__toString();
  *
  * //force download ics file
- * $event->send_html_headers();
+ * $event->sendHtmlHeaders();
  * echo $event->__toString();
  *
  * //send via email
@@ -27,9 +28,9 @@
  * //Canceling
  * $event = new \sb\ICalendar_Event($uid);
  * $event->summary = 'Ride for Roswell Meeting';
- * $event->add_attendee(new \sb\ICalendar_Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
- * $event->add_attendee(new \sb\ICalendar_Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
- * $event->set_organizer(new \sb\ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
+ * $event->addAttendee(new \sb\ICalendar\Attendee('Reid, Delmar', 'del.reid@roswellpark.org'));
+ * $event->addAttendee(new \sb\ICalendar\Attendee('Dean, Gregary', 'gregary.dean@roswellpark.org'));
+ * $event->setOrganizer(new \sb\ICalendar\Organizer('Visco, Paul', 'paul.visco@roswellpark.org'));
  *
  * $event->send();
  * </code>
@@ -37,22 +38,22 @@
  * @package ICalendar
  * @author paul.visco@roswellpark.org, gregary.dean@roswellpark.org
  */
-namespace sb;
+namespace sb\ICalendar;
 
-class ICalendar_Event 
-    {
+class Event
+{
 
     /**
      * The summary of the event
      * @var string
      */
-    public $summary ='';
+    public $summary = '';
 
     /**
      * The location of the event
      * @var string
      */
-    public $location ='';
+    public $location = '';
 
     /**
      * The method that the event is sent as
@@ -105,10 +106,9 @@ class ICalendar_Event
      * @param string $uid The unqiue ID of the event, assigned if not provided
      * required for cancel, update
      */
-    public function __construct($uid='')
+    public function __construct($uid = '')
     {
         $this->uid = $uid;
-
     }
 
     /**
@@ -116,7 +116,7 @@ class ICalendar_Event
      * @param string $dtstart The begin time of the event in any format strtotime can handle
      * @param string $dtend The endtime of the event in any format strtotime can handle
      */
-    public function set_time($dtstart, $dtend) 
+    public function setTime($dtstart, $dtend)
     {
         $this->dtstart = $dtstart;
         $this->dtend = $dtend;
@@ -127,7 +127,7 @@ class ICalendar_Event
      *
      * @param \sb\ICalendar_Attendee $attendee
      */
-    public function set_organizer(ICalendar_Organizer $attendee) 
+    public function setOrganizer(Organizer $attendee)
     {
         $this->organizer = $attendee;
     }
@@ -139,7 +139,7 @@ class ICalendar_Event
      *
      * @param \sb\ICalendar_Attendee $attendee
      */
-    public function add_attendee(ICalendar_Attendee $attendee) 
+    public function addAttendee(Attendee $attendee)
     {
         $this->attendees[] = $attendee;
     }
@@ -147,7 +147,7 @@ class ICalendar_Event
     /**
      * Sends HTML headers used to make browser recognize .ics file
      */
-    public function send_html_headers() 
+    public function sendHtmlHeaders()
     {
 
         header('Content-type: text/calendar; charset=utf-8');
@@ -158,7 +158,7 @@ class ICalendar_Event
      * Saves the ics packet as a file
      * @param string $file_path
      */
-    public function to_file($file_path) 
+    public function toFile($file_path)
     {
         $ics = $this->__toString();
         file_put_contents($file_path, $ics);
@@ -171,47 +171,46 @@ class ICalendar_Event
      *
      * @return boolean
      */
-    public function send() 
+    public function send()
     {
         $subject = 'EVENT';
-        if($this->method == 'CANCEL'){
+        if ($this->method == 'CANCEL') {
 
-            $subject = 'CANCELED '.$subject;
-            if(empty($this->uid)){
+            $subject = 'CANCELED ' . $subject;
+            if (empty($this->uid)) {
                 throw(new \Exception('Must set uid to cancel an event.'));
             }
         }
 
-        if(!empty($this->summary)){
-            $subject .= ': '.substr($this->summary, 0, 20).'...';
+        if (!empty($this->summary)) {
+            $subject .= ': ' . substr($this->summary, 0, 20) . '...';
         }
 
-        $to = '"'.$this->organizer->dname.'" <'.$this->organizer->email.'>';
+        $to = '"' . $this->organizer->dname . '" <' . $this->organizer->email . '>';
 
         $mail = new \sb\Email($to, $subject, $this->summary, $to);
         $attendee_emails = Array();
-        foreach($this->attendees as $attendee) {
-            $attendee_emails[] = '"'.$attendee->dname.'" <'.$attendee->email.'>';
+        foreach ($this->attendees as $attendee) {
+            $attendee_emails[] = '"' . $attendee->dname . '" <' . $attendee->email . '>';
         }
 
         $mail->cc = $attendee_emails;
         $mail->add_ICalendar_Event($this);
         return $mail->send();
-
     }
 
     /**
      * Converts the Event object into a string in ICalendar .ics format
      * @return string
      */
-    public function  __toString() 
+    public function __toString()
     {
 
-        if(empty($this->organizer)) {
+        if (empty($this->organizer)) {
             throw(new \Exception('You must add an event organizer'));
         }
 
-        if(empty($this->attendees)) {
+        if (empty($this->attendees)) {
             throw(new \Exception('You must add at least one attendee'));
         }
 
@@ -222,33 +221,34 @@ class ICalendar_Event
         $ics = Array();
         $ics[] = "BEGIN:VCALENDAR";
         $ics[] = "VERSION:2.0";
-        $ics[] = "METHOD:".$this->method;
+        $ics[] = "METHOD:" . $this->method;
 
-        if($this->method == 'CANCEL') {
+        if ($this->method == 'CANCEL') {
             $ics[] = 'STATUS:CANCELLED';
         }
 
         $ics[] = "PRODID:-//surebert/ics//NONSGML v1.0//EN";
         $ics[] = "BEGIN:VEVENT";
 
-        if(!empty($this->location)) {
-            $ics[] = "LOCATION:".$this->location;
+        if (!empty($this->location)) {
+            $ics[] = "LOCATION:" . $this->location;
         }
 
-        if(isset($this->organizer)) {
+        if (isset($this->organizer)) {
             $ics[] = $this->organizer->__toString();
         }
 
-        foreach($this->attendees as $attendee) {
+        foreach ($this->attendees as $attendee) {
             $ics[] = $attendee->__toString();
         }
 
-        $this->uid = empty($this->uid) ? md5($dtstart.$dtend.$this->summary) : $this->uid;
+        $this->uid = empty($this->uid) ? md5($dtstart . $dtend . $this->summary) : $this->uid;
         $ics[] = "UID:" . $this->uid;
-        $ics[] = "DTSTAMP:" . gmdate('Ymd').'T'. gmdate('His') . "Z";
-        $ics[] = "DTSTART:" . gmdate('Ymd', $dtstart).'T'. gmdate('His', $dtstart) . "Z";
-        $ics[] = "DTEND:" . gmdate('Ymd', $dtend).'T'. gmdate('His', $dtend) . "Z";
-        $ics[] = "SUMMARY:".$this->summary;
+        $ics[] = "DTSTAMP:" . gmdate('Ymd') . 'T' . gmdate('His') . "Z";
+        $ics[] = "DTSTART:" . gmdate('Ymd', $dtstart) . 'T' . gmdate('His',
+                $dtstart) . "Z";
+        $ics[] = "DTEND:" . gmdate('Ymd', $dtend) . 'T' . gmdate('His', $dtend) . "Z";
+        $ics[] = "SUMMARY:" . $this->summary;
 
         $ics[] = "END:VEVENT";
         $ics[] = "END:VCALENDAR";
@@ -256,3 +256,4 @@ class ICalendar_Event
         return implode("\n", $ics);
     }
 }
+

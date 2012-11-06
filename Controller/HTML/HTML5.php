@@ -5,9 +5,11 @@
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
-namespace sb;
+namespace sb\Controller\HTML;
 
-class Controller_HTML5 extends Controller_HTTP
+use \sb\Controller\HTTP;
+
+class HTML5 extends HTTP
 {
 
     /**
@@ -15,7 +17,7 @@ class Controller_HTML5 extends Controller_HTTP
      */
     public function __construct()
     {
-        $this->meta = new HTML_HeadMeta();
+        $this->meta = new HeadMeta();
     }
 
     /**
@@ -24,6 +26,12 @@ class Controller_HTML5 extends Controller_HTTP
      * @var string
      */
     public $doc_type = '<!DOCTYPE html>';
+
+    /**
+     * The opening HTML tag
+     * @var string
+     */
+    public $opening_html_tag = '<html>';
 
     /**
      * An example property - it is used to create the HTML header, any view that extends this one
@@ -64,10 +72,10 @@ class Controller_HTML5 extends Controller_HTTP
     public function includeJavascript($scripts)
     {
 
-        $src = (!\is_array($scripts)) ? Array($scripts) : $scripts;
+        $src = (!is_array($scripts)) ? Array($scripts) : $scripts;
         $html = '';
         foreach ($scripts as $s) {
-            if (!\strstr($s, '/')) {
+            if (!strstr($s, '/')) {
                 $s = '/js/' . $s;
             }
             $html .= "\n" . '<script type="text/javascript" src="' . $s . '"></script>';
@@ -88,15 +96,15 @@ class Controller_HTML5 extends Controller_HTTP
         }
 
         $html = $this->doc_type . "\n";
-        $html .= '<html>' . "\n";
+        $html .= $this->opening_html_tag . "\n";
         $html .= '<head>' . "\n";
         $html .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->charset . '" />' . "\n";
 
         $html .= '<title>' . $this->title . '</title>' . "\n";
 
-        if ($this->meta instanceof HTML_HeadMeta) {
+        if ($this->meta instanceof HeadMeta) {
 
-            foreach (\get_object_vars($this->meta) as $key => $val) {
+            foreach (get_object_vars($this->meta) as $key => $val) {
                 $html .= '<meta name="' . $key . '" content="' . $val . '" />' . "\n";
             }
         }

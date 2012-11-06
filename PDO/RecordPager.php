@@ -1,12 +1,13 @@
 <?php
+
 /**
  * @author Tony Cashaw
  * @package PDO
  */
-namespace sb;
+namespace sb\PDO;
 
-class PDO_RecordPager 
-    {
+class RecordPager
+{
 
     /**
      * The connection object to your database
@@ -36,7 +37,6 @@ class PDO_RecordPager
      */
     public $object_type = null;
 
-
     /**
      * Set to 1 to allow a blank object to return accurate pagenumbers
      *
@@ -63,7 +63,7 @@ class PDO_RecordPager
      *
      * @param PDO $db
      */
-    public function __construct(PDO $db) 
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
@@ -71,7 +71,8 @@ class PDO_RecordPager
     /**
      * Returns an object of type PDORecordPage set to the page numberd $pagenum
      *
-     * Changed this 05/06/2008 Paul Visco added use of $this->values and $this->object_type to support additional \sb\PDO->s2o() arguments
+     * Changed this 05/06/2008 Paul Visco added use of $this->values and 
+     * $this->object_type to support additional \sb\PDO->s2o() arguments
      *
      * @param integer $pagenum
      * @return \sb\PDORecordPage
@@ -84,7 +85,7 @@ class PDO_RecordPager
      * $pager = new \sb\PDO_RecordPager($mysqlconn);
      * $pager->sql = "SELECT * FROM user ORDER BY lname DESC;";
      * $pager->pagesize = 20 //optional default is set to 10
-     * $res = $pager->get_page($punm);
+     * $res = $pager->getPage($punm);
      * 
      * echo '<pre>' . print_r($res->rows) . '</pre>';
      *
@@ -92,25 +93,21 @@ class PDO_RecordPager
      * </code>
      *
      */
-    public function get_page($pagenum = 1, PDO_RecordPage $ret = null) 
+    public function getPage($pagenum = 1, PDO_RecordPage $ret = null)
     {
 
-        $pagenum = ($pagenum<1)?1:$pagenum;
+        $pagenum = ($pagenum < 1) ? 1 : $pagenum;
 
-        if((trim($this->sql) == '')) {
+        if ((trim($this->sql) == '')) {
 
             throw(new \Exception("The SQL statement '$this->sql' is not valid."));
-
-        }
-        elseif( !(stristr(($this->sql), 'SELECT')) || (stristr(($this->sql), 'LIMIT'))) {
+        } elseif (!(stristr(($this->sql), 'SELECT')) || (stristr(($this->sql), 'LIMIT'))) {
 
             throw(new \Exception("SQL must be a 'SELECT' statment with no 'LIMIT' clause"));
-
-        }
-        else {
+        } else {
 
             //start return object
-            if(!$ret) {
+            if (!$ret) {
                 $ret = new PDO_RecordPage();
             }
 
@@ -120,27 +117,27 @@ class PDO_RecordPager
 
             //get counts
             $sql = $this->sql;
-            if($this->max_limit){
-                $sql .= " LIMIT ".$this->max_limit;
+            if ($this->max_limit) {
+                $sql .= " LIMIT " . $this->max_limit;
             }
-            $count_sql = "SELECT COUNT(*) AS 'count' FROM (".$sql.") sb65a";
-            
+            $count_sql = "SELECT COUNT(*) AS 'count' FROM (" . $sql . ") sb65a";
+
             $res = $this->db->s2o($count_sql, $this->values);
             $ret->record_count = isset($res[0]) ? $res[0]->count : 0;
-        
+
             //page count
             $temp = round($ret->record_count / $this->pagesize);
             $temp2 = $temp * $this->pagesize;
-            $round_up = ($temp2 < $ret->record_count)?1:0;
+            $round_up = ($temp2 < $ret->record_count) ? 1 : 0;
             $ret->page_count = round($ret->record_count / $this->pagesize) + $round_up;
-            $ret->page_count = ($ret->page_count < 1)?1:$ret->page_count;
+            $ret->page_count = ($ret->page_count < 1) ? 1 : $ret->page_count;
 
             //current page
-            $ret->current_page = ($pagenum > $ret->page_count)?$ret->page_count:$pagenum;
+            $ret->current_page = ($pagenum > $ret->page_count) ? $ret->page_count : $pagenum;
 
             //get limit clause
             $start = ($this->pagesize * ($ret->current_page - 1));
-            $start = ($start < 0)?0:$start;
+            $start = ($start < 0) ? 0 : $start;
             $limit_sql = $this->sql . " LIMIT $start, $this->pagesize; ";
 
             //debug
@@ -153,7 +150,6 @@ class PDO_RecordPager
         }
         return 0;
     }
-
 
     /**
      * After a sql statment has been set for this object this method will return
@@ -171,7 +167,7 @@ class PDO_RecordPager
      * <code>
      * //... continued from above
      *
-     * if($flipped = $pager->flipto('lname', 'cashaw')){
+     * if($flipped = $pager->flipTo('lname', 'cashaw')){
      * 
      *    //prints the contents of the first page that contained a row with the column
      *    //'lname' set to the value of 'cashaw'
@@ -183,32 +179,33 @@ class PDO_RecordPager
      *
      * </code>
      */
-    public function flipto($field, $value) 
+    public function flipTo($field, $value)
     {
 
         $ret->found = 0;
-        $ret->page = new stdClass();
+        $ret->page = new \stdClass();
 
-        if(trim($this->sql) != '') {
+        if (trim($this->sql) != '') {
             //get the page count
-            $temp = $this->get_page();
+            $temp = $this->getPage();
             $count = $temp->page_count;
 
-            for($pnum=1;$pnum<=$count;$pnum++) {
+            for ($pnum = 1; $pnum <= $count; $pnum++) {
 
                 //get the next page
-                $page = $this->get_page($pnum);
+                $page = $this->getPage($pnum);
 
                 //look for the value
-                foreach($page->rows as $rec) {
-                    if(isset($rec->{$field})) {
-                        if($rec->{$field} == $value) {
+                foreach ($page->rows as $rec) {
+                    if (isset($rec->{$field})) {
+                        if ($rec->{$field} == $value) {
                             return $page;
                         }
                     } else {
-                        throw(new \Exception("The field $field is not contained in the recordset you request to search"));
+                        throw(new \Exception(
+                        "The field $field is not contained in the recordset you request to search"
+                        ));
                     }
-
                 }
             }
         } else {
@@ -216,6 +213,6 @@ class PDO_RecordPager
         }
 
         return 0;
-
     }
 }
+

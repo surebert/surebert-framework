@@ -6,7 +6,7 @@
  * Extends Excel_Reader to do excel to html mapping with css
  * @package Excel
  */
-namespace sb;
+namespace sb\Excel;
 
 class Excel_Reader_HTML extends Excel_Reader 
     {

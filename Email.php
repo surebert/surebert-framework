@@ -7,6 +7,7 @@
  *
  */
 namespace sb;
+use \sb\Email\Writer;
 
 class Email{
     
@@ -182,10 +183,10 @@ class Email{
      * //$myAttachment->zip();
      *
      * //PGP encrypt the attachment
-     * //$myAttachment->pgp_encrypt('XXXX98D01A6CXXXXXX5700');
+     * //$myAttachment->pgpEncrypt('XXXX98D01A6CXXXXXX5700');
      *
      * //add the attachment to the email object, you could add more attachments as necessary
-     * $myMail->add_attachment($myAttachment);
+     * $myMail->addAttachment($myAttachment);
      *
      * var_dump($myMail->send());
      *
@@ -220,7 +221,7 @@ class Email{
      * Adds an attachment to the email
      * @param $attachment \sb\Email
      */
-    public function add_attachment(Email_Attachment $attachment)
+    public function addAttachment(Email_Attachment $attachment)
     {
         $this->attachments[] = $attachment;
     }
@@ -230,21 +231,21 @@ class Email{
      * 
      * @param sb_ICalendar_Event $event
      */
-    public function add_ICalendar_Event(ICalendar_Event $event)
+    public function addIcalendarEvent(ICalendar_Event $event)
     {
 
         $a = new Email_Attachment();
         $a->mime_type = 'text/calendar;';
-        $a->set_encoding('8bit');
+        $a->setEncoding('8bit');
         $a->name = 'event.ics';
         $a->contents = $event->__toString();
 
-        $this->add_attachment($a);
+        $this->addAttachment($a);
     }
 
     /**
-     * An instance of sb_Email_Writer used to send
-     * @var sb_Email_Writer
+     * An instance of \sb\Email\Writer used to send
+     * @var \sb\Email\Writer
      */
     protected static $outbox;
 
@@ -252,7 +253,7 @@ class Email{
      * Fires before sending, if returns false, then sending does not occur
      * @return boolean
      */
-    public function on_before_send()
+    public function onBeforeSend()
     {
         return true;
     }
@@ -262,14 +263,14 @@ class Email{
     public function send($outbox=null)
     {
 
-        if($outbox instanceof Email_Writer){
+        if($outbox instanceof Writer){
             self::$outbox = $outbox;
         } elseif(!self::$outbox){
-            self::$outbox = new Email_Writer();
+            self::$outbox = new Writer();
         }
 
-        if($this->on_before_send($this) !== false){
-            self::$outbox->add_email_to_outbox($this);
+        if($this->onBeforeSend($this) !== false){
+            self::$outbox->addEmailToOutbox($this);
 
             //return if sent
             return self::$outbox->send();
@@ -280,19 +281,19 @@ class Email{
     /**
      * Ups the importance of the email, in outlook this displays a exclamation point
      */
-    public function make_important()
+    public function makeImportant()
     {
-        $this->headers[] = $this->add_header('Priority', 'Urgent');
-        $this->headers[] = $this->add_header('Importance', 'high');
+        $this->headers[] = $this->addHeader('Priority', 'Urgent');
+        $this->headers[] = $this->addHeader('Importance', 'high');
     }
 
     /**
      * Adds custom email headers by key value
      * <code>
-     * $mail->add_header('Priority', 'low');
+     * $mail->addHeader('Priority', 'low');
      * </code>
      */
-    public function add_header($key, $value)
+    public function addHeader($key, $value)
     {
         $this->headers[$key] = $value;
     }
@@ -301,7 +302,7 @@ class Email{
      * Convert the email to a multipart_message
      * @return string the raw email source
      */
-    public function construct_multipart_message() 
+    public function constructMultipartMessage() 
     {
         
         $mixed_boundary = '__mixed_1S2U3R4E5B6E7R8T9';
@@ -398,7 +399,7 @@ class Email{
 
             //try and guess the mime type unless it is set
             if(empty($attachment->mime_type)) {
-                $attachment->mime_type = Files::extension_to_mime($attachment->extension);
+                $attachment->mime_type = Files::extensionToMime($attachment->extension);
             }
 
             if($attachment->encoding == 'base64'){

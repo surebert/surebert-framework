@@ -1,14 +1,15 @@
 <?php
+
 /**
  * A data object with the details and records of a paged MySQL query
  *
  * @author Tony Cashaw
  * @package PDO
  */
-namespace sb;
+namespace sb\PDO;
 
-class PDO_RecordPage 
-    {
+class RecordPage
+{
 
     /**
      * The page number that this object is set to
@@ -39,16 +40,20 @@ class PDO_RecordPage
      */
     public $rows = array();
 
-    public function prev_page()
+    public function prevPage()
     {
-        if($this->page_null == 1){return 0;}
-        return ($this->current_page <= 1)?1:$this->current_page - 1;
-    }
-    
-    public function next_page()
-    {
-        if($this->page_null == 1){return 0;}
-        return ($this->current_page >= $this->page_count)?$this->page_count:$this->current_page + 1;
+        if ($this->page_null == 1) {
+            return 0;
+        }
+        return ($this->current_page <= 1) ? 1 : $this->current_page - 1;
     }
 
+    public function nextPage()
+    {
+        if ($this->page_null == 1) {
+            return 0;
+        }
+        return ($this->current_page >= $this->page_count) ? $this->page_count : $this->current_page + 1;
+    }
 }
+

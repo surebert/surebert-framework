@@ -6,7 +6,9 @@
  * @author , Paul Visco, Anthony Cashaw
  * @package Samba
  */
-class Samba_Connection 
+namespace sb\Samba;
+
+class Connection 
     {
 
 /**
@@ -207,11 +209,11 @@ class Samba_Connection
      * Converts a line of returned output into a \sb\Samba_Listing object
      * @param $listing
      * @param $subdir
-     * @return \sb\Samba_Listing
+     * @return \sb\Samba\Listing
      */
-    private    function parseListing($listing, $subdir = '') 
+    private function parseListing($listing, $subdir = '') 
     {
-        $ret = new Samba_Listing();
+        $ret = new \sb\Samba\Listing();
         $exp = '/^\s{2}([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
 
         preg_match_all($exp, $listing, $matches);

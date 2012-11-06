@@ -1,4 +1,5 @@
 <?php
+
 /**
  * As described by syslog RFC3164 http://tools.ietf.org/html/rfc3164
  *
@@ -7,22 +8,23 @@
  * Used to create syslog compatible logs
  *
  * $syslog = new \sb\Logger\Syslog('myprocess');
- * $syslog->set_message('hello log', 1, 11)->save()
+ * $syslog->setMessage('hello log', 1, 11)->save()
  * //OR
- * $syslog->set_message('hello log', 1, 11)->send('mylogserver.com');
+ * $syslog->setMessage('hello log', 1, 11)->send('mylogserver.com');
  * @author paul.visco@roswellpark.org
  * @package Logger
  */
-namespace sb;
+namespace sb\Logger;
 
-class Logger_Syslog{
+class Syslog
+{
 
     /**
      * (Optional) By default is hostname of machine logging, can override if logging for other machine
      * no embedded space, no domain name, only a-z A-Z 0-9 and other authorized characters
      * @var string
      */
-    public $hostname='';
+    public $hostname = '';
 
     /**
      * Process used to generate the message
@@ -53,13 +55,13 @@ class Logger_Syslog{
      * The current line being logged
      * @var string
      */
-    protected $message ='';
+    protected $message = '';
 
     /**
      * The agent string if needed, represents the user who generated the message
      * @var string
      */
-    protected $agent ='';
+    protected $agent = '';
 
     /**
      * Create a new log to send or save
@@ -67,11 +69,11 @@ class Logger_Syslog{
      * @param string $hostname The hostname of the machine t1024hat generated the log messages
      * *  e.g. ls, su, php limit to alphnum < 32 chars, details can go in contents if longer is required
      *
-    */
-    public function __construct($process, $hostname='')
+     */
+    public function __construct($process, $hostname = '')
     {
 
-        $this->process = $this->check_length($process, 32, 'process');
+        $this->process = $this->checkLength($process, 32, 'process');
         $this->hostname = $hostname ? $hostname : php_uname('n');
     }
 
@@ -79,9 +81,9 @@ class Logger_Syslog{
      *
      * @param string $agent Sets the user agent that produced the message within the system
      */
-    public function set_agent($ip, $identifier)
+    public function setAgent($ip, $identifier)
     {
-        $this->agent .= '|'.$ip.'|'.$identifier.'|';
+        $this->agent .= '|' . $ip . '|' . $identifier . '|';
     }
 
     /**
@@ -129,31 +131,38 @@ class Logger_Syslog{
      *  @param integer $time The tstamp to override the current time
      *    @return object This so you can chain ->send or ->save
      */
-    public function set_message($content, $severity=5, $facility=16, $time=null)
+    public function setMessage($content, $severity = 5, $facility = 16, $time = null)
     {
 
-        $this->content = $this->check_length($content);
+        $this->content = $this->checkLength($content);
 
         $facility = intval($facility);
         $severity = intval($severity);
-        if ($facility <  0) { $facility =  0;}
-        if ($facility > 23) { $facility = 23;}
-        if ($severity <  0) { $severity =  0;}
-        if ($severity >  7) { $severity =  7;}
+        if ($facility < 0) {
+            $facility = 0;
+        }
+        if ($facility > 23) {
+            $facility = 23;
+        }
+        if ($severity < 0) {
+            $severity = 0;
+        }
+        if ($severity > 7) {
+            $severity = 7;
+        }
 
-        $this->process = $this->check_length($this->process, 32, 'process');
+        $this->process = $this->checkLength($this->process, 32, 'process');
 
-        $tstamp  = $this->get_tstamp($time);
+        $tstamp = $this->getTstamp($time);
 
-        $priority    = "<".($facility*8 + $severity).">";
-        $header = $tstamp." ".$this->hostname;
+        $priority = "<" . ($facility * 8 + $severity) . ">";
+        $header = $tstamp . " " . $this->hostname;
 
-        $this->message = $priority.$header." ".$this->process.": ".$this->agent.$this->content;
+        $this->message = $priority . $header . " " . $this->process . ": " . $this->agent . $this->content;
 
-        $this->message = $this->check_length($this->message);
+        $this->message = $this->checkLength($this->message);
 
         return $this;
-
     }
 
     /**
@@ -161,13 +170,13 @@ class Logger_Syslog{
      * @param The optional time to use, any format that strtotime understands
      * @return string
      */
-    protected function get_tstamp($time=null)
+    protected function getTstamp($time = null)
     {
         $time = !is_null($time) ? strtotime($time) : time();
-        $month      = date("M", $time);
-        $day        = substr("  ".date("j", $time), -2);
-        $hhmmss     = date("H:i:s", $time);
-        return $month." ".$day." ".$hhmmss;
+        $month = date("M", $time);
+        $day = substr("  " . date("j", $time), -2);
+        $hhmmss = date("H:i:s", $time);
+        return $month . " " . $day . " " . $hhmmss;
     }
 
     /**
@@ -175,7 +184,7 @@ class Logger_Syslog{
      * @param string $message The raw message to send
      * @return object This so you can chain ->send or ->save
      */
-    public function set_raw_message($message)
+    public function setRawMessage($message)
     {
         $this->message = $message;
         return $this;
@@ -187,17 +196,18 @@ class Logger_Syslog{
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    public function save($log_dir='')
+    public function save($log_dir = '')
     {
-        if(empty($log_dir)){
-            $log_dir = ROOT.'/private/logs/syslog/';
+        if (empty($log_dir)) {
+            $log_dir = \ROOT . '/private/logs/syslog/';
         }
 
-        if(!is_dir($log_dir)){
+        if (!is_dir($log_dir)) {
             mkdir($log_dir, 0777, true);
         }
 
-        return file_put_contents($log_dir.date('Y_m_d').'.log', $this->message."\n", FILE_APPEND);
+        return file_put_contents($log_dir . date('Y_m_d') . '.log',
+                $this->message . "\n", \FILE_APPEND);
     }
 
     /**
@@ -215,24 +225,24 @@ class Logger_Syslog{
      * @param integer $timeout The timeout on the udp connection
      * @return string message returned or error string
      */
-    public function send($server='', $port=514, $timeout = 0)
+    public function send($server = '', $port = 514, $timeout = 0)
     {
-        if(!empty($server)){
+        if (!empty($server)) {
             $this->server = $server;
         }
 
         $this->port = $port;
 
-        if(empty($this->server)){
-            trigger_error('No server to send to has been specified', E_USER_WARNING);
+        if (empty($this->server)) {
+            throw new \Exception('No server to send to has been specified', E_USER_WARNING);
         }
 
-        if (intval($timeout) > 0){
+        if (intval($timeout) > 0) {
             $this->timeout = intval($timeout);
         }
 
-        $fp = fsockopen("udp://".$this->server, $this->port, $errno, $errstr);
-        if ($fp){
+        $fp = fsockopen("udp://" . $this->server, $this->port, $errno, $errstr);
+        if ($fp) {
             $result = fwrite($fp, $this->message);
             fclose($fp);
         } else {
@@ -240,29 +250,29 @@ class Logger_Syslog{
         }
 
         return $result;
-
     }
 
     /**
-     *Checks to make sure the length of something is expected or warn and truncate
+     * Checks to make sure the length of something is expected or warn and truncate
      * @param string $str The string to check
      * @param int $max_length The maximun length to check for, -1 means infinite length
      * @param string $type The type of thing to check packet or process
      * @return string The string truncated to max length
      */
-    protected function check_length($str, $max_length='', $type='packet')
+    protected function checkLength($str, $max_length = '', $type = 'packet')
     {
         $max_length = $max_length ? $max_length : $this->max_length;
-        if($max_length == -1){
+        if ($max_length == -1) {
             return $str;
         }
-        
+
         $strlen = strlen($str);
-        if($strlen > $max_length){
-            trigger_error("Syslog ".$type." is > ".$max_length." (".$strlen.") in length and will be truncated.  Original str is: ".$str, E_USER_WARNING);
+        if ($strlen > $max_length) {
+            throw new \Exception("Syslog " . $type . " is > " . $max_length . " (" . $strlen . ") in length and will be truncated.  Original str is: " . $str, E_USER_WARNING);
             return substr($str, 0, $max_length);
         }
 
         return $str;
     }
 }
+

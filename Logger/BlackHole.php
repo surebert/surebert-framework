@@ -6,9 +6,9 @@
  * @package Logger
  *
  */
-namespace sb;
+namespace sb\Logger;
 
-class Logger_BlackHole extends Logger_Base{
+class BlackHole extends Base{
 
     /**
      * Writes the data to file
@@ -16,7 +16,7 @@ class Logger_BlackHole extends Logger_Base{
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    protected function __write($data, $log_type)
+    protected function write($data, $log_type)
     {
         return true;
     }

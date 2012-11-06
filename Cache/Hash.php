@@ -14,9 +14,9 @@
  * @package Cache
  *
  */
-namespace sb;
+namespace sb\Cache;
 
-class Cache_Hash implements Cache_Base
+class Hash implements Base
 {
 
     /**

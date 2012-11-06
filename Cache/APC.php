@@ -6,9 +6,9 @@
  * @version 1.0 01/23/2009 05/14/2009
  * @package Cache
  */
-namespace Cache;
+namespace \sb\Cache;
 
-class Cache_APC implements Cache_Base
+class APC implements Base
 {
 
     /**

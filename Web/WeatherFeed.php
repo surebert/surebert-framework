@@ -6,9 +6,9 @@
  * @package Web
  * 
  */
-namespace sb;
+namespace sb\Web;
 
-class Web_WeatherFeed{
+class WeatherFeed{
     
     /**
      * The current weather condition

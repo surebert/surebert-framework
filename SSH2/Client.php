@@ -5,10 +5,10 @@
  * see http://php.net/manual/en/wrappers.ssh2.php for more info
  *
  * <code>
- * $client = new \sb\SSH2_Client('server.com', 1027);
+ * $client = new \sb\SSH2\Client('server.com', 1027);
  * $client->login('uname', 'pass');
  * OR
- * $client->login_with_key('uname', 'id_rsa.pub', 'id_rsa', '');
+ * $client->loginWithKey('uname', 'id_rsa.pub', 'id_rsa', '');
  *
  * $data = $client->exec('ls /tmp');
  * </code>
@@ -16,9 +16,9 @@
  * @author paul.visco@roswellpark.org
  * @package SSH2
  */
-namespace sb;
+namespace sb\SSH2;
 
-class SSH2_Client{
+class Client{
 
     protected $connection;
 
@@ -63,7 +63,7 @@ class SSH2_Client{
      * @param string $private_key_file The private key file to use id (id_rsa), make sure it is readible by your script
      * @param string $pass The passphrase of the keyfile to use if one is required
      */
-    public function login_with_key($uname, $public_key_file, $private_key_file, $pass='')
+    public function loginWithKey($uname, $public_key_file, $private_key_file, $pass='')
     {
         if (!ssh2_auth_pubkey_file($this->connection, $uname, $public_key_file, $private_key_file, $pass))
     {

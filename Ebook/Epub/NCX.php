@@ -1,43 +1,48 @@
 <?php
+
 /**
  * Models an Epub doc
  *         . "\t\t<meta name=\"dtb:uid\" content=\"" . $this->identifier . "\" />\n"
-            . "\t\t<meta name=\"dtb:depth\" content=\"2\" />\n"
-            . "\t\t<meta name=\"dtb:totalPageCount\" content=\"0\" />\n"
-            . "\t\t<meta name=\"dtb:maxPageNumber\" content=\"0\" />\n"
+  . "\t\t<meta name=\"dtb:depth\" content=\"2\" />\n"
+  . "\t\t<meta name=\"dtb:totalPageCount\" content=\"0\" />\n"
+  . "\t\t<meta name=\"dtb:maxPageNumber\" content=\"0\" />\n"
  * @author paul.visco@roswellpark.org
- * @package sb_Epub
+ * @package Ebook
  */
-class sb_Ebook_Epub_NCX extends DOMDocument{
+namespace sb\Ebook\Epub;
+
+class NCX extends \DOMDocument
+{
 
     /**
      *
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     public $xml;
 
     public $navmap;
+
     public $head;
+
     public $formatOutput = true;
 
-    public function  __construct($version='1.0', $encoding='UTF-8') 
+    public function __construct($version = '1.0', $encoding = 'UTF-8')
     {
         parent::__construct($version, $encoding);
 
-        $this->create_doc();
-        $this->create_head();
+        $this->createDoc();
+        $this->createHead();
     }
 
-    public function create_doc()
+    public function createDoc()
     {
         $this->ncx = $this->appendChild($this->createElement('ncx'));
         $this->ncx->setAttribute('xmlns', 'http://www.daisy.org/z3986/2005/ncx/');
         $this->ncx->setAttribute('version', '2005-1');
         $this->ncx->setAttribute('xml:lang', 'en');
-
     }
 
-    public function create_head()
+    public function createHead()
     {
         $this->head = $this->ncx->appendChild($this->createElement('head'));
         $this->title = $this->ncx->appendChild($this->createElement('docTitle'));
@@ -45,21 +50,23 @@ class sb_Ebook_Epub_NCX extends DOMDocument{
         $this->navmap = $this->ncx->appendChild($this->createElement('navmap'));
     }
 
-    public function set_title($title)
+    public function setTitle($title)
     {
         $title_txt = $this->title->appendChild($this->createElement('text'));
         $title_txt->appendChild($this->createTextNode($title));
+
         return $title_txt;
     }
 
-    public function set_author($author)
+    public function setAuthor($author)
     {
         $author_txt = $this->author->appendChild($this->createElement('text'));
         $author_txt->appendChild($this->createTextNode($author));
+
         return $this->author;
     }
 
-    public function add_navpoint_to_navmap($id, $play_order, $name, $src)
+    public function addNavpointToNavmap($id, $play_order, $name, $src)
     {
         $nav_point = $this->navmap->appendChild($this->createElement('navPoint'));
         $nav_point->setAttribute('id', $id);
@@ -73,5 +80,5 @@ class sb_Ebook_Epub_NCX extends DOMDocument{
 
         return $nav_point;
     }
-
 }
+

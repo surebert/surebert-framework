@@ -4,7 +4,7 @@
  * SMS
  * 
  * <code>
- * $sms = new \sb\Mobile_SMS();
+ * $sms = new \sb\Mobile\SMS();
  * $sms->send_to['num'] ='716-228-7445';
  * $sms->send_to['carrier'] ='sprint';
  * $sms->send_from['num'] ='x@t.com';
@@ -18,9 +18,9 @@
  * @package Mobile
  * 
  */
-namespace sb;
+namespace sb\Mobile;
 
-class Mobile_SMS{
+class SMS{
     
     /**
      * The telephone number to send to and the carrier
@@ -59,9 +59,11 @@ class Mobile_SMS{
     public function send($message)
     {
         
-        $send_to = str_replace("-","", $this->send_to['num']).'@'.self::$carriers[$this->send_to['carrier']];
+        $send_to = str_replace("-","", $this->send_to['num'])
+            .'@'.self::$carriers[$this->send_to['carrier']];
         
-        $send_from = str_replace("-","", $this->send_from['num']).'@'.self::$carriers[$this->send_from['carrier']];
+        $send_from = str_replace("-","", $this->send_from['num']);
+          // .'@'.self::$carriers[$this->send_from['carrier']];
         
         //define headers - send from receiver
         $headers = "From: ".$send_from."\nEnvelope-To: ".$send_from."\n";

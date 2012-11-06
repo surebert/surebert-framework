@@ -100,7 +100,7 @@ class Request
 
         $this->path = "/" . implode("/", $this->path_array);
 
-        $this->set_input(\sb\Gateway::$post, \sb\Gateway::$cookie, \sb\Gateway::$files, \sb\Gateway::$data);
+        $this->setInput(\sb\Gateway::$post, \sb\Gateway::$cookie, \sb\Gateway::$files, \sb\Gateway::$data);
 
         $this->method = \sb\Gateway::$request_method;
     }
@@ -111,7 +111,7 @@ class Request
      * @param $cookie
      * @param $files
      */
-    public function set_input(&$post, &$cookie, &$files, &$data) 
+    public function setInput(&$post, &$cookie, &$files, &$data) 
     {
 
         $this->post = $post;
@@ -124,7 +124,7 @@ class Request
      * Sets the input argument delimeter and parses it
      * @param $input_args_delimiter
      */
-    public function set_input_args_delimiter($input_args_delimiter) 
+    public function setInputArgsDelimiter($input_args_delimiter) 
     {
 
         //parse arguments by removing path
@@ -154,7 +154,7 @@ class Request
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_get($key, $default_val = null) 
+    public function getGet($key, $default_val = null) 
     {
 
         if (isset($this->get[$key])) {
@@ -170,7 +170,7 @@ class Request
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_post($key, $default_val = null) 
+    public function getPost($key, $default_val = null) 
     {
         if (isset($this->post[$key])) {
             return $this->post[$key];
@@ -185,7 +185,7 @@ class Request
      * @param string $key The key to look for
      * @return mixed the string value or null if not found
      */
-    public function get_cookie($key, $default_val = null) 
+    public function getCookie($key, $default_val = null) 
     {
         if (isset($this->cookie[$key])) {
             return $this->cookie[$key];
@@ -200,7 +200,7 @@ class Request
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_session($key, $default_val = null) 
+    public function getSession($key, $default_val = null) 
     {
 
         if (isset($_SESSION[$key])) {
@@ -216,7 +216,7 @@ class Request
      * @param mixed $default_val null by default
      * @return mixed string value or null 
      */
-    public function get_arg($arg_num, $default_val = null) 
+    public function getArg($arg_num, $default_val = null) 
     {
         if (isset($this->args[$arg_num])) {
             return $this->args[$arg_num];

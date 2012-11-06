@@ -4,14 +4,13 @@
  *
  * You can add additional properties on the fly
  * @author paul.visco@roswellpark.org
- * @version 1.0 12/08/08 12/08/08
- * @package sb\HTML
+ * @package sb\Controller
  */
 
-namespace sb;
+namespace sb\Controller\HTML;
 
-class HTML_HeadMeta 
-    {
+class HeadMeta
+{
 
     /**
      *
@@ -30,5 +29,5 @@ class HTML_HeadMeta
      * @var The meta author of an HTML page
      */
     public $author;
-
 }
+

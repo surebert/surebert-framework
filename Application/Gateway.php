@@ -140,6 +140,18 @@ class Gateway
     public static $allow_direct_view_rendering = true;
 
     /**
+     * Converts underscore string to camel case
+     * @param string $str
+     * @return string
+     */
+    public static function toCamelCase($str) {
+
+      return preg_replace_callback('/_([a-z])/', function($v){
+          return strtoupper($v[1]);
+      }, $str);
+    }
+  
+    /**
      * Loads a view for rendering
      * @param mixed $request Either an instance of Request or a string with the path to the view e.g. /user/run
      * @return string The rendered view data
@@ -205,8 +217,8 @@ class Gateway
             $request->get = array_merge(Gateway::$request->get, $request->get);
         }
 
-        if (!$controller instanceof Controller) {
-            throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller");
+        if (!$controller instanceof \sb\Controller\Base) {
+            throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller\Base");
         }
 
         $controller->setRequest($request);
@@ -233,7 +245,7 @@ class Gateway
                 $fileName  = \str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
             }
             $fileName .= \str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
-
+            
             $fileName = ROOT.'/vendor/'.$fileName;
             require $fileName;
         } elseif (preg_match('~Controller$~', $class_name)) {

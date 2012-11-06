@@ -10,9 +10,9 @@
  * @package Web
  * 
  */
-namespace sb;
+namespace sb\Web;
 
-class Web_Captcha{
+class Captcha{
     /**
      * The characters allowed in the captcha word
      *
@@ -49,7 +49,7 @@ class Web_Captcha{
      * session_start();
      *
      * //You can pass it an optional 200px x 200px background image as a path to the first argument, you can also pass a text color as a 3 integer rgb array e.g. Array(255,255,45) as teh second argument
-     * $cap = new \sb\Web_Captcha();
+     * $cap = new \sb\Web\Captcha();
      *
      * //set the ttf font you want to use.  Otherwise uses default font which is ugly and not as scalable
      * $cap->font = '../media/fonts/cherokee.ttf';
@@ -59,7 +59,7 @@ class Web_Captcha{
      * $png = $cap->draw();
      *
      * //add background interference to make it more difficult for the computer to guess the word
-     * $cap->add_interference();
+     * $cap->addInterference();
      * 
      * //set teh session with the word printed in the image, you then check when the user entered against this session variable on your form submission processing page
      * $_SESSION['sb_Web_Captcha']= $cap->word;
@@ -103,7 +103,7 @@ class Web_Captcha{
      *
      * @return string
      */
-    private function create_word()
+    private function createWord()
     {
         
         $this->word ='';
@@ -118,7 +118,7 @@ class Web_Captcha{
      * Adds interference as circles int he backgroun the make it more difficult to parse.  This is optional
      *
      */
-    public function add_interference()
+    public function addInterference()
     {
         
         for($i=0;$i<20;$i++){
@@ -136,7 +136,7 @@ class Web_Captcha{
     public function draw($filters=Array())
     {
         
-        $word = $this->create_word();
+        $word = $this->createWord();
     
         for($j=0;$j<5;$j++){
             

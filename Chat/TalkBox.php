@@ -30,9 +30,10 @@
  * 
  * 
  */
-namespace sb;
+namespace sb\Chat;
+use \sb\Text\Bling as Bling;
 
-class Chat_TalkBox
+class TalkBox
 {
 
     /**
@@ -226,9 +227,9 @@ class Chat_TalkBox
             $line->message = $this->check_commands($line->message);
         }
 
-        $line->message = Text_Bling::strip_all($line->message);
+        $line->message = Bling::stripAll($line->message);
 
-        $line->message = Text_Bling::typo_fix($line->message);
+        $line->message = Bling::typoFix($line->message);
 
         $sql = "INSERT INTO sb_TalkBox_" . $this->room . " 
             ( uname, tstamp, message, ip) 
@@ -244,7 +245,7 @@ class Chat_TalkBox
 
         $stmt->execute($values);
 
-        $sql = \str_replace('sb_TalkBox_' . $this->room, 'sb_TalkBox_' . $this->room . '_mem', $sql);
+        $sql = str_replace('sb_TalkBox_' . $this->room, 'sb_TalkBox_' . $this->room . '_mem', $sql);
 
         $stmt = $this->db->prepare($sql);
 
@@ -290,6 +291,7 @@ class Chat_TalkBox
 
         $this->updateLastVisit();
 
+        //TODO convert to event based callback
         if (function_exists('sb_TalkBoxOnParse')) {
             foreach ($chatter as &$line) {
                 $line->m = sb_TalkBoxOnParse($line->m);

@@ -76,7 +76,7 @@ class Image{
      * $sb_Image->display();
      * $sb_Image->force_download();
      * //$sb_Image->rotate(90);
-     * //$sb_Image->to_jpg();
+     * //$sb_Image->toJPG();
      *</code>
      */
     public function __construct($orig='', $dest='')
@@ -101,7 +101,7 @@ class Image{
         }
         
         $this->path = $orig;
-        $this->get_info();    
+        $this->getInfo();    
         
     }
     
@@ -109,7 +109,7 @@ class Image{
      * Gets the image file type, width, and height
      *
      */
-    public function get_info()
+    public function getInfo()
     {
     
         $file_info = @getimagesize($this->path);
@@ -223,7 +223,7 @@ class Image{
      */
     public function to_grayscale()
     {
-        $this->get_info();
+        $this->getInfo();
         
         $this->edited = imagecreate($this->width['orig'], $this->height['orig']);
         
@@ -275,8 +275,7 @@ class Image{
     public function rotate($rotation)
     {
         if(isset($this->edited)){
-            echo 'yo';
-            $this->get_info();
+            $this->getInfo();
             $this->edited =  imagerotate($this->edited, $rotation, 0);
         } else {
             $this->edited =  imagerotate($this->original, $rotation, 0);
@@ -314,7 +313,7 @@ class Image{
      * Adds a datestamp to the picture
      *
      */
-    public function date_stamp()
+    public function dateStamp()
     {
         $this->write(date('m/d/y H:i'), array('size'=>3, 'x'=>2, 'y'=>2, 'color'=>array(0,255,0)));
         $this->write(date('m/d/y H:i'), array('size'=>3, 'x'=>3, 'y'=>3, 'color'=>array(0,0,0)));
@@ -324,7 +323,7 @@ class Image{
      * Saves the image file being edited as a gif
      *
      */
-    public function to_gif()
+    public function toGif()
     {
     
         imagegif($this->edited, $this->path);
@@ -334,7 +333,7 @@ class Image{
      * Saves the image file being edited as a jpg
      *
      */
-    public function to_jpg()
+    public function toJpg()
     {
         
         imagejpeg($this->edited, $this->path, 96);
@@ -344,7 +343,7 @@ class Image{
      * Saves the image file being edited as a png
      *
      */
-    public function to_png()
+    public function toPng()
     {
         
     
@@ -355,22 +354,22 @@ class Image{
      * Saves the edited image as a file based on the original images file type
      *
      */
-    public function to_file()
+    public function toFile()
     {
     
             
         if ($this->type == "jpg")
     
     {
-            $this->to_jpg();
+            $this->toJpg();
             
         } elseif ($this->type == "png") {
         
-            $this->to_png();
+            $this->toPng();
             
         } elseif ($this->type == "gif") {
         
-            $this->to_gif();
+            $this->toGif();
         }
         
     }
@@ -416,21 +415,21 @@ class Image{
         if ($this->type == "jpg")
     
     {
-            $this->to_jpg();
+            $this->toJpg();
             
         } elseif ($this->type == "png") {
         
-            $this->to_png();
+            $this->toPng();
             
         } elseif ($this->type == "gif") {
         
-            $this->to_gif();
+            $this->toGif();
         }
         
         header('Content-Description: File Transfer');
         header("Content-Type: application/octet-stream");
         header('Content-Length: ' . filesize($this->path));
-        header('Content-Disposition: attachment; filename=' . basename($this->path));
+        header('Content-Disposition: attachment; filename="' . basename($this->path.'"'));
         readfile($this->path);
         
         //remove the temp file

@@ -4,20 +4,24 @@
  * Creates UUIDS taken from http://php.net/manual/en/function.uniqid.php
  * @package _Identifiers
  */
-namespace sb;
+namespace sb\Identifiers;
 
-class Identifiers_UUID 
-    {
+class UUID
+{
 
     /**
      * Creates a v3 UUID
-     * \sb\Identifiers_UUID::v3('hello', 'world');
      * @return string
+     * 
+     * <code>
+     * \sb\Identifiers\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
+     * </code>
      */
-    public static function v3($namespace, $name) 
+    public static function v3($namespace, $name)
     {
-        if (!self::is_valid($namespace))
+        if (!self::isValid($namespace)) {
             return false;
+        }
 
         // Get hexadecimal components of namespace
         $nhex = str_replace(array('-', '{', '}'), '', $namespace);
@@ -52,10 +56,13 @@ class Identifiers_UUID
 
     /**
      * Creates a v4 UUID
-     * \sb\Identifiers_UUID::v4();
      * @return string
+     * 
+     * <code>
+     * \sb\Identifiers\UUID::v4();
+     * </code>
      */
-    public static function v4() 
+    public static function v4()
     {
         return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
                 // 32 bits for "time_low"
@@ -79,11 +86,16 @@ class Identifiers_UUID
      * @param string $namespace Another UUID to use as namespace
      * @param string $name
      * @return string
+     * 
+     * <code>
+     * \sb\Identifiers\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
+     * </code>
      */
-    public static function v5($namespace, $name) 
+    public static function v5($namespace, $name)
     {
-        if (!self::is_valid($namespace))
+        if (!self::isValid($namespace)) {
             return false;
+        }
 
         // Get hexadecimal components of namespace
         $nhex = str_replace(array('-', '{', '}'), '', $namespace);
@@ -99,7 +111,7 @@ class Identifiers_UUID
         // Calculate hash value
         $hash = sha1($nstr . $name);
 
-        return sprintf('%08s-%04s-%04x-%04x-%12s',
+         return sprintf('%08s-%04s-%04x-%04x-%12s',
                 // 32 bits for "time_low"
                 substr($hash, 0, 8),
                 // 16 bits for "time_mid"
@@ -121,10 +133,10 @@ class Identifiers_UUID
      * @param string $uuid
      * @return boolean
      */
-    public static function is_valid($uuid) 
+    public static function isValid($uuid)
     {
-        return preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $uuid) === 1;
+        return preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i',
+                $uuid) === 1;
     }
-
 }
 

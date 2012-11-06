@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  * Used to store cache data in a mysql table
  *
  * <code>
@@ -19,9 +19,9 @@
  *
  *
  */
-namespace sb;
+namespace sb\Cache;
 
-class Cache_Mysql implements Cache_Base
+class Mysql implements Base
 {
 
     /**
@@ -178,7 +178,7 @@ class Cache_Mysql implements Cache_Base
             ");
         }
         $stmt = $this->stmts[$stmt_cache];
-        $stmt->setFetchMode(PDO::FETCH_NUM);
+        $stmt->setFetchMode(\PDO::FETCH_NUM);
 
         $result = $stmt->execute();
 

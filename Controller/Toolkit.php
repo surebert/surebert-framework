@@ -5,9 +5,9 @@
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
-namespace sb;
+namespace sb\Controller;
 
-class Controller_Toolkit extends Controller
+class Toolkit extends Base
 {
 
     public $input_args_delimiter = ',';
@@ -43,7 +43,7 @@ class Controller_Toolkit extends Controller
     public function filterOutput($output)
     {
         if (!isset($this->request->get['sb_comments'])) {
-            return \preg_replace("~/\*\*.*?\*/~s", "", $output);
+            return preg_replace("~/\*\*.*?\*/~s", "", $output);
         } else {
             return $output;
         }
@@ -56,15 +56,15 @@ class Controller_Toolkit extends Controller
     protected function concatFiles($files = Array(), $version = '')
     {
 
-        if ($files[0] == 'sb' && \strstr(Gateway::$agent, 'MSIE')) {
+        if ($files[0] == 'sb' && strstr(\sb\Gateway::$agent, 'MSIE')) {
 
-            \array_unshift($files, 'js1_5');
+            array_unshift($files, 'js1_5');
         }
 
         $root = false;
         if (empty($version)) {
             $root = SUREBERT_TOOLKIT_PATH;
-        } elseif (\is_numeric($version)) {
+        } elseif (is_numeric($version)) {
             $root = $this->toolkit_root . '/tags/' . $version;
         } else {
             $root = $this->toolkit_root . '/' . $version;
@@ -74,15 +74,15 @@ class Controller_Toolkit extends Controller
             $root = $this->toolkit_root . 'trunk';
         }
 
-        $this->version = \basename($root);
+        $this->version = basename($root);
 
-        $binary = \preg_match("~\.(swf|gif|png)$~", $files[0], $match);
+        $binary = preg_match("~\.(swf|gif|png)$~", $files[0], $match);
 
         if ($binary) {
             if ($match[1] == 'swf') {
-                \header("Content-type: application/x-shockwave-flash");
+                header("Content-type: application/x-shockwave-flash");
             } elseif ($match[1] == 'gif' || $match[1] == 'png') {
-                \header("Content-type: image/" . $match[1]);
+                header("Content-type: image/" . $match[1]);
             }
         } else {
             $this->addJavascriptHeaders();
@@ -91,7 +91,7 @@ class Controller_Toolkit extends Controller
 
         if ($this->cache_enable) {
             $cache = isset(\App::$cache) ? \App::$cache : new Cache_FileSystem();
-            $key = '/toolkit/' . \md5(implode(",", $files) . $version);
+            $key = '/toolkit/' . md5(implode(",", $files) . $version);
 
             $data = $cache->fetch($key);
             if ($data) {
@@ -107,7 +107,7 @@ class Controller_Toolkit extends Controller
                 $surebert[] = $file;
             } else {
 
-                $surebert[] = \str_replace('.', '/', $file) . '.js';
+                $surebert[] = str_replace('.', '/', $file) . '.js';
             }
         }
         ob_start();
@@ -116,14 +116,14 @@ class Controller_Toolkit extends Controller
             echo $this->grabFile($file, $root);
         }
 
-        $js = \ob_get_clean();
+        $js = ob_get_clean();
 
         if (isset($this->request->get['manifest'])) {
             $m = $this->request->get['manifest'];
             if ($m == 'js') {
-                return \json_encode($this->loaded_files);
+                return json_encode($this->loaded_files);
             } else {
-                return \print_r($this->loaded_files, 1);
+                return print_r($this->loaded_files, 1);
             }
         }
         if ($this->cache_enable) {
@@ -143,15 +143,15 @@ class Controller_Toolkit extends Controller
     {
         $data = '';
 
-        if (\is_file($root . '/' . $file)) {
+        if (is_file($root . '/' . $file)) {
 
             $this->loaded_files[] = $file;
 
             $file = $root . '/' . $file;
 
-            $data = \file_get_contents($file);
-            if (!\strstr($file, 'sb.js')) {
-                \preg_match_all("~sb\.include\([\"'](.*?)[\"']~", $data, $includes);
+            $data = file_get_contents($file);
+            if (!strstr($file, 'sb.js')) {
+                preg_match_all("~sb\.include\([\"'](.*?)[\"']~", $data, $includes);
 
                 if ($includes[1]) {
                     $precludes = '';
@@ -162,7 +162,7 @@ class Controller_Toolkit extends Controller
                         }
                     }
 
-                    $data = $precludes . "\n" . $data;
+                    $data = $precludes . "n" . $data;
                 }
             }
         } else {
@@ -213,13 +213,13 @@ class Controller_Toolkit extends Controller
     public function basic()
     {
         if (!isset($this->request->get['noexpire'])) {
-            \header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 259200));
+            header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 259200));
         }
 
-        \header("Content-type: application/x-javascript");
+        header("Content-type: application/x-javascript");
         $version = '';
         if (isset($this->request->get['v'])) {
-            if (\is_numeric($this->request->get['v'])) {
+            if (is_numeric($this->request->get['v'])) {
                 $version = $this->request->get['v'];
             }
         }
@@ -262,7 +262,7 @@ class Controller_Toolkit extends Controller
         $protocol = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http';
 
 
-        $str = "if(!sbBase){var sbBase = '" . $protocol . "://" . Gateway::$http_host . "/surebert/load/';}\n";
+        $str = "if(!sbBase){var sbBase = '" . $protocol . "://" . \sb\Gateway::$http_host . "/surebert/load/';}\n";
 
         $surebert = \array_merge($surebert, $this->request->args);
         $str .= $this->concatFiles($surebert, $version);

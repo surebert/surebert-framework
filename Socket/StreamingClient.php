@@ -7,7 +7,8 @@
  * @package sb_Socket
  *
  */
-class sb_Socket_StreamingClient extends sb_Socket_Client 
+namespace \sb\Socket;
+class StreamingClient extends Client 
     {
 
     /**
@@ -31,7 +32,7 @@ class sb_Socket_StreamingClient extends sb_Socket_Client
     public function __construct($remote_socket, $timeout=10) 
     {
         
-        $this->count_instance();
+        $this->countInstance();
 
         $this->unique_id = self::$instances;
 

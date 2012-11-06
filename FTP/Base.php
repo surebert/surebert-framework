@@ -4,7 +4,9 @@
  *
  * @package FTP
  */
-interface FTP_Base{
+namespace sb\FTP;
+interface Base
+{
 
     /**
      * Login to a remote server with uname and pass based credentials
@@ -54,8 +56,6 @@ interface FTP_Base{
      */
     public function rmdir($remote_path);
 
-
-
     public function chmod($remote_path, $mode);
-
 }
+

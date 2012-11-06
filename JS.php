@@ -20,17 +20,17 @@ class JS{
      * @param string $html The innerHTML to set
      * @return string
      */
-    public static function set_html($id, $html)
+    public static function setHTML($id, $html)
     {
         $js = '$("'.$id.'").html('.json_encode($html).');';
-        return self::exec_header($js);
+        return self::execHeader($js);
     }
     
     /**
      * Executes a script at a certain path
      * @param string $script_path full path
      */
-    public static function exec_script($script_path, $context=null)
+    public static function execScript($script_path, $context=null)
     {
         header('Content-type: text/javascript');
         if(!is_null($context)){
@@ -53,7 +53,7 @@ class JS{
      */
     public static function notify($message, $class='success')
     {
-        return self::exec_header("sb.notify(".json_encode($message).", ".json_encode($class).");");
+        return self::execHeader("sb.notify(".json_encode($message).", ".json_encode($class).");");
     }
     
     /**

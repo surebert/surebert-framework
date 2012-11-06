@@ -1,12 +1,12 @@
 <?php
 /**
- * Used to cache data in various formats
+ * Interface used to describe caching mechanism
  * @author paul.visco@roswellpark.org
  * @package Cache
  */
-namespace sb;
+namespace sb\Cache;
 
-interface Cache_Base
+interface Base
 {
     /**
      * Stores the cache data based using the key and ttl

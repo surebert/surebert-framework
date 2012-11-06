@@ -8,9 +8,9 @@
  * @package RSS
  *
  */
-namespace sb;
+namespace sb\RSS;
 
-class RSS_ItemEnclosure{
+class ItemEnclosure{
     
     /**
      * The url for the enclosure
@@ -34,11 +34,11 @@ class RSS_ItemEnclosure{
     public $type;
     
     /**
-     * Used to create an \sb\RSSEnclosure suitable for adding to an \sb\RSS_Item in an \sb\RSSFeed
+     * Used to create an \sb\RSSEnclosure suitable for adding to an \sb\RSS\Item in an \sb\RSSFeed
      *
      * <code>
-     * $myItem = new \sb\RSS_Item();
-     * $myItem->enclosure = new \sb\RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
+     * $myItem = new \sb\RSS\Item();
+     * $myItem->enclosure = new \sb\RSS\ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
      * </code>
      *
      * @param string $url The URL of the media file

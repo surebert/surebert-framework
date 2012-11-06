@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Used to send plain text emails, HTML emails, or plain text and html emails with attachments both inline and not REQUIRES sb_Email.php and sb_Files (<-unless you specify the mime types on attachments manually)
+ * Used to send plain text emails, HTML emails, or plain text and html emails 
+ * with attachments both inline and not REQUIRES sb_Email.php and sb_Files 
+ * (<-unless you specify the mime types on attachments manually)
  *
  * If DEBUG_EMAIL constant is defined, then all email goes to that address.
  *
@@ -9,15 +11,15 @@
  * @package Email
  *
  */
-namespace sb;
+namespace sb\Email;
 
-class Email_Writer 
-    {
+class Writer
+{
 
-/**
- * An instance of sb_Logger for logging the emails sent
- * @var sb_Logger
- */
+    /**
+     * An instance of sb_Logger for logging the emails sent
+     * @var sb_Logger
+     */
     public $logger;
 
     /**
@@ -40,7 +42,7 @@ class Email_Writer
     protected $remote_addr = '127.0.0.1';
 
     /**
-     *The http host of the server sending the email, defaults to php_uname('n') if $_SERVER['HTTP_HOST'] is not set
+     * The http host of the server sending the email, defaults to php_uname('n') if $_SERVER['HTTP_HOST'] is not set
      * @var string
      */
     protected $http_host = 'localhost';
@@ -55,86 +57,93 @@ class Email_Writer
      * $myEmailWriter = new \sb\Email_Writer();
      *
      * //add an instance of \sb\Email to the outbox, you can add as many as you want
-     * $myEmailWriter->add_email_to_outbox($myMail);
+     * $myEmailWriter->addEmailToOutbox($myMail);
      *
      * //then send, you could add more emails before sending
      * var_dump($myEmailWriter->send());
      *
      * </code>
      */
-    public function __construct($logger=null, $remote_addr='', $http_host='') 
+    public function __construct($logger = null, $remote_addr = '', $http_host = '')
     {
 
-        if($logger instanceOf Logger_Base) {
+        if ($logger instanceOf \sb\Logger\Base) {
             $this->logger = $logger;
-        } elseif(isset(\App::$logger) && \App::$logger instanceof Logger_Base) {
+        } elseif (isset(\App::$logger) && \App::$logger instanceof Logger_Base) {
             $this->logger = \App::$logger;
         } else {
-            $this->logger = new Logger_FileSystem();
+            $this->logger = new \sb\Logger\FileSystem();
         }
 
-        $this->remote_addr = (!empty($remote_addr)) ? $remote_addr : Gateway::$remote_addr;
-        $this->http_host = (!empty($http_host)) ? $http_host : (isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : php_uname('n')) ;
+        $this->remote_addr = (!empty($remote_addr)) ? $remote_addr :
+            \sb\Gateway::$remote_addr;
+
+        $this->http_host = (!empty($http_host)) ? $http_host :
+            (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
     }
 
     /**
-     * Sends the emails in the $emails array that were attached using add_email_to_outbox, logs progress if log file is specified
+     * Sends the emails in the $emails array that were attached using 
+     * addEmailToOutbox, logs progress if log file is specified
      *
      */
-    public function send($email=0) 
+    public function send($email = 0)
     {
 
-        if($email instanceof Email) {
-            $this->add_email_to_outbox($email);
+        if ($email instanceof Email) {
+            $this->addEmailToOutbox($email);
         }
 
-        $sent_emails=0;
+        $sent_emails = 0;
 
-        foreach($this->emails as &$email) {
+        foreach ($this->emails as &$email) {
 
-            $this->add_security_info($email);
+            $this->addSecurityInfo($email);
 
             //all email goes to DEBUG_EMAIL if specified
-            if(defined("DEBUG_EMAIL")) {
-                $email->debug_info = "\n\nDEBUG MODE: Should be sent to: ".$email->to." when not in debug mode!";
-                $email->debug_info .=  "\nDEBUG MODE: Should be sent from: ".$email->from." when not in debug mode!";
+            if (defined("DEBUG_EMAIL")) {
+                $email->debug_info = "\n\nDEBUG MODE: Should be sent to: " . $email->to . " when not in debug mode!";
+                $email->debug_info .= "\nDEBUG MODE: Should be sent from: " . $email->from . " when not in debug mode!";
 
-                $email->to = DEBUG_EMAIL;
-                $email->from = DEBUG_EMAIL;
+                $email->to = \DEBUG_EMAIL;
+                $email->from = \DEBUG_EMAIL;
 
-                if(!empty($email->cc)){
-                    $email->debug_info .=  "\nDEBUG MODE: Should be be CCed to: ".implode(", ", $email->cc)." when not in debug mode!";
+                if (!empty($email->cc)) {
+                    $email->debug_info .= "\nDEBUG MODE: Should be be CCed to: "
+                        . implode(", ", $email->cc) . " when not in debug mode!";
                     $email->cc = Array();
                 }
 
-                if(!empty($email->bcc)){
-                    $email->debug_info .=  "\nDEBUG MODE: Should be be BCCed to: ".implode(", ", $email->bcc)." when not in debug mode!";
+                if (!empty($email->bcc)) {
+                    $email->debug_info .= "\nDEBUG MODE: Should be be BCCed to: "
+                        . implode(", ", $email->bcc) . " when not in debug mode!";
                     $email->bcc = Array();
                 }
-                
+
                 $email->body .= $email->debug_info;
-                if(!empty($email->body_HTML)){
+                if (!empty($email->body_HTML)) {
                     $email->body_HTML .= nl2br($email->debug_info);
                 }
             }
 
-            $email->construct_multipart_message();
+            $email->constructMultipartMessage();
 
-            if(mail($email->to, $email->subject, $email->body, $email->_header_text)) {
+            if (mail($email->to, $email->subject, $email->body, $email->_header_text)) {
 
                 $email->sent = 1;
                 $sent_emails++;
 
-                $this->log_email($email, true);
-
+                $this->logEmail($email, true);
             } else {
-                $this->log_email($email, false);
+                $this->logEmail($email, false);
             }
-
         }
 
-        if($sent_emails == count($this->emails)) {
-            $this->emails = Array();
+        $emails_cnt = count($this->emails);
+        
+        $this->emails = Array();
+            
+        if ($sent_emails == $emails_cnt) {
             return true;
         } else {
             return false;
@@ -144,20 +153,20 @@ class Email_Writer
     /**
      * Adds an email to the outbox which is sent with the send method
      *
-     * @param \sb\Email $email
-     * @return boolean false if it has injectors, true if added to outbox
+     * @param  \sb\Email $email
+     * @return boolean   false if it has injectors, true if added to outbox
      */
-    public function add_email_to_outbox(Email $email) 
+    public function addEmailToOutbox(\sb\Email $email)
     {
-    
-        if($this->check_headers_for_injection($email)) {
+
+        if ($this->checkHeadersForInjection($email)) {
             return 0;
         } else {
 
             $this->emails[] = $email;
+
             return true;
         }
-
     }
 
     /**
@@ -166,39 +175,37 @@ class Email_Writer
      * @param $email \sb\Email
      * @param $sent Boolean, was the email sent or not
      */
-    private function log_email($email, $sent) 
+    private function logEmail($email, $sent)
     {
 
-        $message = "\nEmail sent at ".date('m/d/y h:i:s');
-        $message .= "\nFrom:".$email->from. '@'.$this->remote_addr;
-        $message .= "\nTo: ".$email->to;
-        foreach($email->cc as $cc) {
-            $message .="\nCc:".$cc;
+        $message = "\nEmail sent at " . date('m/d/y h:i:s');
+        $message .= "\nFrom:" . $email->from . '@' . $this->remote_addr;
+        $message .= "\nTo: " . $email->to;
+        foreach ($email->cc as $cc) {
+            $message .="\nCc:" . $cc;
         }
-        foreach($email->bcc as $bcc) {
-            $message .="\nBcc:".$bcc;
+        foreach ($email->bcc as $bcc) {
+            $message .="\nBcc:" . $bcc;
         }
-        $message .= "\nSubject: ".$email->subject;
-        $message .= "\nAttachments: ".count($email->attachments).' ';
-        if($this->log_body) {
-            $message .= "\nBody: ".$email->body;
-            $message .= "\nBody_HTML: ".$email->body_HTML;
+        $message .= "\nSubject: " . $email->subject;
+        $message .= "\nAttachments: " . count($email->attachments) . ' ';
+        if ($this->log_body) {
+            $message .= "\nBody: " . $email->body;
+            $message .= "\nBody_HTML: " . $email->body_HTML;
         }
-        
+
         $names = Array();
-        foreach($email->attachments as $attachment) {
+        foreach ($email->attachments as $attachment) {
             $names[] = $attachment->name;
         }
 
-        $message .= "(".implode(",", $names).")";
+        $message .= "(" . \implode(",", $names) . ")";
 
-
-        if($sent) {
+        if ($sent) {
             return $this->logger->sb_Email_Writer_Sent($message);
         } else {
             return $this->logger->sb_Email_Writer_Error($message);
         }
-
     }
 
     /**
@@ -206,28 +213,33 @@ class Email_Writer
      *
      * @param \sb\Email $email
      */
-    private function add_security_info(Email &$email) 
+    private function addSecurityInfo(\sb\Email &$email)
     {
 
-        $email->body .= "\n\nFor security purposes the following information was recorded: \nSending IP: ".$this->remote_addr." \nSending Host: ".$this->http_host;
+        $email->body .= "\n\nFor security purposes the following information was'
+            .' recorded: \nSending IP: " . $this->remote_addr
+            . " \nSending Host: " . $this->http_host;
 
-        if(!empty($email->body_HTML)) {
-            $email->body_HTML .= '<br /><br /><span style="font-size:10px;color:#BCBCBC;margin-top:20px;">For security purposes the following information was recorded: <br />Sending IP:'.$this->remote_addr.' <br />Sending Host: '.$this->http_host.'</span>';
+        if (!empty($email->body_HTML)) {
+            $email->body_HTML .= '<br /><br />'
+                .'<span style="font-size:10px;color:#BCBCBC;margin-top:20px;">'
+                .'For security purposes the following information was recorded:'
+                .'<br />Sending IP:' . $this->remote_addr
+                .' <br />Sending Host: ' . $this->http_host . '</span>';
         }
     }
 
     /**
      * Checks email for injections in from and to addr
      *
-     * @param \sb\Email $email
+     * @param  \sb\Email $email
      * @return boolean
      */
-    private function check_headers_for_injection(Email $email) 
+    private function checkHeadersForInjection(\sb\Email $email)
     {
-    //try and catch injection attempts and alert admin user
-        if (preg_match("~\r|:~i",$email->to) || preg_match("~\r|:~i",$email->from)) {
+
+        if (\preg_match("~\r|:~i", $email->to) || preg_match("~\r|:~i", $email->from)) {
             return true;
-        //do something here to alert admin
         }
 
         return false;

@@ -5,9 +5,9 @@
  * @package Validate
  *
  */
-namespace sb;
+namespace sb\Validate;
 
-class Validate_ContactInfo{
+class ContactInfo{
 
 
     /**
@@ -22,7 +22,7 @@ class Validate_ContactInfo{
     public static function email($email, $check_mx_records=true)
     {
 
-        $result = new \sb\Validate_Results();
+        $result = new \sb\Validate\Results();
         $result->value = $email;
 
         if(preg_match("/^[\w-!\+]+(\.[\w-!\+]+)*@[\w-]+(\.[\w-]+)*(\.[\w]{2,4})$/", $email)){
@@ -56,7 +56,7 @@ class Validate_ContactInfo{
     public static function zip($zip, $check_usps=true)
     {
 
-        $result = new \sb\Validate_Results();
+        $result = new \sb\Validate\Results();
         $result->value = $zip;
         $result->is_valid = false;
 
@@ -105,7 +105,7 @@ class Validate_ContactInfo{
     public static function phone($phone)
     {
 
-        $result = new \sb\Validate_Results();
+        $result = new \sb\Validate\Results();
         $result->value = $phone;
         $result->is_valid = false;
 
@@ -132,7 +132,7 @@ class Validate_ContactInfo{
     public static function url($url, $check_url=true)
     {
 
-        $result = new \sb\Validate_Results();
+        $result = new \sb\Validate\Results();
         $result->value = $url;
         $result->is_valid = false;
         $result->data = new stdClass();
@@ -182,7 +182,7 @@ class Validate_ContactInfo{
     public static function state($state)
     {
 
-        $result = new \sb\Validate_Results();
+        $result = new \sb\Validate\Results();
         $result->value = $state;
 
         if(in_array($state, array('AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WV', 'WY'))){
@@ -211,7 +211,7 @@ class Validate_ContactInfo{
     public static function province($province)
     {
 
-        $result = new \sb\Validate_Results();
+        $result = new \sb\Validate\Results();
         $result->value = $province;
 
         if(in_array($province, array('AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'))){

@@ -5,12 +5,12 @@
  * @author paul.visco@roswellpark.org
  * @package RSS
  */
-namespace sb;
+namespace sb\RSS;
 
-class RSS_Item{
+class Item{
     
     /**
-     * Creates an \sb\RSS_Item and adds the following properties
+     * Creates an \sb\RSS\Item and adds the following properties
      *
      * @param string $title
      * @param string $link
@@ -85,7 +85,7 @@ class RSS_Item{
     /**
      * {optional} Describes a media object that is attached to the item.
      *
-     * @var \sb\RSS_ItemEnclosure
+     * @var \sb\RSS\ItemEnclosure
      */
     public $enclosure;
     

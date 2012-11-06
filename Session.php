@@ -33,5 +33,7 @@ class Session{
         return $_SESSION[$key];
     }
     
+    
+    
 }
 

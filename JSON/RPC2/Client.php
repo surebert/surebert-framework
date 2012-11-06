@@ -1,14 +1,15 @@
 <?php
+
 /**
  * The JSON_RPC2_Client used to send the request
  *
  * @author paul.visco@roswellpark.org
  * @package JSON_RPC2
  */
-namespace sb;
+namespace sb\JSON\RPC2;
 
-class JSON_RPC2_Client 
-    {
+class Client
+{
 
     /**
      * Determines if data is debugged to the output
@@ -42,16 +43,16 @@ class JSON_RPC2_Client
     public $agent = '\sb\JSON_RPC2_Client';
 
     /**
-     * The \sb\_JSON_RPC2_Request to dispatch
-     * @var \sb\JSON_RPC2_Request
+     * The \sb\_JSON\RPC2\Request to dispatch
+     * @var \sb\JSON\RPC2\Request
      */
     protected $request;
 
     /**
-     * Creates an instance of \sb\JSON_RPC2_Client
+     * Creates an instance of \sb\JSON\RPC2\Client
      *
      * <code>
-     * $client = new \sb\JSON_RPC2_Client('http://service.roswellpark.org/my/service');
+     * $client = new \sb\JSON\RPC2\Client('http://service.roswellpark.org/my/service');
      * 
      * $x = $client->add(1,2);
      *
@@ -61,19 +62,19 @@ class JSON_RPC2_Client
      * @param $url String The url of the server
      * @param $timeout The time to wait for a response in seconds
      * @param $port Integer The port to make the request on
-     * @return \sb\JSON_RPC2_Response
+     * @return \sb\JSON\RPC2\Response
      */
-    public function __construct($url, $timeout=1, $port=null) 
+    public function __construct($url, $timeout = 1, $port = null)
     {
-        
+
         $data = parse_url($url);
 
-        if(!is_null($port)){
+        if (!is_null($port)) {
             $this->port = $port;
         } else {
             $this->port = $data['scheme'] == 'https' ? 443 : 80;
         }
-        
+
         $this->host = $data['host'];
         $this->uri = $data['path'];
 
@@ -84,23 +85,27 @@ class JSON_RPC2_Client
      * method you can use to log the json request
      * @param string $json_request The input json
      */
-    protected function log_request($json_request)
-    {}
-    
+    protected function logRequest($json_request)
+    {
+
+    }
+
     /**
      * method you can use to log the json response
      * @param string $json_request The output json
      */
-    protected function log_response($json_response)
-    {}
+    protected function logResponse($json_response)
+    {
+
+    }
 
     /**
      * Sets the key that data is encrypted with and turns on encryption, the server must use the same key
      * @param $key String
      */
-    public function use_encryption($key) 
+    public function useEncryption($key)
     {
-        $this->encryptor = new Encryption_ForTransmission($key);
+        $this->encryptor = new \sb\Encryption\ForTransmission($key);
         $this->encryption_key = $key;
     }
 
@@ -108,10 +113,10 @@ class JSON_RPC2_Client
      * Adds a cookie to send to the server
      * @param $cookie Array('key' => 'val');
      */
-    public function add_cookie($cookie = Array()) 
+    public function addCookie($cookie = Array())
     {
-        foreach($cookie as $key=>$val) {
-            if(isset($this->encryption_key)) {
+        foreach ($cookie as $key => $val) {
+            if (isset($this->encryption_key)) {
                 $val = $this->encryptor->encrypt($val);
             }
 
@@ -120,95 +125,97 @@ class JSON_RPC2_Client
     }
 
     /**
-     * Dispatches a \sb\JSON_RPC2_Request
-     * @param $request \sb\JSON_RPC2_Request An object instance that models that request
-     * @return \sb\JSON_RPC2_Response
+     * Dispatches a \sb\JSON\RPC2\Request
+     * @param $request \sb\JSON\RPC2\Request An object instance that models that request
+     * @return \sb\JSON\RPC2\Response
      */
-    public function dispatch(JSON_RPC2_Request $request) 
+    public function dispatch(\sb\JSON\RPC2\Request $request)
     {
-    
-            if(!(is_array($request->params) || is_object($request->params))) {
-                $response = new JSON_RPC2_Response();
-                $response->error = new JSON_RPC2_Error('-32602');
-                $response->message = 'Invalid params';
-                $response->error->data = 'Invalid method parameters: '.json_encode($request->params);
-                return $response;
+
+        if (!(is_array($request->params) || is_object($request->params))) {
+            $response = new \sb\JSON\RPC2\Response();
+            $response->error = new \sb\JSON\RPC2\Error('-32602');
+            $response->message = 'Invalid params';
+            $response->error->data = 'Invalid method parameters: ' . json_encode($request->params);
+            return $response;
+        }
+
+        $host = $this->host;
+        $port = $this->port;
+        $timeout = $this->timeout;
+        $uri = $this->uri;
+
+        $json = json_encode($request);
+
+        $this->logRequest($json);
+
+        if ($this->debug == true) {
+            echo "--> " . $json;
+        }
+
+        if ($this->method == 'post') {
+            if (isset($this->encryption_key)) {
+                $json = $this->encryptor->encrypt($json);
             }
-            
-            $host = $this->host;
-            $port = $this->port;
-            $timeout = $this->timeout;
-            $uri = $this->uri;
+            $content_length = 'Content-Length: ' . strlen($json);
+        } else {
+            $params = base64_encode(json_encode($request->params));
+            $params = urlencode($params);
 
-            $json = json_encode($request);
+            $uri .= (strstr($this->uri, '?') ? '&' : '?')
+                . 'method=' . $request->method . '&params='
+                . $params . '&id=' . $request->id;
+        }
 
-            $this->log_request($json);
+        $out = Array();
+        $out[] = strtoupper($this->method) . " " . $uri . " HTTP/1.1";
+        $out[] = 'Host: ' . $this->host;
 
-            if($this->debug == true) {
-                echo "--> ".$json;
-            }
+        if (isset($content_length)) {
+            $out[] = $content_length;
+        }
+        $out[] = "User Agent: " . $this->agent;
 
-            if($this->method == 'post') {
-                if(isset($this->encryption_key)) {
-                    $json = $this->encryptor->encrypt($json);
-                }
-                $content_length = 'Content-Length: ' . strlen($json);
-            } else {
-                $params = base64_encode(json_encode($request->params));
-                $params = urlencode($params);
+        if ($this->php_serialize_response) {
+            $out[] = "Php_Serialize_Response: " . $this->php_serialize_response;
+        }
 
-                $uri  .= (strstr($this->uri, '?') ? '&' : '?').'method='.$request->method.'&params='.$params.'&id='.$request->id;
-            }
-
-            $out = Array();
-            $out[] = strtoupper($this->method)." ".$uri." HTTP/1.1";
-            $out[] = 'Host: '.$this->host;
-
-            if(isset($content_length)) {
-                $out[] = $content_length;
-            }
-            $out[] = "User Agent: ".$this->agent;
-
-            if($this->php_serialize_response) {
-                $out[] = "Php_Serialize_Response: ".$this->php_serialize_response;
-            }
-
-            //if there are cookies add them
-            if(!empty($this->cookies)) {
-                $cookies = '';
-                foreach($this->cookies as $key=>$val) {
-                    $cookies  .= $key.'='.urlencode($val).';';
-                }
-
-                $out[] = "Cookie: ".$cookies;
-            }
-
-            $out[] = 'Connection: close';
-
-            $response_str = '';
-
-            if($this->port == 443){
-                $host = 'ssl://'.$this->host;
-            }
-            $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
-            if (!$fp || !(get_resource_type($fp) == 'stream')) {
-                $response = new JSON_RPC2_Response();
-                $response->error = new JSON_RPC2_Error('-32099');
-                $response->error->message = 'Server error';
-                $response->error->data = 'Could not reach: '.$this->host.": #$errno - $errstr";
-                return $response;
+        //if there are cookies add them
+        if (!empty($this->cookies)) {
+            $cookies = '';
+            foreach ($this->cookies as $key => $val) {
+                $cookies .= $key . '=' . urlencode($val) . ';';
             }
 
-            $data = implode("\r\n", $out) . "\r\n\r\n" . $json;
+            $out[] = "Cookie: " . $cookies;
+        }
 
-            fputs($fp, $data);
+        $out[] = 'Connection: close';
 
-            while(!feof($fp)) {
-                $response_str .= fread($fp, 8192);
-            }
-            fclose($fp);
+        $response_str = '';
 
-            return $this->process_response($response_str);
+        if ($this->port == 443) {
+            $host = 'ssl://' . $this->host;
+        }
+        $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
+        if (!$fp || !(get_resource_type($fp) == 'stream')) {
+            $response = new \sb\JSON\RPC2\Response();
+            $response->error = new \sb\JSON\RPC2\Error('-32099');
+            $response->error->message = 'Server error';
+            $response->error->data = 'Could not reach: ' . $this->host . ": #$errno - $errstr";
+            return $response;
+        }
+
+        $data = implode("\r\n", $out) . "\r\n\r\n" . $json;
+
+        \fputs($fp, $data);
+
+        while (!\feof($fp)) {
+            $response_str .= \fread($fp, 8192);
+        }
+        \fclose($fp);
+
+        return $this->processResponse($response_str);
     }
 
     /**
@@ -216,54 +223,53 @@ class JSON_RPC2_Client
      * @param $str  The data returned from the socket connection
      * @return string The body of the message
      */
-    protected function process_response($str) 
+    protected function processResponse($str)
     {
 
-        $marker = strpos($str, "\r\n\r\n")+4;
-        $headers =  substr($str, 0, $marker);
-        $body = substr($str, $marker);
+        $marker = \strpos($str, "\r\n\r\n") + 4;
+        $headers = \substr($str, 0, $marker);
+        $body = \substr($str, $marker);
 
-        if($this->debug == true) {
-            echo "\n<--".$body;
+        if ($this->debug == true) {
+            echo "\n<--" . $body;
         }
 
-        if(stristr($headers, "Transfer-Encoding: chunked")) {
-            $body = $this->unchunk_data($body);
+        if (\stristr($headers, "Transfer-Encoding: chunked")) {
+            $body = $this->unchunkData($body);
         }
 
         //ungzip the content
-        if(substr($body,0,3)=="\x1f\x8b\x08") {
+        if (\substr($body, 0, 3) == "\x1f\x8b\x08") {
             $body = $this->gzdecode($body);
         }
-        
-        if(!empty($this->encryption_key)) {
+
+        if (!empty($this->encryption_key)) {
             $body = $this->encryptor->decrypt($body);
         }
 
-        $this->log_response($body);
-        
-        //check if response body is serialized json_response object and just unserialize and return if it is
-        if($this->php_serialize_response && !empty($body)) {
+        $this->logResponse($body);
 
-            try{
-                $serialized = unserialize($body);
-                if($serialized !== false){
+        //check if response body is serialized json_response object and just unserialize and return if it is
+        if ($this->php_serialize_response && !empty($body)) {
+
+            try {
+                $serialized = \unserialize($body);
+                if ($serialized !== false) {
                     $response = $serialized;
                 }
-            } catch(Exception $e){
+            } catch (\Exception $e) {
 
-                if($this->debug){
+                if ($this->debug) {
                     echo $body;
                 }
-                
             }
         }
 
         //Not sure about this?
-        $body = utf8_encode($body);
-        
-        if(!isset($response)){
-            $response = new JSON_RPC2_Response($body);
+        $body = \utf8_encode($body);
+
+        if (!isset($response)) {
+            $response = new \sb\JSON\RPC2\Response($body);
         }
 
         return $response;
@@ -275,25 +281,29 @@ class JSON_RPC2_Client
      * @param $args
      * @return mixed
      */
-    public function __call($method, $args) 
+    public function __call($method, $args)
     {
 
-        $request = new JSON_RPC2_Request();
+        $request = new \sb\JSON\RPC2\Request();
         $request->method = $method;
 
         $request->params = isset($args) ? $args : Array();
 
-        $request->id = uniqid();
+        $request->id = \uniqid();
 
-        if(isset($args['debug'])){
+        if (isset($args['debug'])) {
             $this->debug = true;
         }
 
         $response = $this->dispatch($request);
 
-        if($response instanceof JSON_RPC2_Response){
-            if(isset($response->error)) {
-                throw(new \Exception($response->error->code.': '.$response->error->message.".\nData Received: ".(isset($response->error->data) ? $response->error->data : 'NONE')));
+        if ($response instanceof \sb\JSON\RPC2\Response) {
+            if (isset($response->error)) {
+                throw(new \Exception($response->error->code . ': '
+                    . $response->error->message . ".\nData Received: "
+                    . (isset($response->error->data) ?
+                        $response->error->data : 'NONE'
+                    )));
             } else {
                 return $response->result;
             }
@@ -303,31 +313,31 @@ class JSON_RPC2_Client
     }
 
     /**
-     * gzdecodes the data, PHP 6 will have this natievly until then, taken from from http://www.tellinya.com/read/2007/08/28/83.html coming natively in php 6
+     * gzdecodes the data
      * @param $data gzencoded string
      * @return string
      */
-    protected function gzdecode ($data) 
+    protected function gzdecode($data)
     {
 
-        $flags = ord(substr($data, 3, 1));
+        $flags = \ord(substr($data, 3, 1));
         $headerlen = 10;
         $extralen = 0;
         $filenamelen = 0;
 
         if ($flags & 4) {
-            $extralen = unpack('v' ,substr($data, 10, 2));
+            $extralen = \unpack('v', substr($data, 10, 2));
             $extralen = $extralen[1];
             $headerlen += 2 + $extralen;
         }
         // Filename
         if ($flags & 8) {
-            $headerlen = strpos($data, chr(0), $headerlen) + 1;
+            $headerlen = \strpos($data, chr(0), $headerlen) + 1;
         }
 
         // Comment
         if ($flags & 16) {
-            $headerlen = strpos($data, chr(0), $headerlen) + 1;
+            $headerlen = \strpos($data, chr(0), $headerlen) + 1;
         }
 
         // CRC at end of file
@@ -335,9 +345,10 @@ class JSON_RPC2_Client
             $headerlen += 2;
         }
 
-        $unpacked = gzinflate(substr($data, $headerlen));
-        if ($unpacked === FALSE)
+        $unpacked = \gzinflate(substr($data, $headerlen));
+        if ($unpacked === false) {
             $unpacked = $data;
+        }
         return $unpacked;
     }
 
@@ -346,34 +357,35 @@ class JSON_RPC2_Client
      * @param $str
      * @return string
      */
-    private function unchunk_data($str) 
+    private function unchunkData($str)
     {
 
-        if (!is_string($str) or strlen($str) < 1) { return false; }
+        if (!is_string($str) or strlen($str) < 1) {
+            return false;
+        }
 
         $eol = "\r\n";
-        $add = strlen($eol);
+        $add = \strlen($eol);
         $tmp = $str;
         $str = '';
 
         do {
-            $tmp = ltrim($tmp);
-            $pos = strpos($tmp, $eol);
+            $tmp = \ltrim($tmp);
+            $pos = \strpos($tmp, $eol);
             if ($pos === false) {
                 return false;
             }
-            $len = hexdec(substr($tmp,0,$pos));
-            if (!is_numeric($len) or $len < 0) {
+            $len = \hexdec(substr($tmp, 0, $pos));
+            if (!\is_numeric($len) or $len < 0) {
                 return false;
             }
-            $str .= substr($tmp, ($pos + $add), $len);
-            $tmp  = substr($tmp, ($len + $pos + $add));
-            $check = trim($tmp);
-        } while(!empty($check));
+            $str .= \substr($tmp, ($pos + $add), $len);
+            $tmp = \substr($tmp, ($len + $pos + $add));
+            $check = \trim($tmp);
+        } while (!empty($check));
 
         unset($tmp);
         return $str;
     }
-
 }
 

@@ -6,9 +6,9 @@
  * @author paul.visco@roswellpark.org
  * @package RSS
 */
-namespace sb;
+namespace sb\RSS;
 
-class RSS_Feed extends \DomDocument{
+class Feed extends \DomDocument{
     
     /**
      * The title of the feed e.g. GoUpstate.com News Headlines
@@ -33,7 +33,7 @@ class RSS_Feed extends \DomDocument{
     public $description;
     
     /**
-     * The \sb\RSS_Items for the feed
+     * The \sb\RSS\Items for the feed
      *
      * @var array
      */
@@ -102,7 +102,7 @@ class RSS_Feed extends \DomDocument{
     /**
      * Allows processes to register with a cloud to be notified of updates to the channel, implementing a lightweight publish-subscribe protocol for RSS feeds.
      *
-     * @var rp_RSS_Cloud
+     * @var \sb\RSS\Cloud
      */
     public $cloud;
     
@@ -116,7 +116,7 @@ class RSS_Feed extends \DomDocument{
     /**
      * The image of the feed
      *
-     * @var \sb\RSS_Image object
+     * @var \sb\RSS\Image object
      */
     public $image;
     
@@ -185,13 +185,13 @@ class RSS_Feed extends \DomDocument{
      * header("Content-Type: application/xml");
      *
      * //create a new feed
-     * $feed = new \sb\RSS_Feed("My Test Feed", "http://www.test.com", "A test feed for test.com");
+     * $feed = new \sb\RSS\Feed("My Test Feed", "http://www.test.com", "A test feed for test.com");
      *
      * //add optional image
-     * $feed->image= new \sb\RSS_Image("Test's Feed", "http://test.com/test.gif");
+     * $feed->image= new \sb\RSS\Image("Test's Feed", "http://test.com/test.gif");
      *
      * //optional RSS cloud
-     * $feed->cloud= new \sb\RSS_Cloud("rpc.sys.com",80, "/RPC2", "myCloud.rssPleaseNotify", "xml-rpc");
+     * $feed->cloud= new \sb\RSS\Cloud("rpc.sys.com",80, "/RPC2", "myCloud.rssPleaseNotify", "xml-rpc");
      *
      * //add some optional categories
      * $feed->categories[] = 'dancing';
@@ -202,17 +202,17 @@ class RSS_Feed extends \DomDocument{
      * $feed->skipDays = Array('Monday', 'Tuesday');
      *
      * //add an item to the rss feed - the constructor takes the required properties, they can also be added afterwards, as with author below
-     * $item_one = $feed->add_item(new \sb\RSS_Item("Test's First Article", "http://test.com?a=1", "<h1>Here is a simple HTML feed</h1><p>With a list</p><ol><li>one</li><li>two</li><li>three</li></ol>", date('r')));
+     * $item_one = $feed->addItem(new \sb\RSS\Item("Test's First Article", "http://test.com?a=1", "<h1>Here is a simple HTML feed</h1><p>With a list</p><ol><li>one</li><li>two</li><li>three</li></ol>", date('r')));
      *
      * //properties can also be added to the item afterwards, here are some optional ones
      * $item_one->author='paul@test.com';
      * $item_one->categories[] = 'swimming';
      * 
      * //for podcasts add an enclose, remember file size is required
-     * $item_one->enclosure = new \sb\RSS_ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
+     * $item_one->enclosure = new \sb\RSS\ItemEnclosure('http://www.surebert.com/song.mp3', 2279344, 'audio/mpeg');
      * 
      * //add second item to the feed
-     * $item_two = $feed->add_item(new \sb\RSS_Item("Test's Second Article", "http://test.com?a=2", "This is just a plain text feed.  Hello World"), date('r'));
+     * $item_two = $feed->addItem(new \sb\RSS\Item("Test's Second Article", "http://test.com?a=2", "This is just a plain text feed.  Hello World"), date('r'));
      * 
      * //echo out the RSS feed
      * echo $feed->display();
@@ -237,12 +237,12 @@ class RSS_Feed extends \DomDocument{
     }
     
     /**
-     * Adds a \sb\RSS_Item instance to a a \sb\RSSFeed instance
+     * Adds a \sb\RSS\Item instance to a a \sb\RSSFeed instance
      *
-     * @param \sb\RSS_Item $item
-     * @return \sb\RSS_Item the reference to the item
+     * @param \sb\RSS\Item $item
+     * @return \sb\RSS\Item the reference to the item
      */
-    public function add_item(RSS_Item &$item)
+    public function addItem(\sb\RSS\Item &$item)
     {
         
         $this->items[] = $item;
@@ -261,12 +261,12 @@ class RSS_Feed extends \DomDocument{
     {
         
         //add feed properties
-        $this->channel_properties_to_DOM();
+        $this->channelPropertiesToDOM();
         
         //add items
         foreach($this->items as $item){
             
-            $this->append_item($item);    
+            $this->appendItem($item);    
         }
         
         return $this->saveXML();
@@ -279,7 +279,7 @@ class RSS_Feed extends \DomDocument{
     * @param string $nodeValue
     * @return object DOM node
     */
-    private function create_node($nodeName, $nodeValue, $cdata = false)
+    private function createNode($nodeName, $nodeValue, $cdata = false)
     {
         $node = $this->createElement($nodeName);
         if($cdata){
@@ -294,17 +294,17 @@ class RSS_Feed extends \DomDocument{
     }
     
     /**
-     * Takes an \sb\RSS_Item and converts it into a DOMM node followed by inserting it into the feed DOM
+     * Takes an \sb\RSS\Item and converts it into a DOMM node followed by inserting it into the feed DOM
      *
-     * @param \sb\RSS_Item $item
+     * @param \sb\RSS\Item $item
      */
-    private function append_item(\sb\RSS_Item $item)
+    private function appendItem(\sb\RSS\Item $item)
     {
         
         $new_item = $this->createElement("item");
         
         foreach(get_object_vars($item) as $key=>$val){
-            if($item->{$key} instanceof \sb\RSS_ItemEnclosure){
+            if($item->{$key} instanceof \sb\RSS\ItemEnclosure){
                 $enclosure = $this->createElement('enclosure');
                 foreach($item->{$key} as $n=>$v){
                     $enclosure->setAttribute($n, $v);
@@ -315,18 +315,18 @@ class RSS_Feed extends \DomDocument{
             
             if($key == 'categories'){
                 foreach($item->{$key} as $category){
-                    $new_item->appendChild($this->create_node('category', $category));
+                    $new_item->appendChild($this->createNode('category', $category));
                 }
             }
             
             if(is_string($val) && !empty($val)){
                 
-                $new_item->appendChild($this->create_node($key, $val, $key == 'description'));
+                $new_item->appendChild($this->createNode($key, $val, $key == 'description'));
             }
         }
         
         if(empty($item->guid)){
-            $new_item->appendChild($this->create_node('guid', $item->link));
+            $new_item->appendChild($this->createNode('guid', $item->link));
         }
         
         $this->channel->appendChild($new_item);
@@ -337,27 +337,26 @@ class RSS_Feed extends \DomDocument{
      * Converts all the feed object properties into RSS DOM nodes and adds them to the channel node
      *
      */
-    private function channel_properties_to_DOM()
+    private function channelPropertiesToDOM()
     {
       
-        
         foreach(get_object_vars($this) as $key=>$val){
             
             //parse string based key value pairs
             if (is_string($val) && !empty($val)){
-                $this->channel->appendChild($this->create_node($key, $val, $key == 'description'));
+                $this->channel->appendChild($this->createNode($key, $val, $key == 'description'));
             
             //parse image    
-            } elseif ($this->{$key} instanceof \sb\RSS_Image){
+            } elseif ($this->{$key} instanceof \sb\RSS\Image){
             
             
                 $image = $this->createElement('image');
                 foreach($this->{$key} as $n=>$v){
                     
-                    $image->appendChild($this->create_node($n, $v));
+                    $image->appendChild($this->createNode($n, $v));
                 }
                 
-                $image->appendChild($this->create_node('link', $this->link));
+                $image->appendChild($this->createNode('link', $this->link));
                 
                 $this->channel->appendChild($image);
             
@@ -373,7 +372,7 @@ class RSS_Feed extends \DomDocument{
             
             } elseif($key == 'categories'){
                 foreach($this->{$key} as $category){
-                    $this->channel->appendChild($this->create_node('category', $category));
+                    $this->channel->appendChild($this->createNode('category', $category));
                 }
                 
             //parse skipHours and skipDays
@@ -383,7 +382,7 @@ class RSS_Feed extends \DomDocument{
                 $nodeName = ($key =='skipHours') ? 'hour' : 'day';
                 foreach($this->{$key} as $value){
                     //force caps on day name as it is required to validate
-                    $node->appendChild($this->create_node($nodeName, ucwords($value)));
+                    $node->appendChild($this->createNode($nodeName, ucwords($value)));
                 }
                 
                 $this->channel->appendChild($node);

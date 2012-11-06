@@ -5,19 +5,19 @@
  * @author paul.visco@roswellpark.org
  * 
  * <code>
- * $client = new sb_REST_Client('https://some_site/api_content', Array(
+ * $client = new \sb\REST\Client('https://some_site/api_content', Array(
   'on_http_error' => function($status, $message){
   var_dump(func_get_args());
   }
   ));
- * $response = $x->get(Array('ticket' => '49d75185-e71b-42f1-9298-ac0382dd2e26'));
+ * $response = $client->get(Array('ticket' => '49d75185-e71b-42f1-9298-ac0382dd2e26'));
  * </code>
  *  
  */
-namespace sb;
+namespace sb\REST;
 
-class REST_Client 
-    {
+class Client
+{
 
     /**
      * The URL being fetched
@@ -115,10 +115,10 @@ class REST_Client
      * @param array $default_settings settings to override the default properties of 
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      */
-    public function __construct($url = '', $default_settings = Array()) 
+    public function __construct($url = '', $default_settings = Array())
     {
         $this->url = $url;
-        $this->set_default_settings($default_settings);
+        $this->setDefaultArguments($default_settings);
     }
 
     /**
@@ -128,9 +128,9 @@ class REST_Client
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function get($data = '', $settings = Array()) 
+    public function get($data = '', $settings = Array())
     {
-        return $this->process_curl('GET', $data, $settings);
+        return $this->processCurl('GET', $data, $settings);
     }
 
     /**
@@ -140,9 +140,9 @@ class REST_Client
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function post($data = '', $settings = Array()) 
+    public function post($data = '', $settings = Array())
     {
-        return $this->process_curl('POST', $data, $settings);
+        return $this->processCurl('POST', $data, $settings);
     }
 
     /**
@@ -152,9 +152,9 @@ class REST_Client
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function delete($data = '', $settings = Array()) 
+    public function delete($data = '', $settings = Array())
     {
-        return $this->process_curl('DELETE', $data, $settings);
+        return $this->processCurl('DELETE', $data, $settings);
     }
 
     /**
@@ -164,9 +164,9 @@ class REST_Client
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      * @return type 
      */
-    public function put($data = '', $settings = Array()) 
+    public function put($data = '', $settings = Array())
     {
-        return $this->process_curl('PUT', $data, $settings);
+        return $this->processCurl('PUT', $data, $settings);
     }
 
     /**
@@ -174,7 +174,7 @@ class REST_Client
      * @param array $default_settings settings to override the default properties of 
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      */
-    public function set_default_settings($default_settings) 
+    public function setDefaultArguments($default_settings)
     {
         foreach ($default_settings as $setting => $val) {
             if (property_exists(get_class(), $setting)) {
@@ -189,7 +189,7 @@ class REST_Client
      * @param string $pass The password
      * @param string $type The auth type basic, ntlm, digest 
      */
-    public function set_authentication($uname = '', $pass = '', $type = 'basic') 
+    public function setAuthentication($uname = '', $pass = '', $type = 'basic')
     {
         $this->authentication['uname'] = $uname;
         $this->authentication['pass'] = $pass;
@@ -200,7 +200,7 @@ class REST_Client
      * Sets the timeout for the request
      * @param int $timeout defaults to 30 seconds
      */
-    public function set_timeout($timeout = 30) 
+    public function setTimeout($timeout = 30)
     {
         $this->timeout = is_int($timeout) ? $timeout : 30;
     }
@@ -209,7 +209,7 @@ class REST_Client
      * Sets any headers to send with the request
      * @param array $headers
      */
-    public function set_headers($headers = Array()) 
+    public function setHeaders($headers = Array())
     {
         $this->headers = is_array($headers) ? $headers : Array();
     }
@@ -218,7 +218,7 @@ class REST_Client
      * Sets the user agent for the request
      * @param string $agent
      */
-    public function set_user_agent($agent = 'sb_REST_Client') 
+    public function setUserAgent($agent = 'sb_REST_Client')
     {
         $this->agent = $agent;
     }
@@ -227,7 +227,7 @@ class REST_Client
      * File path to the cookie file
      * @param string $cookie_file
      */
-    public function set_cookie_file($cookie_file) 
+    public function setCookieFile($cookie_file)
     {
         $this->cookie_file = $cookie_file;
     }
@@ -236,7 +236,7 @@ class REST_Client
      * Sets the debug level to use
      * @param int $debug
      */
-    public function set_debug_state($debug = 2) 
+    public function setDebugState($debug = 2)
     {
         $this->debug = $debug;
     }
@@ -246,7 +246,7 @@ class REST_Client
      * @param string $event on_error, on_http_error, on_body and on_headers events
      * @param Callable $callable any function to parse the data
      */
-    public function set_callback($event, Callable $callable) 
+    public function setCallback($event, Callable $callable)
     {
         $this->$event = $callable;
     }
@@ -255,7 +255,7 @@ class REST_Client
      * Gets an array of all of the current settings
      * @return array 
      */
-    public function get_settings() 
+    public function getSettings()
     {
         return get_object_vars($this);
     }
@@ -268,7 +268,7 @@ class REST_Client
      * @param array $override_settings settings to override the default properties of 
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout, on_http_error, on_headers, on_body
      */
-    protected function process_curl($method, $data, $override_settings = Array()) 
+    protected function processCurl($method, $data, $override_settings = Array())
     {
 
         $settings = get_object_vars($this);
@@ -343,30 +343,30 @@ class REST_Client
         }
 
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($ch, $data) use ($settings) {
-                    if (!is_null($data)) {
+                if (!is_null($data)) {
 
-                        if (is_callable($settings['on_headers'])) {
-                            $settings['on_headers']($data);
-                        }
-
-                        if (preg_match("~^HTTP/\d+\.\d+\s(\d+)\s(.*?)[\r\n]~", $data, $match) && !in_array($match[1], Array(100, 200))) {
-                            if (is_callable($settings['on_http_error'])) {
-                                $settings['on_http_error']($match[1], $match[2]);
-                            }
-                        }
+                    if (is_callable($settings['on_headers'])) {
+                        $settings['on_headers']($data);
                     }
 
-                    return strlen($data);
-                });
+                    if (preg_match("~^HTTP/\d+\.\d+\s(\d+)\s(.*?)[\r\n]~", $data, $match) && !in_array($match[1], Array(100, 200))) {
+                        if (is_callable($settings['on_http_error'])) {
+                            $settings['on_http_error']($match[1], $match[2]);
+                        }
+                    }
+                }
+
+                return strlen($data);
+            });
 
         curl_setopt($ch, CURLOPT_WRITEFUNCTION, function($ch, $data) use($settings) {
 
-                    if (is_callable($settings['on_body'])) {
-                        $settings['on_body']($data);
-                    }
+                if (is_callable($settings['on_body'])) {
+                    $settings['on_body']($data);
+                }
 
-                    return strlen($data);
-                });
+                return strlen($data);
+            });
 
         $response = curl_exec($ch);
 
@@ -382,6 +382,5 @@ class REST_Client
 
         return $response;
     }
-
 }
 

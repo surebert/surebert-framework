@@ -1,15 +1,16 @@
 <?php
 
 /**
- * Stores data in Memcache, requires memcache server be installed and running on the host and port specified
+ * Stores data in Memcache, requires memcache server be installed and running 
+ * on the host and port specified
  *
  * @author paul.visco@roswellpark.org
  * @package Cache
  *
  */
-namespace sb;
+namespace sb\Cache;
 
-class Cache_Memcache implements Cache_Base
+class Memcache implements Base
 {
 
     /**
@@ -47,7 +48,7 @@ class Cache_Memcache implements Cache_Base
     public function __construct($host, $port, $namespace)
     {
 
-        $this->memcache = new Memcache;
+        $this->memcache = new \Memcache;
         if (!@$this->memcache->connect($host, $port)) {
             throw(new \Exception('Cannot connect to memcached server'));
         }
@@ -141,7 +142,7 @@ class Cache_Memcache implements Cache_Base
     {
 
         $catalog = $this->fetch($this->catalog_key);
-        $catalog = is_array($catalog) ? $catalog : Array();
+        $catalog = \is_array($catalog) ? $catalog : Array();
         if (isset($catalog[$key])) {
             unset($catalog[$key]);
         };

@@ -6,9 +6,9 @@
  * @package Web
  *
  */
-namespace sb;
+namespace sb\Web;
 
-class Web_Visitor{
+class Visitor{
     /**
      * The IP address of the visitor
      * @var string
@@ -75,10 +75,10 @@ class Web_Visitor{
     {
         
         if($db instanceof PDO){
-            \sb\Web_Visitors::$db=$db;
+            \sb\Web\Visitors::$db=$db;
         }
 
-        return \sb\Web_Visitors::log($this);
+        return \sb\Web\Visitors::log($this);
 
     }
 }

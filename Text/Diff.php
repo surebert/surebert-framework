@@ -7,7 +7,9 @@
  * @author paul.visco@roswellpark.org
  * @package Text
  */
-class Text_Diff 
+namespace sb\Text;
+
+class Diff 
     {
 
     public static function compare($old, $new) 

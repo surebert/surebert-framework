@@ -1,12 +1,14 @@
 <?php
 /**
- * Validation results object returned from sb_Validate methods
+ * Validation results object returned from sb\Validate methods
  *
  * @author paul.visco@roswellpark.org
  * @package Validate
  *
  */
-class Validate_Results{
+namespace sb\Validate;
+
+class Results{
 
     /**
      * Is the string valid or not

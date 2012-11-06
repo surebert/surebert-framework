@@ -6,9 +6,11 @@
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
-namespace sb;
+namespace sb\Controller\Command;
 
-class Command_Line extends Controller_Base
+use \sb\Controller\Command\Base as Base;
+
+class Line extends Base
 {
 
     /**
@@ -50,12 +52,12 @@ class Command_Line extends Controller_Base
     protected function start()
     {
         $this->start_time = microtime(true);
-        $this->log(date('Y/m/d H:i:s') . " - Begin Process " . \get_called_class());
+        $this->log(date('Y/m/d H:i:s') . " - Begin Process " . get_called_class());
 
         $this->setMemoryLimit();
         $this->setMaxExecutionTime();
 
-        if (\method_exists($this, 'on_start')) {
+        if (method_exists($this, 'on_start')) {
             $this->on_start();
         }
     }
@@ -66,7 +68,7 @@ class Command_Line extends Controller_Base
      */
     public function setMemoryLimit($memory_in_MB = 200)
     {
-        \ini_set('memory_limit', $memory_in_MB . 'M');
+        ini_set('memory_limit', $memory_in_MB . 'M');
     }
 
     /**
@@ -75,7 +77,7 @@ class Command_Line extends Controller_Base
      */
     public function setMaxExecutionTime($time_in_seconds = 3600)
     {
-        \ini_set('max_execution_time', $time_in_seconds);
+        ini_set('max_execution_time', $time_in_seconds);
     }
 
     /**
@@ -84,14 +86,14 @@ class Command_Line extends Controller_Base
      */
     protected function getMemoryUsage()
     {
-        $mem_usage = \memory_get_peak_usage(true);
+        $mem_usage = memory_get_peak_usage(true);
         $str = '';
         if ($mem_usage < 1024) {
             $str = $mem_usage . " b";
         } elseif ($mem_usage < 1048576) {
-            $str = \round($mem_usage / 1024, 2) . " KB";
+            $str = round($mem_usage / 1024, 2) . " KB";
         } else {
-            $str = \round($mem_usage / 1048576, 2) . " MB";
+            $str = round($mem_usage / 1048576, 2) . " MB";
         }
         return $str;
     }
@@ -103,7 +105,7 @@ class Command_Line extends Controller_Base
     protected function log($message, $type = "MESSAGE")
     {
 
-        $type = \strtoupper($type);
+        $type = strtoupper($type);
 
         switch ($type) {
 
@@ -115,7 +117,7 @@ class Command_Line extends Controller_Base
             default:
                 $message = "\n" . $type . ': ' . $message;
         }
-        \file_put_contents("php://stdout", $message);
+        file_put_contents("php://stdout", $message);
 
         return $message;
     }
@@ -139,7 +141,7 @@ class Command_Line extends Controller_Base
      */
     public function __destruct()
     {
-        $milliseconds = \round((microtime(true) - $this->start_time) * 1000, 2);
+        $milliseconds = round((microtime(true) - $this->start_time) * 1000, 2);
         $this->log('PEAK MEMORY USAGE: ' . $this->get_memory_usage(), 'MESSAGE');
         $this->log('TOTAL ERRORS: ' . $this->number_of_errors, 'MESSAGE');
         $this->log('TOTAL TIME REQUIRED: ' . $milliseconds . "ms", 'MESSAGE');

@@ -5,7 +5,7 @@
  * @package Encrytion
 <code>
 
-$encryptor = new \sb\Encryption_ForTransmission('My very secret key');
+$encryptor = new \sb\Encryption\ForTransmission('My very secret key');
 //encrypt data
 $encrypted_data = $encryptor->encrypt('data to encrypt');
 
@@ -14,28 +14,28 @@ $plain_text = $encryptor>decrypt($encrypted_data);
 
 </code>
  */
-namespace sb;
+namespace sb\Encryption;
 
-class Encryption_ForTransmission{
-    
+class ForTransmission
+{
     protected $cypher = 'rijndael-256';
     protected $mode = 'ofb';
     protected $key;
-    
+
     /**
      * Sets the key used for encryption
      * @param $key  String of any length, longer is better
      */
     public function __construct($key)
     {
-        
-        if(empty($key)){
+
+        if (empty($key)) {
             throw(new \Exception("Cannot use empty key for encryption"));
         }
-        
+
            $this->key = md5($key);
     }
-    
+
     /**
      * Encrypts a string
      * @param $string The string of data to encrypt
@@ -43,20 +43,21 @@ class Encryption_ForTransmission{
     public function encrypt($string)
     {
         $td = mcrypt_module_open($this->cypher, '', $this->mode, '');
-        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), mcrypt_RAND);
         mcrypt_generic_init($td, $this->key, $iv);
         $encrypted = mcrypt_generic($td, $string);
         mcrypt_generic_deinit($td);
+
         return $iv.$encrypted;
     }
-    
+
     /**
      * Decrypts a string
      * @param $string The data to decrypt
      */
     public function decrypt($string)
     {
-        
+
         $decrypted = "";
         $td = mcrypt_module_open($this->cypher, '', $this->mode, '');
         $ivsize = mcrypt_enc_get_iv_size($td);
@@ -66,8 +67,8 @@ class Encryption_ForTransmission{
             mcrypt_generic_init($td, $this->key, $iv);
             $decrypted = mdecrypt_generic($td, $string);
         }
+
         return rtrim($decrypted);
     }
-    
 }
 

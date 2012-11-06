@@ -6,10 +6,11 @@
  * @author paul.visco@roswellpark.org
  * @package PDO
  */
-namespace sb;
+namespace sb\PDO;
 
-class PDO_Debugger extends PDO{
-    
+class Debugger extends \PDO
+{
+
     /**
      * Creates am extended PDO object
      *
@@ -23,39 +24,36 @@ class PDO_Debugger extends PDO{
      * </code>
      *
      */
-    function __construct($connection, $user='', $pass=''){
+    public function __construct($connection, $user = '', $pass = '')
+    {
 
         parent::__construct($connection, $user, $pass);
-        
-        /*** set the error reporting attribute ***/
-        $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        /*         * * set the error reporting attribute ** */
+        $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     /**
      * Additionally Logs the errors
-     * {@inheritdoc }
      */
-    public function s2o($sql, $params=null, $class_name='', $prepare_and_store=1)
+    public function s2o($sql, $params = null, $class_name = '', $prepare_and_store = 1)
     {
 
-        try{
+        try {
             return parent::s2o($sql, $params, $class_name, $prepare_and_store);
-        } catch(Exception $e){
-            throw(new \Exception('CALLED: '.__METHOD__."\nERROR RETURNED: ".print_r($e, 1)));
-
+        } catch (\Exception $e) {
+            throw(new \sb\PDO\Exception('CALLED: ' . __METHOD__ . "\nERROR RETURNED: " . print_r($e, 1)));
         }
     }
 
-    public static function paramify($data, $omit=Array())
+    public static function paramify($data, $omit = Array())
     {
 
-        if(!is_array($data) && !is_object($data)){
-            throw(new PDO_Exception('Paramify only accepts hashes and objects as data argument'));
+        if (!is_array($data) && !is_object($data)) {
+            throw(new \sb\PDO\Exception('Paramify only accepts hashes and objects as data argument'));
         }
 
         return parent::paramify($data, $omit);
     }
-
 }
 

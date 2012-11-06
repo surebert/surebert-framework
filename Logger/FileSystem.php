@@ -6,9 +6,9 @@
  * @package Logger
  * 
  */
-namespace sb;
+namespace sb\Logger;
 
-class Logger_FileSystem extends Logger_Base{
+class FileSystem extends Base{
     
     /**
     * Creates a filesystem type logger
@@ -19,7 +19,7 @@ class Logger_FileSystem extends Logger_Base{
         
         parent::__construct($agent);
         $log_root = !empty($log_root) ? $log_root : ROOT.'/private/logs';
-        $this->set_log_root($log_root);
+        $this->setLogRoot($log_root);
         
     }
 
@@ -27,9 +27,9 @@ class Logger_FileSystem extends Logger_Base{
      * Allows the setting of the log root
      * @param <type> $log_root
      */
-    public function set_log_root($log_root)
+    public function setLogRoot($log_root)
     {
-        $this->_log_root = $log_root;
+        $this->log_root = $log_root;
     }
 
     /**
@@ -37,10 +37,10 @@ class Logger_FileSystem extends Logger_Base{
      * @param $log Sting the log type.  Should be in the $enabled_logs array
      * @return string The path to the log directory to be used
      */
-    private function __get_log_path($log)
+    protected function getLogPath($log)
     {
         
-        $dir = $this->_log_root.'/'.$log.'/';
+        $dir = $this->log_root.'/'.$log.'/';
     
         if(!is_dir($dir)){
             mkdir($dir, 0777, true);
@@ -55,8 +55,11 @@ class Logger_FileSystem extends Logger_Base{
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    protected function __write($data, $log_type)
+    protected function write($data, $log_type)
     {
-        return file_put_contents($this->__get_log_path($log_type).date('Y_m_d').'.log', "\n\n".date('Y/m/d H:i:s')."\t".$this->_agent_str."\n".$data, FILE_APPEND);
+        return file_put_contents($this->getLogPath($log_type)
+            .date('Y_m_d').'.log', "\n\n".\date('Y/m/d H:i:s')
+            ."\t".$this->_agent_str
+            ."\n".$data, \FILE_APPEND);
     }
 }

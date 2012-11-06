@@ -4,7 +4,7 @@
  * 
  * <code>
  * //load data from google homepage
- * $conn = new \sb\Socket_Client('www.google.com', 80);
+ * $conn = new \sb\Socket\Client('www.google.com', 80);
  * $conn->write("GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: Close\r\n\r\n");
  * echo $conn->read();
  * </code>
@@ -12,9 +12,9 @@
  * @author paul.visco@roswellpark.org
  * @package Socket
  */
-namespace sb;
+namespace sb\Socket;
 
-class Socket_Client 
+class Client 
     {
 
     /**
@@ -48,7 +48,7 @@ class Socket_Client
     public function __construct($host, $port, $timeout=10) 
     {
 
-        $this->count_instance();
+        $this->countInstance();
 
         $this->host = $host;
         $this->port = $port;
@@ -60,7 +60,7 @@ class Socket_Client
     /**
      * Keeps track of instances
      */
-    public function count_instance() 
+    public function countInstance() 
     {
 
         self::$instances++;

@@ -22,17 +22,17 @@
  *  
  *  GRANT ALL ON @myDatabase.* TO '@myUser'@'@myHost' IDENTIFIED BY '@myPass';
  *
- * $visitors = \sb\Web_Visitors::get_visitor_data();
- * echo '<b title="'.implode(",", \sb\Web_Visitors::list_users()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
+ * $visitors = \sb\Web\Visitors::getVisitorData();
+ * echo '<b title="'.implode(",", \sb\Web\Visitors::listUsers()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
  *
  * </code>
  * 
  * @author paul.visco@roswellpark.org
  * @package Web
  */
-namespace sb;
+namespace sb\Web;
 
-class Web_Visitors{
+class Visitors{
 
     /**
      * The database connection
@@ -108,7 +108,7 @@ class Web_Visitors{
      *
      * @param \sb\Web_Visitor $visitor
      */
-    public static function log(\sb\Web_Visitor $visitor)
+    public static function log(\sb\Web\Visitor $visitor)
     {
 
         $visitor = self::distill($visitor);
@@ -122,7 +122,7 @@ class Web_Visitors{
      *
      * @param \sb\Web_Visitor $visitor
      */
-    private static function insert(\sb\Web_Visitor $visitor)
+    private static function insert(\sb\WebVisitor $visitor)
     {
 
         $expiration = (time()-self::$time_before_expire);
@@ -155,7 +155,7 @@ class Web_Visitors{
      * @param \sb\Web_Visitor $visitor
      * @return \sb\Web_Visitor The visitor with data parsed
      */
-    private static function distill(\sb\Web_Visitor $visitor)
+    private static function distill(\sb\Web\Visitor $visitor)
     {
 
         //covert to agent_str to lowercase for comparison
@@ -197,7 +197,7 @@ class Web_Visitors{
      *
      * @return \sb\Web_Visitors Object with data
      */
-    public static function get_visitor_data()
+    public static function getVisitorData()
     {
 
         $expiration = (time()-self::$time_before_offline);
@@ -209,7 +209,7 @@ class Web_Visitors{
         if(count($visitors) > 0){
             return $visitors[0];
         } else {
-            return new \sb\Web_Visitors();
+            return new \sb\Web\Visitor();
         }
 
     }
@@ -219,7 +219,7 @@ class Web_Visitors{
      *
      * @return array The usernames of the users online
      */
-    public static function list_users()
+    public static function listUsers()
     {
         $expiration = (time()-self::$time_before_offline);
 
@@ -233,7 +233,7 @@ class Web_Visitors{
      *
      * @return string The html table
      */
-    public static function dump_users()
+    public static function dumpUsers()
     {
 
         $expiration = (time()-self::$time_before_expire);
@@ -255,7 +255,7 @@ class Web_Visitors{
      *
      * @param string $uname The username of the user to logout
      */
-    public static function user_logout($uname)
+    public static function userLogout($uname)
     {
         $sql = "DELETE FROM online_visitors WHERE uname =:uname";
 

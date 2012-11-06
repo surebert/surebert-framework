@@ -1,26 +1,29 @@
 <?php
+
 /**
  * Represents and event organizer
  *
  * <code>
- * new \sb\ICalendar_Organizer('Visco, Paul', 'paul.visco@roswellpark.org')
+ * new \sb\ICalendar\Organizer('Visco, Paul', 'paul.visco@roswellpark.org')
  * </code>
  *
  * @package ICalendar
  * @author paul.visco@roswellpark.org
  */
-namespace sb;
+namespace sb\ICalendar;
 
-class ICalendar_Organizer extends ICalendar_Attendee{
+class Organizer extends Attendee
+{
 
     /**
      * Returns the Organizer in iCalendar format
      *
      * @return string
      */
-    public function  __toString() 
+    public function __toString()
     {
 
-        return "ORGANIZER;CN=\"".$this->dname."\":MAILTO:".$this->email;
+        return "ORGANIZER;CN=\"" . $this->dname . "\":MAILTO:" . $this->email;
     }
 }
+

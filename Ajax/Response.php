@@ -6,9 +6,9 @@
  * @author paul.visco@roswellpark.org
  * @package sb_Ajax
  */
-namespace sb;
+namespace sb\Ajax;
 
-class Ajax_Response
+class Response
 {
 
     /**
@@ -35,10 +35,10 @@ class Ajax_Response
 
     /**
      * Sets up a ajax repsonse for dispatch
-     * 
+     *
      *
      * <code>
-     * $response = new sb_Ajax_Response(new person());
+     * $response = new \sb\Ajax\Response(new person());
      * $response->dispatch();
      * </code>
      *
@@ -70,22 +70,22 @@ class Ajax_Response
      * Sets the content to send back to the browser and sets the content type based on the type of content passed
      *
      * @param mixed object/bool/xml/string $content
-     * 
-     * @todo if someone wants to bother with xml add it, and if so what 
+     *
+     * @todo if someone wants to bother with xml add it, and if so what
      * determines if it is xml, an xml object, a string detected, etc
      */
     public function setContent($content)
     {
 
-        if (\is_bool($content)) {
+        if (is_bool($content)) {
 
             $this->setContentType('boolean/value');
             $this->content = $content ? 1: 0;
 
-        } elseif (\is_object($content) || \is_array($content)) {
+        } elseif (is_object($content) || is_array($content)) {
 
             $this->setContentType('application/json');
-            $this->content = \json_encode($content);
+            $this->content = json_encode($content);
 
         } else {
             $this->setContentType('text/html');
@@ -117,7 +117,7 @@ class Ajax_Response
         }
 
         //wrap in callback if set
-        if (!\is_null($this->callback)) {
+        if (!is_null($this->callback)) {
             echo $this->callback.'('.$this->content.');';
         } else {
             echo $this->content;

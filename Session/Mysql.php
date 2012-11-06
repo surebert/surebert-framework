@@ -20,7 +20,7 @@
  */
 namespace sb;
 
-class Session_Mysql extends Session_Abstract{
+class Session_Mysql extends Session{
     
     /**
      * The database connection
@@ -49,8 +49,7 @@ class Session_Mysql extends Session_Abstract{
     /**
      * Connects to the mysql server for session storage
      * <code>
-    #in /private/config/definitions.php
-    new sb_Session_Mysql(\App::$db);
+        new \sb\Session\Mysql(\App::$db);
      * </code>
      *
      * @param $db PDO the database conection to store the sessions in
@@ -131,7 +130,7 @@ class Session_Mysql extends Session_Abstract{
         ))){
             $rows = $stmt->fetchAll();
             if(isset($rows[0])){
-                $this->update_access($session_id);
+                $this->updateAccess($session_id);
                 return $rows[0]->data;
             }
             
@@ -145,7 +144,7 @@ class Session_Mysql extends Session_Abstract{
      * @param $session_id
      * @return boolean
      */
-    public function update_access($session_id)
+    public function updateAccess($session_id)
     {
         
         $stmt_cache = md5(__METHOD__);

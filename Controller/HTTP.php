@@ -6,9 +6,9 @@
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
-namespace sb;
+namespace sb\Controller;
 
-class Controller_HTTP extends Controller
+class HTTP extends Base
 {
 
     /**
@@ -68,7 +68,7 @@ class Controller_HTTP extends Controller
         $secure = false,
         $httponly = false
     ) {
-        \setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+        setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
     }
 
     /**
@@ -78,7 +78,7 @@ class Controller_HTTP extends Controller
      */
     public function unsetCookie($name, $path = '/')
     {
-        \setcookie($name, '', time() - 86400, '/', '', 0);
+        setcookie($name, '', time() - 86400, '/', '', 0);
         if (isset($_COOKIE) && isset($_COOKIE[$name])) {
             unset($_COOKIE[$name]);
         }
@@ -107,7 +107,7 @@ class Controller_HTTP extends Controller
         if (!empty($value)) {
             $header .= ': ' . $value;
         }
-        \header($header);
+        header($header);
     }
 
     /**
@@ -250,12 +250,12 @@ class Controller_HTTP extends Controller
             echo 'You must authenticate to continue';
         } else {
 
-            if (\is_callable($check_auth)) {
+            if (is_callable($check_auth)) {
                 $authorized = $check_auth($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
             }
 
             if (!$authorized) {
-                \session_unset();
+                session_unset();
                 unset($_SERVER['PHP_AUTH_USER']);
                 return $this->requireBasicAuth($check_auth, $realm);
             }

@@ -5,9 +5,9 @@
  * @package Web
  * 
  */
-namespace sb;
+namespace sb\Web;
 
-class Web_Weather{
+class Weather{
 
     /**
      * 

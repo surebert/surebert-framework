@@ -7,9 +7,9 @@
  * @package Chat
  *
  */
-namespace sb;
+namespace sb\Chat;
 
-class Chat_Line
+class Line
 {
 
     public $id;

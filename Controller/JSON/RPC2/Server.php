@@ -7,9 +7,11 @@
  * @package JSON_RPC2
  *
  */
-namespace sb;
+namespace sb\Controller\JSON\RPC2;
 
-class Controller_JSON_RPC2_Server extends Controller_Base
+use \sb\Controller\Base;
+
+class Server extends Base
 {
 
     /**
@@ -73,12 +75,12 @@ class Controller_JSON_RPC2_Server extends Controller_Base
      */
     public function useEncryption($key)
     {
-        $this->encryptor = new Encryption_ForTransmission($key);
+        $this->encryptor = new \sb\Encryption\ForTransmission($key);
         $this->encryption_key = $key;
 
         //decrypt cookies if sent
-        foreach (Gateway::$cookie as $k => $v) {
-            Gateway::$cookie[$k] = $this->encryptor->decrypt($v);
+        foreach (\sb\Gateway::$cookie as $k => $v) {
+            \sb\Gateway::$cookie[$k] = $this->encryptor->decrypt($v);
         }
     }
 
@@ -136,9 +138,9 @@ class Controller_JSON_RPC2_Server extends Controller_Base
     {
 
         if (\method_exists($this, $method)) {
-            $reflect = new ReflectionMethod($this, $method);
+            $reflect = new \ReflectionMethod($this, $method);
         } else {
-            $response->error = new JSON_RPC2_Error();
+            $response->error = new \sb\JSON\RPC2\Error();
             $response->error->code = -32602;
             $response->error->message = "Invalid method parameters";
             return $response;
@@ -210,7 +212,7 @@ class Controller_JSON_RPC2_Server extends Controller_Base
     protected function getResponse($json_request_str = '')
     {
 
-        $response = new JSON_RPC2_Response();
+        $response = new \sb\JSON\RPC2\Response();
 
         $request = null;
 
@@ -228,7 +230,7 @@ class Controller_JSON_RPC2_Server extends Controller_Base
                     && isset($this->request->get['params'])
                     && isset($this->request->get['id']))) {
 
-                $request = new JSON_RPC2_Request();
+                $request = new \sb\JSON\RPC2\Request();
 
                 $request->id = $this->request->get['id'];
                 $request->method = $this->request->get['method'];
@@ -251,10 +253,10 @@ class Controller_JSON_RPC2_Server extends Controller_Base
                 $json_request_str = $this->encryptor->decrypt($json_request_str);
             }
         }
-        $request = new JSON_RPC2_Request($json_request_str);
+        $request = new \sb\JSON\RPC2\Request($json_request_str);
 
         if (\is_null($request)) {
-            $response->error = new JSON_RPC2_Error(-32700, 'Parse Error', "Data Received: " . $json_request_str);
+            $response->error = new \sb\JSON\RPC2\Error(-32700, 'Parse Error', "Data Received: " . $json_request_str);
         } else {
             $response->id = $request->id;
         }
@@ -289,24 +291,24 @@ class Controller_JSON_RPC2_Server extends Controller_Base
                 $answer = \call_user_func_array(Array($this, $request->method), $request->params);
             }
             //if they return an error from the method call, return that
-            if ($answer instanceof JSON_RPC2_Error) {
+            if ($answer instanceof \sb\JSON\RPC2\Error) {
                 $response->error = $answer;
             } else {
                 //otherwise return the answer
                 $response->result = $answer;
             }
         } else {
-            if (isset($request->error) && $request->error instanceOf JSON_RPC2_Error) {
+            if (isset($request->error) && $request->error instanceOf \sb\JSON\RPC2\Error) {
                 $response->error = $request->error;
             } else {
-                $response->error = new JSON_RPC2_Error();
+                $response->error = new \sb\JSON\RPC2\Error();
                 $response->error->code = -32601;
                 $response->error->message = "Procedure not found";
             }
         }
 
         //remove unnecessary properties
-        if ($response->error instanceof JSON_RPC2_Error) {
+        if ($response->error instanceof \sb\JSON\RPC2\Error) {
 
             unset($response->result);
             if (\is_null($response->error->data)) {
@@ -347,7 +349,7 @@ class Controller_JSON_RPC2_Server extends Controller_Base
             $message = 'OK';
             $status = 200;
             //headers from spec here http://json-rpc.googlegroups.com/web/json-rpc-over-http.html
-            if (isset($response->error) && $response->error instanceof JSON_RPC2_Error) {
+            if (isset($response->error) && $response->error instanceof \sb\JSON\RPC2\Error) {
                 $code = $response->error->code;
 
                 if (\in_array($code, Array(-32700, -3260, -32603))

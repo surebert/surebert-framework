@@ -1,26 +1,37 @@
 <?php
+
 /**
  * Used to model an Epub document
- * $cssData = "body {\n  margin-left: .5em;\n  margin-right: .5em;\n  text-align: justify;\n}\n\np {\n  font-family: serif;\n  font-size: 10pt;\n  text-align: justify;\n  text-indent: 1em;\n  margin-top: 0px;\n  margin-bottom: 1ex;\n}\n\nh1, h2 {\n  font-family: sans-serif;\n  font-style: italic;\n  text-align: center;\n  background-color: #6b879c;\n  color: white;\n  width: 100%;\n}\n\nh1 {\n    margin-bottom: 2px;\n}\n\nh2 {\n    margin-top: -2px;\n    margin-bottom: 2px;\n}\n";
+ * $cssData = "
+ * body {n  margin-left: .5em;n  margin-right: .5em;n  text-align: justify;n}nn
+ * p {n  font-family: serif;n  font-size: 10pt;n  text-align: justify;n
+ * text-indent: 1em;n  margin-top: 0px;n  margin-bottom: 1ex;n}nn
+ * h1, h2 {n  font-family: sans-serif;n  font-style: italic;n
+ * text-align: center;n  background-color: #6b879c;n  color: white;n
+ * width: 100%;n}nn
+ * h1 {n    margin-bottom: 2px;n}nn
+ * h2 {n    margin-top: -2px;n    margin-bottom: 2px;n}n";
  *
- * $ebook = new \sb\Ebook_Epub('hello world', 'Visco, Paul');
-<code>
-//$ebook->set_date(strtotime('01/22/1977 12:00PM'));
+ * $ebook = new sbEbookEpub('hello world', 'Visco, Paul');
+  <code>
+ * use sbEbookEpubChapter as Chapter;
+  //$ebook->setDate(strtotime('01/22/1977 12:00PM'));
 
-$ebook->add_global_css_file('test.css', $cssData);
-$ebook->add_cover('cover.jpg');
-$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 1', '<h1>Chapter 1</h1><p>blah blah</p>'));
-$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 2', '<h1>Chapter 2</h1><p>blah blah</p>'));
-$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 3', '<h1>Chapter 3</h1><p>blah blah</p>'));
-$ebook->add_chapter(new \sb\Ebook_Epub_Chapter('chapter 4', '<h1>Chapter 4</h1><p>blah blah</p>'));
-$ebook->output();
+  $ebook->addGlobalCssFile('test.css', $cssData);
+  $ebook->addCover('cover.jpg');
+  $ebook->addChapter(new Chapter('chapter 1', '<h1>Chapter 1</h1><p>blah blah</p>'));
+  $ebook->addChapter(new Chapter('chapter 2', '<h1>Chapter 2</h1><p>blah blah</p>'));
+  $ebook->addChapter(new Chapter('chapter 3', '<h1>Chapter 3</h1><p>blah blah</p>'));
+  $ebook->addChapter(new Chapter('chapter 4', '<h1>Chapter 4</h1><p>blah blah</p>'));
+  $ebook->output();
  * </code>
  * @author paul.visco@roswellpark.org
  * @package Epub
  */
-namespace sb;
+namespace sbEbook;
 
-class Ebook_Epub{
+class Epub
+{
 
     public $global_style_sheets = Array();
 
@@ -29,7 +40,6 @@ class Ebook_Epub{
      * @var number
      */
     protected $chapter_count = 0;
-
 
     /**
      * The zip file that will get exported
@@ -41,51 +51,47 @@ class Ebook_Epub{
 
     /**
      *
-     * @var \sb\Ebook_Epub_OPF
+     * @var sbEbookEpubOPF
      */
     public $ocf;
 
     /**
      *
-     * @var sb\Ebook_Epub_NCX
+     * @var sbEbookEpubNCX
      */
     public $ncx;
 
-    function __construct($title='my_ebook', $author="") {
-
-        $this->tmp_file = uniqid().'.epub';
+    public function __construct($title = 'my_ebook', $author = "")
+    {
+        $this->tmp_file = uniqid() . '.epub';
         $this->zip = new ZipArchive();
 
-
         if ($this->zip->open($this->tmp_file, ZipArchive::CREATE)) {
-            $this->debug("Opening archive: ".$this->tmp_file);
-            $this->create_archive();
-            $this->create_container_xml();
-            $this->opf = new \sb\Ebook_Epub_OPF();
+            $this->debug("Opening archive: " . $this->tmp_file);
+            $this->createArchive();
+            $this->createContainerXml();
+            $this->opf = new sbEbookEpubOPF();
 
-            $this->ncx = new \sb\Ebook_Epub_NCX();
-            $this->set_title($title);
-            $this->set_author($author);
+            $this->ncx = new sbEbookEpubNCX();
+            $this->setTitle($title);
+            $this->setAuthor($author);
         } else {
-            throw(new \Exception("Could not create archive: ".$this->tmp_file));
+            throw(new Exception("Could not create archive: " . $this->tmp_file));
         }
-
     }
 
-
-    protected function create_archive() 
+    protected function createArchive()
     {
 
         $this->zip->addFromString('mimetype', 'application/epub+zip');
-        if($this->zip->addEmptyDir('META-INF/')) {
+        if ($this->zip->addEmptyDir('META-INF/')) {
             $this->debug('Created META-INF directory');
         } else {
             $this->debug('META-INF directory exists');
         }
-
     }
 
-    protected function create_container_xml()
+    protected function createContainerXml()
     {
 
         $xml = new DOMDocument('1.0', 'UTF-8');
@@ -102,27 +108,28 @@ class Ebook_Epub{
 
     /**
      *
-     * @param <type> $filename
-     * @param <type> $data
-     * @param <type> $file_id
-     * @param <type> $mime_type
+     * @param  <type> $filename
+     * @param  <type> $data
+     * @param  <type> $file_id
+     * @param  <type> $mime_type
      * @return <type>
      */
-    public function add_global_css_file($filename,  $data='', $file_id=null, $mime_type=null) 
+    public function addGlobalCssFile($filename, $data = '', $file_id = null, $mime_type = null)
     {
 
         $this->global_style_sheets[] = basename($filename);
-        return $this->add_file($filename, $data, $file_id, 'text/css');
+
+        return $this->addFile($filename, $data, $file_id, 'text/css');
     }
 
     /**
      * Wrapped this so that you could extend if not using framework
-     * @param string $filename
+     * @param  string $filename
      * @return <type>
      */
-    public function file_to_mime($filename)
+    public function fileToMime($filename)
     {
-        return \sb\Files::file_to_mime($filename);
+        return sbFiles::fileToMime($filename);
     }
 
     /**
@@ -130,113 +137,116 @@ class Ebook_Epub{
      * @param <type> $filename
      * @param <type> $data
      */
-    public function add_file($filename,  $data='', $file_id=null, $media_type=null) 
+    public function addFile($filename, $data = '', $file_id = null, $media_type = null)
     {
 
-        if(is_file($filename)){
+        if (is_file($filename)) {
             $data = file_get_contents($filename);
             $filename = basename($filename);
         }
 
-        $media_type ?: $this->file_to_mime($filename);
+        $media_type ? : $this->fileToMime($filename);
 
-        $file_id = $file_id ?: md5($filename);
+        $file_id = $file_id ? : md5($filename);
 
         $this->zip->addFromString($filename, $data);
 
-        $this->opf->add_file($filename, $media_type, $file_id);
+        $this->opf->addFile($filename, $media_type, $file_id);
 
         return $file_id;
-
     }
 
-    protected function set_title($title)
+    protected function setTitle($title)
     {
         $this->title = $title;
-        $this->opf->set_title($title);
-        $this->ncx->set_title($title);
+        $this->opf->setTitle($title);
+        $this->ncx->setTitle($title);
     }
 
-    public function set_author($author, $sort_key='')
+    public function setAuthor($author, $sort_key = '')
     {
-        $this->opf->set_author($author, $sort_key);
-        $this->ncx->set_author($author);
+        $this->opf->setAuthor($author, $sort_key);
+        $this->ncx->setAuthor($author);
     }
 
-    public function set_description($description)
+    public function setDescription($description)
     {
         return $this->opf->set_descrtiption($description);
     }
 
-    public function set_language($lang='en')
+    public function setLanguage($lang = 'en')
     {
 
         if (mb_strlen($language) != 2) {
-            throw(new \Exception("language must be two char language code e.g. en, de"));
+            throw(new Exception("language must be two char language code e.g. en, de"));
         }
-        return $this->opf->set_language($lang);
+
+        return $this->opf->setLanguage($lang);
     }
 
-    public function set_date($date=null)
+    public function setDate($date = null)
     {
-        $this->date = $date ?: time();
-        return $this->opf->set_date($this->date);
+        $this->date = $date ? : time();
+
+        return $this->opf->setDate($this->date);
     }
 
-    public function set_identifier($identifier, $identifier_type)
+    public function setIdentifier($identifier, $identifier_type)
     {
         if ($identifier_type != "URI" && $identifier_type != "ISBN" && $identifier_type != "UUID") {
-            throw(new \Exception("Identifier type must be ISBN, UUID, or URI"));
+            throw(new Exception("Identifier type must be ISBN, UUID, or URI"));
         }
         $this->identifier = $identifier;
         $this->identifier_type = $identifier_type;
     }
 
-    public function add_chapter_raw($title, $contents='', $linear='yes', $autosplit=false)
+    public function addChapterRaw($title, $contents = '', $linear = 'yes', $autosplit = false)
     {
         $this->chapter_count++;
-        if(is_file($contents)){
+        if (is_file($contents)) {
             $src = basename($contents);
             $contents = file_get_contents($contents);
         } else {
-            $src = $this->chapter_count.'.xhtml';
+            $src = $this->chapter_count . '.xhtml';
         }
 
         $this->zip->addFromString($src, $contents);
-        $chapter_id = 'chapter_'.$this->chapter_count;
-        $this->opf->add_file($src, 'application/xhtml+xml', $chapter_id);
-        $this->opf->add_to_spine($chapter_id);
-        $this->ncx->add_navpoint_to_navmap($chapter_id, $this->chapter_count, $title, $src);
-
+        $chapter_id = 'chapter_' . $this->chapter_count;
+        $this->opf->addFile($src, 'application/xhtml+xml', $chapter_id);
+        $this->opf->addToSpine($chapter_id);
+        $this->ncx->addNavpointToNavmap($chapter_id, $this->chapter_count, $title, $src);
     }
 
-    public function add_chapter(\sb\Ebook_Epub_Chapter $chapter, $linear='yes')
+    public function addChapter(sbEbook_Epub_Chapter $chapter, $linear = 'yes')
     {
-        $chapter->add_css($this->global_style_sheets);
-        $this->add_chapter_raw($chapter->title, $chapter->saveXML(), $linear);
+        $chapter->addCss($this->global_style_sheets);
+        $this->addChapterRaw($chapter->title, $chapter->saveXML(), $linear);
+
         return $chapter;
     }
 
-    public function add_cover($data)
+    public function addCover($data)
     {
-        if(is_file($data)){
+        if (is_file($data)) {
             $data = file_get_contents($data);
         }
 
-        $this->add_file('cover.jpg', $data, 'cover', 'image/jpeg');
-        $cover = new \sb\Ebook_Epub_Chapter('Cover', '<div id="cover-image"><img src="cover.jpg" alt="Cover Image"/></div>');
-        $this->add_chapter($cover, 'no');
-
+        $this->addFile('cover.jpg', $data, 'cover', 'image/jpeg');
+        $cover = new sbEbookEpubChapter(
+            'Cover',
+            '<div id="cover-image"><img src="cover.jpg" alt="Cover Image"/></div>'
+        );
+        $this->addChapter($cover, 'no');
     }
 
     public function output()
     {
 
-        $this->date = $this->date ?: time();
+        $this->date = $this->date ? : time();
         $this->opf->formatOutput = true;
         $this->opf->xml->formatOutput = true;
         $this->zip->addFromString("book.opf", $this->opf->saveXML());
-        $this->zip->addFromString("book.ncx",  $this->ncx->saveXML());
+        $this->zip->addFromString("book.ncx", $this->ncx->saveXML());
 
         $this->zip->close();
 
@@ -252,16 +262,16 @@ class Ebook_Epub{
         header('Accept-Ranges: bytes');
         header('Connection: close');
         header('Content-Type: application/epub+zip');
-        header('Content-Disposition: attachment; filename="' . str_replace(Array(" "), "_", $this->title) . '.epub";' );
+        header('Content-Disposition: attachment; filename="' . str_replace(Array(" "), "_", $this->title) . '.epub";');
         header('Content-Transfer-Encoding: binary');
         header('Content-Length: ' . strlen($this->tmp_file));
 
-        \sb\Files::read_chunked($this->tmp_file);
+        \sb\Files::readChunked($this->tmp_file);
     }
 
     protected function debug($str)
     {
-        file_put_contents("php://stdout", $str."\n");
+        file_put_contents("php://stdout", $str . "n");
     }
 }
 

@@ -71,7 +71,7 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function strip_microsoft_chars($str)
+    public static function stripMicrosoftChars($str)
     {
         
         $chars=array(
@@ -107,7 +107,7 @@ class Strings{
      * @param string $str
      * @return string
      */
-    public static function unicode_urldecode($str)
+    public static function unicodeUrldecode($str)
     {
        preg_match_all('/%u([[:alnum:]]{4})/', $str, $matches);
      

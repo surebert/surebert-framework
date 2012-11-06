@@ -10,9 +10,9 @@
  * @package RSS
  *
  */
-namespace sb;
+namespace sb\RSS;
 
-class RSS_Cloud{
+class Cloud{
     
     public $domain;
     public $port;
@@ -21,7 +21,7 @@ class RSS_Cloud{
     public $protocol;
     
     /**
-     * Used to create a RSS_Cloud object
+     * Used to create a RSS Cloud object
      *
      * @param string $domain
      * @param integer $port

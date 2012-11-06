@@ -4,15 +4,14 @@
  * @author paul.visco@roswellpark.org
  * @package Session
  */
-namespace sb;
+namespace sb\Session;
 
-class Session_Memcache extends Session{
+class Memcache extends Session{
 
     /**
      * Instantiates a memcache session
      * <code>
-     * #in /private/config/definitions.php
-     * new sb_Session_Memcache('localhost', 11211);
+     * new \sb\Session\Memcache('localhost', 11211);
      * </code>
      *
      * @param integer $host The memcache host to connect to

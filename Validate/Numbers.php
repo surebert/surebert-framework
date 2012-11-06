@@ -4,9 +4,9 @@
  * @author paul.visco@roswellpark.org
  * @package Validate
  */
-namespace sb;
+namespace sb\Validate;
 
-class Validate_Numbers{
+class Numbers{
 
     /**
      * Checks to see if str, float, or int type and represents whole number

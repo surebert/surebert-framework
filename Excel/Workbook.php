@@ -41,14 +41,14 @@ class Excel_Workbook extends \DOMDocument{
      * @param string $encoding The default encoding to use
      * <code>
      * $workbook = new \sb\Excel_Workbook("My worksheet");
-     * $cell1 = $workbook->set_cell_by_alpha_index('A3', 'xxx');
-     * $cell2 = $workbook->set_cell_by_alpha_index('A3', 'yyy');
+     * $cell1 = $workbook->setCell_by_alpha_index('A3', 'xxx');
+     * $cell2 = $workbook->setCell_by_alpha_index('A3', 'yyy');
      * $style = $workbook->add_style('paul', Array(
      * 'Color' => '#FFACAC',
      * 'Bold' => 1
      * ));
      * $row = $workbook->set_row(4, Array('a', 'b', 'c', 'd', 'e', 'f'));
-     * echo $workbook->output_with_headers('somefile');
+     * echo $workbook->outputWithHeaders('somefile');
      * </code>
      */
     public function  __construct($title = 'Table1', $auto_convert_types=true, $encoding='UTF-8') 
@@ -149,7 +149,7 @@ class Excel_Workbook extends \DOMDocument{
     {
         $cell = null;
         foreach($values_arr as $col_index=>$val){
-            $cell = $this->set_cell($col_index+1, $row_index, $val, $type);
+            $cell = $this->setCell($col_index+1, $row_index, $val, $type);
         }
 
         if($cell){
@@ -166,7 +166,7 @@ class Excel_Workbook extends \DOMDocument{
      * @param string $type The ss:Type attribute
      * @return DOMElement the cell itself
      */
-    public function set_cell($col_index, $row_index, $val, $type=null)
+    public function setCell($col_index, $row_index, $val, $type=null)
     {
             
             $result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']/Data", $this->active_worksheet);
@@ -228,10 +228,10 @@ class Excel_Workbook extends \DOMDocument{
      * @param string $type The ss:Type attribute
      * @return DomElement The cell itself
      */
-    public function set_cell_by_alpha_index($alpha_index, $val, $type=null)
+    public function setCell_by_alpha_index($alpha_index, $val, $type=null)
     {
         $pos = $this->alpha_index_to_numeric($alpha_index);
-        return $this->set_cell($pos[0], $pos[1], $val, $type);
+        return $this->setCell($pos[0], $pos[1], $val, $type);
 
     }
     
@@ -239,7 +239,7 @@ class Excel_Workbook extends \DOMDocument{
      * Used to generate the xml with output headers
      * @param string $filename Name of excel file to generate (...xls) default worksheet.xls
      */
-    public function output_with_headers($filename='worksheet') 
+    public function outputWithHeaders($filename='worksheet') 
     {
         $filename = preg_replace('/[^aA-zZ0-9\_\-]/', '', $filename);
 

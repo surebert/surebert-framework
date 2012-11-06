@@ -4,9 +4,9 @@
  * @author paul.visco@roswellpark.org
  * @package RSS
  */
-namespace sb;
+namespace sb\RSS;
 
-class RSS_Image{
+class Image{
     
     /**
      * The url for the image
@@ -27,7 +27,7 @@ class RSS_Image{
      *
      * @param string $title The title of the image
      * @param string $url The url of the image
-     * @return sbRSSImage
+     * @return \sb\RSS\Image
      */
     public function __construct($title, $url)
     {

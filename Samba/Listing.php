@@ -6,9 +6,9 @@
  * @package Samba
  *
  */
-namespace sb;
+namespace sb\Samba;
 
-class Samba_Listing 
+class Listing 
     {
 
     /**
@@ -47,14 +47,14 @@ class Samba_Listing
      */
     public function fullpath() 
     {
-        return Samba_Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
+        return \Samba\Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
     }
 
     /**
      * Returns the datemodified data as unix timestamp
      * @return string
      */
-    public function unix_datemodified() 
+    public function unixDatemodified() 
     {
         return strtotime($this->datemodified);
     }
@@ -63,7 +63,7 @@ class Samba_Listing
      * Normalizes name as windows is case insesntive
      * @return string
      */
-    public function normalize_name() 
+    public function normalizeName() 
     {
         return strtolower($this->name);
     }

@@ -5,16 +5,16 @@
  *
  * <code>
  * //returns the "cleaned" text as a string
- * echo \sb\Text_Bling::parse"[b]here is a map[/b]");     //return the javascript for the bling string
- * echo \sb\Text_Bling::get_javascript();
+ * echo \sb\Text\Bling::parse"[b]here is a map[/b]");     //return the javascript for the bling string
+ * echo \sb\Text\Bling::getJavascript();
  * </code>
  *
  * @author paul.visco@roswellpark.org
  * @package Text
  */
-namespace sb;
+namespace sb\Text;
 
-class Text_BlingMedia extends Text_Bling{
+class BlingMedia extends Bling{
     /**
      * The map format used, for embedded yahoo maps, set type to 'yahoo' and make sure to include yahoo map api script on your page <script type="text/javascript" src="http://maps.yahooapis.com/v3.04/fl/javascript/apiloader.js?appid=YOUR_API_KEY"></script>, You will need to repalce YOUR_API_KEY with your own yahoo flahs map API key
      *
@@ -87,7 +87,7 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function maps_to_html($str)
+    public static function mapsToHtml($str)
     {
         
         switch(self::$map_type){
@@ -163,7 +163,7 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function user_flash_to_swf($str)
+    public static function userFlashToSwf($str)
     {
         
         preg_match_all( "/\[flash\](.*?)\[\/flash\]/s", $str, $matches );
@@ -232,7 +232,7 @@ class Text_BlingMedia extends Text_Bling{
         return $str;
     }
 
-    public static function mp3_to_audio($str)
+    public static function mp3ToAudio($str)
     {
         $path = self::$content_path;
         return  preg_replace_callback("~\[mp3\](.*?)\[\/mp3\]~s", function($match) use ($path){
@@ -254,7 +254,7 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function external_video_to_player($str)
+    public static function externalVideoToPlayer($str)
     {
 
         ### Youtube videos ###
@@ -297,7 +297,7 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function nonflash_media_to_html($str)
+    public static function nonflashMediaToHtml($str)
     {
         
         preg_match_all( "~\[(wav|mid|amr|3gp|mp4|avi|ogg)\](.*?)\[\/(wav|mid|amr|3gp|mp4|avi|ogg)\]~s", $str, $matches );
@@ -345,7 +345,7 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function pdf_to_link($str)
+    public static function pdfToLink($str)
     {
         
         preg_match_all( "~\[pdf\](.*?)\[/pdf\]~s", $str, $matches );
@@ -365,7 +365,7 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function txt_to_link($str)
+    public static function textToLink($str)
     {
         
         preg_match_all( "~\[txt](.*?)\[/txt]~s", $str, $matches );
@@ -383,7 +383,7 @@ class Text_BlingMedia extends Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function images_to_html($str)
+    public static function imagesToHtml($str)
     {
         
         preg_match_all( "/\[(draw|img)=?(\w+)?\](.*?)\[\/(?:draw|img)\]/s", $str, $matches );
@@ -474,15 +474,15 @@ class Text_BlingMedia extends Text_Bling{
     public static function parse($str)
     {
         $str = parent::clean($str);
-        $str = self::pdf_to_link($str);
-        $str = self::txt_to_link($str);
-        $str = self::images_to_html($str);
-        $str = self::nonflash_media_to_html($str);
+        $str = self::pdfToLink($str);
+        $str = self::textToLink($str);
+        $str = self::imagesToHtml($str);
+        $str = self::nonflashMediaToHtml($str);
 
-        $str = self::external_video_to_player($str);
-        $str = self::user_flash_to_swf($str);
-        $str = self::mp3_to_audio($str);
-        $str = self::maps_to_html($str);
+        $str = self::externalVideoToPlayer($str);
+        $str = self::userFlashToSwf($str);
+        $str = self::mp3ToAudio($str);
+        $str = self::mapsToHtml($str);
         
         return $str;
         

@@ -5,9 +5,10 @@
  * @author paul.visco@roswellpark.org
  * @package Files
  */
-namespace sb;
+namespace sb\Files;
 
-class Files_Mime{
+class Mime
+{
 
     public $mime_types = <<<'MIME'
 ai application/postscript
@@ -128,3 +129,4 @@ xul application/vnd.mozilla.xul+xml
 zip application/zip
 MIME;
 }
+

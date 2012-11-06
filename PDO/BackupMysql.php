@@ -3,19 +3,21 @@
 /**
  * This script is used to backup all mysql databases on a server via mysqldump.
  * It is only suitable for databases that can be dumped using mysqldump.
- * The files are then gzippped into the dumps directory in the folder it was run in.
+ * The files are then gzippped into the dumps directory in the folder it was 
+ * run in.
  * Dumps are broken down into numbered directorys.  1 is the newest and they
  * keep going up until max version.  When a dump directory goes beyond max version,
  * it is deleted.  Each time the script is run, the dump directories increment by 1.
  *
- * The db credetials should be for root or a user that has SELECT access to every database
+ * The db credetials should be for root or a user that has SELECT access to 
+ * every database
  * @author paul.visco@roswellpark.org
  * @package PDO
  */
-namespace sb;
+namespace sb\PDO;
 
-class PDO_BackupMysql 
-    {
+class BackupMysql
+{
 
     /**
      * An array of databases to ignore
@@ -51,7 +53,7 @@ class PDO_BackupMysql
      * Connects to the database for SELECT and mysqldump
      *
      * <code>
-     * $backup = new \sb\PDO_BackupMysql('127.0.0.1', 'root', 'abc123');
+     * $backup = new \sb\PDO\BackupMysql('127.0.0.1', 'root', 'abc123');
      * //optional
      * $backup->max_version = 3;
      * $backup->backup();
@@ -61,7 +63,7 @@ class PDO_BackupMysql
      * @param string $db_user The mysql database user
      * @param string $db_pass The mysql database pass
      */
-    public function __construct($db_host, $db_user, $db_pass) 
+    public function __construct($db_host, $db_user, $db_pass)
     {
 
         $this->db_host = $db_host;
@@ -74,12 +76,12 @@ class PDO_BackupMysql
     /**
      * Initiates the backup process
      */
-    public function backup() 
+    public function backup()
     {
 
-        $this->check_dump_dir();
-        $this->connect_to_db();
-        $this->dump_databases();
+        $this->checkDumpDir();
+        $this->connectToDb();
+        $this->dumpDatabases();
     }
 
     /**
@@ -87,13 +89,13 @@ class PDO_BackupMysql
      * nobackup_* are ignore
      * @param Array $array
      */
-    public function set_ignore($array) 
+    public function setIgnore($array)
     {
 
-        if (is_array($array)) {
+        if (\is_array($array)) {
             $this->ignore = $array;
         } else {
-            die("Set_ignore only accepts an array");
+            throw new \Exception("setIgnore only accepts an array");
         }
     }
 
@@ -101,7 +103,7 @@ class PDO_BackupMysql
      * Sets the directory in which the dump files are stored
      * @param string $dir 
      */
-    public function set_dump_destination($dir = 'dumps/') 
+    public function setDumpDestination($dir = 'dumps/')
     {
         $this->dump_dir = $dir;
     }
@@ -109,12 +111,12 @@ class PDO_BackupMysql
     /**
      * Connects to the database
      */
-    protected function connect_to_db() 
+    protected function connectToDb()
     {
         try {
             $this->db = new PDO("mysql:dbname=;" . $this->db_host, $this->db_user, $this->db_pass);
             $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->log("Cannot connect to database.  Are the credentials correct?");
             $this->log(print_r($e), 1);
             exit;
@@ -124,20 +126,20 @@ class PDO_BackupMysql
     /**
      * check to make sure dump directory exists and if not create it
      */
-    protected function check_dump_dir() 
+    protected function checkDumpDir()
     {
 
         if (!is_dir($this->dump_dir)) {
             mkdir($this->dump_dir, 0700, true);
         }
 
-        foreach (range($this->max_version, 1) as $version) {
+        foreach (\range($this->max_version, 1) as $version) {
             $dir = $this->dump_dir . $version;
 
             if (is_dir($dir)) {
 
                 if ($version == $this->max_version) {
-                    $this->recursive_delete($dir, 1);
+                    $this->recursiveDelete($dir, 1);
                     $this->log('Deleting backup ' . $this->max_version);
                 } else {
                     $new_version = $version + 1;
@@ -155,7 +157,7 @@ class PDO_BackupMysql
     /**
      * Dump the database files and gzip, add version number
      */
-    protected function dump_databases() 
+    protected function dumpDatabases()
     {
 
         foreach ($this->db->query("SHOW DATABASES") as $list) {
@@ -169,7 +171,9 @@ class PDO_BackupMysql
                 $filename = $dir . $database;
 
                 $this->log("Dumping Database: " . $database);
-                $command = "mysqldump -u " . $this->db_user . " -h " . $this->db_host . " -p" . $this->db_pass . " " . $database . ">" . $filename . ".sql";
+                $command = "mysqldump -u " . $this->db_user . " -h "
+                    . $this->db_host . " -p" . $this->db_pass . " "
+                    . $database . ">" . $filename . ".sql";
 
                 exec($command);
 
@@ -190,14 +194,14 @@ class PDO_BackupMysql
      * Send messages to stdout
      * @param string $message
      */
-    protected function log($message) 
+    protected function log($message)
     {
 
         if ($this->debug == true) {
             file_put_contents("php://stdout", $message . "\n");
         }
 
-        file_put_contents($this->dump_dir . 'dump.log', $message . "\n", FILE_APPEND);
+        file_put_contents($this->dump_dir . 'dump.log', $message . "\n", \FILE_APPEND);
     }
 
     /**
@@ -207,15 +211,15 @@ class PDO_BackupMysql
      * @param boolean $del Should directory itself be deleted upon completion
      * @return boolean
      */
-    protected function recursive_delete($dir, $del = 0) 
+    protected function recursiveDelete($dir, $del = 0)
     {
 
         if (substr($dir, 0, 1) == '/') {
-            die("You cannot delete root directories");
+            throw new \Exception("You cannot delete root directories");
         }
 
-        $iterator = new RecursiveDirectoryIterator($dir);
-        foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file) {
+        $iterator = new \RecursiveDirectoryIterator($dir);
+        foreach (new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST) as $file) {
             $name = $file->getFilename();
             if ($file->isDir() && $name != '.' && $name != '..') {
                 rmdir($file->getPathname());
@@ -232,12 +236,11 @@ class PDO_BackupMysql
     /**
      * Stamp the final time and move the dump file into the newest version directory
      */
-    public function __destruct() 
+    public function __destruct()
     {
         $ms = round(microtime(true) - $this->start, 2);
         $this->log($ms . 'ms elapsed');
         rename($this->dump_dir . 'dump.log', $this->dump_dir . '1/dump.log');
     }
-
 }
 

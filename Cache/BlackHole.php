@@ -3,7 +3,7 @@
  * Does not actually cache any data, but uses the Cache interface so that you can
  * removed caching without changing application code
  * <code>
- * $cache = new \sb\Cache_BlackHole();
+ * $cache = new \sb\Cache\BlackHole();
  * $cache->store('/my/key', 'something');
  * echo $cache->fetch('/my/key');
  * </code>
@@ -12,7 +12,7 @@
  * @package Cache
  * 
  */
-namespace sb;
+namespace sb\Cache;
 
 class Cache_BlackHole implements Cache_Base
 {

@@ -13,7 +13,7 @@ class Files{
      * read a file into chunks for faster force download and better memory management
      *
      */
-    public static function read_chunked($file_name,$seekat=0,$return_bytes=true) 
+    public static function readChunked($file_name,$seekat=0,$return_bytes=true) 
     {
 
          // how many bytes per chunk
@@ -56,7 +56,7 @@ class Files{
      * @param string $ext e.g. mp3
      * @return mixed boolean/string e.g. audio/mpeg, false if not found
      */
-    public static function extension_to_mime($ext)
+    public static function extensionToMime($ext)
     {
 
             switch($ext){
@@ -182,7 +182,7 @@ class Files{
     {
         $arr = explode(".", basename($filename));
         $ext = strtolower(end($arr));
-        return self::extension_to_mime($ext);
+        return self::extensionToMime($ext);
     }
 
     /**

@@ -5,16 +5,17 @@
  *
  * <code>
  * //returns the "cleaned" text as a string
- * echo \sb\Text_Bling::clean"[b]here is a map[/b]\n[map]24 linwood avenue, buffalo, ny, 14209[/map]");     //return the javascript for the bling string
+ * echo \sb\Text\Bling::clean"[b]here is a map[/b]\n[map]24 linwood avenue, buffalo, ny, 14209[/map]");     //return the javascript for the bling string
  * 
- * echo \sb\Text_Bling::get_javascript();
+ * echo \sb\Text\Bling::getJavascript();
  * </code>
  *
  * @author paul.visco@roswellpark.org
  * @package Text
  * 
 */
-class Text_Bling{
+namespace sb\Text;
+class Bling{
     /*
      * If mobile is true than the media is linked instead of parsed and thumbnails are displayed instead of the images
      *
@@ -34,7 +35,7 @@ class Text_Bling{
      *
      * @return unknown
      */
-    public static function get_javascript($clear=1)
+    public static function getJavascript($clear=1)
     {
         $js = self::$javascript;
         if($clear ==1){
@@ -50,7 +51,7 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function emoticons_to_html($str)
+    public static function emoticonsToHtml($str)
     {
         
         $str = str_replace (" :)", ' <img src="/media/emot/icon_biggrin.gif" alt="big_grin" />', $str);
@@ -67,7 +68,7 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function parse_css($str)
+    public static function parseCss($str)
     {
 
         return  preg_replace_callback("~\[css=(.*?)\](.*?)\[\/css\]~s", function($match){
@@ -86,27 +87,27 @@ class Text_Bling{
     public static function clean($str, $allow_email=false)
     {
         
-        $str = self::typo_fix($str);
+        $str = self::typoFix($str);
         
         $str = HTML::escape($str);
         
-        $str = self::convert_quotes($str);
+        $str = self::convertQuotes($str);
 
-        $str = self::lists_to_html($str);
+        $str = self::listsToHtml($str);
         
-        $str = self::tables_to_html($str);
+        $str = self::tablesToHtml($str);
         
-        $str = self::links_to_html($str, $allow_email);
+        $str = self::linksToHtml($str, $allow_email);
     
-        $str = self::colorize_instant_messages($str);
+        $str = self::colorizeInstantMessages($str);
         
-        $str = self::text_styles($str);
+        $str = self::textStyles($str);
         
-        $str = self::parse_css($str);
+        $str = self::parseCss($str);
         
-        $str = self::add_searches($str);
+        $str = self::addSearches($str);
         
-        $str = self::misc_tags($str);
+        $str = self::miscTags($str);
         
         //turn any tabs into 4 spaces
         $str = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;", $str);
@@ -120,7 +121,7 @@ class Text_Bling{
      * @param string $str
      * @return string $str;
      */
-    public static function misc_tags($str)
+    public static function miscTags($str)
     {
         
         ##hortizontal row
@@ -142,7 +143,7 @@ class Text_Bling{
      * @return string
      * @todo combine numlist and list into one
      */
-    public static function lists_to_html($str)
+    public static function listsToHtml($str)
     {
 
         $str = preg_replace_callback('/(?:(?:^|\n)[#\*].*)+\n?/m', function($match){
@@ -197,7 +198,7 @@ class Text_Bling{
         return $str;
     }
     
-    public static function tables_to_html($str)
+    public static function tablesToHtml($str)
     {
         
         //add the new ones
@@ -249,7 +250,7 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function links_to_html($str, $allow_email=false, $link_markup=null)
+    public static function linksToHtml($str, $allow_email=false, $link_markup=null)
     {
         
         ### Convert Email Tags ###
@@ -287,7 +288,7 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function add_searches($str)
+    public static function addSearches($str)
     {
         
         ### make google searches ###
@@ -318,7 +319,7 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function colorize_instant_messages($str)
+    public static function colorizeInstantMessages($str)
     {
         
         preg_match_all( "/\[im\](.*?)\[\/im\]/s", $str, $matches );
@@ -350,7 +351,7 @@ class Text_Bling{
      *
      * @param unknown_type $str
      */
-    public static function convert_quotes($str)
+    public static function convertQuotes($str)
     {
 
         $r = "/\[q(?:uote)?\](.*?)\[\/q(?:uote)?\]/is";
@@ -367,7 +368,7 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function strip_bling($str)
+    public static function stripBling($str)
     {
         return preg_replace('~\[.*?](.*?)\[.*?]~', "$1", $str);
     }
@@ -378,13 +379,13 @@ class Text_Bling{
      * @param string $str
      * @return string
      */
-    public static function strip_all($str)
+    public static function stripAll($str)
     {
         $str = stripslashes($str);
         $str = strip_tags($str);
-        $str = Strings::unicode_urldecode($str);
-        $str = self::strip_bling($str);
-        $str = Strings::strip_microsoft_chars($str);
+        $str = Strings::unicodeUrldecode($str);
+        $str = self::stripBling($str);
+        $str = Strings::stripMicrosoftChars($str);
         return $str;
     }
     
@@ -392,7 +393,7 @@ class Text_Bling{
      * Fixed common typos, can be used directly as it is a static property
      *
      * <code>
-     * textBling::typo_fix('Teh bird cant fly');
+     * textBling::typoFix('Teh bird cant fly');
      * //returns 'The bird can't fly'
      * </code>
      *
@@ -400,7 +401,7 @@ class Text_Bling{
      * @return string
      * 
      */
-    public static function typo_fix($str)
+    public static function typoFix($str)
     {
         
         //mistakes
@@ -482,7 +483,7 @@ class Text_Bling{
      * @param string $str
      * @return string $str;
      */
-    public static function text_styles($str)
+    public static function textStyles($str)
     {
                 
         ##bold
