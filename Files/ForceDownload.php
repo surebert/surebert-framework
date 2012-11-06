@@ -26,7 +26,7 @@ class sb_Files_ForceDownload{
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Content-Transfer-Encoding: Binary");
 		header('Content-Type: application/force-download');
-		header('Content-disposition: attachment; filename='.$display_file_name);
+		header('Content-disposition: attachment; filename="'.$display_file_name.'"');
 		
 		while (ob_get_level() > 0) {
 			ob_end_flush();
