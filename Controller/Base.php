@@ -192,7 +192,7 @@ class Base
         }
 
         $method = \sb\Gateway::toCamelCase($method);
-        echo $method;
+        
         if (method_exists($class, $method)) {
             $reflection = new \ReflectionMethod($class, $method);
 
