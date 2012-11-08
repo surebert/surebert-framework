@@ -142,7 +142,7 @@ class Line extends Base
     public function __destruct()
     {
         $milliseconds = round((microtime(true) - $this->start_time) * 1000, 2);
-        $this->log('PEAK MEMORY USAGE: ' . $this->get_memory_usage(), 'MESSAGE');
+        $this->log('PEAK MEMORY USAGE: ' . $this->getMemoryUsage(), 'MESSAGE');
         $this->log('TOTAL ERRORS: ' . $this->number_of_errors, 'MESSAGE');
         $this->log('TOTAL TIME REQUIRED: ' . $milliseconds . "ms", 'MESSAGE');
 
