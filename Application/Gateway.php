@@ -158,7 +158,7 @@ class Gateway
      */
     public static function renderRequest($request, $included = true)
     {
-
+        
         if ($request instanceof Request && \method_exists('\App', 'filter_all_input')) {
 
             \App::filter_all_input($request->get);
@@ -179,11 +179,11 @@ class Gateway
             $controller_class = str_replace(' ', '_', ucwords(str_replace('_', ' ', $controller))) . 'Controller';
 
             $path = str_replace('_', '/', $controller_class) . '.php';
-
+            
             if (!\is_file(ROOT . '/private/controllers/' . $path)) {
 
                 if ($controller == 'surebert') {
-                    $controller_class = '\sb\Controller_Toolkit';
+                    $controller_class = '\sb\Controller\Toolkit';
                 } else {
                     $found = false;
                     foreach (Gateway::$mods as $mod) {
@@ -262,44 +262,6 @@ class Gateway
             }
         }
 
-        return;
-        $class_name = str_replace('\\', '_', $class_name);
-        $class_name = str_replace('_', '/', $class_name);
-        echo $class_name;
-        return;
-        if (\substr($class_name, 0, 3) == 'sb/') {
-            $class_name = substr_replace($class_name, "", 0, 3);
-            require(SUREBERT_FRAMEWORK_SB_PATH . '/' . $class_name . '.php');
-        } elseif (\substr($class_name, 0, 3) == 'rp/') {
-            $class_name = \substr_replace($class_name, "", 0, 3);
-            require(SUREBERT_FRAMEWORK_RP_PATH . '/' . $class_name . '.php');
-        } elseif (\preg_match('~Controller$~', $class_name)) {
-            $f = ROOT . '/private/controllers/' . $class_name . '.php';
-            if (\is_file($f)) {
-                require($f);
-            } else {
-                foreach (Gateway::$mods as $mod) {
-                    $f = ROOT . '/mod/' . $mod . '/controllers/' . $class_name . '.php';
-                    if (\is_file($f)) {
-                        require($f);
-                    }
-                }
-            }
-        } elseif (\substr($class_name, 0, 4) == 'mod/') {
-            require(ROOT . '/' . $class_name . '.php');
-        } elseif (\file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
-            require(ROOT . '/private/models/' . $class_name . '.php');
-        } elseif (\file_exists(ROOT . '/private/resources/' . $class_name . '.php')) {
-            require(ROOT . '/private/resources/' . $class_name . '.php');
-        } else {
-            foreach (Gateway::$mods as $mod) {
-                $m = ROOT . '/mod/' . $mod . '/models/' . $class_name . '.php';
-                if (is_file($m)) {
-                    require($m);
-                    break;
-                }
-            }
-        }
     }
 
     /**
