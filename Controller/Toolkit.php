@@ -162,7 +162,7 @@ class Toolkit extends Base
                         }
                     }
 
-                    $data = $precludes . "n" . $data;
+                    $data = $precludes . "\n" . $data;
                 }
             }
         } else {
