@@ -192,7 +192,7 @@ class Files{
      * @param boolean $del Should directory itself be deleted upon completion
      * @return boolean
      */
-    public static function recursive_delete($dir, $del=0)
+    public static function recursiveDelete($dir, $del=0)
     {
     
          if($dir == '/'){
