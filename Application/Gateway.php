@@ -234,32 +234,32 @@ class Gateway
     public static function autoload($class_name)
     {
 
-        if (\strstr($class_name, "\\")) {
-
-            $class_name = \ltrim($class_name, '\\');
-            $fileName  = '';
-            $namespace = '';
-            if ($lastNsPos = \strripos($class_name, '\\')) {
-                $namespace = \substr($class_name, 0, $lastNsPos);
-                $class_name = \substr($class_name, $lastNsPos + 1);
-                $fileName  = \str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-            }
-            $fileName .= \str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
-            
-            $fileName = ROOT.'/vendor/'.$fileName;
-            require $fileName;
-        } elseif (preg_match('~Controller$~', $class_name)) {
-            $f = ROOT . '/private/controllers/' . $class_name . '.php';
-            if (is_file($f)) {
-                require($f);
-            } else {
-                foreach (Gateway::$mods as $mod) {
-                    $f = ROOT . '/mod/' . $mod . '/controllers/' . $class_name . '.php';
-                    if (\is_file($f)) {
+        if (preg_match('~Controller$~', $class_name)) {
+                $f = ROOT . '/private/controllers/' . $class_name . '.php';
+                if (is_file($f)) {
                         require($f);
-                    }
+                } else {
+                        foreach (self::$mods as $mod) {
+                                $f = ROOT . '/mod/' . $mod . '/controllers/' . $class_name . '.php';
+                                if (is_file($f)) {
+                                        require($f);
+                                }
+                        }
                 }
-            }
+        } else if (substr($class_name, 0, 4) == 'mod/') {
+                require(ROOT . '/' . $class_name . '.php');
+        } else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
+                require(ROOT . '/private/models/' . $class_name . '.php');
+        } else if (file_exists(ROOT . '/private/resources/' . $class_name . '.php')) {
+                require(ROOT . '/private/resources/' . $class_name . '.php');
+        } else {
+                foreach (Gateway::$mods as $mod) {
+                        $m = ROOT . '/mod/' . $mod . '/models/' . $class_name . '.php';
+                        if (is_file($m)) {
+                                require($m);
+                                break;
+                        }
+                }
         }
 
     }
@@ -321,7 +321,9 @@ class Gateway
 
         spl_autoload_extensions('.php');
         spl_autoload_register("sb\Gateway::autoload");
-
+        
+        require_once ROOT . '/vendor/autoload.php';
+        
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
         self::$agent = (isset($_SERVER['HTTP_USER_AGENT'])
@@ -450,7 +452,7 @@ if (\method_exists('\App', "filter_all_output")) {
     echo $output;
 }
 
-if (\ob_get_level()) {
-    \ob_flush();
+if (ob_get_level()) {
+    ob_flush();
 }
 
