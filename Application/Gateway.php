@@ -1,5 +1,5 @@
 <?php
-die('d');
+
 /**
  * Initializes a surebert framework project
  *
