@@ -5,9 +5,9 @@
  * @author paul.visco@roswellpark.org
  * @package XMPP
  */
-namespace sb;
+namespace sb\XMPP;
 
-class XMPP_Message extends XMPP_Packet{
+class Message extends Packet{
 
     /**
      * The SimpleXMLElement if one is imported
@@ -38,7 +38,7 @@ class XMPP_Message extends XMPP_Packet{
      * @param boolean $as_string Determines if node is returned as xml node or string, true by default
      * @return string
      */
-    public function get_body($as_string=true)
+    public function getBody($as_string=true)
     {
 
         $nodes = $this->doc->getElementsByTagName('body');
@@ -60,7 +60,7 @@ class XMPP_Message extends XMPP_Packet{
      *
      * @param boolean $as_string Determines if node is returned as xml node or string, true by default
      */
-    public function get_subject($as_string=true)
+    public function getSubject($as_string=true)
     {
 
         $nodes = $this->doc->getElementsByTagName('subject');
@@ -82,7 +82,7 @@ class XMPP_Message extends XMPP_Packet{
      * @param boolean $as_string Determines if node is returned as xml node or string, true by default
      * @return string
      */
-    public function get_html($as_string=true)
+    public function getHTML($as_string=true)
     {
         $nodes = $this->doc->getElementsByTagName('html');
         $node =$nodes->item(0);
@@ -101,9 +101,9 @@ class XMPP_Message extends XMPP_Packet{
      * Sets the body of the message to be send
      * @param string $body
      */
-    public function set_body($body)
+    public function setBody($body)
     {
-        $node = $this->get_body(false);
+        $node = $this->getBody(false);
         if(!$node){
             $node = $this->createElement('body');
             $this->doc->appendChild($node);
@@ -115,9 +115,9 @@ class XMPP_Message extends XMPP_Packet{
      * Set the subject of the message
      * @param string $subject
      */
-    public function set_subject($subject)
+    public function setSubject($subject)
     {
-        $node = $this->get_subject(false);
+        $node = $this->getSubject(false);
         if(!$node){
             $node = $this->createElement('subject');
             $this->doc->appendChild($node);
@@ -129,7 +129,7 @@ class XMPP_Message extends XMPP_Packet{
      * Sets the html node of the message, expiremental
      * @param string $html
      */
-    public function set_html($html)
+    public function setHTML($html)
     {
         $node = $this->createDocumentFragment();
         $node->appendXML('<html xmlns="http://www.w3.org/1999/xhtml">'.$html.'</html>');
@@ -138,17 +138,17 @@ class XMPP_Message extends XMPP_Packet{
 
     /**
      * Creates a reply message and sends it to the user that sent the
-     * original message.  This can be used only on \sb\XMPP_Message instances
-     * that came over the socket and were passed to the on_message method.
+     * original message.  This can be used only on \sb\XMPP\Message instances
+     * that came over the socket and were passed to the onMessage method.
      * @param string $str
      */
     public function reply($str)
     {
-        $message = new \sb\XMPP_Message();
-        $message->set_to($this->get_from());
-        $message->set_from($this->get_to());
-        $message->set_body($str);
-        $this->client->send_message($message);
+        $message = new \sb\XMPP\Message();
+        $message->setTo($this->getFrom());
+        $message->set_from($this->getTo());
+        $message->setBody($str);
+        $this->client->sendMessage($message);
     }
 
 }

@@ -4,15 +4,16 @@
  * @author paul.visco@roswellpark.org
  * @package XMPP
  */
-namespace sb;
-abstract class XMPP_Packet extends \DOMDocument 
+namespace sb\XMPP;
+
+abstract class Packet extends \DOMDocument 
     {
 
     /**
      * gets the jid of the user that send the packet
      * @return string e.g. paul.visco@chat.server.com
      */
-    public function get_from()
+    public function getFrom()
     {
 
         $attr = $this->doc->getAttribute('from');
@@ -28,7 +29,7 @@ abstract class XMPP_Packet extends \DOMDocument
      * gets he jid of the user that the packet was sent to
      * @return string e.g. paul.visco@chat.server.com
      */
-    public function get_to()
+    public function getTo()
     {
 
         $attr = $this->doc->getAttribute('to');
@@ -44,7 +45,7 @@ abstract class XMPP_Packet extends \DOMDocument
      * Gets the type of packet
      * @return string
      */
-    public function get_type()
+    public function getType()
     {
         $attr = $this->doc->getAttribute('type');
         if($attr){
@@ -58,7 +59,7 @@ abstract class XMPP_Packet extends \DOMDocument
      * Sets the to jid of the message
      * @param string $to e.g. paul.visco@chat.roswellpark.org
      */
-    public function set_to($to)
+    public function setTo($to)
     {
         $attr = $this->createAttribute('to');
         $this->doc->appendChild($attr);
@@ -69,7 +70,7 @@ abstract class XMPP_Packet extends \DOMDocument
      * Sets the from jid of the message
      * @param string $from e.g. paul.visco@chat.roswellpark.org
      */
-    public function set_from($from)
+    public function setFrom($from)
     {
         $attr = $this->createAttribute('from');
         $this->doc->appendChild($attr);
@@ -80,7 +81,7 @@ abstract class XMPP_Packet extends \DOMDocument
      * Sets the type of the message
      * @param string $type chat, etc
      */
-    public function set_type($type)
+    public function setType($type)
     {
         $attr = $this->createAttribute('type');
         $this->doc->appendChild($attr);
@@ -91,7 +92,7 @@ abstract class XMPP_Packet extends \DOMDocument
      * The simple XML element that represents the message
      * @return mixed boolean or SimpleXMLElement
      */
-    public function get_xml()
+    public function getXML()
     {
         return $this->xml;
     }
@@ -100,7 +101,7 @@ abstract class XMPP_Packet extends \DOMDocument
      * Adds an arbitrary XML string to the packet's root node
      * @param string $xml
      */
-    public function add_XML($xml)
+    public function addXML($xml)
     {
         $next_elem = $this->createDocumentFragment();
         $next_elem->appendXML($xml);
