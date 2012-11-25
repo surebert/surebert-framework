@@ -156,10 +156,10 @@ class Files{
      * @param string $file Path to file
      * @return string The mime type from finfo
      */
-    public static function file_to_mime($file)
+    public static function fileToMime($file)
     {
 
-        $mime = self::filename_to_mime($file);
+        $mime = self::filenameToMime($file);
         if($mime){
             return $mime;
         } elseif(class_exists('finfo') && is_file($file)){
@@ -178,7 +178,7 @@ class Files{
      * @param string $filename
      * @return string The mime type of the file
      */
-    public static function filename_to_mime($filename)
+    public static function filenameToMime($filename)
     {
         $arr = explode(".", basename($filename));
         $ext = strtolower(end($arr));
@@ -219,7 +219,7 @@ class Files{
      * @param string $path The path to the server
      * @return object
      */
-    public static function get_directory_size($path) 
+    public static function getDirectorySize($path) 
     {
 
         $stats = new stdClass();
@@ -232,7 +232,7 @@ class Files{
                 if ($file != '.' && $file != '..' && !is_link ($nextpath)) {
                     if (is_dir ($nextpath)) {
                         $stats->dir_count++;
-                        $result = self::get_directory_size($nextpath);
+                        $result = self::getDirectorySize($nextpath);
                         $stats->size += $result->size;
                         $stats->file_count += $result->file_count;
                         $stats->dir_count += $result->dir_count;
@@ -255,7 +255,7 @@ class Files{
      * @param boolean $get_directories Should subdirectories be listed
      * @return array
      */
-    public static function get_files($dir, $get_directories=false)
+    public static function getFiles($dir, $get_directories=false)
     {
         $arr = Array();
         $iterator = new DirectoryIterator($dir);
@@ -265,7 +265,7 @@ class Files{
           if ($get_directories && $file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
              $arr[$file->getBasename()] = Array(
                  'path' => $file->getPath(),
-                 'size' => self::get_directory_size($file->getRealPath()),
+                 'size' => self::getDirectorySize($file->getRealPath()),
                  'mtime' => $file->getMTime(),
                  'name' => $file->getBaseName());
              
@@ -283,7 +283,7 @@ class Files{
      * @param integer $size The size in bytes
      * @return string
      */
-    public static function size_to_string($size) 
+    public static function sizeToString($size) 
     {
 
         if($size<1024) {

@@ -48,7 +48,7 @@ class FileSystem extends HTML5
     protected function logTypesToHtmlTable($sort_by = 'name', $reverse = false)
     {
 
-        $directories = \sb\Files::get_files($this->getRoot(), true);
+        $directories = \sb\Files::getFiles($this->getRoot(), true);
         foreach ($directories as &$dir) {
             $dir['file_count'] = $dir['size']->file_count;
             $dir['size'] = $dir['size']->size;
@@ -87,7 +87,7 @@ class FileSystem extends HTML5
 
             $html .= '<tr><td>' . $data['name'] . '</td>';
             $html .= '<td>' . \date('m/d/Y', intval($data['mtime'])) . '</td>';
-            $html .= '<td>' . \sb\Files::size_to_string($data['size']) . '</td>';
+            $html .= '<td>' . \sb\Files::sizeToString($data['size']) . '</td>';
             $html .= '<td>' . $data['file_count'] . '</td>';
             $html .= '<td><a href="' . ($this->getBaseUrl())
                     . '?command=get_dates&log_type=' . $data['name']
@@ -110,7 +110,7 @@ class FileSystem extends HTML5
     protected function datesToHtmlTable($log_type, $sort_by = 'name', $reverse = false)
     {
         $log_type = preg_replace("~[^\w]~", "", $log_type);
-        $files = \sb\Files::get_files($this->getRoot() . $log_type, false);
+        $files = \sb\Files::getFiles($this->getRoot() . $log_type, false);
         rsort($files);
         $html = $this->getNav() . '<h1>Log: ' . $log_type . '</h1>';
         $html .= '<table><thead><tr>';
@@ -154,7 +154,7 @@ class FileSystem extends HTML5
             $html .= '<tr>';
             $html .= '<td>' . str_replace(".log", "", $file['name']) . '</td>';
 
-            $html .= '<td>' . \sb\Files::size_to_string($file['size']) . '</td>';
+            $html .= '<td>' . \sb\Files::sizeToString($file['size']) . '</td>';
             $html .= '<td>';
             $html .= '<a href="' . ($this->getBaseUrl())
                     . '?command=view&log_type=' . $log_type

@@ -390,7 +390,7 @@ class Email{
                 }
 
                 if(empty($attachment->mime_type)) {
-                    $attachment->mime_type = Files::file_to_mime($attachment->filepath);
+                    $attachment->mime_type = \sb\Files\fileToMime($attachment->filepath);
                 }
 
             }

@@ -115,7 +115,7 @@ class Attachment
             $this->filepath = $filepath;
             $this->contents = file_get_contents($filepath);
             $this->name = \basename($filepath);
-            \sbFiles::file_to_mime($this->filepath);
+            \sb\Files::fileToMime($this->filepath);
         }
     }
 
