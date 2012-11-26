@@ -36,6 +36,10 @@ class Toolkit extends Base
      */
     public $version;
 
+    public function __construct(){
+        $this->toolkit_root = ROOT.'/vendor/surebert/toolkit';
+    }
+    
     /**
      * Removes comments from javascript
      * @author paul.visco@roswellpark.org
@@ -61,21 +65,8 @@ class Toolkit extends Base
             array_unshift($files, 'js1_5');
         }
 
-        $root = false;
-        if (empty($version)) {
-            $root = SUREBERT_TOOLKIT_PATH;
-        } elseif (is_numeric($version)) {
-            $root = $this->toolkit_root . '/tags/' . $version;
-        } else {
-            $root = $this->toolkit_root . '/' . $version;
-        }
-
-        if (!is_dir($root)) {
-            $root = $this->toolkit_root . 'trunk';
-        }
-
-        $this->version = basename($root);
-
+        $root = $this->toolkit_root;
+       
         $binary = preg_match("~\.(swf|gif|png)$~", $files[0], $match);
 
         if ($binary) {
@@ -86,12 +77,12 @@ class Toolkit extends Base
             }
         } else {
             $this->addJavascriptHeaders();
-            echo '//v ' . $this->version . ' - ' . date('m/d/Y H:i:s') . "\n";
+            echo '//v ' . date('m/d/Y H:i:s') . "\n";
         }
 
         if ($this->cache_enable) {
             $cache = isset(\App::$cache) ? \App::$cache : new Cache_FileSystem();
-            $key = '/toolkit/' . md5(implode(",", $files) . $version);
+            $key = '/toolkit/' . md5(implode(",", $files));
 
             $data = $cache->fetch($key);
             if ($data) {
@@ -142,7 +133,6 @@ class Toolkit extends Base
     protected function grabFile($file, $root)
     {
         $data = '';
-
         if (is_file($root . '/' . $file)) {
 
             $this->loaded_files[] = $file;
