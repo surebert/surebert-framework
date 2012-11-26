@@ -1,0 +1,5 @@
+This is a new experimental version of the surebert framework that is compatible with PSR-0/1
+
+It can be checked out from a surebert framework app using the composer.json file there
+
+https://github.com/surebert/surebert-application/blob/namespaced/composer.json
