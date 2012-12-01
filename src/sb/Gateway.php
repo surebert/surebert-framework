@@ -207,8 +207,6 @@ class Gateway
 
         $controller = new $controller_class();
 
-        //$controller = new $controller_class();
-
         $controller->included = $included;
         if (!$included) {
             Gateway::$controller = $controller;
