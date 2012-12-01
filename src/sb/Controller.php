@@ -169,6 +169,12 @@ class Controller
         $this->notFound();
     }
 
+    /**
+     * Excutes the controller method that matches the request
+     * @param string $class The controller class to be called
+     * @param string $method The method that matches the request
+     * @return type
+     */
     protected static function processControllerMethod($class, $method)
     {
 
