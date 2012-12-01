@@ -174,7 +174,7 @@ class Gateway
         $controller = $request->path_array[0];
 
         if (empty($controller)) {
-            $controller_class = Gateway::$default_controller_type;
+            $controller_class = self::$default_controller_type;
         } else {
             $controller_class = str_replace(' ', '_', ucwords(str_replace('_', ' ', $controller))) . 'Controller';
 
@@ -186,7 +186,7 @@ class Gateway
                     $controller_class = '\sb\Controller\Toolkit';
                 } else {
                     $found = false;
-                    foreach (Gateway::$mods as $mod) {
+                    foreach (self::$mods as $mod) {
                         $p = ROOT . '/mod/' . $mod . '/controllers/' . $path;
                         if (is_file($p)) {
                             require_once($p);
@@ -202,17 +202,17 @@ class Gateway
         }
 
         if (!isset($controller_class)) {
-            $controller_class = Gateway::$default_controller_type;
+            $controller_class = self::$default_controller_type;
         }
 
         $controller = new $controller_class();
 
         $controller->included = $included;
         if (!$included) {
-            Gateway::$controller = $controller;
+            self::$controller = $controller;
         }
-        if ($request != Gateway::$request) {
-            $request->get = array_merge(Gateway::$request->get, $request->get);
+        if ($request != self::$request) {
+            $request->get = array_merge(self::$request->get, $request->get);
         }
 
         if (!$controller instanceof \sb\Controller\Base) {
@@ -251,7 +251,7 @@ class Gateway
         } elseif (file_exists(ROOT . '/private/resources/' . $class_name . '.php')) {
                 require(ROOT . '/private/resources/' . $class_name . '.php');
         } else {
-                foreach (Gateway::$mods as $mod) {
+                foreach (self::$mods as $mod) {
                         $m = ROOT . '/mod/' . $mod . '/models/' . $class_name . '.php';
                         if (is_file($m)) {
                                 require($m);
@@ -268,8 +268,8 @@ class Gateway
      */
     public static function requireMod($mod_name)
     {
-        if (!\in_array($mod_name, Gateway::$mods)) {
-            Gateway::$mods[] = $mod_name;
+        if (!\in_array($mod_name, self::$mods)) {
+            self::$mods[] = $mod_name;
         }
         $init = ROOT . '/mod/' . $mod_name . '/init.php';
         if (\is_file($init)) {
@@ -328,8 +328,8 @@ class Gateway
                 && $_SERVER['HTTP_USER_AGENT'] != 'command line')
                 ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
 
-        if (isset(Gateway::$cmd_options['http_host'])) {
-            self::$http_host = Gateway::$cmd_options['http_host'];
+        if (isset(self::$cmd_options['http_host'])) {
+            self::$http_host = self::$cmd_options['http_host'];
         } else {
             self::$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : self::$http_host;
         }
@@ -378,21 +378,21 @@ if (!defined('ROOT')) {
                 $root = \dirname(getcwd());
             }
 
-            Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
-            if (Gateway::$cmd_options) {
-                if (isset(Gateway::$cmd_options['request'])) {
-                    $request = Gateway::$cmd_options['request'];
+            self::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
+            if (self::$cmd_options) {
+                if (isset(self::$cmd_options['request'])) {
+                    $request = self::$cmd_options['request'];
                 }
 
-                if (isset(Gateway::$cmd_options['config'])) {
-                    require(Gateway::$cmd_options['config']);
+                if (isset(self::$cmd_options['config'])) {
+                    require(self::$cmd_options['config']);
                     if (isset($_GET)) {
                         $request.='?' . \http_build_query($_GET);
                     }
                 }
             }
         }
-        Gateway::$command_line = true;
+        self::$command_line = true;
     } elseif (isset($_SERVER['DOCUMENT_ROOT'])) {
         $root = $_SERVER['DOCUMENT_ROOT'];
     }

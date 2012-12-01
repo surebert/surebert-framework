@@ -51,8 +51,8 @@ class Response
             $this->set_content($content);
         }
 
-        if (isset(Gateway::$request->get['sb_callback'])) {
-            $this->callback = Gateway::$request->get['sb_callback'];
+        if (isset(\sb\Gateway::$request->get['sb_callback'])) {
+            $this->callback = \sb\Gateway::$request->get['sb_callback'];
         }
     }
 

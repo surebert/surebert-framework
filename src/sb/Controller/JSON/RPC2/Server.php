@@ -218,8 +218,8 @@ class Server extends Base
 
         if (empty($json_request_str)) {
 
-            if (isset(Gateway::$cmd_options) && isset(Gateway::$cmd_options['json_request'])) {
-                $json_request_str = Gateway::$cmd_options['json_request'];
+            if (isset(\sb\Gateway::$cmd_options) && isset(\sb\Gateway::$cmd_options['json_request'])) {
+                $json_request_str = \sb\Gateway::$cmd_options['json_request'];
             } elseif ($this->method == 'post' || $this->method == 'both') {
                 $json_request_str = \file_get_contents("php://input");
             }
@@ -326,7 +326,7 @@ class Server extends Base
 
     /**
      * Serves data based on the json_request if set, otherwise based on
-     *  Gateway::$cmd_options['json_request']
+     *  \sb\Gateway::$cmd_options['json_request']
      * Had to remove default args being listed to prevent
      * "should be compatible with that of" when using autoload,
      * kept them in phpdoc to make it known which exist

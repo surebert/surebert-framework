@@ -151,7 +151,7 @@ class Logger extends Debugger
             $this->setLogger();
         }
 
-        if (empty($this->sbf_id) || $this->sbf_id == Gateway::$cookie['SBF_ID']) {
+        if (empty($this->sbf_id) || $this->sbf_id == \sb\Gateway::$cookie['SBF_ID']) {
 
             $message = preg_replace("~\t~", " ", $message);
             return $this->logger->{$this->log_str}($message);

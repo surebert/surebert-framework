@@ -39,7 +39,7 @@ class Line extends Base
     public function __construct($allow_from_anywhere = false)
     {
         $this->allow_from_anywhere = $allow_from_anywhere;
-        if (!Gateway::$command_line && !$allow_from_anywhere) {
+        if (!\sb\Gateway::$command_line && !$allow_from_anywhere) {
             die('You can only use this command from the terminal');
         }
 

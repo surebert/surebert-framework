@@ -84,8 +84,8 @@ class FlashUpload
     public function __construct($key = 'Filedata')
     {
 
-        if (isset(Gateway::$request->files[$key])) {
-            $this->uploaded_file = Gateway::$request->files[$key];
+        if (isset(\sb\Gateway::$request->files[$key])) {
+            $this->uploaded_file = \sb\Gateway::$request->files[$key];
         } else {
             throw(new \Exception('\sb\Gateway::$request->files[' . $key . '] must be set in order to upload'));
         }

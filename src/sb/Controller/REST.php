@@ -69,7 +69,7 @@ class REST extends HTTP
             return $this->notFound();
         }
 
-        $method = Gateway::$request_method;
+        $method = \sb\Gateway::$request_method;
         if (method_exists($this, $method)) {
             $reflection = new \ReflectionMethod($this, $method);
 

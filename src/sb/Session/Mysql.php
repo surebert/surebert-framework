@@ -61,7 +61,7 @@ class Mysql extends Session
 
         $this->db = $db;
 
-        $this->token = md5(Gateway::$remote_addr.Gateway::$agent);
+        $this->token = md5(\sb\Gateway::$remote_addr.\sb\Gateway::$agent);
 
         // get session lifetime
         $this->session_life_time = !is_null($session_life_time) ? $session_life_time : ini_get("session.gc_maxlifetime");

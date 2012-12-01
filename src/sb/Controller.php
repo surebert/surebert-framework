@@ -48,7 +48,7 @@ class Controller
      * An array of REGex to callable that routes requests that are not otherwise servable
      * @var array
      */
-    public $routing_patterns = Array();
+    public $routes = Array();
 
     /**
      * Filters the output after the view is rendered but before
@@ -153,9 +153,9 @@ class Controller
             }
         }
 
-        if (isset($this->routing_patterns)) {
-            foreach ($this->routing_patterns as $pattern => $method) {
-                if (\preg_match($pattern, Gateway::$request->request)) {
+        if (isset($this->routes)) {
+            foreach ($this->routes as $pattern => $method) {
+                if (\preg_match($pattern, \sb\Gateway::$request->request)) {
                     if (\is_callable($method)) {
                         return $this->filterOutput(\call_user_func($method, $pattern));
                     } elseif (\is_string($method) && \is_callable(Array($this, $method))) {
@@ -213,7 +213,7 @@ class Controller
 
             //set up arguments to pass to function
             if (!isset($class->request)) {
-                $class->request = Gateway::$request;
+                $class->request = \sb\Gateway::$request;
             }
 
             $args = $class->request->{$http_method};
