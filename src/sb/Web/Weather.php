@@ -3,14 +3,14 @@
  * used to read the weather from NOAA, requires sb_Weather_Feed
  *
  * @package Web
- * 
+ *
  */
 namespace sb\Web;
 
-class Weather{
-
+class Weather
+{
     /**
-     * 
+     *
      * Looks up the weather feed from the given feed url, There are other properties which can be accessed from the feed to see them uncomment print_r($xml) line. I would suggest always storing the json_encoded data in a session so that you only need to access the weather server once per visit as it can be slow and there is no need to check the weather more than once per visit.
      *
      * @param string $feed The url to the weather feed from NOAA e.g.
@@ -22,7 +22,7 @@ class Weather{
      */
     public static function fetch($feed)
     {
-    
+
         $weather = new \sb\Web_WeatherFeed();
         $parts = parse_url($feed);
         $fp = @fsockopen($parts['host'], 80, $errno, $errstr, 2);
@@ -55,9 +55,8 @@ class Weather{
                 }
             }
         }
-        
+
         return $weather;
 
     }
 }
-

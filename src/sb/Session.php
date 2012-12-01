@@ -6,15 +6,15 @@
  */
 namespace sb;
 
-class Session{
-
+class Session
+{
     public function __construct()
     {
         session_start();
     }
 
     /**
-     * Sets a value in the session 
+     * Sets a value in the session
      * @param $key The key to store it by
      * @param $val The value to store
      */
@@ -22,7 +22,7 @@ class Session{
     {
         $_SESSION[$key] = $val;
     }
-    
+
     /**
      * Gets a value from the session
      * @param $key The key it is stored by
@@ -32,8 +32,7 @@ class Session{
     {
         return $_SESSION[$key];
     }
-    
-    
-    
-}
 
+
+
+}

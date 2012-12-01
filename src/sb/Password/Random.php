@@ -9,9 +9,9 @@
  * @author paul.visco@roswellpark.org
  * @package Password
  */
-namespace sb;
+namespace sb\Password;
 
-class Password_Random
+class Random
 {
 
     /**
@@ -32,7 +32,7 @@ class Password_Random
      * <code>
      * echo new \sb\Password_Random(6);
      * </code>
-     * 
+     *
      * @param integer $length The length of the password to generate
      * @param boolean $mixed_case Determines if mixed case is used
      */
@@ -120,4 +120,3 @@ class Password_Random
         return $this->password;
     }
 }
-

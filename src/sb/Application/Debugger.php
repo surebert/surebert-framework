@@ -101,4 +101,3 @@ class Debugger
         \register_shutdown_function('\sb\Application\Debugger::shutdown');
     }
 }
-

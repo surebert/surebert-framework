@@ -18,4 +18,3 @@ class Line
     public $time;
     public $ip;
 }
-

@@ -51,7 +51,7 @@ class Writer
     /**
      * Set the value of an individual cell
      *
-     * @param mixed An excel cell reference such as A1, or an array in the 
+     * @param mixed An excel cell reference such as A1, or an array in the
      * format of ($row, $col) usign zero-based integers
      * @param mixed the value to put in this cell
      * @param the type of value (string|integer). Autodetects by default
@@ -242,4 +242,3 @@ class Writer
         return array("row" => $row - 1, "col" => $col - 1);
     }
 }
-

@@ -256,4 +256,3 @@ class Event
         return implode("\n", $ics);
     }
 }
-

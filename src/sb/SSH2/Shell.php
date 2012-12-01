@@ -15,8 +15,8 @@
  */
 namespace sb\SSH2;
 
-class Shell extends \sb\SSH2\Client{
-
+class Shell extends \sb\SSH2\Client
+{
     /**
      * The shell stream
      * @var stream
@@ -37,7 +37,7 @@ class Shell extends \sb\SSH2\Client{
     {
         $width_height_type = $width_height_type ? $width_height_type : SSH2_TERM_UNIT_CHARS;
         $this->shell = @ssh2_shell($this->connection, $term_type, $env, $width, $height, $width_height_type);
-        
+
         stream_set_blocking($this->shell, true);
 
         if(!$this->shell){
@@ -59,7 +59,7 @@ class Shell extends \sb\SSH2\Client{
         if($with_login_env){
             $command = 'bash -l '.$command;
         }
-        
+
         return fwrite($this->shell, $command.PHP_EOL);
     }
 }

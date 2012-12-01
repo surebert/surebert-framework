@@ -27,14 +27,14 @@ class Process
     /**
      * Create a new linux process
      * @param mixed $data The process ID to manage if a integer, else the command if string
-     * 
+     *
      * <code>
      $process = new \sb\Linux\Process('ping google.com');
-     
+
       if($process->status()){
          echo $process->getPid();
       }
-     
+
       $process = new \sb\Linux\Process($process->getPid());
       if($process->status()){
          $process->stop();
@@ -136,4 +136,3 @@ class Process
         return false;
     }
 }
-

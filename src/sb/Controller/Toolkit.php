@@ -36,10 +36,11 @@ class Toolkit extends Base
      */
     public $version;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->toolkit_root = ROOT.'/vendor/surebert/toolkit';
     }
-    
+
     /**
      * Removes comments from javascript
      * @author paul.visco@roswellpark.org
@@ -66,7 +67,7 @@ class Toolkit extends Base
         }
 
         $root = $this->toolkit_root;
-       
+
         $binary = preg_match("~\.(swf|gif|png)$~", $files[0], $match);
 
         if ($binary) {
@@ -259,4 +260,3 @@ class Toolkit extends Base
         return $str;
     }
 }
-

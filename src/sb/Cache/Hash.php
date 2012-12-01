@@ -35,7 +35,7 @@ class Hash implements Base
      * Constructs the mysql cache, pass the db connection to the constructor
      * @param $host The hostname the memcache server is stored on
      * @param $port The port to access the memcache server on
-     * @param $namespace The namespace required when sharing memcache server.  
+     * @param $namespace The namespace required when sharing memcache server.
      * Must be totall unique, e.g. the name of your app?
      */
     public function __construct()
@@ -116,7 +116,7 @@ class Hash implements Base
     }
 
     /**
-     * Keeps track of the data stored in the cache to make deleting groups of 
+     * Keeps track of the data stored in the cache to make deleting groups of
      * data possible
      * @param $key
      * @return boolean If the catalog is stored or not
@@ -164,4 +164,3 @@ class Hash implements Base
         return $arr;
     }
 }
-

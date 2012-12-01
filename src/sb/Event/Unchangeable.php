@@ -2,10 +2,10 @@
 
 /**
  * Extends \sb\Event to make an event for which the listeners cannot reset the original
- * data past to the event constructors 
+ * data past to the event constructors
  * @author paul.visco@roswellpark.org
  * @package Event
- * 
+ *
  */
 namespace sb\Event;
 
@@ -16,7 +16,7 @@ class Unchangeable extends Event
 
     /**
      * Sets the data for the event
-     * @param array $data 
+     * @param array $data
      * @param mixed $subject The subject of the event
      */
     public function __construct($data = Array(), $subject = false)
@@ -30,7 +30,7 @@ class Unchangeable extends Event
      * Used to catch trying to override the args property
      * @param string $name The property being called to set
      * @param mixed $value The value to set it to
-     * @throws \sb\Event\Unchangeable\Exception 
+     * @throws \sb\Event\Unchangeable\Exception
      */
     public function __set($name, $value)
     {
@@ -41,7 +41,7 @@ class Unchangeable extends Event
 
     /**
      * Stops programmer who wrote listener from overriding the args
-     * @throws \sb\Event\Unchangeable\Exception 
+     * @throws \sb\Event\Unchangeable\Exception
      */
     public function setArgs()
     {
@@ -50,7 +50,7 @@ class Unchangeable extends Event
 
     /**
      * Stops programmer who wrote listener from overriding the args
-     * @throws \sb\Event_Unchangeable_Exception 
+     * @throws \sb\Event_Unchangeable_Exception
      */
     public function setArg()
     {
@@ -58,4 +58,3 @@ class Unchangeable extends Event
     }
 
 }
-

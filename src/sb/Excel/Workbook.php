@@ -5,10 +5,10 @@
  * @author paul.visco@roswellpark.org
  * @package Excel
  */
-namespace sb;
+namespace sb\Excel;
 
-class Excel_Workbook extends \DOMDocument{
-
+class Workbook extends \DOMDocument
+{
     /**
      * The workbook Element
      * @var DOMElement
@@ -51,7 +51,7 @@ class Excel_Workbook extends \DOMDocument{
      * echo $workbook->outputWithHeaders('somefile');
      * </code>
      */
-    public function  __construct($title = 'Table1', $auto_convert_types=true, $encoding='UTF-8') 
+    public function  __construct($title = 'Table1', $auto_convert_types=true, $encoding='UTF-8')
     {
 
         parent::__construct('1.0', $encoding);
@@ -63,7 +63,7 @@ class Excel_Workbook extends \DOMDocument{
         $this->workbook->setAttribute('xmlns:x', 'urn:schemas-microsoft-com:office:excel');
         $this->workbook->setAttribute('xmlns:ss', 'urn:schemas-microsoft-com:office:spreadsheet');
         $this->workbook->setAttribute('xmlns:html', 'http://www.w3.org/TR/REC-html40');
-    
+
         $this->styles = $this->workbook->appendChild($this->createElement('ss:Styles'));
         $this->active_worksheet = $this->add_worksheet($title);
 
@@ -168,11 +168,11 @@ class Excel_Workbook extends \DOMDocument{
      */
     public function setCell($col_index, $row_index, $val, $type=null)
     {
-            
+
             $result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']/Data", $this->active_worksheet);
             $data = $result->item(0);
             $type = $type ? $type : $this->get_value_type($val);
-            
+
             if($data){
                 $data->setAttribute('ss:Type', $type);
                 $data->firstChild->nodeValue = $val;
@@ -181,7 +181,7 @@ class Excel_Workbook extends \DOMDocument{
             $result = $this->xpath->query("//Row[@Index='".$row_index."']");
 
             $row = $result->item(0);
-        
+
             if(!$row){
                 $row = $this->createElement('Row');
                 $this->active_worksheet->table->appendChild($row);
@@ -234,12 +234,12 @@ class Excel_Workbook extends \DOMDocument{
         return $this->setCell($pos[0], $pos[1], $val, $type);
 
     }
-    
+
     /**
      * Used to generate the xml with output headers
      * @param string $filename Name of excel file to generate (...xls) default worksheet.xls
      */
-    public function outputWithHeaders($filename='worksheet') 
+    public function outputWithHeaders($filename='worksheet')
     {
         $filename = preg_replace('/[^aA-zZ0-9\_\-]/', '', $filename);
 
@@ -252,11 +252,11 @@ class Excel_Workbook extends \DOMDocument{
      * Converts the xml to a string
      * @return string
      */
-    public function  __toString() 
+    public function  __toString()
     {
         //stupid kludge to deal with DOMXPath bug that prevented the queries from working on the DOMDocument with namespaced elements
         $nodes = $this->xpath->query("//*[@Index]");
-        
+
         for($x=0;$x<$nodes->length;$x++){
             $node = $nodes->item($x);
             $node->setAttribute('ss:Index', $node->getAttribute('Index'));
@@ -265,7 +265,7 @@ class Excel_Workbook extends \DOMDocument{
 
         return $this->saveXML();
     }
-    
+
     /**
      * Determines value type
      * @param string $val

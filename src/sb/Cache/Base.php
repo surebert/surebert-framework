@@ -38,10 +38,9 @@ interface Base
     public function clearAll();
 
     /**
-     * Loads all the values stores in the cache into an array by key, 
+     * Loads all the values stores in the cache into an array by key,
      * should be in alphabetical order
      * @return Array keys are the cahce_key and the value is the expires_by time
      */
     public function getKeys();
 }
-

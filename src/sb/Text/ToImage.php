@@ -4,31 +4,31 @@
  * @author paul.visco@roswellpark.org
  * @package Text
  */
-namespace sb;
+namespace sb\Text;
 
-class Text_ToImage{
-
+class ToImage
+{
     /**
      * The path to the ttf you want your use.  must be in true type format.
      *
      * @var string
      */
     public $font ='';
-    
+
     /**
      * The text rotation angel of the text , 0 is the default and stands for normal horizontal left to righ text
      *
      * @var integer
      */
     public $rotation=0;
-    
+
     /**
      * The image resource
      *
      * @var resource
      */
     private $image;
-    
+
     /**
      * Used to instantiate a new TextToImage
      *
@@ -52,26 +52,26 @@ class Text_ToImage{
     public function __construct($width, $height, $background_color = '', $text_color = '')
     {
         $this->image = imagecreate($width, $height);
-        
-        
+
+
         $color = explode(',', $background_color);
         if(count($color) ==3){
             $background_color = imagecolorallocate($this->image, $color[0], $color[1], $color[2]);
         } else {
             $background_color = imagecolorallocate($this->image, 0, 0, 0);
         }
-        
+
         imagefill($this->image, 0, 0, $background_color);
-        
+
         $color = explode(',', $text_color);
-        
+
         if(count($color) ==3){
             $this->text_color = imagecolorallocate($this->image, $color[0], $color[1], $color[2]);
         } else {
             $this->text_color = imagecolorallocate($this->image, 255, 255, 255);
         }
     }
-    
+
     /**
      * Draws the text onto the image
      *
@@ -83,11 +83,11 @@ class Text_ToImage{
      */
     public function draw($text, $size=12, $x=0, $y=0)
     {
-        
+
         imagettftext($this->image, $size, $this->rotation, $x, $y, $this->text_color, $this->font, $text);
-        
+
         return $this->image;
-        
+
     }
-    
+
 }

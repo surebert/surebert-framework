@@ -71,22 +71,22 @@ class RecordPager
     /**
      * Returns an object of type PDORecordPage set to the page numberd $pagenum
      *
-     * Changed this 05/06/2008 Paul Visco added use of $this->values and 
+     * Changed this 05/06/2008 Paul Visco added use of $this->values and
      * $this->object_type to support additional \sb\PDO->s2o() arguments
      *
      * @param integer $pagenum
      * @return \sb\PDORecordPage
      *
      * <code>
-     * 
+     *
      * //get the current requested page from an internet user
      * $pnum = (isset($_REQUEST['page']))?$_REQUEST['page']:1;
-     * 
+     *
      * $pager = new \sb\PDO_RecordPager($mysqlconn);
      * $pager->sql = "SELECT * FROM user ORDER BY lname DESC;";
      * $pager->pagesize = 20 //optional default is set to 10
      * $res = $pager->getPage($punm);
-     * 
+     *
      * echo '<pre>' . print_r($res->rows) . '</pre>';
      *
      *
@@ -168,13 +168,13 @@ class RecordPager
      * //... continued from above
      *
      * if($flipped = $pager->flipTo('lname', 'cashaw')){
-     * 
+     *
      *    //prints the contents of the first page that contained a row with the column
      *    //'lname' set to the value of 'cashaw'
-     * 
+     *
      *    echo '<pre>' . print_r($res->rows) . '</pre>';
      * }else{
-     * 
+     *
      * }
      *
      * </code>
@@ -215,4 +215,3 @@ class RecordPager
         return 0;
     }
 }
-

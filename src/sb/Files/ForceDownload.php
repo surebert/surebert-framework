@@ -15,7 +15,7 @@ class ForceDownload
      * Send headers and begins force-download
      *
      * @param string $file The path to the file to force download
-     * @param strin $display_file_name The filename to give to the 
+     * @param strin $display_file_name The filename to give to the
      * force download if different than the basename of the file arg
      *
      */
@@ -41,7 +41,7 @@ class ForceDownload
     /**
      * Converts a file or directory into a zip file for consumption by the browser
      * @param string $path The path to the file or directory
-     * @return string 
+     * @return string
      */
     public static function fileToZip($path)
     {
@@ -78,4 +78,3 @@ class ForceDownload
         }
     }
 }
-

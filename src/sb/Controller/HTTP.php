@@ -2,7 +2,7 @@
 
 /**
  * Used to handle http requests
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
@@ -13,7 +13,7 @@ class HTTP extends Base
 
     /**
      * Sets a session var
-     * 
+     *
      * @param string $name The key of the session
      * @param string $value The value of the session
      */
@@ -24,7 +24,7 @@ class HTTP extends Base
 
     /**
      * Sets a session var
-     * 
+     *
      * @param string $key The key of the session
      */
     public function unsetSession($key)
@@ -36,28 +36,28 @@ class HTTP extends Base
 
     /**
      * Set an http cookie
-     * 
+     *
      * @param string $name The name of the cookie
      * @param string $value The value of the cookie
      * @param integer $expire The time the cookie expires. This is a Unix timestamp
-     *  so is in number of seconds since the epoch. In other words, you'll most 
-     * likely set this with the time() function plus the number of seconds 
+     *  so is in number of seconds since the epoch. In other words, you'll most
+     * likely set this with the time() function plus the number of seconds
      * before you want it to expire
-     * @param string $path The path on the server in which the cookie will be 
-     * available on. If set to '/', the cookie will be available within the 
+     * @param string $path The path on the server in which the cookie will be
+     * available on. If set to '/', the cookie will be available within the
      * entire domain. If set to '/foo/', the cookie will only be available within
      *  the /foo/ directory and all sub-directories such as /foo/bar/ of domain.
      * The default is /
      * @param string $domain The domain that the cookie is available to. To make
-     *  the cookie available on all subdomains of example.com 
+     *  the cookie available on all subdomains of example.com
      * (including example.com itself) then you'd set it to '.example.com'.
      *  Although
      * @param boolean $secure Indicates that the cookie should only be transmitted
-     *  over a secure HTTPS connection from the client. When set to TRUE, the 
+     *  over a secure HTTPS connection from the client. When set to TRUE, the
      * cookie will only be set if a secure connection exists.
      * @param boolean $httponly When TRUE the cookie will be made accessible only
-     *  through the HTTP protocol. This means that the cookie won't be 
-     * accessible by scripting languages, such as JavaScript. 
+     *  through the HTTP protocol. This means that the cookie won't be
+     * accessible by scripting languages, such as JavaScript.
      */
     public function setCookie(
         $name,
@@ -73,7 +73,7 @@ class HTTP extends Base
 
     /**
      * Unsets a cookie value by setting it to expire
-     * @param string $name The cookie name 
+     * @param string $name The cookie name
      * @param string path The path to clear, defaults to /
      */
     public function unsetCookie($name, $path = '/')
@@ -99,7 +99,7 @@ class HTTP extends Base
     /**
      * Sends an http header
      * @param string $header The header to send e.g. Content-Type
-     * @param string $value  The value to send e.g. text/plain.  If a value is 
+     * @param string $value  The value to send e.g. text/plain.  If a value is
      * set then a colon+space is added between header and value
      */
     public function sendHeader($header, $value = '')
@@ -164,10 +164,10 @@ class HTTP extends Base
     /**
      * The url to redirect to and the type 301, 302, 307, etc
      * @param type $url The URL to redirect to
-     * @param type $type defaults to 302.  Browsers typically re-request a 307 
-     * page every time, cache a 302 page for the session, and cache a 301 page 
-     * for longer, or even indefinitely.  Search engines typically transfer 
-     * "page rank" to the new location for 301 redirects, but not for 302, 303 
+     * @param type $type defaults to 302.  Browsers typically re-request a 307
+     * page every time, cache a 302 page for the session, and cache a 301 page
+     * for longer, or even indefinitely.  Search engines typically transfer
+     * "page rank" to the new location for 301 redirects, but not for 302, 303
      * or 307.
      * 301 Moved Permanently
      * 302 Found
@@ -183,7 +183,7 @@ class HTTP extends Base
      * Gets a get variable value or returns the default value (null unless overridden)
      * @param string $key The $_GET var key to look for
      * @param mixed $default_val null by default
-     * @return mixed string value or null 
+     * @return mixed string value or null
      */
     public function getGet($key, $default_val = null)
     {
@@ -194,7 +194,7 @@ class HTTP extends Base
      * Gets a post variable value or returns the default value (null unless overridden)
      * @param string $key The $_POST var key to look for
      * @param mixed $default_val null by default
-     * @return mixed string value or null 
+     * @return mixed string value or null
      */
     public function getPost($key, $default_val = null)
     {
@@ -203,7 +203,7 @@ class HTTP extends Base
 
     /**
      * Gets a cookie value if set, otherwise returns null
-     * 
+     *
      * @param string $key The key to look for
      * @return mixed the string value or null if not found
      */
@@ -216,7 +216,7 @@ class HTTP extends Base
      * Gets a get variable value or returns the default value (null unless overridden)
      * @param string $key The $_SESSION var key to look for
      * @param mixed $default_val null by default
-     * @return mixed string value or null 
+     * @return mixed string value or null
      */
     public function getSession($key, $default_val = null)
     {
@@ -227,7 +227,7 @@ class HTTP extends Base
      * Gets a args variable value or returns the default value (null unless overridden)
      * @param integer $arg_num The numeric arg value
      * @param mixed $default_val null by default
-     * @return mixed string value or null 
+     * @return mixed string value or null
      */
     public function getArg($arg_num, $default_val = null)
     {
@@ -238,7 +238,7 @@ class HTTP extends Base
      * Added option for requesting basic auth.  ONLY USE OVER SSL
      * @param callable $check_auth  the callable that determines success or not
      * @param string $realm the realm beings used
-     * @return boolean  
+     * @return boolean
      */
     public function requireBasicAuth($check_auth = '', $realm = 'Please enter your username and password')
     {
@@ -264,4 +264,3 @@ class HTTP extends Base
         return $authorized;
     }
 }
-

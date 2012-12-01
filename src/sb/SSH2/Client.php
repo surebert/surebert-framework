@@ -12,14 +12,14 @@
  *
  * $data = $client->exec('ls /tmp');
  * </code>
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package SSH2
  */
 namespace sb\SSH2;
 
-class Client{
-
+class Client
+{
     protected $connection;
 
     /**
@@ -48,7 +48,7 @@ class Client{
      */
     public function login($uname, $pass)
     {
-        
+
         if (!@ssh2_auth_password($this->connection, $uname, $pass)){
             throw new \Exception("Could not authenticate with credentials given.");
         }
@@ -65,8 +65,7 @@ class Client{
      */
     public function loginWithKey($uname, $public_key_file, $private_key_file, $pass='')
     {
-        if (!ssh2_auth_pubkey_file($this->connection, $uname, $public_key_file, $private_key_file, $pass))
-    {
+        if (!ssh2_auth_pubkey_file($this->connection, $uname, $public_key_file, $private_key_file, $pass)) {
             throw new \Exception("Could not authenticate with credentials given.");
         }
 
@@ -80,7 +79,7 @@ class Client{
      * @param boolean $return_stream If true, returns stream instead of data string
      * @return mixed If return stream, stream is returned else the data from the command on the remote machine as a string
      */
-    public function exec($command, $timeout = 30, $return_stream = false) 
+    public function exec($command, $timeout = 30, $return_stream = false)
     {
 
         $stream = @ssh2_exec($this->connection, $command);
@@ -118,4 +117,3 @@ class Client{
     }
 
 }
-

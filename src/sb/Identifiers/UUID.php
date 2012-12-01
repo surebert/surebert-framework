@@ -12,7 +12,7 @@ class UUID
     /**
      * Creates a v3 UUID
      * @return string
-     * 
+     *
      * <code>
      * \sb\Identifiers\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
      * </code>
@@ -57,7 +57,7 @@ class UUID
     /**
      * Creates a v4 UUID
      * @return string
-     * 
+     *
      * <code>
      * \sb\Identifiers\UUID::v4();
      * </code>
@@ -86,7 +86,7 @@ class UUID
      * @param string $namespace Another UUID to use as namespace
      * @param string $name
      * @return string
-     * 
+     *
      * <code>
      * \sb\Identifiers\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
      * </code>
@@ -139,4 +139,3 @@ class UUID
                 $uuid) === 1;
     }
 }
-

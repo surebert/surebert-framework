@@ -65,7 +65,7 @@ abstract class Base
     /**
      * Sets the agent string representing the agent/user that initiated the action
      *
-     * @param string $str It is a string instead of an object as it may require 
+     * @param string $str It is a string instead of an object as it may require
      * specific formating for your needs e.g. "\t".App::$user->uname."\t"
      * .App::$user->roswell_id."\t".App::$user->ip
      */
@@ -111,4 +111,3 @@ abstract class Base
      */
     abstract protected function write($data, $log_type);
 }
-

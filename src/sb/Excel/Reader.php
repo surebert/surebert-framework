@@ -174,4 +174,3 @@ class Reader extends Backend
         return !!$this->rowInfo[$sheet][$row]['hidden'];
     }
 }
-

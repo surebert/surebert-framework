@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Models a JSONRPC 2 request as per the spec proposal at 
+ * Models a JSONRPC 2 request as per the spec proposal at
  * http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  *
  * @author paul.visco@roswellpark.org
@@ -33,7 +33,7 @@ class Request
 
     /**
      * Popultes the properties from json recieved
-     * 
+     *
      * <code>
      * $request = new \sb\JSON_RPC2_Request();
      * $request->id = 'abc123';
@@ -105,4 +105,3 @@ class Request
         }
     }
 }
-

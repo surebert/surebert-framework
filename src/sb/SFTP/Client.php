@@ -21,8 +21,8 @@
  */
 namespace sb\SFTP;
 
-class Client extends \sb\SSH2\Client implements \sb\FTP\Base{
-
+class Client extends \sb\SSH2\Client implements \sb\FTP\Base
+{
     protected $sftp;
 
     /**
@@ -72,8 +72,7 @@ class Client extends \sb\SSH2\Client implements \sb\FTP\Base{
     public function loginWithKey($uname, $public_key_file, $private_key_file, $pass='')
     {
 
-         if(parent::login($uname, $public_key_file, $private_key_file, $pass))
-    {
+         if(parent::login($uname, $public_key_file, $private_key_file, $pass)) {
             $this->connect();
         }
 
@@ -157,7 +156,7 @@ class Client extends \sb\SSH2\Client implements \sb\FTP\Base{
                 $files[] = $file;
             }
         }
-        
+
         closedir($handle);
 
         return $files;
@@ -266,7 +265,7 @@ class Client extends \sb\SSH2\Client implements \sb\FTP\Base{
         return $result;
     }
 
-    public function chmod($file, $mode, $recursive=false) 
+    public function chmod($file, $mode, $recursive=false)
     {
         if (!$this->exists($file)){
             return false;

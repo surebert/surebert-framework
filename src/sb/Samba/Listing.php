@@ -8,7 +8,7 @@
  */
 namespace sb\Samba;
 
-class Listing 
+class Listing
     {
 
     /**
@@ -45,7 +45,7 @@ class Listing
      * Prints the full path of the resource
      * @return string
      */
-    public function fullpath() 
+    public function fullpath()
     {
         return \Samba\Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
     }
@@ -54,7 +54,7 @@ class Listing
      * Returns the datemodified data as unix timestamp
      * @return string
      */
-    public function unixDatemodified() 
+    public function unixDatemodified()
     {
         return strtotime($this->datemodified);
     }
@@ -63,7 +63,7 @@ class Listing
      * Normalizes name as windows is case insesntive
      * @return string
      */
-    public function normalizeName() 
+    public function normalizeName()
     {
         return strtolower($this->name);
     }

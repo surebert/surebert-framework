@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Stores data in Memcache, requires memcache server be installed and running 
+ * Stores data in Memcache, requires memcache server be installed and running
  * on the host and port specified
  *
  * @author paul.visco@roswellpark.org
@@ -34,7 +34,7 @@ class Memcache implements Base
 
     /**
      * Constructs the mysql cache, pass the db connection to the constructor
-     * 
+     *
      * <code>
      * App::$cache = new \sb\Cache\Memcache('localhost', 11211, 'myapp');
      * App::$cache->store(
@@ -42,7 +42,7 @@ class Memcache implements Base
      *
      * @param $host The hostname the memcache server is stored on
      * @param $port The port to access the memcache server on
-     * @param $namespace The namespace required when sharing memcache server.  
+     * @param $namespace The namespace required when sharing memcache server.
      * Must be totall unique, e.g. the name of your app?
      */
     public function __construct($host, $port, $namespace)
@@ -165,4 +165,3 @@ class Memcache implements Base
         return $arr;
     }
 }
-

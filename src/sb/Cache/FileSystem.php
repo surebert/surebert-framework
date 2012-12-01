@@ -2,7 +2,7 @@
 
 /**
  * Stores cached data in the file system
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Cache
  *
@@ -10,8 +10,8 @@
 
 namespace sb\Cache;
 
-class FileSystem implements Base {
-
+class FileSystem implements Base
+{
     /**
      * The key to store the catalog in
      * @var string
@@ -26,7 +26,7 @@ class FileSystem implements Base {
 
     /**
      * Sets the filepath of the file system cache, defaults to ROOT/private/cache/
-     * 
+     *
      * <code>
      * $mycache = new sb_Cache_FileSystem();
      * //store a string in /private/cache/dog/food for 10 seconds
@@ -49,8 +49,8 @@ class FileSystem implements Base {
      * @param string $file_path Optional The filepath to store the cache in, must be writable
      *
      */
-    public function __construct($file_path = '') {
-
+    public function __construct($file_path = '')
+    {
         if (empty($file_path)) {
             $file_path = ROOT . '/private/cache/';
         }
@@ -61,8 +61,8 @@ class FileSystem implements Base {
     /**
      * Stores the cached data in /private/cache filesystem
      */
-    public function store($key, $data, $lifetime = 0) {
-
+    public function store($key, $data, $lifetime = 0)
+    {
         $file_path = $this->getFilePath($key);
         $dir = \dirname($file_path);
 
@@ -108,8 +108,8 @@ class FileSystem implements Base {
     /**
      * Retreives data from /private/cache
      */
-    public function fetch($key) {
-
+    public function fetch($key)
+    {
         $file_name = $this->get_file_path($key);
         if (!\file_exists($file_name) || !\is_readable($file_name)) {
             return false;
@@ -140,8 +140,8 @@ class FileSystem implements Base {
     /**
      * Deletes data from /private/cache
      */
-    public function delete($key) {
-
+    public function delete($key)
+    {
         $file = $this->get_file_path($key);
 
         if (\is_dir($file)) {
@@ -164,8 +164,8 @@ class FileSystem implements Base {
      * Delete all the info in the cache regardless of the key
      * @return boolean
      */
-    public function clearAll() {
-
+    public function clearAll()
+    {
         $this->clearDir($this->file_path . '/sb_Cache');
     }
 
@@ -174,8 +174,8 @@ class FileSystem implements Base {
      * @param $dir
      * @return boolean
      */
-    protected function clearDir($dir) {
-
+    protected function clearDir($dir)
+    {
         $iterator = new \DirectoryIterator($dir);
         foreach ($iterator as $file) {
 
@@ -199,7 +199,8 @@ class FileSystem implements Base {
      * @param $key
      * @return string The path of the cache file
      */
-    protected function getFilePath($key) {
+    protected function getFilePath($key)
+    {
         return $this->file_path . '/sb_Cache' . $key;
     }
 
@@ -209,7 +210,8 @@ class FileSystem implements Base {
      * @param integer $lifetime the lifetime in seconds
      * @return boolean
      */
-    protected function catalogKeyAdd($key, $lifetime) {
+    protected function catalogKeyAdd($key, $lifetime)
+    {
         $catalog = $this->fetch($this->catalog_key);
         $catalog = \is_array($catalog) ? $catalog : Array();
         $catalog[$key] = ($lifetime == 0) ? $lifetime : $lifetime + \time();
@@ -221,7 +223,8 @@ class FileSystem implements Base {
      * @param string $key The key to delete
      * @return boolean
      */
-    protected function catalogKeyDelete($key) {
+    protected function catalogKeyDelete($key)
+    {
         $catalog = $this->fetch($this->catalog_key);
         $catalog = \is_array($catalog) ? $catalog : Array();
         if (isset($catalog[$key])) {
@@ -235,7 +238,8 @@ class FileSystem implements Base {
      * Sets the file path to cache in
      * @return string
      */
-    public function setCacheDir($file_path) {
+    public function setCacheDir($file_path)
+    {
         if (\substr($file_path, -1, 1) != '/') {
             $file_path .= '/';
         }
@@ -247,7 +251,8 @@ class FileSystem implements Base {
      * Loads the current catalog
      * @return Array a list of all keys stored in the cache
      */
-    public function getKeys() {
+    public function getKeys()
+    {
         $catalog = $this->fetch($this->catalog_key);
         $catalog = \is_array($catalog) ? $catalog : Array();
         \ksort($catalog);
@@ -255,4 +260,3 @@ class FileSystem implements Base {
     }
 
 }
-

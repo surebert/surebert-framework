@@ -504,8 +504,8 @@ abstract class Backend
     {
         $info = "";
         for ($i = 0; $i <= $length; $i++) {
-            $info .= ( $i == 0 ? "" : " ") 
-                . $this->myHex(ord($data[$pos + $i])) 
+            $info .= ( $i == 0 ? "" : " ")
+                . $this->myHex(ord($data[$pos + $i]))
                 . (\ord($data[$pos + $i]) > 31 ? "[" . $data[$pos + $i] . "]" : '');
         }
         return $info;
@@ -1424,4 +1424,3 @@ abstract class Backend
         return "";
     }
 }
-

@@ -3,7 +3,7 @@
 /**
  * A CURL based REST client for fetching data from REST services
  * @author paul.visco@roswellpark.org
- * 
+ *
  * <code>
  * $client = new \sb\REST\Client('https://some_site/api_content', Array(
   'on_http_error' => function($status, $message){
@@ -12,7 +12,7 @@
   ));
  * $response = $client->get(Array('ticket' => '49d75185-e71b-42f1-9298-ac0382dd2e26'));
  * </code>
- *  
+ *
  */
 namespace sb\REST;
 
@@ -63,13 +63,13 @@ class Client
 
     /**
      * The default timeout for connections
-     * @var int 
+     * @var int
      */
     protected $timeout = 30;
 
     /**
      * An array of key value pairs that are sent as HTTP headers of the request
-     * @var array e.g. 'Content-Type' => 'application/xml' 
+     * @var array e.g. 'Content-Type' => 'application/xml'
      */
     protected $headers = Array();
 
@@ -95,7 +95,7 @@ class Client
 
     /**
      * The callable that fires when the content body arrives
-     * 
+     *
      * Receives one argument $data.
      * @var callable
      */
@@ -103,7 +103,7 @@ class Client
 
     /**
      * The callable that fires when their is a curl error such as no network connection, domain not found, etc
-     * 
+     *
      * Receives two arguments $error_num, $error_str.  Errors are listed here http://curl.haxx.se/libcurl/c/libcurl-errors.html
      * @var callable
      */
@@ -112,7 +112,7 @@ class Client
     /**
      * Constructs a new client
      * @param type $url The base url for the server e.g. http://something.com/api
-     * @param array $default_settings settings to override the default properties of 
+     * @param array $default_settings settings to override the default properties of
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      */
     public function __construct($url = '', $default_settings = Array())
@@ -124,9 +124,9 @@ class Client
     /**
      * Fire get request to fetch data from the REST service
      * @param type $data Query string vars to send
-     * @param array $settings settings to override the default properties of 
+     * @param array $settings settings to override the default properties of
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
-     * @return type 
+     * @return type
      */
     public function get($data = '', $settings = Array())
     {
@@ -136,9 +136,9 @@ class Client
     /**
      * Fire get request to fetch data from the REST service
      * @param type $data POST data to send
-     * @param array $settings settings to override the default properties of 
+     * @param array $settings settings to override the default properties of
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
-     * @return type 
+     * @return type
      */
     public function post($data = '', $settings = Array())
     {
@@ -148,9 +148,9 @@ class Client
     /**
      * Fire get request to fetch data from the REST service
      * @param type $data DELETE data to send
-     * @param array $settings settings to override the default properties of 
+     * @param array $settings settings to override the default properties of
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
-     * @return type 
+     * @return type
      */
     public function delete($data = '', $settings = Array())
     {
@@ -160,9 +160,9 @@ class Client
     /**
      * Fire get request to fetch data from the REST service
      * @param type $data PUT data to send
-     * @param array $settings settings to override the default properties of 
+     * @param array $settings settings to override the default properties of
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
-     * @return type 
+     * @return type
      */
     public function put($data = '', $settings = Array())
     {
@@ -171,7 +171,7 @@ class Client
 
     /**
      * Overrides the default settings for all requests
-     * @param array $default_settings settings to override the default properties of 
+     * @param array $default_settings settings to override the default properties of
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout,  on_http_error, on_headers, on_body
      */
     public function setDefaultArguments($default_settings)
@@ -187,7 +187,7 @@ class Client
      * Sets the authentication type used
      * @param string $uname The username
      * @param string $pass The password
-     * @param string $type The auth type basic, ntlm, digest 
+     * @param string $type The auth type basic, ntlm, digest
      */
     public function setAuthentication($uname = '', $pass = '', $type = 'basic')
     {
@@ -253,7 +253,7 @@ class Client
 
     /**
      * Gets an array of all of the current settings
-     * @return array 
+     * @return array
      */
     public function getSettings()
     {
@@ -262,10 +262,10 @@ class Client
 
     /**
      * Passes the request of to CURL for processing
-     * 
+     *
      * @param string $method The type of method to send it with, POST, GET, PUT, DELETE
      * @param array $data The data to send
-     * @param array $override_settings settings to override the default properties of 
+     * @param array $override_settings settings to override the default properties of
      * follow_location, verify_ssl, return_transfer, debug, cookie_file, user_agent, timeout, on_http_error, on_headers, on_body
      */
     protected function processCurl($method, $data, $override_settings = Array())
@@ -383,4 +383,3 @@ class Client
         return $response;
     }
 }
-

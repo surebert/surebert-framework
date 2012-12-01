@@ -28,7 +28,7 @@
  * @author paul.visco@roswellpark.org
  * @package Epub
  */
-namespace sbEbook;
+namespace sb\Ebook;
 
 class Epub
 {
@@ -274,4 +274,3 @@ class Epub
         file_put_contents("php://stdout", $str . "n");
     }
 }
-

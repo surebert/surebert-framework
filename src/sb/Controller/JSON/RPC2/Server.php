@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Used to response to JSON_RPC2 requests as per the spec proposal at 
+ * Used to response to JSON_RPC2 requests as per the spec proposal at
  * http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  * @author paul.visco@roswellpark.org
  * @package JSON_RPC2
@@ -27,7 +27,7 @@ class Server extends Base
     public $json_decode_assoc_array = true;
 
     /**
-     * If set to true then HTTP status headers 200, 400, 404, 500 are not send 
+     * If set to true then HTTP status headers 200, 400, 404, 500 are not send
      * with response as some clients cannot parse 404 or 500 responses.
      * @var boolean
      */
@@ -69,7 +69,7 @@ class Server extends Base
     }
 
     /**
-     * Sets the key that data is encrypted with and turns on encryption, 
+     * Sets the key that data is encrypted with and turns on encryption,
      * the client must use the same key
      * @param $key String
      */
@@ -168,14 +168,14 @@ class Server extends Base
 
         $html = '<style type="text/css">
             li{background-color:#c8c8d4;}
-            
+
             h1{
             font-size:1.0em;
             padding:3px 0 3px 10px;
             color:white;
             background-color:#8181bd;
             }
-            
+
             pre{
                 color:#1d1d4d;
             }
@@ -327,12 +327,12 @@ class Server extends Base
     /**
      * Serves data based on the json_request if set, otherwise based on
      *  Gateway::$cmd_options['json_request']
-     * Had to remove default args being listed to prevent 
-     * "should be compatible with that of" when using autoload, 
+     * Had to remove default args being listed to prevent
+     * "should be compatible with that of" when using autoload,
      * kept them in phpdoc to make it known which exist
-     * 
-     * @param $json_request_str String This optional argument can be used 
-     * for debugging the server.  A \sb\JSON\RPC2_Request formatted JSON string 
+     *
+     * @param $json_request_str String This optional argument can be used
+     * for debugging the server.  A \sb\JSON\RPC2_Request formatted JSON string
      * e.g. {"method":"add","params":[1,2],"id":"abc123"}
      * @return string JSON encoded \sb\JSON\RPC2_Response
      */
@@ -398,7 +398,7 @@ class Server extends Base
      * If this returns null when method not found, then deault JSON error object
      * is returned.  Otherwise, the string or object returned from not_found is returned.
      * Will also server get_methods/methods as HTML list of available calls
-     * @return type 
+     * @return type
      */
     public function notFound()
     {
@@ -413,4 +413,3 @@ class Server extends Base
         return null;
     }
 }
-

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package Controller 
+ * @package Controller
  */
 namespace sb\Controller\Logviewer;
 use \sb\Controller\HTML\HTML5;
@@ -12,9 +12,9 @@ class FileSystem extends HTML5
      * Get the base url for the logs access url.  By default this is whatever
      * path the controller uses.  You could for example return '#'.$this->request->path
      * if you were using sb.hashHistory
-     * 
+     *
      * You would do this be overriding this method in your controller which extends this
-     * 
+     *
      * @return string
      */
     protected function getBaseUrl()
@@ -33,7 +33,7 @@ class FileSystem extends HTML5
 
     /**
      * Loads the HTML navigation
-     * @return string 
+     * @return string
      */
     protected function getNav()
     {
@@ -179,7 +179,7 @@ class FileSystem extends HTML5
     /**
      * Convert a file's contents into an HTML textarea
      * @param string $path
-     * @return string 
+     * @return string
      */
     protected function fileToHtmlTextarea($path)
     {
@@ -194,11 +194,11 @@ class FileSystem extends HTML5
     }
 
     /**
-     * Convert a file's contents into an HTML textarea by reading the last N 
+     * Convert a file's contents into an HTML textarea by reading the last N
      * number of lines only
      * @param string $path The path to the file
      * @param integer $lines The number of lines
-     * @return string 
+     * @return string
      */
     protected function fileToHtmlTextareaTail($path, $lines = 50)
     {
@@ -241,10 +241,10 @@ class FileSystem extends HTML5
 
     /**
      * Serves as the gateway to accept requests
-     * 
+     *
      * examples include get_dates, view, tail, export
-     * 
-     * @return type 
+     *
+     * @return type
      * @servable true
      */
     public function index()
@@ -298,8 +298,8 @@ class FileSystem extends HTML5
 
     /**
      * Serves to handle export requests in zip format
-     * 
-     * @return type 
+     *
+     * @return type
      * @servable true
      */
     public function export()
@@ -313,4 +313,3 @@ class FileSystem extends HTML5
         }
     }
 }
-

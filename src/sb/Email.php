@@ -1,7 +1,7 @@
 <?php
 /**
  * Object to represent an email used by sb_EmailReader and sb_EmailWriter
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Email
  *
@@ -9,158 +9,158 @@
 namespace sb;
 use \sb\Email\Writer;
 
-class Email{
-    
+class Email
+{
     /**
      * The index number of the message in the inbox
-     * 
+     *
      * Used to delete messages
      *
      * @var integer
      */
     public $index;
-    
+
     /**
      * The message id as specified by the email server in the email headers
      *
      * @var string
      */
     public $message_id;
-    
+
     /**
      * The subject of the email
      *
      * @var string
      */
     public $subject;
-    
+
     /**
      * The first "to" address listed
-     * 
+     *
      * For a more complete list of to addresses look in the $this->header_info->to array
      *
      * @var string e.g. paul@test.com
      */
     public $to;
-    
+
     /**
      * An array of "cc" addresses when sending
-     * 
+     *
      * @var array e.g. Array('paul@test.com');
      */
     public $cc = Array();
-    
+
     /**
      * An array of "bcc" addresses when sending
-     * 
+     *
      * @var array e.g. Array('paul@test.com');
      */
     public $bcc = Array();
-        
+
     /**
      * The first "from" address listed
-     * 
+     *
      * For a more complete list of to addresses look in the $this->header_info->from array
      *
      * @var string e.g. paul@test.com
      */
     public $from;
-    
+
     /**
      * The first "reply_to" address listed
-     * 
+     *
      * For a more complete list of to addresses look in the $this->header_info->reply_to array
      *
      * @var string e.g. paul@test.com
      */
     public $reply_to;
-    
+
     /**
      * The first "sender" address listed
-     * 
+     *
      * For a more complete list of to addresses look in the $this->header_info->sender array
      *
      * @var string e.g. paul@test.com
      */
     public $sender;
-    
+
     /**
      * The date that the email was sent
      *
      * @var string
      */
     public $date;
-    
+
     /**
      * The date the email was sent as a unix timestamp
      *
      * @var integer
      */
     public $timestamp;
-    
+
     /**
      * The size of the email in bytes
      *
      * @var integer
      */
     public $size;
-    
+
     /**
      * Has the message been set to delete $deleted =1;
      *
      * @var boolean
      */
-    
+
     public $deleted =0;
-    
+
     /**
      * The subtype of the email, e.g. MULTIPART, ALTERNATIVE, PLAIN
      *
      * @var string
      */
     public $subtype;
-    
+
     /**
      * The entire headers in an array, this holds all custom headers too
      *
      * @var array
      */
     public $headers = Array();
-    
+
     /**
      * The body of the email
      *
      * @var string
      */
     public $body;
-    
+
     /**
      * The body of the email as HTML
      *
      * @var string
      */
     public $body_HTML;
-    
+
     /**
      * The charset of the email text e.g. iso-8859-1 or UTF-8
-     * @var string 
+     * @var string
      */
     public $charset = 'UTF-8';
-    
+
     /**
      * Character encoding 7bit, 8bit
-     * @var string 
+     * @var string
      */
     public $transfer_encoding = '8bit';
-    
-    
+
+
     /**
      * An array of attachment objects
      *
      * @var array
      */
     public $attachments = Array();
-    
+
     /**
      * Constructs an email
      *
@@ -228,7 +228,7 @@ class Email{
 
     /**
      * Add an sb_ICalendar_Event request
-     * 
+     *
      * @param sb_ICalendar_Event $event
      */
     public function addIcalendarEvent(ICalendar_Event $event)
@@ -297,14 +297,14 @@ class Email{
     {
         $this->headers[$key] = $value;
     }
-    
+
     /**
      * Convert the email to a multipart_message
      * @return string the raw email source
      */
-    public function constructMultipartMessage() 
+    public function constructMultipartMessage()
     {
-        
+
         $mixed_boundary = '__mixed_1S2U3R4E5B6E7R8T9';
         $alterative_boundary = '__alter_1S2U3R4E5B6E7R8T9';
 
@@ -329,14 +329,14 @@ class Email{
         }
 
         $this->_header_text .= "MIME-Version: 1.0".PHP_EOL;
-        
+
         foreach($this->headers as $key=>$val) {
             $this->_header_text .= $key.":".$val.PHP_EOL;
         }
-        
+
         $this->_header_text .= "Content-Type: multipart/mixed;".PHP_EOL;
         $this->_header_text .= ' boundary="'.$mixed_boundary.'"'.PHP_EOL.PHP_EOL;
-        
+
         // Add a message for peoplewithout mime
         $message = "This message has an attachment in MIME format created with surebert mail.".PHP_EOL.PHP_EOL;
 
@@ -359,12 +359,12 @@ class Email{
             $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding.PHP_EOL;
             $message .= "Content-Disposition: inline".PHP_EOL.PHP_EOL;
             $message .= $this->body . PHP_EOL;
-            
+
             $message .= "--".$alterative_boundary.PHP_EOL;
             $message .= "Content-Type: text/html; charset=".$this->charset.PHP_EOL;
             $message .= "Content-Transfer-Encoding: ".$this->transfer_encoding.PHP_EOL.PHP_EOL;
             $message .= $this->body_HTML . PHP_EOL;
-            
+
             $message .="--".$alterative_boundary."--".PHP_EOL;
 
         } else {
@@ -406,7 +406,7 @@ class Email{
                 $attachment->contents = chunk_split(base64_encode($attachment->contents));
 
             }
-           
+
             // Add file attachment to the message
 
             if($this->attachments_in_HTML == 1) {
@@ -418,7 +418,7 @@ class Email{
             if($attachment->mime_type == 'text/calendar'){
                 $message .= "Content-class: urn:content-classes:calendarmessage;".PHP_EOL;
             }
-            
+
             $message .= "Content-Type: ".$attachment->mime_type.";".PHP_EOL;
             $message .= " name=".$attachment->name.PHP_EOL;
 
@@ -438,7 +438,7 @@ class Email{
         $message .="--".$mixed_boundary."--".PHP_EOL;
 
         $this->body = $message;
-        
+
         $raw = "To: ".$this->to.PHP_EOL;
         $raw .= "Subject: ".$this->subject.PHP_EOL;
         $raw .= $this->_header_text .$this->body;
@@ -446,4 +446,3 @@ class Email{
     }
 
 }
-

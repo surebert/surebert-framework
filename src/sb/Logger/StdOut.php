@@ -7,8 +7,8 @@
  */
  namespace sb;
 
-class Logger_StdOut extends Logger_Base{
-
+class Logger_StdOut extends Logger_Base
+{
     /**
      * Writes the data to file
      * @param string $data The data to be written

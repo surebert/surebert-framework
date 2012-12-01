@@ -8,8 +8,8 @@
  */
 namespace sb\Logger;
 
-class BlackHole extends Base{
-
+class BlackHole extends Base
+{
     /**
      * Writes the data to file
      * @param string $data The data to be written

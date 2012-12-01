@@ -3,18 +3,18 @@
 /**
  * Used to diff between two texts
  * Adapted from https://github.com/paulgb/simplediff/blob/5bfe1d2a8f967c7901ace50f04ac2d9308ed3169/simplediff.php
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Text
  */
 namespace sb\Text;
 
-class Diff 
+class Diff
     {
 
-    public static function compare($old, $new) 
+    public static function compare($old, $new)
     {
-        
+
         $maxlen = 0;
         foreach ($old as $oindex => $ovalue) {
             $nkeys = array_keys($new, $ovalue);
@@ -38,9 +38,9 @@ class Diff
                 self::compare(array_slice($old, $omax + $maxlen), array_slice($new, $nmax + $maxlen)));
     }
 
-    public static function html($old, $new) 
+    public static function html($old, $new)
     {
-        
+
         $html = '';
         $old = str_replace("\n", "\n ", $old);
         $new = str_replace("\n", "\n ", $new);
@@ -59,7 +59,6 @@ class Diff
         }
         return str_replace("\n ", "\n", $html);
     }
-    
+
 
 }
-

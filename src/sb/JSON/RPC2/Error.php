@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Models a JSONRPC 2 response error as per the spec proposal 
+ * Models a JSONRPC 2 response error as per the spec proposal
  * at http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  * @author paul.visco@roswellpark.org
  * @package JSON_RPC2
@@ -13,9 +13,9 @@ class Error
 
     /**
      * A Number that indicates the actual error that occurred.
-     * The error-codes -32768 .. -32000 (inclusive) are reserved 
-     * for pre-defined errors. Any error-code within this range not 
-     * defined explicitly below is reserved for future use. 
+     * The error-codes -32768 .. -32000 (inclusive) are reserved
+     * for pre-defined errors. Any error-code within this range not
+     * defined explicitly below is reserved for future use.
      * code     message     Meaning
      * -32700     Parse error.     Invalid JSON. An error occurred on the server while parsing the JSON text.
      * -32600     Invalid Request.     The received JSON not a valid JSON-RPC Request.
@@ -23,21 +23,21 @@ class Error
      * -32602     Invalid params.     Invalid method parameters.
      * -32603     Internal error.     Internal JSON-RPC error.
      * -32099..-32000     Server error.     Reserved for implementation-defined server-errors.
-     * 
+     *
      * @var integer
      */
     public $code;
 
     /**
-     * A short description of the error. The message SHOULD be limited 
+     * A short description of the error. The message SHOULD be limited
      * to a concise single sentence.
      * @var string
      */
     public $message;
 
     /**
-     * Additional information, may be omitted. Its contents is entirely 
-     * defined by the application (e.g. detailed error information, 
+     * Additional information, may be omitted. Its contents is entirely
+     * defined by the application (e.g. detailed error information,
      * nested errors etc.).
      * @var unknown_type
      */
@@ -56,4 +56,3 @@ class Error
         $this->data = $data;
     }
 }
-

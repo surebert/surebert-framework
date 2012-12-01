@@ -81,4 +81,3 @@ class NCX extends \DOMDocument
         return $nav_point;
     }
 }
-

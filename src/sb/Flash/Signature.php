@@ -5,7 +5,7 @@
  *
  * @author paul.visco@roswellpark.org
  * @package Flash
- * 
+ *
  * <code>
  * DROP TABLE IF EXISTS `storage`;
  * CREATE TABLE `storage` (
@@ -21,26 +21,26 @@
  *   `deleted` char(1) default 0,
  *   PRIMARY KEY  (`sid`)
  * )
- * 
+ *
  * //using Flash_Signature
  * $db = new PDO("mysql:host=HOST;dbname=DBNAME", "USERNAME", "PASSWORD");
- * 
+ *
  * //saving a \sb\Flash\Signature
  * $Flash_Signature = new \sb\Flash\Signature();
  * $Flash_Signature->app_id = 999;
  * $Flash_Signature->width=600;
  * $Flash_Signature->height=150;
  * $Flash_Signature->user_name = $_SERVER['AUTH_USER'];
- * 
+ *
  * //set the path for the Signature object
  * $Flash_Signature->path = $path_data_from_flash_file
- * 
+ *
  * $Flash_Signature->save($db);
  * echo 'transaction='.$Flash_Signature->id;
- * 
+ *
  * //loading a Flash_Signature
  * $Flash_Signature = new \sb\Flash_Signature($db, '08fb669424c5dcbf6e73a943df2bc2a8');
- * 
+ *
  * $Flash_Signature->toImg('gif', null, 100, null, null, 2, Array(255,235,0), Array(255,255,255), null);
  * </code>
  */
@@ -147,7 +147,7 @@ class Signature
     private $security_stamp_color = null;
 
     /**
-     * An instance of PDO used for saving and loading Flash_Signatures from a database 
+     * An instance of PDO used for saving and loading Flash_Signatures from a database
      *
      * @var PDO
      */
@@ -204,24 +204,24 @@ class Signature
      * Draws a populated Flash_Signature object into a Flash_Signature image
      *
      * @param string $format png, jpg, or gif
-     * 
+     *
      *
      * @param string $format The format to isplay jpeg, png, or gif
-     * @param string $file  If a filename is specified it exports 
+     * @param string $file  If a filename is specified it exports
      * the image to the file instead of displaying it
-     * @param integer $quality The quality of the jpeg output, 
+     * @param integer $quality The quality of the jpeg output,
      * default to 100
-     * * @param integer $width The width of the Flash_Signature, 
+     * * @param integer $width The width of the Flash_Signature,
      * specified in pixels
-     * @param integer $height The height of the Flash_Signature, 
+     * @param integer $height The height of the Flash_Signature,
      * specified in pixels
      * @param integer $thickness  The Flash_Signature line thickness
-     * @param array $background_color The background color of the 
+     * @param array $background_color The background color of the
      * Flash_Signatures specified as an Array(r,g,b) e.g. Array(255,0,45);
-     * @param array $Flash_Signature_color The ink color of the 
+     * @param array $Flash_Signature_color The ink color of the
      * Flash_Signatures specified as an Array(r,g,b) e.g. Array(255,0,45);
-     * @param array $security_stamp_color The security stamp  
-     * color of the Flash_Signatures specified as an Array(r,g,b) 
+     * @param array $security_stamp_color The security stamp
+     * color of the Flash_Signatures specified as an Array(r,g,b)
      * e.g. Array(255,0,45);
      */
     public function toImg($format, $file = null, $quality = 100, $width = null, $height = null, $thickness = null, $bg_color = null, $Flash_Signature_color = null, $security_stamp_color = null)
@@ -323,7 +323,7 @@ class Signature
      * Resize the image to specific dimesions if specified, you can specify either as proportional to the other by setting the argument to *
      *
      * @param int $new_width the desired width of the image, can be proportional to new_height if set to *
-     * @param int $new_height the desired height of the image, can be proportional to new_width if set to 
+     * @param int $new_height the desired height of the image, can be proportional to new_width if set to
      */
     private function resizeImage($new_width = '*', $new_height = '*')
     {
@@ -447,4 +447,3 @@ class Signature
         }
     }
 }
-

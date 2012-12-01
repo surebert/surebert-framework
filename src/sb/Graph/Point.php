@@ -4,7 +4,7 @@
  * Used to plot simple point and line graphs.  Requires \sb\Math_RangeMapper
  * @author paul.visco@roswellpark.org
  * @package Graph
- * 
+ *
  */
 namespace sb\Graph;
 
@@ -65,7 +65,7 @@ class Point
      * @param integer $width  The total width of the graph in pixels
      * @param integer $height The total height of the graph in pixels
      * @param string $values A line resturn delimted, comma-delimited
-     *  value pair decribing the label and value for each point plotted. 
+     *  value pair decribing the label and value for each point plotted.
      * <code>
      * //set the graph width and height plus values and labels
      * //set the graph width and height plus values and labels
@@ -294,8 +294,8 @@ class Point
     }
 
     /**
-     * Draws the y axis on the graph at each point in a dashed line 
-     * fashion.  This is totally optional and only happens if 
+     * Draws the y axis on the graph at each point in a dashed line
+     * fashion.  This is totally optional and only happens if
      * $this->draw_y_axis ==1
      *
      */
@@ -456,4 +456,3 @@ class Point
         return $this->im;
     }
 }
-

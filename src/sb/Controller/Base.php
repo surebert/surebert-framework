@@ -169,13 +169,13 @@ class Base
         $this->notFound();
     }
 
-  
+
     /**
      * Processes the controller method being served
      * @param String $class  The class of the controller
      * @param string $method The method to be fired for service
      * @return array and array with properties showing if it was served and the data
-     * that resulted from firing 
+     * that resulted from firing
      */
     protected static function processControllerMethod($class, $method)
     {
@@ -192,7 +192,7 @@ class Base
         }
 
         $method = \sb\Gateway::toCamelCase($method);
-        
+
         if (method_exists($class, $method)) {
             $reflection = new \ReflectionMethod($class, $method);
 
@@ -320,4 +320,3 @@ class Base
         }
     }
 }
-

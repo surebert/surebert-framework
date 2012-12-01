@@ -7,9 +7,8 @@
  */
 namespace sb\Validate;
 
-class ContactInfo{
-
-
+class ContactInfo
+{
     /**
      * Validates an email address format and checks DNS record.  Does not include the whole spec for vlid emails, only accepts one @ symbol, letters, numbers, and . _ - + ! as special characters
      *
@@ -72,7 +71,7 @@ class ContactInfo{
                     $result->message .= ' cannot reach USPS site to validate zip code existence';
                 } else {
                     preg_match("~<p class=\"std-address\">(.*?)</p>~", $page, $city);
-       
+
                                         if(isset($city[1])){
                                                 $data = trim($city[1]);
                                                 $result->state = substr($data, -2, 2);

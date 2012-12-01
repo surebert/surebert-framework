@@ -8,7 +8,7 @@
  *
  */
 namespace \sb\Socket;
-class StreamingClient extends Client 
+class StreamingClient extends Client
     {
 
     /**
@@ -29,9 +29,9 @@ class StreamingClient extends Client
      * @param string $remote_socket The remote socket to connect to 'tcp://www.example.com:80'
      * @param integer $timeout The timeout to wait before dropping connection e.g. 10
      */
-    public function __construct($remote_socket, $timeout=10) 
+    public function __construct($remote_socket, $timeout=10)
     {
-        
+
         $this->countInstance();
 
         $this->unique_id = self::$instances;
@@ -44,7 +44,7 @@ class StreamingClient extends Client
      * Open the connection
      * @return boolean Throws exception on error
      */
-    public function open() 
+    public function open()
     {
 
         $this->log('open socket connection');
@@ -63,7 +63,7 @@ class StreamingClient extends Client
      * @param integer $byte_count The amount of data to read, if not set, it reads until feof
      * @return string The data read from the socket
      */
-    public function read($byte_count=null) 
+    public function read($byte_count=null)
     {
 
         $this->log('read from  socket');

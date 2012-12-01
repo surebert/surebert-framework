@@ -58,4 +58,3 @@ interface Base
 
     public function chmod($remote_path, $mode);
 }
-

@@ -53,12 +53,12 @@ class Client
      *
      * <code>
      * $client = new \sb\JSON\RPC2\Client('http://service.roswellpark.org/my/service');
-     * 
+     *
      * $x = $client->add(1,2);
      *
      * var_dump($response);
      * </code>
-     * 
+     *
      * @param $url String The url of the server
      * @param $timeout The time to wait for a response in seconds
      * @param $port Integer The port to make the request on
@@ -388,4 +388,3 @@ class Client
         return $str;
     }
 }
-

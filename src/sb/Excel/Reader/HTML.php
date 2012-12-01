@@ -1,14 +1,14 @@
 <?php
 
 /**
- * An Excel Spreadhseet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
+ * An Excel Spreadsheet (97/2003) Reading package based on http://code.google.com/p/php-excel-reader/
  *
  * Extends Excel_Reader to do excel to html mapping with css
  * @package Excel
  */
-namespace sb\Excel;
+namespace sb\Excel\Reader;
 
-class Excel_Reader_HTML extends Excel_Reader 
+class HTML extends Reader
     {
 
     /**
@@ -18,7 +18,7 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param int $sheet
      * @return string
      */
-    public function get_css_style($row, $col, $sheet=0) 
+    public function get_css_style($row, $col, $sheet=0)
     {
         $css = "";
         $font = $this->font($row, $col, $sheet);
@@ -104,7 +104,7 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param int $sheet
      * @return string
      */
-    public function hyperlink($row, $col, $sheet=0) 
+    public function hyperlink($row, $col, $sheet=0)
     {
         $link = isset($this->sheets[$sheet]['cellsInfo'][$row][$col]['hyperlink']) ? $this->sheets[$sheet]['cellsInfo'][$row][$col]['hyperlink'] : false;
         if ($link) {
@@ -120,22 +120,22 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param int $sheet
      * @return string
      */
-    public function format($row, $col, $sheet=0) 
+    public function format($row, $col, $sheet=0)
     {
         return $this->info($row, $col, 'format', $sheet);
     }
 
-    public function formatIndex($row, $col, $sheet=0) 
+    public function formatIndex($row, $col, $sheet=0)
     {
         return $this->info($row, $col, 'formatIndex', $sheet);
     }
 
-    public function formatColor($row, $col, $sheet=0) 
+    public function formatColor($row, $col, $sheet=0)
     {
         return $this->info($row, $col, 'formatColor', $sheet);
     }
 
-    public function xfRecord($row, $col, $sheet=0) 
+    public function xfRecord($row, $col, $sheet=0)
     {
         $xfIndex = $this->info($row, $col, 'xfIndex', $sheet);
         if ($xfIndex != "") {
@@ -144,7 +144,7 @@ class Excel_Reader_HTML extends Excel_Reader
         return null;
     }
 
-    public function xfProperty($row, $col, $sheet, $prop) 
+    public function xfProperty($row, $col, $sheet, $prop)
     {
         $xfRecord = $this->xfRecord($row, $col, $sheet);
         if ($xfRecord != null) {
@@ -153,7 +153,7 @@ class Excel_Reader_HTML extends Excel_Reader
         return "";
     }
 
-    public function align($row, $col, $sheet=0) 
+    public function align($row, $col, $sheet=0)
     {
         return $this->xfProperty($row, $col, $sheet, 'align');
     }
@@ -165,56 +165,56 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param int $sheet
      * @return string
      */
-    public function bgColor($row, $col, $sheet=0) 
+    public function bgColor($row, $col, $sheet=0)
     {
         return $this->xfProperty($row, $col, $sheet, 'bgColor');
     }
 
-    public function borderLeft($row, $col, $sheet=0) 
+    public function borderLeft($row, $col, $sheet=0)
     {
         return $this->xfProperty($row, $col, $sheet, 'borderLeft');
     }
 
-    public function borderRight($row, $col, $sheet=0) 
+    public function borderRight($row, $col, $sheet=0)
     {
         return $this->xfProperty($row, $col, $sheet, 'borderRight');
     }
 
-    public function borderTop($row, $col, $sheet=0) 
+    public function borderTop($row, $col, $sheet=0)
     {
         return $this->xfProperty($row, $col, $sheet, 'borderTop');
     }
 
-    public function borderBottom($row, $col, $sheet=0) 
+    public function borderBottom($row, $col, $sheet=0)
     {
         return $this->xfProperty($row, $col, $sheet, 'borderBottom');
     }
 
-    public function borderLeftColor($row, $col, $sheet=0) 
+    public function borderLeftColor($row, $col, $sheet=0)
     {
         $c = $this->xfProperty($row, $col, $sheet, 'borderLeftColor');
         return isset($this->colors[$c]) ? $this->colors[$c] : false;
     }
 
-    public function borderRightColor($row, $col, $sheet=0) 
+    public function borderRightColor($row, $col, $sheet=0)
     {
         $c = $this->xfProperty($row, $col, $sheet, 'borderRightColor');
         return isset($this->colors[$c]) ? $this->colors[$c] : false;
     }
 
-    public function borderTopColor($row, $col, $sheet=0) 
+    public function borderTopColor($row, $col, $sheet=0)
     {
         $c = $this->xfProperty($row, $col, $sheet, 'borderTopColor');
         return isset($this->colors[$c]) ? $this->colors[$c] : false;
     }
 
-    public function borderBottomColor($row, $col, $sheet=0) 
+    public function borderBottomColor($row, $col, $sheet=0)
     {
         $c = $this->xfProperty($row, $col, $sheet, 'borderBottomColor');
         return isset($this->colors[$c]) ? $this->colors[$c] : false;
     }
 
-    public function fontRecord($row, $col, $sheet=0) 
+    public function fontRecord($row, $col, $sheet=0)
     {
         $xfRecord = $this->xfRecord($row, $col, $sheet);
         if ($xfRecord != null) {
@@ -226,7 +226,7 @@ class Excel_Reader_HTML extends Excel_Reader
         return null;
     }
 
-    public function fontProperty($row, $col, $sheet=0, $prop) 
+    public function fontProperty($row, $col, $sheet=0, $prop)
     {
         $font = $this->fontRecord($row, $col, $sheet);
         if ($font != null) {
@@ -235,12 +235,12 @@ class Excel_Reader_HTML extends Excel_Reader
         return false;
     }
 
-    public function fontIndex($row, $col, $sheet=0) 
+    public function fontIndex($row, $col, $sheet=0)
     {
         return $this->xfProperty($row, $col, $sheet, 'fontIndex');
     }
 
-    public function color($row, $col, $sheet=0) 
+    public function color($row, $col, $sheet=0)
     {
         $formatColor = $this->formatColor($row, $col, $sheet);
         if ($formatColor != "") {
@@ -250,19 +250,19 @@ class Excel_Reader_HTML extends Excel_Reader
         return $this->rawColor($ci);
     }
 
-    public function rawColor($ci) 
+    public function rawColor($ci)
     {
         if (($ci <> 0x7FFF) && ($ci <> '')) {
             return $this->colors[$ci];
         }
     }
 
-    public function bold($row, $col, $sheet=0) 
+    public function bold($row, $col, $sheet=0)
     {
         return $this->fontProperty($row, $col, $sheet, 'bold');
     }
 
-    public function italic($row, $col, $sheet=0) 
+    public function italic($row, $col, $sheet=0)
     {
         return $this->fontProperty($row, $col, $sheet, 'italic');
     }
@@ -274,7 +274,7 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param int $sheet
      * @return string
      */
-    public function underline($row, $col, $sheet=0) 
+    public function underline($row, $col, $sheet=0)
     {
         return $this->fontProperty($row, $col, $sheet, 'under');
     }
@@ -286,7 +286,7 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param int $sheet
      * @return string
      */
-    public function height($row, $col, $sheet=0) 
+    public function height($row, $col, $sheet=0)
     {
         return $this->fontProperty($row, $col, $sheet, 'height');
     }
@@ -298,7 +298,7 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param int $sheet
      * @return string
      */
-    public function font($row, $col, $sheet=0) 
+    public function font($row, $col, $sheet=0)
     {
         return $this->fontProperty($row, $col, $sheet, 'font');
     }
@@ -311,7 +311,7 @@ class Excel_Reader_HTML extends Excel_Reader
      * @param string $table_class Which class to give the table
      * @return string
      */
-    public function to_html($row_numbers=false, $col_letters=false, $sheet=0, $table_class='excel') 
+    public function to_html($row_numbers=false, $col_letters=false, $sheet=0, $table_class='excel')
     {
 
         $out = "<table class=\"$table_class\" cellspacing=0>";
@@ -383,4 +383,3 @@ class Excel_Reader_HTML extends Excel_Reader
     }
 
 }
-

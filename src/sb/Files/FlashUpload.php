@@ -2,12 +2,12 @@
 
 /**
  * Models a file uploaded with the flash multifile uploader
- * 
- * You can laos extend this class and add a on_save method which can 
+ *
+ * You can laos extend this class and add a on_save method which can
  * handle different file upload types by extension, etc
  * @author paul.visco@roswellpark.org
  * @package Flash
- * 
+ *
  */
 namespace sb\Files;
 
@@ -72,7 +72,7 @@ class FlashUpload
      * <code>
      * $file = new \sb\Flash_FileUpload();
      * $uploaded = $file->save(ROOT.'/public/content/users/paul/'.date('my'));
-     * 
+     *
      * if($uploaded){
      *    echo json_encode($file);
      * } else {
@@ -134,4 +134,3 @@ class FlashUpload
         }
     }
 }
-

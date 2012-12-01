@@ -27,8 +27,8 @@
   )
 
  * @package Chat
- * 
- * 
+ *
+ *
  */
 namespace sb\Chat;
 use \sb\Text\Bling as Bling;
@@ -104,7 +104,7 @@ class TalkBox
      * $line->message="hello there fuckhead";
      * $talkbox->insert($line);
      *
-     * //echo the json of the latest chat starting with the newest line and 
+     * //echo the json of the latest chat starting with the newest line and
      * going back 10 lines which can be used to build dom display
      * echo json_encode($talkbox->display(0, 10));
      *
@@ -204,8 +204,8 @@ class TalkBox
         $line->message = 'Welcome to p:chat a PHP/Surebert chat solution by Paul Visco';
         $this->insert($line);
 
-        $sql = "INSERT INTO sb_TalkBox_master 
-            (name, created, last_visited, last_post) 
+        $sql = "INSERT INTO sb_TalkBox_master
+            (name, created, last_visited, last_post)
             VALUES ('" . $room . "', NOW(), NOW(), NOW());";
 
         $result = $this->db->query($sql);
@@ -231,8 +231,8 @@ class TalkBox
 
         $line->message = Bling::typoFix($line->message);
 
-        $sql = "INSERT INTO sb_TalkBox_" . $this->room . " 
-            ( uname, tstamp, message, ip) 
+        $sql = "INSERT INTO sb_TalkBox_" . $this->room . "
+            ( uname, tstamp, message, ip)
             VALUES ( :uname, NOW(), :message, INET_ATON(:ip))";
 
         $stmt = $this->db->prepare($sql);
@@ -264,12 +264,12 @@ class TalkBox
         $ltgt = ($dir == "up") ? ">" : "<";
 
         $sql = "
-            SELECT 
-                id, 
-                DATE_FORMAT(tstamp,'%m/%d %h:%i') AS t, 
-                uname AS u, 
-                message AS m 
-            FROM sb_TalkBox_" . $this->room . "_mem 
+            SELECT
+                id,
+                DATE_FORMAT(tstamp,'%m/%d %h:%i') AS t,
+                uname AS u,
+                message AS m
+            FROM sb_TalkBox_" . $this->room . "_mem
             WHERE id " . $ltgt . " :id ";
 
         $sql .= "ORDER BY id DESC";
@@ -300,4 +300,3 @@ class TalkBox
         return $chatter;
     }
 }
-

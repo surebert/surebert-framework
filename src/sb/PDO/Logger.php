@@ -82,8 +82,8 @@ class Logger extends Debugger
 
             $trace = $e->getTrace();
 
-            $message = "Error: " . __CLASS__ . " Exception in " 
-                . $trace[1]['file'] . " on line " . $trace[1]['line'] 
+            $message = "Error: " . __CLASS__ . " Exception in "
+                . $trace[1]['file'] . " on line " . $trace[1]['line']
                 . " with db message: \n" . $e->getMessage();
 
             $this->writeToLog($message);
@@ -158,4 +158,3 @@ class Logger extends Debugger
         }
     }
 }
-

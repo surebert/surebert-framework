@@ -19,21 +19,21 @@
  *      agent_str VARCHAR(500),
  *      PRIMARY KEY (id)
  *  ) ENGINE = MEMORY;
- *  
+ *
  *  GRANT ALL ON @myDatabase.* TO '@myUser'@'@myHost' IDENTIFIED BY '@myPass';
  *
  * $visitors = \sb\Web\Visitors::getVisitorData();
  * echo '<b title="'.implode(",", \sb\Web\Visitors::listUsers()).'">(?) </b>users: '.$visitors->users.'/ guests: '.$visitors->guests.'/ bots:'.$visitors->bots;
  *
  * </code>
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Web
  */
 namespace sb\Web;
 
-class Visitors{
-
+class Visitors
+{
     /**
      * The database connection
      *
@@ -225,7 +225,7 @@ class Visitors{
 
         $sql = "SELECT DISTINCT uname, dname FROM online_visitors WHERE uname !='guest' AND uname !='' AND tstamp > :expiration ORDER BY uname";
         return self::$db->s2o($sql, Array(":expiration" => $expiration));
-        
+
     }
 
     /**
@@ -269,8 +269,8 @@ class Visitors{
  *
  * @author paul.visco@roswellpark.org
  */
-class Web_VisitorCount{
-
+class Web_VisitorCount
+{
     public $bots = 0;
     public $guests = 0;
     public $users = 0;

@@ -94,4 +94,3 @@ class Chapter
         return $this->xml->saveXML();
     }
 }
-

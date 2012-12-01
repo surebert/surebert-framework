@@ -10,11 +10,11 @@
  *
  * @author paul.visco@roswellpark.org
  * @package Cache
- * 
+ *
  */
 namespace sb\Cache;
 
-class Cache_BlackHole implements Cache_Base
+class BlackHole implements Cache_Base
 {
 
     /**
@@ -58,4 +58,3 @@ class Cache_BlackHole implements Cache_Base
         return Array();
     }
 }
-

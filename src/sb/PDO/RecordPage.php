@@ -56,4 +56,3 @@ class RecordPage
         return ($this->current_page >= $this->page_count) ? $this->page_count : $this->current_page + 1;
     }
 }
-

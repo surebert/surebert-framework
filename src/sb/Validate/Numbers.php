@@ -6,8 +6,8 @@
  */
 namespace sb\Validate;
 
-class Numbers{
-
+class Numbers
+{
     /**
      * Checks to see if str, float, or int type and represents whole number
      * @param mixed $int

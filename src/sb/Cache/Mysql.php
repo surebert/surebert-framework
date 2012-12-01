@@ -196,4 +196,3 @@ class Mysql implements Base
         }
     }
 }
-

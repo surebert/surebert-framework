@@ -127,12 +127,12 @@ class Gateway
 
     /**
      * The start time in ms that the request was loaded
-     * @var integer 
+     * @var integer
      */
     public static $start_time = 0;
 
     /**
-     * Allow direct rendering of .view templates matching request if not matching 
+     * Allow direct rendering of .view templates matching request if not matching
      * controller method is found e.g. /chat/lines would render /chat/latest.view regardless of if
      * ChatController had lines method.
      * @var boolean
@@ -144,13 +144,13 @@ class Gateway
      * @param string $str
      * @return string
      */
-    public static function toCamelCase($str) {
-
+    public static function toCamelCase($str)
+    {
       return preg_replace_callback('/_([a-z])/', function($v){
           return strtoupper($v[1]);
       }, $str);
     }
-  
+
     /**
      * Loads a view for rendering
      * @param mixed $request Either an instance of Request or a string with the path to the view e.g. /user/run
@@ -158,7 +158,7 @@ class Gateway
      */
     public static function renderRequest($request, $included = true)
     {
-        
+
         if ($request instanceof Request && \method_exists('\App', 'filter_all_input')) {
 
             \App::filter_all_input($request->get);
@@ -179,7 +179,7 @@ class Gateway
             $controller_class = str_replace(' ', '_', ucwords(str_replace('_', ' ', $controller))) . 'Controller';
 
             $path = str_replace('_', '/', $controller_class) . '.php';
-            
+
             if (!\is_file(ROOT . '/private/controllers/' . $path)) {
 
                 if ($controller == 'surebert') {
@@ -226,7 +226,7 @@ class Gateway
     }
 
     /**
-     * Autoloads classes from the _classes folder when they are instantiated 
+     * Autoloads classes from the _classes folder when they are instantiated
      * so that the defintions of the classes never need to be manually included
      *
      * @param string $class_name
@@ -246,11 +246,11 @@ class Gateway
                                 }
                         }
                 }
-        } else if (substr($class_name, 0, 4) == 'mod/') {
+        } elseif (substr($class_name, 0, 4) == 'mod/') {
                 require(ROOT . '/' . $class_name . '.php');
-        } else if (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
+        } elseif (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
                 require(ROOT . '/private/models/' . $class_name . '.php');
-        } else if (file_exists(ROOT . '/private/resources/' . $class_name . '.php')) {
+        } elseif (file_exists(ROOT . '/private/resources/' . $class_name . '.php')) {
                 require(ROOT . '/private/resources/' . $class_name . '.php');
         } else {
                 foreach (Gateway::$mods as $mod) {
@@ -266,7 +266,7 @@ class Gateway
 
     /**
      * Require a new mod.  Will load the init.php if it exists
-     * @param type $mod_name 
+     * @param type $mod_name
      */
     public static function requireMod($mod_name)
     {
@@ -321,9 +321,9 @@ class Gateway
 
         spl_autoload_extensions('.php');
         spl_autoload_register("sb\Gateway::autoload");
-        
+
         require_once ROOT . '/vendor/autoload.php';
-        
+
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
         self::$agent = (isset($_SERVER['HTTP_USER_AGENT'])
@@ -455,4 +455,3 @@ if (\method_exists('\App', "filter_all_output")) {
 if (ob_get_level()) {
     ob_flush();
 }
-

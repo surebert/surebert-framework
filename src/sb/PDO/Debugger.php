@@ -56,4 +56,3 @@ class Debugger extends \PDO
         return parent::paramify($data, $omit);
     }
 }
-

@@ -6,7 +6,7 @@
  */
 namespace sb\XMPP;
 
-abstract class Packet extends \DOMDocument 
+abstract class Packet extends \DOMDocument
     {
 
     /**
@@ -116,5 +116,5 @@ abstract class Packet extends \DOMDocument
     {
         return $this->saveXML();
     }
-    
+
 }

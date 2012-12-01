@@ -1,20 +1,20 @@
-<?
+<?php
 /**
  * Manages a socket connection
- * 
+ *
  * <code>
  * //load data from google homepage
  * $conn = new \sb\Socket\Client('www.google.com', 80);
  * $conn->write("GET / HTTP/1.1\r\nHost: www.example.com\r\nConnection: Close\r\n\r\n");
  * echo $conn->read();
  * </code>
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Socket
  */
 namespace sb\Socket;
 
-class Client 
+class Client
     {
 
     /**
@@ -45,7 +45,7 @@ class Client
      * @param integer $port The port to connect to e.g. 80
      * @param integer $timeout The timeout to wait before dropping connection e.g. 10
      */
-    public function __construct($host, $port, $timeout=10) 
+    public function __construct($host, $port, $timeout=10)
     {
 
         $this->countInstance();
@@ -60,7 +60,7 @@ class Client
     /**
      * Keeps track of instances
      */
-    public function countInstance() 
+    public function countInstance()
     {
 
         self::$instances++;
@@ -71,7 +71,7 @@ class Client
      * Open the connection
      * @return boolean Throws exception on error
      */
-    public function open() 
+    public function open()
     {
 
         $this->log('open socket connection');
@@ -89,7 +89,7 @@ class Client
      * Closes the connection.  Automatically is called on __destruct
      * @return boolean
      */
-    public function close() 
+    public function close()
     {
         $this->log('close socket connection');
 
@@ -106,7 +106,7 @@ class Client
      * @param String $data The data to send
      * @return boolean
      */
-    public function write($data) 
+    public function write($data)
     {
 
         return fwrite($this->socket, $data);
@@ -117,7 +117,7 @@ class Client
      * @param integer $byte_count The amount of data to read, if not set, it reads until feof
      * @return string The data read from the socket
      */
-    public function read($byte_count=null) 
+    public function read($byte_count=null)
     {
 
         $this->log('read from  socket');
@@ -139,7 +139,7 @@ class Client
     /**
      * Closes the connection if the user forgot
      */
-    public function __destruct() 
+    public function __destruct()
     {
         if ($this->socket) {
             $this->close();
@@ -151,11 +151,10 @@ class Client
      * @param string $message
      * @todo convert to sb_Logger
      */
-    protected function log($message) 
+    protected function log($message)
     {
 
         echo "\n\n" . $this->unique_id . ': ' . $message;
     }
 
 }
-

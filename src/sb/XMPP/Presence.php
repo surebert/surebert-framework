@@ -7,8 +7,8 @@
  */
 namespace sb\XMPP;
 
-class Presence extends Packet{
-
+class Presence extends Packet
+{
     /**
      * The SimpleXMLElement if one is imported
      * @var SimpleXMLElement
@@ -22,20 +22,20 @@ class Presence extends Packet{
     public function __construct($xml = '')
     {
         parent::__construct('1.0', 'UTF-8');
-        
+
         if(!empty($xml)){
-            
+
             $xml = preg_replace("~</presence>.*$~", "</presence>", $xml);
-            
+
             try{
                 $xml = '<root>'.$xml.'</root>';
                 $packet = simplexml_load_string($xml);
                 $xml = $packet->presence[0];
                 $this->doc = dom_import_simplexml($xml);
-                
+
                 $xml = null;
                 $packet = null;
-            
+
             } catch(Exception $e){
                 file_put_contents("php://stdout", "\n\n|||".print_r($xml, 1).'|||'."\n\n");
             }
@@ -43,7 +43,7 @@ class Presence extends Packet{
 
 
         } else {
-            
+
             $this->doc = $this->appendChild($this->createElement('presence'));
         }
     }
@@ -125,7 +125,7 @@ class Presence extends Packet{
             $this->doc->appendChild($node);
         }
         $node->nodeValue = htmlspecialchars($status);
-        
+
     }
 
     /**
@@ -166,7 +166,7 @@ class Presence extends Packet{
             $this->doc->appendChild($node);
         }
         $node->nodeValue = htmlspecialchars($priority);
-        
+
     }
 
     /**
@@ -189,4 +189,3 @@ class Presence extends Packet{
     }
 
 }
-

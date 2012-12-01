@@ -6,14 +6,14 @@
  */
 namespace sb;
 
-class JS{
-    
+class JS
+{
     /**
      * The current on response headers
-     * @var integer 
+     * @var integer
      */
     protected static $sb_on_response_headers = 0;
-    
+
     /**
      * Uses jsexec_header to set the innerHTML of an element by id
      * @param integer $id the HTML element id
@@ -25,7 +25,7 @@ class JS{
         $js = '$("'.$id.'").html('.json_encode($html).');';
         return self::execHeader($js);
     }
-    
+
     /**
      * Executes a script at a certain path
      * @param string $script_path full path
@@ -40,11 +40,11 @@ class JS{
             if(is_array($context)){
                 extract($context);
             }
-            
+
         }
         require($script_path);
     }
-    
+
     /**
      *
      * @param string $message The message to notify
@@ -55,24 +55,24 @@ class JS{
     {
         return self::execHeader("sb.notify(".json_encode($message).", ".json_encode($class).");");
     }
-    
+
     /**
      * Executes the full response text, can be called more than once
-     * @param type $js 
+     * @param type $js
      */
     public static function exec_response($js)
     {
         header('Content-type: text/javascript');
         echo $js;
     }
-    
+
     /**
      * Executes a response header
-     * @param type $js 
+     * @param type $js
      */
     public static function exec_header($js)
     {
         header("sb_on_response".(self::$sb_on_response_headers++).": ".$js);
-        
+
     }
 }

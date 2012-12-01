@@ -27,7 +27,7 @@ class Attendee
      *
      * <code>
      * new \sb\ICalendar\Attendee(
-     *      'Visco, Paul', 
+     *      'Visco, Paul',
      * 'paul.visco@roswellpark.org');
      * </code>
      *
@@ -52,4 +52,3 @@ class Attendee
         . '":MAILTO:' . $this->email;
     }
 }
-

@@ -1,22 +1,22 @@
-<?php 
+<?php
 /**
  * Used to escape and unescape HTML for sanitation purposes
- * @author paul.visco@roswellpark.org 
+ * @author paul.visco@roswellpark.org
  */
 namespace sb;
 
-class HTML{
-    
+class HTML
+{
     /**
-     * Recursively htmlspecialchars string properties of objects and arrays 
+     * Recursively htmlspecialchars string properties of objects and arrays
      * @param mixed $mixed The object or array to convert
      * @param int $quote_style ent quote style from htmlspecialchars
      * @param string $charset The charset from  htmlspecialchars
-     * @return type 
+     * @return type
      */
-    public static function escape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') 
+    public static function escape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8')
     {
-        
+
         if (is_string($mixed)) {
             $mixed = htmlspecialchars($mixed, $quote_style, $charset);
         } elseif (is_object($mixed) || is_array($mixed)) {
@@ -35,15 +35,15 @@ class HTML{
     }
 
     /**
-     * Recursively unhtmlspecialchars string properties of objects and arrays 
+     * Recursively unhtmlspecialchars string properties of objects and arrays
      * @param mixed $mixed The object or array to convert
      * @param int $quote_style ent quote style from htmlspecialchars
      * @param string $charset The charset from  htmlspecialchars
-     * @return type 
+     * @return type
      */
-    public static function unescape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') 
+    public static function unescape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8')
     {
-        
+
         if (is_string($mixed)) {
             $mixed = str_replace('&amp;', '&', $mixed);
             $mixed = str_replace('&#039;', '\'', $mixed);

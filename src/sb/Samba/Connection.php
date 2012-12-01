@@ -8,7 +8,7 @@
  */
 namespace sb\Samba;
 
-class Connection 
+class Connection
     {
 
 /**
@@ -73,7 +73,7 @@ class Connection
      * @param $path
      *
      */
-    public function __construct($host, $share, $uname, $pass, $domain = '') 
+    public function __construct($host, $share, $uname, $pass, $domain = '')
     {
         $this->username = $uname;
         $this->password = $pass;
@@ -89,7 +89,7 @@ class Connection
      *
      * @return array $output the raw command line output for smbclient
      */
-    public function get($remotepath, $localfile = '.') 
+    public function get($remotepath, $localfile = '.')
     {
         $remotepath = self::winslashes($remotepath);
         $this->execute('get "'.$remotepath.'" "'.$localfile.'"', $output);
@@ -104,7 +104,7 @@ class Connection
      *
      * @return array $output
      */
-    public function put($localfile, $remotepath = ".") 
+    public function put($localfile, $remotepath = ".")
     {
         $remotepath = self::winslashes($remotepath);
         $command = 'put "'.$localfile.'" "'.$remotepath.'"';
@@ -135,7 +135,7 @@ class Connection
      * @param $output array what the command line returns
      * @param $log boolean weather to log this transaction
      */
-    public function execute($command, &$output = null) 
+    public function execute($command, &$output = null)
     {
 
         $cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
@@ -163,7 +163,7 @@ class Connection
      * @param $subdir
      * @return unknown_type
      */
-    public function ls($subdir = '', &$raw = NULL) 
+    public function ls($subdir = '', &$raw = NULL)
     {
 
         $teststr  = str_replace('\\', '-', $subdir);
@@ -181,7 +181,7 @@ class Connection
      * @param $subdir
      * @return unknown_type
      */
-    public function dir($subdir = '', &$raw = NULL) 
+    public function dir($subdir = '', &$raw = NULL)
     {
 
         return $this->ls($subdir, $raw);
@@ -191,7 +191,7 @@ class Connection
      * Internal operation: converts raw commanline ls returns into an array of samba share listing objects
      * @private
      */
-    private function processLS($raw_ls, $subdir = '') 
+    private function processLS($raw_ls, $subdir = '')
     {
         $ret = array();
 
@@ -211,7 +211,7 @@ class Connection
      * @param $subdir
      * @return \sb\Samba\Listing
      */
-    private function parseListing($listing, $subdir = '') 
+    private function parseListing($listing, $subdir = '')
     {
         $ret = new \sb\Samba\Listing();
         $exp = '/^\s{2}([\w \-]+\.?\w{3,4})\s+([A-Z]?)\s+(\d+)\s+(\w{3}.+)$/';
@@ -265,10 +265,9 @@ class Connection
      * @param $str
      * @return string
      */
-    public static function winslashes($str) 
+    public static function winslashes($str)
     {
         return str_replace("/", "\\", $str);
     }
 
 }
-

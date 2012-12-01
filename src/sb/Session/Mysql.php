@@ -18,34 +18,34 @@
  * @package Session
  *
  */
-namespace sb;
+namespace sb\Session;
 
-class Session_Mysql extends Session{
-    
+class Mysql extends Session
+{
     /**
      * The database connection
      * @var PDO
      */
     private $db;
-    
+
     /**
      * The session ma xlifetime
      * @var integer
      */
     private $session_life_time;
-    
+
     /**
      * A token combinig the ip and user agent munged as md5
      * @var string
      */
     private $token = '';
-    
+
     /**
      * Prepared statements cache
      * @var array
      */
     private $stmts = Array();
-    
+
     /**
      * Connects to the mysql server for session storage
      * <code>
@@ -58,15 +58,15 @@ class Session_Mysql extends Session{
      */
     public function __construct(PDO $db, $session_life_time=null)
     {
-        
+
         $this->db = $db;
-        
+
         $this->token = md5(Gateway::$remote_addr.Gateway::$agent);
-        
+
         // get session lifetime
         $this->session_life_time = !is_null($session_life_time) ? $session_life_time : ini_get("session.gc_maxlifetime");
         // register the new handler
-        
+
         session_set_save_handler(
             array($this, 'open'),
             array($this, 'close'),
@@ -76,10 +76,10 @@ class Session_Mysql extends Session{
             array($this, 'gc')
         );
         register_shutdown_function('session_write_close');
-        
+
         session_start();
     }
-    
+
     /**
      * Opens the session, not needed for db based sessions
      * @return boolean
@@ -88,7 +88,7 @@ class Session_Mysql extends Session{
     {
          return true;
     }
-    
+
     /**
      * Closes the session, not needed for db based sessions
      * @return boolean
@@ -97,7 +97,7 @@ class Session_Mysql extends Session{
     {
         return true;
     }
-    
+
     /**
      * Closes the session, not needed for db based sessions
      * @return boolean
@@ -107,7 +107,7 @@ class Session_Mysql extends Session{
 
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
-            
+
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 SELECT
                     data
@@ -118,11 +118,11 @@ class Session_Mysql extends Session{
                     AND token = :token
                     AND UNIX_TIMESTAMP(access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
             ");
-            
+
         }
-        
+
         $stmt = $this->stmts[$stmt_cache];
-        
+
         if($stmt->execute(Array(
             ':session_id' => $session_id,
             ':token' => $this->token,
@@ -133,12 +133,12 @@ class Session_Mysql extends Session{
                 $this->updateAccess($session_id);
                 return $rows[0]->data;
             }
-            
+
         }
-        
+
         return "";
     }
-    
+
     /**
      * Updates the access time after reading the data
      * @param $session_id
@@ -146,10 +146,10 @@ class Session_Mysql extends Session{
      */
     public function updateAccess($session_id)
     {
-        
+
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
-            
+
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 UPDATE
                     surebert_sessions
@@ -157,19 +157,19 @@ class Session_Mysql extends Session{
                 WHERE
                     session_id = :session_id
                     AND token = :token
-                   
+
             ");
-            
+
         }
-        
+
         $stmt = $this->stmts[$stmt_cache];
-        
+
         return $stmt->execute(Array(
             ':session_id' => $session_id,
             ':token' => $this->token
         ));
     }
-    
+
     /**
      * updates session data in the mysql database
      * @param $session_id
@@ -178,10 +178,10 @@ class Session_Mysql extends Session{
      */
     public function write($session_id, $data)
     {
-        
+
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
-            
+
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 SELECT
                     session_id
@@ -190,36 +190,36 @@ class Session_Mysql extends Session{
                 WHERE
                     session_id = :session_id
             ");
-            
+
         }
-        
+
         $stmt = $this->stmts[$stmt_cache];
-        
+
         $result = $stmt->execute(Array(
                ':session_id' => $session_id
         ));
-        
+
         if(!$result){
             return false;
         }
-        
+
         $rows = $stmt->fetchAll();
-        
+
         if(isset($rows[0])){
             $result = $this->update($session_id, $data);
-           
+
         } else {
             $result = $this->insert($session_id, $data);
         }
-        
+
         if($result && $stmt->rowCount()){
             return true;
         } else {
             return false;
         }
-       
+
     }
-    
+
     /**
      * writes session data to the mysql database
      * @param $session_id
@@ -228,29 +228,29 @@ class Session_Mysql extends Session{
      */
     private function insert($session_id, $data)
     {
-        
+
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 INSERT INTO
                     surebert_sessions
                 (session_id, data, token)
-                VALUES 
-                (:session_id, :data, :token) 
+                VALUES
+                (:session_id, :data, :token)
             ");
         }
-        
+
         $stmt = $this->stmts[$stmt_cache];
-        
+
         return $stmt->execute(Array(
                ':session_id' => $session_id,
                ':data' => $data,
              ':token' => $this->token
         ));
-        
+
     }
-    
-    
+
+
     /**
      * Updates an existing session's data
      * @param $session_id
@@ -259,10 +259,10 @@ class Session_Mysql extends Session{
      */
     private function update($session_id, $data)
     {
-        
+
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
-            
+
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 UPDATE
                     surebert_sessions
@@ -272,18 +272,18 @@ class Session_Mysql extends Session{
                 WHERE
                     token = :token
             ");
-            
+
         }
-        
+
         $stmt = $this->stmts[$stmt_cache];
-        
+
         return $stmt->execute(Array(
                ':session_id' => $session_id,
                ':data' => $data,
                ':token' => $this->token
         ));
     }
-    
+
     /**
      * Destroys a sessions by deleting it from the database
      * @return unknown_type
@@ -297,21 +297,21 @@ class Session_Mysql extends Session{
         WHERE
             session_id = :session_id
         ";
-        
-    
+
+
         $stmt = $this->db->prepare($sql);
-               
+
         $result = $stmt->execute(Array(
                ':session_id' => $session_id
         ));
-               
+
         if($result && $stmt->rowCount()){
                return true;
         } else {
                return false;
         }
     }
-        
+
     /**
      * Garbage collects any open sessions that are no longer valid
      * @return boolean
@@ -324,17 +324,17 @@ class Session_Mysql extends Session{
                 surebert_sessions
             WHERE
                 UNIX_TIMESTAMP(access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
-     
+
         ";
-         
+
          $stmt = $this->db->prepare($sql);
-               
+
          return $stmt->execute(Array(
               ':session_lifetime' => $this->session_life_time
          ));
-         
+
     }
-    
+
     /**
      * regenerate the session id
      * @return boolean
@@ -343,14 +343,13 @@ class Session_Mysql extends Session{
     {
 
         $old_session_id = session_id();
-        
+
         session_regenerate_id();
-       
+
         $this->destroy($old_session_id);
-        
+
         return true;
     }
-    
-    
-}
 
+
+}

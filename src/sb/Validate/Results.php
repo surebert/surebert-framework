@@ -8,8 +8,8 @@
  */
 namespace sb\Validate;
 
-class Results{
-
+class Results
+{
     /**
      * Is the string valid or not
      *

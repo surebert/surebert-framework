@@ -176,7 +176,7 @@ class Attachment
 
         if (!is_dir($gnupg_path)) {
             throw(new \Exception('In order to use pgp engryption you must either '
-                .'pass a valid .gnupg path as the second argument of ' 
+                .'pass a valid .gnupg path as the second argument of '
                 . __METHOD__ . ' or have the .gnupg directory reside in the /private/resources'));
         }
 
@@ -205,4 +205,3 @@ class Attachment
         $this->encoding = $encoding;
     }
 }
-

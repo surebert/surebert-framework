@@ -1,6 +1,6 @@
 <?php
 /**
- * This class is used to read an email inbox.  It required \sb\Strings from the 
+ * This class is used to read an email inbox.  It required \sb\Strings from the
  * surebert framework REQUIRES \sb\Email\Reader.php
  *
  * @author paul.visco@roswellpark.org
@@ -420,4 +420,3 @@ class Reader
         }
     }
 }
-

@@ -7,7 +7,7 @@
  * @author paul.visco@roswellpark.org
  * @package PDO
  */
-namespace sb\PDO\Statment;
+namespace sb\PDO\Statement;
 
 class Logger extends \PDOStatement
 {
@@ -131,4 +131,3 @@ class Logger extends \PDOStatement
         return parent::bindParam($paramno, $param, $type);
     }
 }
-

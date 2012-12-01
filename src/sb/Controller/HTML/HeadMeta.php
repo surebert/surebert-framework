@@ -30,4 +30,3 @@ class HeadMeta
      */
     public $author;
 }
-

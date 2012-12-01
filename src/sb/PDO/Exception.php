@@ -11,4 +11,3 @@ namespace sb\PDO;
 class Exception extends \Exception
 {
 }
-

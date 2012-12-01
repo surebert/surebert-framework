@@ -127,4 +127,3 @@ class HTML5 extends HTTP
         return $html;
     }
 }
-

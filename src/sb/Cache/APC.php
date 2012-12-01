@@ -18,16 +18,16 @@ class APC implements Base
     private $catalog_key = '/sb_Cache_Catalog';
 
     /**
-     * The namespace for your cache.  By default this is empty, but if you 
+     * The namespace for your cache.  By default this is empty, but if you
      * are on a shared memcache server this will keep your values separate
      * @var string
      */
     private $namespace = '';
 
     /**
-     * Creates namespace for the data, as the cache may be shared between 
-     * different apps. 
-     * @param $namespace The namespace required when sharing memcache server.  
+     * Creates namespace for the data, as the cache may be shared between
+     * different apps.
+     * @param $namespace The namespace required when sharing memcache server.
      * Must be totall unique, e.g. the name of your app?
      */
     public function __construct($namespace)
@@ -93,7 +93,7 @@ class APC implements Base
     }
 
     /**
-     * Keeps track of the data stored in the cache to make deleting groups of 
+     * Keeps track of the data stored in the cache to make deleting groups of
      * data possible
      * @param $key
      * @return boolean If the catalog is stored or not
@@ -141,4 +141,3 @@ class APC implements Base
         return $arr;
     }
 }
-

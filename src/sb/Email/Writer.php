@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Used to send plain text emails, HTML emails, or plain text and html emails 
- * with attachments both inline and not REQUIRES sb_Email.php and sb_Files 
+ * Used to send plain text emails, HTML emails, or plain text and html emails
+ * with attachments both inline and not REQUIRES sb_Email.php and sb_Files
  * (<-unless you specify the mime types on attachments manually)
  *
  * If DEBUG_EMAIL constant is defined, then all email goes to that address.
@@ -83,7 +83,7 @@ class Writer
     }
 
     /**
-     * Sends the emails in the $emails array that were attached using 
+     * Sends the emails in the $emails array that were attached using
      * addEmailToOutbox, logs progress if log file is specified
      *
      */
@@ -140,9 +140,9 @@ class Writer
         }
 
         $emails_cnt = count($this->emails);
-        
+
         $this->emails = Array();
-            
+
         if ($sent_emails == $emails_cnt) {
             return true;
         } else {
@@ -245,4 +245,3 @@ class Writer
         return false;
     }
 }
-

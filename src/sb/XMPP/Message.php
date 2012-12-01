@@ -7,8 +7,8 @@
  */
 namespace sb\XMPP;
 
-class Message extends Packet{
-
+class Message extends Packet
+{
     /**
      * The SimpleXMLElement if one is imported
      * @var SimpleXMLElement
@@ -25,7 +25,7 @@ class Message extends Packet{
         if(!empty($xml)){
             $xml = simplexml_load_string($xml);
             $this->doc = dom_import_simplexml($xml);
-            
+
             $xml = null;
         } else {
             $this->doc = $this->appendChild($this->createElement('message'));
@@ -49,7 +49,7 @@ class Message extends Packet{
             } else {
                 return $node;
             }
-            
+
         } else {
             return '';
         }
@@ -78,7 +78,7 @@ class Message extends Packet{
 
     /**
      * Returns the HTML string if there is one, this is expiremental
-     * 
+     *
      * @param boolean $as_string Determines if node is returned as xml node or string, true by default
      * @return string
      */

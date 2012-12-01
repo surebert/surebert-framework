@@ -26,4 +26,3 @@ class Organizer extends Attendee
         return "ORGANIZER;CN=\"" . $this->dname . "\":MAILTO:" . $this->email;
     }
 }
-

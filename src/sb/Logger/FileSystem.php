@@ -4,23 +4,23 @@
  *
  * @author paul.visco@roswellpark.org
  * @package Logger
- * 
+ *
  */
 namespace sb\Logger;
 
-class FileSystem extends Base{
-    
+class FileSystem extends Base
+{
     /**
     * Creates a filesystem type logger
     * @param $agent String The agent string
     */
     public function __construct($agent = '', $log_root='')
     {
-        
+
         parent::__construct($agent);
         $log_root = !empty($log_root) ? $log_root : ROOT.'/private/logs';
         $this->setLogRoot($log_root);
-        
+
     }
 
     /**
@@ -39,13 +39,13 @@ class FileSystem extends Base{
      */
     protected function getLogPath($log)
     {
-        
+
         $dir = $this->log_root.'/'.$log.'/';
-    
+
         if(!is_dir($dir)){
             mkdir($dir, 0777, true);
         }
-        
+
         return $dir;
     }
 

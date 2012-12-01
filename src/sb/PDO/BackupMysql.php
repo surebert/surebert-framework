@@ -3,13 +3,13 @@
 /**
  * This script is used to backup all mysql databases on a server via mysqldump.
  * It is only suitable for databases that can be dumped using mysqldump.
- * The files are then gzippped into the dumps directory in the folder it was 
+ * The files are then gzippped into the dumps directory in the folder it was
  * run in.
  * Dumps are broken down into numbered directorys.  1 is the newest and they
  * keep going up until max version.  When a dump directory goes beyond max version,
  * it is deleted.  Each time the script is run, the dump directories increment by 1.
  *
- * The db credetials should be for root or a user that has SELECT access to 
+ * The db credetials should be for root or a user that has SELECT access to
  * every database
  * @author paul.visco@roswellpark.org
  * @package PDO
@@ -101,7 +101,7 @@ class BackupMysql
 
     /**
      * Sets the directory in which the dump files are stored
-     * @param string $dir 
+     * @param string $dir
      */
     public function setDumpDestination($dir = 'dumps/')
     {
@@ -243,4 +243,3 @@ class BackupMysql
         rename($this->dump_dir . 'dump.log', $this->dump_dir . '1/dump.log');
     }
 }
-

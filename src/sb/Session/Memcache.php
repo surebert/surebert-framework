@@ -6,8 +6,8 @@
  */
 namespace sb\Session;
 
-class Memcache extends Session{
-
+class Memcache extends Session
+{
     /**
      * Instantiates a memcache session
      * <code>
@@ -19,12 +19,12 @@ class Memcache extends Session{
      */
     public function __construct($host, $port)
     {
-        
+
         $session_save_path = "tcp://$host:$port?persistent=1&weight=2&timeout=2&retry_interval=10,  ,tcp://$host:$port  ";
         ini_set('session.save_handler', 'memcache');
         ini_set('session.save_path', $session_save_path);
         session_start();
-        
+
     }
-    
+
 }

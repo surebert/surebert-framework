@@ -28,8 +28,8 @@
  */
 namespace sb\XMPP;
 
-class Client extends \sb\Socket\StreamingClient{
-
+class Client extends \sb\Socket\StreamingClient
+{
     /**
      * The host XMPP server to connect to.  You also specifiy the transport as tcp
      * or ssl e.g. tcp://chat.roswellpark.org or ssl://chat.roswellpark.org
@@ -109,9 +109,9 @@ class Client extends \sb\Socket\StreamingClient{
         }
 
         parent::__construct($this->host.':'.$this->port, $this->timeout);
-        
+
         $this->open();
-       
+
         //begin stream
         $this->write("<stream:stream to='$this->host' xmlns='jabber:client'
 xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
@@ -131,7 +131,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         $this->log('Reconnecting...');
         $this->close();
         $this->connect();
-        
+
     }
 
     /**
@@ -148,21 +148,21 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         }
         //calc the jid from uname+host
         $this->jid = $this->uname.'@'.substr($this->host, strpos($this->host, '//')+2);
-     
+
         if($this->pass){
-            
+
             $this->write("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='PLAIN'>" . base64_encode("\x00" . $this->uname . "\x00" . $this->pass) . "</auth>");
         } else {
             $this->write("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='ANONYMOUS' />");
     }
-     
+
         $buffer = $this->read();
         if(substr($buffer, 0, 5) == '<fail'){
             $this->onError(0, 'Cound not log in');
             return false;
-            
+
         }
-        
+
         $this->client_name = empty($this->client_name) ? __CLASS__ : $this->client_name;
 
         if(!$this->sendClientName()){
@@ -172,9 +172,9 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         $this->setStatus($this->status);
 
         $this->onAfterLogin();
-        
+
         return true;
-        
+
     }
 
     /**
@@ -274,7 +274,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
      * @param mixed $message String/\sb\XMPP\Message The message to send
      * @param string $except An array of jids to not send to
      */
-    public function broadcast($message, $except=array()) 
+    public function broadcast($message, $except=array())
     {
 
         if(!$message instanceOf \sb\XMPP\Message){
@@ -331,7 +331,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         $attr = $message->createAttribute('xmlns');
         $node->appendChild($attr);
         $attr->appendChild($message->createTextNode('http://jabber.org/protocol/chatstates'));
-        
+
         $message->doc->appendChild($node);
 
         $this->sendMessage($message);
@@ -368,7 +368,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
         $buffer = '';
         $read = array($this->socket);
-        
+
         $updated = @stream_select($read, $write, $except, 1);
 
         if ($updated > 0) {
@@ -479,7 +479,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
      * Determines the peak memory usage
      * @return string The value in b, KB, or MB depending on size
      */
-    final public function getMemoryUsage($peak=false) 
+    final public function getMemoryUsage($peak=false)
     {
 
         if($peak){
@@ -498,13 +498,13 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
         }
         return $str;
     }
-    
+
      /**
      * Ends the stream and closes the connection
      */
     final public function close()
     {
-        
+
         $this->onCloseConnection();
 
         if($this->socket){
@@ -552,9 +552,9 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
 
     /**
      * Determines if a subscription request is accepted or not
-     * 
+     *
      * By default it automatically accepts all requests
-     * 
+     *
      * @param \sb\XMPP\Presence $presence You can use this to determine who it is and if you want to accept
      * @return boolean If returns true it automatically accepts the subscription, false it does not
      */
@@ -600,6 +600,5 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
     {
         $this->close();
     }
-    
-}
 
+}

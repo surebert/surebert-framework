@@ -1,7 +1,7 @@
 <?php
 /**
  * Handles mime types for files
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Files
  */
@@ -129,4 +129,3 @@ xul application/vnd.mozilla.xul+xml
 zip application/zip
 MIME;
 }
-

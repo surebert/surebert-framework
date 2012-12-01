@@ -4,15 +4,15 @@
  *
  * @author paul.visco@roswellpark.org
  * @package Web
- * 
+ *
  */
 namespace sb\Web;
 
-class WeatherFeed{
-    
+class WeatherFeed
+{
     /**
      * The current weather condition
-     * 
+     *
      * @var string
      */
     public $condition;
@@ -22,21 +22,21 @@ class WeatherFeed{
      * @var integer
      */
     public $temp_f;
-    
+
     /**
      * The current temperature in celcius
      *
      * @var integer
      */
     public $temp_c;
-    
+
     /**
      * The current wind mph
      *
      * @var float
      */
     public $wind_mph;
-    
+
     /**
      * The url of the icon that can be used with this
      *
@@ -44,4 +44,3 @@ class WeatherFeed{
      */
     public $icon;
 }
-

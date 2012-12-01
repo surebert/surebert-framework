@@ -469,4 +469,3 @@ class VCard
             . $this->download_dir . '/' . $this->card_filename;
     }
 }
-

@@ -275,4 +275,3 @@ class Syslog
         return $str;
     }
 }
-

@@ -7,13 +7,13 @@
  */
 namespace sb;
 
-class Files{
-
+class Files
+{
     /**
      * read a file into chunks for faster force download and better memory management
      *
      */
-    public static function readChunked($file_name,$seekat=0,$return_bytes=true) 
+    public static function readChunked($file_name,$seekat=0,$return_bytes=true)
     {
 
          // how many bytes per chunk
@@ -111,7 +111,7 @@ class Files{
                 case 'mp4':
                     $m = 'video/mp4';
                     break;
-                
+
                 case 'mid':
                     $m = 'audio/x-midi';
                     break;
@@ -133,7 +133,7 @@ class Files{
                 case 'xls':
                     $m = 'application/vnd.ms-excel';
                     break;
-                
+
                 case 'xlsx':
                     $m = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                     break;
@@ -194,7 +194,7 @@ class Files{
      */
     public static function recursiveDelete($dir, $del=0)
     {
-    
+
          if($dir == '/'){
             die("You cannot delete the root directory");
         }
@@ -219,7 +219,7 @@ class Files{
      * @param string $path The path to the server
      * @return object
      */
-    public static function getDirectorySize($path) 
+    public static function getDirectorySize($path)
     {
 
         $stats = new stdClass();
@@ -236,8 +236,7 @@ class Files{
                         $stats->size += $result->size;
                         $stats->file_count += $result->file_count;
                         $stats->dir_count += $result->dir_count;
-                    }
-                    elseif (is_file ($nextpath)) {
+                    } elseif (is_file ($nextpath)) {
                         $stats->size += filesize ($nextpath);
                         $stats->file_count++;
                     }
@@ -247,8 +246,8 @@ class Files{
         closedir ($handle);
         return $stats;
     }
-    
-        
+
+
     /**
      * Get the files from a directory
      * @param string $dir The directory path
@@ -259,7 +258,7 @@ class Files{
     {
         $arr = Array();
         $iterator = new DirectoryIterator($dir);
-        
+
         foreach ($iterator as $file){
 
           if ($get_directories && $file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
@@ -268,40 +267,36 @@ class Files{
                  'size' => self::getDirectorySize($file->getRealPath()),
                  'mtime' => $file->getMTime(),
                  'name' => $file->getBaseName());
-             
+
           } elseif (!$get_directories && $file->isFile()){
               $arr[] = $file->getBasename();
             }
         }
-        
+
         $get_directories ? ksort($arr) : sort($arr);
         return $arr;
     }
-    
+
     /**
      * Converts file size to string that is human readible
      * @param integer $size The size in bytes
      * @return string
      */
-    public static function sizeToString($size) 
+    public static function sizeToString($size)
     {
 
         if($size<1024) {
             return $size." bytes";
-        }
-        elseif($size<(1024*1024)) {
+        } elseif($size<(1024*1024)) {
             $size=round($size/1024,1);
             return $size." KB";
-        }
-        elseif($size<(1024*1024*1024)) {
+        } elseif($size<(1024*1024*1024)) {
             $size=round($size/(1024*1024),1);
             return $size." MB";
-        }
-        else {
+        } else {
             $size=round($size/(1024*1024*1024),1);
             return $size." GB";
         }
     }
 
 }
-

@@ -2,7 +2,7 @@
 
 /**
  * Used to create command line utilities
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
@@ -149,4 +149,3 @@ class Line extends Base
         $this->log(date('Y/m/d H:i:s') . " - End Log\n", 'MESSAGE');
     }
 }
-

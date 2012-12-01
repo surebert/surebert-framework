@@ -173,7 +173,7 @@ class OPF extends \DOMDocument
     /**
      * Book author or creator, optional.
      * .
-     * @param string $author   Used for the dc:creator metadata parameter in the 
+     * @param string $author   Used for the dc:creator metadata parameter in the
      * OPF file
      * @param string $sort_key is basically how the name is to be sorted, usually
      *  it's "Lastname, First names" where the $author is the straight
@@ -232,4 +232,3 @@ class OPF extends \DOMDocument
         return parent::saveXML($node, $options);
     }
 }
-

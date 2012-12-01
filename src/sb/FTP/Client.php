@@ -4,7 +4,7 @@
  * Create an object oriented FTP client interface
  *
  * requires PHP be compiled with ftp support
- * 
+ *
  * @author paul.visco@roswellpark.org
  * @package FTP
  */
@@ -214,4 +214,3 @@ class Client implements FTPBase
         ftp_close($this->connection);
     }
 }
-

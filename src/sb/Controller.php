@@ -4,9 +4,9 @@
  * @author paul.visco@roswellpark.org
  * @package Controller
  */
-namespace sb\Controller;
+namespace sb;
 
-class Base
+class Controller
 {
 
     /**
@@ -31,12 +31,12 @@ class Base
     /**
      * Determines if the controller's public properties become
      * local vars in the views or not
-     * @var boolean 
+     * @var boolean
      */
     protected $extract = false;
 
     /**
-     * Determines which file is loaded in the view directory if one is not 
+     * Determines which file is loaded in the view directory if one is not
      * specified.  When not set renders index.view.  To set just use template
      *  name minus the .view extension e.g. $this->default-file = index;
      *
@@ -46,7 +46,7 @@ class Base
 
     /**
      * An array of REGex to callable that routes requests that are not otherwise servable
-     * @var array 
+     * @var array
      */
     public $routing_patterns = Array();
 
@@ -76,10 +76,10 @@ class Base
     }
 
     /**
-     * Fires before any response is rendered by he controller allowing you to 
+     * Fires before any response is rendered by he controller allowing you to
      * make decisions, check input args, etc before the output is rendered.
      * If you return false from this method then no output is rendered.
-     * @return boolean determines if anything should render anything or not, 
+     * @return boolean determines if anything should render anything or not,
      * false == no render
      */
     public function onBeforeRender($method = '')
@@ -93,15 +93,15 @@ class Base
      *
      * I had to remove default arguments in order to get around issue with incompatbile
      * child class methods when E_STRICT is enabled.  I am keeping them in phpdoc
-     * 
+     *
      * @param String $template the template to use e.g. /dance
      * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
-     * 
+     *
      */
     public function render()
     {
-        
+
         $args = \func_get_args();
         $template = isset($args[0]) ? $args[0] : '';
         $extract_vars = isset($args[1]) ? $args[1] : null;
@@ -168,7 +168,7 @@ class Base
 
         $this->notFound();
     }
-    
+
     protected static function processControllerMethod($class, $method)
     {
 
@@ -183,9 +183,9 @@ class Base
             }
         }
 
-        
+
         if (method_exists($class, $method)) {
-            
+
             $reflection = new \ReflectionMethod($class, $method);
 
             //check for phpdocs
@@ -240,7 +240,7 @@ class Base
      * @param string $view_path The path to the template e.g. /blah/foo
      * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
-     * @return string 
+     * @return string
      */
     protected function getView($_view_path, $extract_vars = null)
     {
@@ -308,4 +308,3 @@ class Base
         }
     }
 }
-

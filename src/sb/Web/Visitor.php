@@ -1,14 +1,15 @@
 <?php
 /**
  * Models an online visitor - usage requires \sb\Web_Visitors
- * 
- * @author paul.visco@roswellpark.org 
+ *
+ * @author paul.visco@roswellpark.org
  * @package Web
  *
  */
 namespace sb\Web;
 
-class Visitor{
+class Visitor
+{
     /**
      * The IP address of the visitor
      * @var string
@@ -25,7 +26,7 @@ class Visitor{
      * @var string
      */
     public $uname;
-    
+
     /**
      * The display name of the visitor in your system
      * @var string
@@ -73,7 +74,7 @@ class Visitor{
      */
     public function log($db=null)
     {
-        
+
         if($db instanceof PDO){
             \sb\Web\Visitors::$db=$db;
         }
@@ -82,4 +83,3 @@ class Visitor{
 
     }
 }
-

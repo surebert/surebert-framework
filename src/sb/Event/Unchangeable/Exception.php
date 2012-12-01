@@ -3,7 +3,7 @@
 /**
  * The exception thrown when a programmers tries to changed the args value
  * of an Event past to a listener
- * @author paul.visco@roswellpark.org 
+ * @author paul.visco@roswellpark.org
  */
 namespace sb\Event\Unchangeable;
 
@@ -15,4 +15,3 @@ class Exception extends \Exception
     protected $code = 1;
 
 }
-
