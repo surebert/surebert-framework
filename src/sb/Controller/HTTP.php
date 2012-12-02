@@ -233,6 +233,22 @@ class HTTP extends Base
     {
         return $this->request->getArg($arg_num, $default_val);
     }
+    
+    /**
+     * Retrieves a file from the request
+     * @param string $key
+     */
+    public function getFile($key){
+        return $this->request->getFile($key);
+    }
+    
+    /**
+     * Retrieves all uploaded files from the request
+     * @param string $key
+     */
+    public function getFiles(){
+        return $this->request->files;
+    }
 
     /**
      * Added option for requesting basic auth.  ONLY USE OVER SSL

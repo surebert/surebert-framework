@@ -224,6 +224,22 @@ class Request
 
         return $default_val;
     }
+    
+    /**
+     * Gets a uploaded file reference, otherwise returns null
+     *
+     * @param string $key The key to look for
+     * @return array the file that was uploaded
+     */
+    public function getFile($key)
+    {
+        if (isset($this->files[$key])) {
+            return $this->files[$key];
+        }
+
+        return null;
+    }
+
 
 }
 
