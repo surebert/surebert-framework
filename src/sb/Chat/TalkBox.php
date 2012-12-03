@@ -84,21 +84,14 @@ class TalkBox
      *
      * Instanitates a new talkbox
      * <code>
-     * $db = new sb_PDO("mysql:dbname=sb_talkbox;host=localhost", 'talker', 'rt3');
-     * $talkbox = new sb_TalkBox($db);
-     *
-     * //live filter the return rows
-     * function sb_TalkBoxOnParse($str){
-     *
-     *     //in this case replace swear word
-     *     return str_replace('fuck', 'f***', $str);
-     * }
-     *
+     * $db = new \sb\PDO("mysql:dbname=sb_talkbox;host=localhost", 'talker', 'rt3');
+     * $talkbox = new \sb\TalkBox($db);
+     * 
      * //run this only the first time
      * $talkbox->createRoom('paul');
      *
      * //create a new line to insert, this would normally come from ajax or form
-     * $line = new sb_Chat_Line();
+     * $line = new \sb\Chat\Line();
      * $line->uname ='paul';
      * $line->ip=$_SERVER['REMOTE_ADDR'];
      * $line->message="hello there fuckhead";
@@ -106,7 +99,7 @@ class TalkBox
      *
      * //echo the json of the latest chat starting with the newest line and
      * going back 10 lines which can be used to build dom display
-     * echo json_encode($talkbox->display(0, 10));
+     * echo json_encode($talkbox->display(0, 'up', 10, function($line){return str_replace('fuck', 'f***', $line);}));
      *
      * </code>
      *
@@ -114,7 +107,7 @@ class TalkBox
      * @param string $room
      *
      */
-    public function __construct(PDO $pdo_connection, $room)
+    public function __construct(\sb\PDO $pdo_connection, $room='chatter')
     {
 
         $this->db = $pdo_connection;
@@ -199,7 +192,7 @@ class TalkBox
 
         $result = $this->db->query($sql);
 
-        $line = new Chat_Line();
+        $line = new Line();
         $line->uname = 'paul';
         $line->message = 'Welcome to p:chat a PHP/Surebert chat solution by Paul Visco';
         $this->insert($line);
@@ -211,7 +204,7 @@ class TalkBox
         $result = $this->db->query($sql);
     }
 
-    public function insert(Chat_Line $line)
+    public function insert(Line $line)
     {
 
         if (empty($line->message)) {
@@ -258,7 +251,7 @@ class TalkBox
 
     public $loaded_from_backup = 0;
 
-    public function display($id, $dir = "up", $limit = 10)
+    public function display($id, $dir = "up", $limit = 10, $on_parse= null)
     {
 
         $ltgt = ($dir == "up") ? ">" : "<";
@@ -292,9 +285,9 @@ class TalkBox
         $this->updateLastVisit();
 
         //TODO convert to event based callback
-        if (function_exists('sb_TalkBoxOnParse')) {
+        if (is_callable($on_parse)) {
             foreach ($chatter as &$line) {
-                $line->m = sb_TalkBoxOnParse($line->m);
+                $line->m = $on_parse($line->m);
             }
         }
         return $chatter;
