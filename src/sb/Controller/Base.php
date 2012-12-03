@@ -84,6 +84,7 @@ class Base
      */
     public function onBeforeRender($method = '')
     {
+
         return true;
     }
 
@@ -93,15 +94,15 @@ class Base
      * I had to remove default arguments in order to get around issue with incompatbile
      * child class methods when E_STRICT is enabled.  I am keeping them in phpdoc
      *
-     * @param String $template    the template to use e.g. /dance
-     * @param mixed  $extact_vars extracts the keys of an object or array into
+     * @param String $template the template to use e.g. /dance
+     * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
      *
      */
     public function render()
     {
 
-        $args = func_get_args();
+        $args = \func_get_args();
         $template = isset($args[0]) ? $args[0] : '';
         $extract_vars = isset($args[1]) ? $args[1] : null;
 
@@ -111,7 +112,7 @@ class Base
         ob_start();
         //if no method is set, use index, for the IndexController that would be request path array 0
 
-        if (get_class($this) == 'IndexController') {
+        if (\get_class($this) == 'IndexController') {
             $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
         } else {
             $method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
@@ -133,7 +134,7 @@ class Base
             if (!empty($template)) {
 
                 if (isset($this->request->path_array[1])) {
-                    $path = preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
+                    $path = \preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
                 } else {
                     $path .= $template;
                 }
@@ -147,18 +148,17 @@ class Base
             $this->template = $template;
 
             if ($this->getView($path, $extract_vars)) {
-                $output = ob_get_clean();
-
+                $output = \ob_get_clean();
                 return $this->filterOutput($output);
             }
         }
 
         if (isset($this->routes)) {
             foreach ($this->routes as $pattern => $method) {
-                if (preg_match($pattern, \sb\Gateway::$request->request)) {
-                    if (is_callable($method)) {
-                        return $this->filterOutput(call_user_func($method, $pattern));
-                    } elseif (is_string($method) && is_callable(Array($this, $method))) {
+                if (\preg_match($pattern, \sb\Gateway::$request->request)) {
+                    if (\is_callable($method)) {
+                        return $this->filterOutput(\call_user_func($method, $pattern));
+                    } elseif (\is_string($method) && \is_callable(Array($this, $method))) {
                         return $this->filterOutput($this->$method($pattern));
                     }
 
@@ -169,13 +169,11 @@ class Base
         $this->notFound();
     }
 
-
     /**
-     * Processes the controller method being served
-     * @param String $class  The class of the controller
-     * @param string $method The method to be fired for service
-     * @return array and array with properties showing if it was served and the data
-     * that resulted from firing
+     * Excutes the controller method that matches the request
+     * @param string $class The controller class to be called
+     * @param string $method The method that matches the request
+     * @return type
      */
     protected static function processControllerMethod($class, $method)
     {
@@ -191,9 +189,9 @@ class Base
             }
         }
 
-        $method = \sb\Gateway::toCamelCase($method);
 
         if (method_exists($class, $method)) {
+
             $reflection = new \ReflectionMethod($class, $method);
 
             //check for phpdocs
@@ -221,10 +219,10 @@ class Base
             $args = $class->request->{$http_method};
 
             //pass thru input filter if it exists
-            if (method_exists($class, 'filter_input')) {
+            if (\method_exists($class, 'filter_input')) {
                 $args = $class->filter_input($args);
             }
-        } elseif (method_exists($class, '__call')) {
+        } elseif (\method_exists($class, '__call')) {
             $servable = true;
         }
 
@@ -235,9 +233,8 @@ class Base
                 $data = $class->$method($args);
             } else {
 
-                $data = call_user_func_array(array($class, $method), array_values($args));
+                $data = \call_user_func_array(array($class, $method), array_values($args));
             }
-
             return Array('exists' => true, 'data' => $class->filterOutput($data));
         }
 
@@ -246,8 +243,8 @@ class Base
 
     /**
      * Renders the actual .view template
-     * @param string $view_path   The path to the template e.g. /blah/foo
-     * @param mixed  $extact_vars extracts the keys of an object or array into
+     * @param string $view_path The path to the template e.g. /blah/foo
+     * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
      * @return string
      */
@@ -255,25 +252,25 @@ class Base
     {
         //extract class vars to local vars for view
         if ($this->extract) {
-            extract(get_object_vars($this));
+            \extract(\get_object_vars($this));
         }
 
-        if (!is_null($extract_vars)) {
-            if (is_object($extract_vars)) {
-                $extract_vars = get_object_vars($extract_vars);
+        if (!\is_null($extract_vars)) {
+            if (\is_object($extract_vars)) {
+                $extract_vars = \get_object_vars($extract_vars);
             }
-            if (is_array($extract_vars)) {
-                extract($extract_vars);
+            if (\is_array($extract_vars)) {
+                \extract($extract_vars);
             }
         }
 
         $_pwd = ROOT . '/private/views/' . $_view_path . '.view';
 
-        if (!is_file($_pwd)) {
+        if (!\is_file($_pwd)) {
             $_pwd = false;
             foreach (\sb\Gateway::$mods as $mod) {
-                $m = ROOT . '/mod/' . $mod . '/views/' . $view_path . '.view';
-                if (is_file($m)) {
+                $m = ROOT . '/mod/' . $mod . '/views/' . $_view_path . '.view';
+                if (\is_file($m)) {
                     $_pwd = $m;
                     break;
                 }
@@ -282,17 +279,15 @@ class Base
 
         if ($_pwd) {
             require($_pwd);
-
             return true;
         }
-
         return false;
     }
 
     /**
      * Include an arbitrary .view template within the $this of the view
-     * @param string $view_path   e.g. .interface/cp
-     * @param mixed  $extact_vars extracts the keys of an object or array into
+     * @param string $view_path  e.g. .interface/cp
+     * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
      */
     public function renderView($path, $extract_vars = null)
@@ -302,8 +297,7 @@ class Base
         ob_start();
 
         $this->getView($path, $extract_vars);
-
-        return ob_get_clean();
+        return \ob_get_clean();
     }
 
     /**
@@ -313,10 +307,10 @@ class Base
     {
 
         $file = ROOT . '/private/views/errors/404.view';
-        if (is_file($file)) {
+        if (\is_file($file)) {
             include_once($file);
         } else {
-            header("HTTP/1.0 404 Not Found");
+            \header("HTTP/1.0 404 Not Found");
         }
     }
 }
