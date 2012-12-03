@@ -239,6 +239,13 @@ class Request
 
         return null;
     }
-
+    
+    /**
+     * Gets the method used to call the request
+     * @return string e.g. GET, POST, PUT, DELETE
+     */
+    public function getMethod(){
+        return $this->method;
+    }
 
 }
