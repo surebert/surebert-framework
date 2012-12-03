@@ -35,7 +35,7 @@ class ForceDownload
         while (ob_get_level() > 0) {
             ob_end_flush();
         }
-        \sb\Files::read_chunked($file);
+        \sb\Files::readChunked($file);
     }
 
     /**
