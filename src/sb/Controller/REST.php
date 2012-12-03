@@ -59,7 +59,7 @@ class REST extends HTTP
     }
 
     /**
-     * Used to render the output through the filter_output method by calling the
+     * Used to render the output through the filterOutput method by calling the
      * handler appropriate to the HTTP request
      * @return string
      */
@@ -83,12 +83,12 @@ class REST extends HTTP
             }
 
             if ($servable) {
-                return $this->filter_output($this->$method());
+                return $this->filterOutput($this->$method());
             } else {
-                return $this->filter_output($this->notFound($method));
+                return $this->filterOutput($this->notFound($method));
             }
         } else {
-            return $this->filter_output($this->notFound($method));
+            return $this->filterOutput($this->notFound($method));
         }
     }
 }

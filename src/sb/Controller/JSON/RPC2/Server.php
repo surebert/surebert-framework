@@ -390,7 +390,7 @@ class Server extends Base
                 $json_response = \gzencode($json_response, $this->gz_encode_level);
             }
 
-            return $this->filter_output($json_response);
+            return $this->filterOutput($json_response);
         }
     }
 
