@@ -5,7 +5,7 @@
  * Adapted from https://github.com/paulgb/simplediff/blob/5bfe1d2a8f967c7901ace50f04ac2d9308ed3169/simplediff.php
  *
  * @author paul.visco@roswellpark.org
- * @package Text
+ * @package String
  */
 namespace sb\String;
 

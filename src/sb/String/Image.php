@@ -2,7 +2,7 @@
 /**
  * This class is used to convert text strings into true type font based png images
  * @author paul.visco@roswellpark.org
- * @package Text
+ * @package String
  */
 namespace sb\String;
 

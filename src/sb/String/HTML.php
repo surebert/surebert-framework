@@ -2,6 +2,7 @@
 /**
  * Used to escape and unescape HTML for sanitation purposes
  * @author paul.visco@roswellpark.org
+ * @package String
  */
 namespace sb\String;
 

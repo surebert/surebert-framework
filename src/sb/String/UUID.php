@@ -2,9 +2,9 @@
 
 /**
  * Creates UUIDS taken from http://php.net/manual/en/function.uniqid.php
- * @package _Identifiers
+ * @package String
  */
-namespace sb\Identifiers;
+namespace sb\String;
 
 class UUID
 {
@@ -14,7 +14,7 @@ class UUID
      * @return string
      *
      * <code>
-     * \sb\Identifiers\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
+     * \sb\String\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
      * </code>
      */
     public static function v3($namespace, $name)
@@ -59,7 +59,7 @@ class UUID
      * @return string
      *
      * <code>
-     * \sb\Identifiers\UUID::v4();
+     * \sb\String\UUID::v4();
      * </code>
      */
     public static function v4()
@@ -88,7 +88,7 @@ class UUID
      * @return string
      *
      * <code>
-     * \sb\Identifiers\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
+     * \sb\String\UUID::v3('d58d6e10-fc88-44c3-951f-efeb8811c010', 'world');
      * </code>
      */
     public static function v5($namespace, $name)
