@@ -7,7 +7,7 @@
  * @author paul.visco@roswellpark.org
  * @package Text
  */
-namespace sb\Text;
+namespace sb\String;
 
 class Diff
     {

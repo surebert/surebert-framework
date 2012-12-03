@@ -384,9 +384,9 @@ class Bling
     {
         $str = stripslashes($str);
         $str = strip_tags($str);
-        $str = Strings::unicodeUrldecode($str);
+        $str = \sb\Strings::unicodeUrldecode($str);
         $str = self::stripBling($str);
-        $str = Strings::stripMicrosoftChars($str);
+        $str = \sb\Strings::stripMicrosoftChars($str);
         return $str;
     }
 

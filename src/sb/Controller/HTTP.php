@@ -257,7 +257,14 @@ class HTTP extends Base
     public function getMethod(){
         return $this->request->method;
     }
+    
+    public function escape($str){
+        return \sb\String\HTML::escape($str);
+    }
 
+    public function unescape($str){
+        return \sb\String\HTML::unescape($str);
+    }
     /**
      * Added option for requesting basic auth.  ONLY USE OVER SSL
      * @param callable $check_auth  the callable that determines success or not

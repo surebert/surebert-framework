@@ -4,9 +4,9 @@
  * @author paul.visco@roswellpark.org
  * @package Text
  */
-namespace sb\Text;
+namespace sb\String;
 
-class ToImage
+class Image
 {
     /**
      * The path to the ttf you want your use.  must be in true type format.
@@ -40,7 +40,7 @@ class ToImage
      * <code>
      * error_reporting(E_ALL);
      * ini_set('Display_Errors', 'On');
-     * $textImage = new \sb\Text_ToImage(800, 600, '255,0,0', '0,9,0');
+     * $textImage = new \sb\String\Image(800, 600, '255,0,0', '0,9,0');
      * $textImage->font = '../media/fonts/Eurostile-ExtendedTwo.ttf';
      * $textImage->rotation = 0;
      * $word = (isset($_GET['word'])) ? $_GET['word'] : 'hello world';

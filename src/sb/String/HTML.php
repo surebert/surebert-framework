@@ -3,7 +3,7 @@
  * Used to escape and unescape HTML for sanitation purposes
  * @author paul.visco@roswellpark.org
  */
-namespace sb\Text;
+namespace sb\String;
 
 class HTML
 {
