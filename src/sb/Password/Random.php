@@ -30,7 +30,7 @@ class Random
      * Create a password of a certain length
      *
      * <code>
-     * echo new \sb\Password_Random(6);
+     * echo new \sb\Password\Random(6);
      * </code>
      *
      * @param integer $length The length of the password to generate
@@ -48,7 +48,7 @@ class Random
         $this->generate();
 
         if ($mixed_case) {
-            $this->randomly_capitalize();
+            $this->randomlyCapitalize();
         }
     }
 
