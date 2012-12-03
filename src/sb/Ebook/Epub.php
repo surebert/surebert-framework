@@ -12,9 +12,9 @@
  * h1 {n    margin-bottom: 2px;n}nn
  * h2 {n    margin-top: -2px;n    margin-bottom: 2px;n}n";
  *
- * $ebook = new sbEbookEpub('hello world', 'Visco, Paul');
+ * $ebook = new s\b\Ebook\Epub('hello world', 'Visco, Paul');
   <code>
- * use sbEbookEpubChapter as Chapter;
+ * use \sb\Ebook\Epub\Chapter as Chapter;
   //$ebook->setDate(strtotime('01/22/1977 12:00PM'));
 
   $ebook->addGlobalCssFile('test.css', $cssData);
@@ -64,19 +64,19 @@ class Epub
     public function __construct($title = 'my_ebook', $author = "")
     {
         $this->tmp_file = uniqid() . '.epub';
-        $this->zip = new ZipArchive();
-
-        if ($this->zip->open($this->tmp_file, ZipArchive::CREATE)) {
+        $this->zip = new \ZipArchive();
+        
+        if ($this->zip->open($this->tmp_file, \ZipArchive::CREATE)) {
+           
             $this->debug("Opening archive: " . $this->tmp_file);
             $this->createArchive();
             $this->createContainerXml();
-            $this->opf = new sbEbookEpubOPF();
-
-            $this->ncx = new sbEbookEpubNCX();
+            $this->opf = new \sb\Ebook\Epub\OPF();
+            $this->ncx = new \sb\Ebook\Epub\NCX();
             $this->setTitle($title);
             $this->setAuthor($author);
         } else {
-            throw(new Exception("Could not create archive: " . $this->tmp_file));
+            throw(new \Exception("Could not create archive: " . $this->tmp_file));
         }
     }
 
@@ -94,7 +94,7 @@ class Epub
     protected function createContainerXml()
     {
 
-        $xml = new DOMDocument('1.0', 'UTF-8');
+        $xml = new \DOMDocument('1.0', 'UTF-8');
         $container = $xml->appendChild($xml->createElement('container'));
         $container->setAttribute('version', '1.0');
         $container->setAttribute('xmlns', 'urn:oasis:names:tc:opendocument:xmlns:container');
@@ -129,7 +129,7 @@ class Epub
      */
     public function fileToMime($filename)
     {
-        return sbFiles::fileToMime($filename);
+        return \sb\Files::fileToMime($filename);
     }
 
     /**
@@ -178,7 +178,7 @@ class Epub
     {
 
         if (mb_strlen($language) != 2) {
-            throw(new Exception("language must be two char language code e.g. en, de"));
+            throw(new \Exception("language must be two char language code e.g. en, de"));
         }
 
         return $this->opf->setLanguage($lang);
@@ -194,7 +194,7 @@ class Epub
     public function setIdentifier($identifier, $identifier_type)
     {
         if ($identifier_type != "URI" && $identifier_type != "ISBN" && $identifier_type != "UUID") {
-            throw(new Exception("Identifier type must be ISBN, UUID, or URI"));
+            throw(new \Exception("Identifier type must be ISBN, UUID, or URI"));
         }
         $this->identifier = $identifier;
         $this->identifier_type = $identifier_type;
@@ -217,7 +217,7 @@ class Epub
         $this->ncx->addNavpointToNavmap($chapter_id, $this->chapter_count, $title, $src);
     }
 
-    public function addChapter(sbEbook_Epub_Chapter $chapter, $linear = 'yes')
+    public function addChapter(\sb\Ebook\Epub\Chapter $chapter, $linear = 'yes')
     {
         $chapter->addCss($this->global_style_sheets);
         $this->addChapterRaw($chapter->title, $chapter->saveXML(), $linear);
@@ -232,7 +232,7 @@ class Epub
         }
 
         $this->addFile('cover.jpg', $data, 'cover', 'image/jpeg');
-        $cover = new sbEbookEpubChapter(
+        $cover = new \sb\Ebook\Epub\Chapter(
             'Cover',
             '<div id="cover-image"><img src="cover.jpg" alt="Cover Image"/></div>'
         );
@@ -244,7 +244,6 @@ class Epub
 
         $this->date = $this->date ? : time();
         $this->opf->formatOutput = true;
-        $this->opf->xml->formatOutput = true;
         $this->zip->addFromString("book.opf", $this->opf->saveXML());
         $this->zip->addFromString("book.ncx", $this->ncx->saveXML());
 
@@ -253,8 +252,6 @@ class Epub
         if (ini_get('zlib.output_compression')) {
             ini_set('zlib.output_compression', 'Off');
         }
-
-        exit;
 
         header('Pragma: public');
         header('Last-Modified: ' . date('D, d M Y H:i:s T', $this->date));

@@ -219,7 +219,7 @@ class OPF extends \DOMDocument
         return $txt;
     }
 
-    public function saveXml($node = null, $options = null)
+    public function saveXml(DOMNode $node = null, $options = null)
     {
         if (!$this->language) {
             $this->setLanguage('en');
