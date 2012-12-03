@@ -7,11 +7,11 @@
  * Makes sure at least one
  *
  * @author paul.visco@roswellpark.org
- * @package Password
+ * @package String
  */
-namespace sb\Password;
+namespace sb\String;
 
-class Random
+class RandomPassword
 {
 
     /**
@@ -30,7 +30,7 @@ class Random
      * Create a password of a certain length
      *
      * <code>
-     * echo new \sb\Password\Random(6);
+     * echo new \sb\String\RandomPassword(6);
      * </code>
      *
      * @param integer $length The length of the password to generate
