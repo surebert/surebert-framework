@@ -59,7 +59,7 @@ class FileSystem extends Base
     {
         return file_put_contents($this->getLogPath($log_type)
             .date('Y_m_d').'.log', "\n\n".\date('Y/m/d H:i:s')
-            ."\t".$this->_agent_str
+            ."\t".$this->agent_str
             ."\n".$data, \FILE_APPEND);
     }
 }
