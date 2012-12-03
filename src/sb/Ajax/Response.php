@@ -4,7 +4,7 @@
  * Used to model and standardize an Ajax Response
  *
  * @author paul.visco@roswellpark.org
- * @package sb_Ajax
+ * @package Ajax
  */
 namespace sb\Ajax;
 
