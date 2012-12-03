@@ -166,7 +166,7 @@ class Email
      *
      * <code>
      * //create an email to send $to, $subject, $message, $from
-     * $myMail = new sb_Email('paul.visco@roswellpark.org', 'Testing Email', 'Hello World', 'paul.visco@roswellpark.org');
+     * $myMail = new \sb\Email('paul.visco@roswellpark.org', 'Testing Email', 'Hello World', 'paul.visco@roswellpark.org');
      *
      * //you can set the cc array to add addresses which are cced
      * //$myMail->cc = Array("paulsidekick@gmail.com");
@@ -177,7 +177,7 @@ class Email
      * //$myMail->body_HTML = '<h1>Hello there</h1>';
      *
      * //create an optional attachment
-     * //$myAttachment = new sb_Email_Attachment(ROOT.'/private/config/App.php', 'application/php');
+     * //$myAttachment = new \sb\Email\Attachment(ROOT.'/private/config/App.php', 'application/php');
      *
      * //or zipping the attachment
      * //$myAttachment->zip();
