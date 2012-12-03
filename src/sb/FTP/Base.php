@@ -56,5 +56,10 @@ interface Base
      */
     public function rmdir($remote_path);
 
+    /**
+     * Chmod a directory
+     * @param sting $remote_path The remote path to chmod
+     * @param string $mode The mode to switch to
+     */
     public function chmod($remote_path, $mode);
 }
