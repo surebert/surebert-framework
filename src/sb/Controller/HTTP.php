@@ -249,6 +249,14 @@ class HTTP extends Base
     public function getFiles(){
         return $this->request->files;
     }
+    
+    /**
+     * Gets the method used to call the request
+     * @return string e.g. GET, POST, PUT, DELETE
+     */
+    public function getMethod(){
+        return $this->request->method;
+    }
 
     /**
      * Added option for requesting basic auth.  ONLY USE OVER SSL
