@@ -221,20 +221,20 @@ class Email
      * Adds an attachment to the email
      * @param $attachment \sb\Email
      */
-    public function addAttachment(Email_Attachment $attachment)
+    public function addAttachment(\sb\Email\Attachment $attachment)
     {
         $this->attachments[] = $attachment;
     }
 
     /**
-     * Add an sb_ICalendar_Event request
+     * Add an \sb\ICalendar\Event request
      *
-     * @param sb_ICalendar_Event $event
+     * @param \sb\ICalendar\Event $event
      */
-    public function addIcalendarEvent(ICalendar_Event $event)
+    public function addIcalendarEvent(\sb\ICalendar\Event $event)
     {
 
-        $a = new Email_Attachment();
+        $a = new \sb\Email\Attachment();
         $a->mime_type = 'text/calendar;';
         $a->setEncoding('8bit');
         $a->name = 'event.ics';
