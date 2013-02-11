@@ -8,13 +8,13 @@
  *    public $uname = 'your uname';
  *    public $pass = 'your pass';
  *
- *    public onMessage(\sb\XMPP\Message $message)
+ *    public function onMessage(\sb\XMPP\Message $message)
     {
  *        //do something
  *
  *    }
  *
- * public onPresence(\sb\XMPP\Message $message)
+ * public function onPresence(\sb\XMPP\Message $message)
     {
  *        //do something
  *
