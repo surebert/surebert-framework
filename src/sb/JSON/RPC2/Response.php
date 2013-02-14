@@ -48,7 +48,7 @@ class Response
 
             if (!is_object($o)) {
 
-                $this->error = new JSON_RPC2_Error(-32700, 'Parse Error', $json);
+                $this->error = new Error(-32700, 'Parse Error', $json);
 
                 unset($this->result);
 

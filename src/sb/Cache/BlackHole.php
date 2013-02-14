@@ -14,7 +14,7 @@
  */
 namespace sb\Cache;
 
-class BlackHole implements Cache_Base
+class BlackHole implements Base
 {
 
     /**

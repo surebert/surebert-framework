@@ -100,7 +100,7 @@ class FileSystem implements Base
         \fclose($fh);
 
         if ($key != $this->catalog_key) {
-            $this->catalog_key_add($key, $lifetime);
+            $this->catalogKeyAdd($key, $lifetime);
         }
         return true;
     }
@@ -110,7 +110,7 @@ class FileSystem implements Base
      */
     public function fetch($key)
     {
-        $file_name = $this->get_file_path($key);
+        $file_name = $this->getFilePath($key);
         if (!\file_exists($file_name) || !\is_readable($file_name)) {
             return false;
         } else {
@@ -142,7 +142,7 @@ class FileSystem implements Base
      */
     public function delete($key)
     {
-        $file = $this->get_file_path($key);
+        $file = $this->getFilePath($key);
 
         if (\is_dir($file)) {
             $this->clear_dir($file);
