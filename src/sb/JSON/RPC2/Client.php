@@ -40,7 +40,7 @@ class Client
      * The user agent to send with the request
      * @var string
      */
-    public $agent = '\sb\JSON_RPC2_Client';
+    public $agent = '\sb\JSON\RPC2\Client';
 
     /**
      * The \sb\_JSON\RPC2\Request to dispatch
@@ -213,6 +213,7 @@ class Client
         while (!\feof($fp)) {
             $response_str .= \fread($fp, 8192);
         }
+        
         \fclose($fp);
 
         return $this->processResponse($response_str);
@@ -296,8 +297,8 @@ class Client
         }
 
         $response = $this->dispatch($request);
-
-        if ($response instanceof \sb\JSON\RPC2\Response) {
+        
+        if (is_object($response)) {
             if (isset($response->error)) {
                 throw(new \Exception($response->error->code . ': '
                     . $response->error->message . ".\nData Received: "
