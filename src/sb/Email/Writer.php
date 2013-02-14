@@ -216,8 +216,8 @@ class Writer
     private function addSecurityInfo(\sb\Email &$email)
     {
 
-        $email->body .= "\n\nFor security purposes the following information was'
-            .' recorded: \nSending IP: " . $this->remote_addr
+        $email->body .= "\n\nFor security purposes the following information was"
+            ." recorded: \nSending IP: " . $this->remote_addr
             . " \nSending Host: " . $this->http_host;
 
         if (!empty($email->body_HTML)) {
