@@ -64,7 +64,7 @@ class Connection
      * Class constructor for the rp_WindowsShare class.
      *
      * <code>
-     * $win = new \sb\Samba_Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
+     * $win = new \sb\Samba\Connection('Compy', 'c$', 'fella', 'supasecrect', 'Workspace');
      * print_r($win->ls());
      * </code>
      *
