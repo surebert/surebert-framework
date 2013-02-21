@@ -188,7 +188,10 @@ class Base
                 return Array('exists' => true, 'data' => false);
             }
         }
-
+        
+        if (!method_exists($class, $method)) {
+            $method = \sb\Gateway::toCamelCase($method);
+        }
 
         if (method_exists($class, $method)) {
 
