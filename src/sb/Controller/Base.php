@@ -110,9 +110,9 @@ class Base
 
         //capture view to buffer
         ob_start();
-        //if no method is set, use index, for the IndexController that would be request path array 0
-
-        if (\get_class($this) == 'IndexController') {
+        
+        //if no method is set, use index
+        if (\get_class($this) == '\Controllers\Index') {
             $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
         } else {
             $method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
