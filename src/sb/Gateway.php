@@ -111,7 +111,7 @@ class Gateway
      * The type of controller to use by default - must extend sb\Controller
      * @var string
      */
-    public static $default_controller_type = 'IndexController';
+    public static $default_controller_type = '\Controllers\Index';
 
     /**
      * An instance of a logger used to log all gateway requests during debugging
@@ -158,11 +158,11 @@ class Gateway
      */
     public static function renderRequest($request, $included = true)
     {
+        print_raw($request);
+        if ($request instanceof Request && \method_exists('\App', 'filterAllInput')) {
 
-        if ($request instanceof Request && \method_exists('\App', 'filter_all_input')) {
-
-            \App::filter_all_input($request->get);
-            \App::filter_all_input($request->post);
+            \App::filterAllInput($request->get);
+            \App::filterAllInput($request->post);
         } elseif (\is_string($request)) {
             $request = new Request($request);
         }
@@ -317,11 +317,10 @@ class Gateway
     public static function init($argv = null)
     {
 
-        spl_autoload_extensions('.php');
-        spl_autoload_register("sb\Gateway::autoload");
+        //spl_autoload_extensions('.php');
+        //spl_autoload_register("sb\Gateway::autoload");
 
-        require_once ROOT . '/vendor/autoload.php';
-
+        
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
         self::$agent = (isset($_SERVER['HTTP_USER_AGENT'])
@@ -404,6 +403,9 @@ if (!defined('ROOT')) {
 
     unset($root);
 }
+
+//include composer autoload
+require_once ROOT . '/vendor/autoload.php';
 
 if (defined('REQUEST_URI')) {
     $request = REQUEST_URI;
