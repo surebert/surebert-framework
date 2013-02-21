@@ -219,7 +219,7 @@ class Base
             $args = $class->request->{$http_method};
 
             //pass thru input filter if it exists
-            if (\method_exists($class, 'filter_input')) {
+            if (\method_exists($class, 'filterInput')) {
                 $args = $class->filter_input($args);
             }
         } elseif (\method_exists($class, '__call')) {
