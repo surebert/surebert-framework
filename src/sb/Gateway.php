@@ -150,6 +150,18 @@ class Gateway
           return strtoupper($v[1]);
       }, $str);
     }
+    
+    /**
+     * Converts underscore string to camel case
+     * @param string $str
+     * @return string
+     */
+    public static function toClassPath($str)
+    {
+      return preg_replace_callback('/_([a-z])/', function($v){
+          return "\\".strtoupper($v[1]);
+      }, $str);
+    }
 
     /**
      * Loads a view for rendering
@@ -158,7 +170,7 @@ class Gateway
      */
     public static function renderRequest($request, $included = true)
     {
-        print_raw($request);
+       
         if ($request instanceof Request && \method_exists('\App', 'filterAllInput')) {
 
             \App::filterAllInput($request->get);
@@ -172,15 +184,25 @@ class Gateway
         }
 
         $controller = $request->path_array[0];
-
-        if (empty($controller)) {
+        $controller_class = self::$default_controller_type;
+        $request_class = '\\Controllers\\'.ucwords(self::toClassPath($controller));
+        if(class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))){
+            $controller_class = $request_class;
+        }
+       /*( if (empty($controller)) {
             $controller_class = self::$default_controller_type;
         } else {
-            $controller_class = str_replace(' ', '_', ucwords(str_replace('_', ' ', $controller))) . 'Controller';
+           
+            $controller_class = '\\Controllers\\'.ucwords(self::toClassPath($controller));
 
+            if(class_exists($controller_class) && in_array('sb\Controller\Base', class_parents($controller_class))){
+                die('exists');
+            }
+            die('doesn\'t');
+            var_dump(class_exists($controller_class));
             $path = str_replace('_', '/', $controller_class) . '.php';
 
-            if (!\is_file(ROOT . '/private/controllers/' . $path)) {
+            if (!\is_file(ROOT . '/private/Controllers/' . $path)) {
 
                 if ($controller == 'surebert') {
                     $controller_class = '\sb\Controller\Toolkit';
@@ -199,11 +221,8 @@ class Gateway
                     }
                 }
             }
-        }
+        }*/
 
-        if (!isset($controller_class)) {
-            $controller_class = self::$default_controller_type;
-        }
 
         $controller = new $controller_class();
 
@@ -221,45 +240,6 @@ class Gateway
 
         $controller->setRequest($request);
         return $controller->render();
-    }
-
-    /**
-     * Autoloads classes from the _classes folder when they are instantiated
-     * so that the defintions of the classes never need to be manually included
-     *
-     * @param string $class_name
-     */
-    public static function autoload($class_name)
-    {
-
-        if (preg_match('~Controller$~', $class_name)) {
-                $f = ROOT . '/private/controllers/' . $class_name . '.php';
-                if (is_file($f)) {
-                        require($f);
-                } else {
-                        foreach (self::$mods as $mod) {
-                                $f = ROOT . '/mod/' . $mod . '/controllers/' . $class_name . '.php';
-                                if (is_file($f)) {
-                                        require($f);
-                                }
-                        }
-                }
-        } elseif (substr($class_name, 0, 4) == 'mod/') {
-                require(ROOT . '/' . $class_name . '.php');
-        } elseif (file_exists(ROOT . '/private/models/' . $class_name . '.php')) {
-                require(ROOT . '/private/models/' . $class_name . '.php');
-        } elseif (file_exists(ROOT . '/private/resources/' . $class_name . '.php')) {
-                require(ROOT . '/private/resources/' . $class_name . '.php');
-        } else {
-                foreach (self::$mods as $mod) {
-                        $m = ROOT . '/mod/' . $mod . '/models/' . $class_name . '.php';
-                        if (is_file($m)) {
-                                require($m);
-                                break;
-                        }
-                }
-        }
-
     }
 
     /**
@@ -317,10 +297,6 @@ class Gateway
     public static function init($argv = null)
     {
 
-        //spl_autoload_extensions('.php');
-        //spl_autoload_register("sb\Gateway::autoload");
-
-        
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
         self::$agent = (isset($_SERVER['HTTP_USER_AGENT'])
