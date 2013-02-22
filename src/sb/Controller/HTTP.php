@@ -291,10 +291,20 @@ class HTTP extends Base
         return $this->request->method;
     }
     
+    /**
+     * Escapes an html string
+     * @param string $str
+     * @return string HTML
+     */
     public function escape($str){
         return \sb\String\HTML::escape($str);
     }
 
+    /**
+     * unescapes an html string
+     * @param string $str
+     * @return string HTML
+     */
     public function unescape($str){
         return \sb\String\HTML::unescape($str);
     }
