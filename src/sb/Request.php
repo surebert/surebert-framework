@@ -36,19 +36,31 @@ class Request
     public $args = Array();
 
     /**
-     * The "get" based input arguments from the request e.g. ?dog=cat as an array of key value pairs
+     * The GET based input arguments from the request e.g. ?dog=cat as an array of key value pairs
      * @var array
      */
     public $get = Array();
 
     /**
-     * The post based input from the request - used to pass or similate $_POST
+     * The POST based input from the request - used to pass or similate $_POST
      * @var array
      */
     public $post = Array();
 
     /**
-     * Any incoming data not specified in post e.g. PUT, DELETE, command line etc
+     * The PUT based input from the request
+     * @var array
+     */
+    public $put = Array();
+    
+    /**
+     * The DELETE based input from the request
+     * @var array
+     */
+    public $delete = Array();
+    
+    /**
+     * Any input from methods other than GET, POST, PUT, DELETE
      * @var array
      */
     public $data = Array();
@@ -100,9 +112,6 @@ class Request
 
         $this->path = "/" . implode("/", $this->path_array);
 
-        $this->setInput(\sb\Gateway::$post, \sb\Gateway::$cookie, \sb\Gateway::$files, \sb\Gateway::$data);
-
-        $this->method = \sb\Gateway::$request_method;
     }
 
     /**
@@ -111,12 +120,14 @@ class Request
      * @param $cookie
      * @param $files
      */
-    public function setInput(&$post, &$cookie, &$files, &$data)
+    public function setInput(&$post, &$cookie, &$files, &$put, &$delete, &$data)
     {
 
         $this->post = $post;
         $this->cookie = $cookie;
         $this->files = $files;
+        $this->put = $put;
+        $this->delete = $delete;
         $this->data = $data;
     }
 
@@ -149,7 +160,7 @@ class Request
     }
 
     /**
-     * Gets a get variable value or returns the default value (null unless overridden)
+     * Gets a GET variable value or returns the default value (null unless overridden)
      * @param string $key The $_GET var key to look for
      * @param mixed $default_val null by default
      * @return mixed string value or null
@@ -165,7 +176,7 @@ class Request
     }
 
     /**
-     * Gets a post variable value or returns the default value (null unless overridden)
+     * Gets a POST variable value or returns the default value (null unless overridden)
      * @param string $key The $_POST var key to look for
      * @param mixed $default_val null by default
      * @return mixed string value or null
@@ -174,6 +185,51 @@ class Request
     {
         if (isset($this->post[$key])) {
             return $this->post[$key];
+        }
+
+        return $default_val;
+    }
+    
+    /**
+     * Gets a non PUT, POST, DELETE, GET variable value or returns the default value (null unless overridden)
+     * @param string $key The $_POST var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getData($key, $default_val = null)
+    {
+        if (isset($this->data[$key])) {
+            return $this->data[$key];
+        }
+
+        return $default_val;
+    }
+    
+    /**
+     * Gets a PUT variable value or returns the default value (null unless overridden)
+     * @param string $key The $_POST var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getPut($key, $default_val = null)
+    {
+        if (isset($this->put[$key])) {
+            return $this->put[$key];
+        }
+
+        return $default_val;
+    }
+    
+    /**
+     * Gets a post variable value or returns the default value (null unless overridden)
+     * @param string $key The $_POST var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getDelete($key, $default_val = null)
+    {
+        if (isset($this->delete[$key])) {
+            return $this->delete[$key];
         }
 
         return $default_val;
@@ -246,6 +302,14 @@ class Request
      */
     public function getMethod(){
         return $this->method;
+    }
+    
+    /**
+     * Sets the method used to call the request
+     * @return string e.g. GET, POST, PUT, DELETE
+     */
+    public function setMethod($method){
+        $this->method = $method;
     }
 
 }
