@@ -200,6 +200,39 @@ class HTTP extends Base
     {
         return $this->request->getPost($key, $default_val);
     }
+    
+    /**
+     * Gets a data variable value or returns the default value (null unless overridden)
+     * @param string $key The data var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getData($key, $default_val = null)
+    {
+        return $this->request->getData($key, $default_val);
+    }
+    
+    /**
+     * Gets a data variable value or returns the default value (null unless overridden)
+     * @param string $key The data var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getDelete($key, $default_val = null)
+    {
+        return $this->request->getDelete($key, $default_val);
+    }
+    
+    /**
+     * Gets a data variable value or returns the default value (null unless overridden)
+     * @param string $key The data var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getPut($key, $default_val = null)
+    {
+        return $this->request->getPut($key, $default_val);
+    }
 
     /**
      * Gets a cookie value if set, otherwise returns null
