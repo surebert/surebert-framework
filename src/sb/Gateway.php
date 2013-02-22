@@ -47,34 +47,6 @@ class Gateway
     public static $request;
 
     /**
-     * The post data sent to the gateway
-     *
-     * @var array
-     */
-    public static $post = Array();
-
-    /**
-     * The put data sent to the gateway
-     *
-     * @var array
-     */
-    public static $data = Array();
-
-    /**
-     * The cookie data sent to the gateway
-     *
-     * @var array
-     */
-    public static $cookie = Array();
-
-    /**
-     * The files data sent to the gateway
-     *
-     * @var array
-     */
-    public static $files = Array();
-
-    /**
      * The agent of the client from the HTTP_USER_AGENT or command line if from the command line
      *
      * @var string
@@ -86,12 +58,6 @@ class Gateway
      * @var string
      */
     public static $http_host = '';
-
-    /**
-     * The request method GET, PUT, DELETE, POST, etc
-     * @var string
-     */
-    public static $request_method = 'GET';
 
     /**
      * The remote addr of the client
@@ -106,12 +72,6 @@ class Gateway
      * @var boolean
      */
     public static $command_line = false;
-
-    /**
-     * The type of controller to use by default - must extend sb\Controller
-     * @var string
-     */
-    public static $default_controller_type = '\Controllers\Index';
 
     /**
      * An instance of a logger used to log all gateway requests during debugging
@@ -152,17 +112,52 @@ class Gateway
     }
     
     /**
-     * Converts underscore string to camel case
+     * Converts path to controller class name
      * @param string $str
      * @return string
      */
-    public static function toClassPath($str)
+    public static function pathToController($str)
     {
       return preg_replace_callback('/_([a-z])/', function($v){
           return "\\".strtoupper($v[1]);
       }, $str);
     }
 
+    /**
+     * Sets the request
+     */
+    public static function setRequest(){
+         if (defined('REQUEST_URI')) {
+            $request = REQUEST_URI;
+        } elseif (isset($_SERVER['REQUEST_URI'])) {
+            $request = $_SERVER['REQUEST_URI'];
+        } else {
+            $request = '/';
+        }
+        
+        self::$request = new Request($request);
+        
+        $put=[];
+        $delete=[];
+        $data=[];
+        $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
+        
+        if ($request_method == 'PUT') {
+            \parse_str(file_get_contents("php://input"), $put);
+        } else if($request_method == 'DELETE'){
+            \parse_str(file_get_contents("php://input"), $delete);
+        } else if($request_method != 'GET' && $request_method != 'POST'){
+            \parse_str(file_get_contents("php://input"), $data);
+        }
+
+        self::$request->setInput($_POST, $_COOKIE, $_FILES, $put, $delete, $data);
+        self::$request->setMethod($request_method);
+        
+        //empty the input data so as to prevent its use
+        $_GET = $_POST = $_FILES = $_REQUEST = [];
+        
+    }
+    
     /**
      * Loads a view for rendering
      * @param mixed $request Either an instance of Request or a string with the path to the view e.g. /user/run
@@ -172,7 +167,6 @@ class Gateway
     {
        
         if ($request instanceof Request && \method_exists('\App', 'filterAllInput')) {
-
             \App::filterAllInput($request->get);
             \App::filterAllInput($request->post);
         } elseif (\is_string($request)) {
@@ -184,48 +178,16 @@ class Gateway
         }
 
         $controller = $request->path_array[0];
-        $controller_class = self::$default_controller_type;
-        $request_class = '\\Controllers\\'.ucwords(self::toClassPath($controller));
+        $controller_class = '\Controllers\Index';
+        $request_class = '\\Controllers\\'.ucwords(self::pathToController($controller));
         if(class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))){
             $controller_class = $request_class;
+        } else if($controller == 'surebert'){
+            $controller_class = '\\sb\\Controller\\Toolkit';
         }
-       /*( if (empty($controller)) {
-            $controller_class = self::$default_controller_type;
-        } else {
-           
-            $controller_class = '\\Controllers\\'.ucwords(self::toClassPath($controller));
-
-            if(class_exists($controller_class) && in_array('sb\Controller\Base', class_parents($controller_class))){
-                die('exists');
-            }
-            die('doesn\'t');
-            var_dump(class_exists($controller_class));
-            $path = str_replace('_', '/', $controller_class) . '.php';
-
-            if (!\is_file(ROOT . '/private/Controllers/' . $path)) {
-
-                if ($controller == 'surebert') {
-                    $controller_class = '\sb\Controller\Toolkit';
-                } else {
-                    $found = false;
-                    foreach (self::$mods as $mod) {
-                        $p = ROOT . '/mod/' . $mod . '/controllers/' . $path;
-                        if (is_file($p)) {
-                            require_once($p);
-                            $found = true;
-                            break;
-                        }
-                    }
-                    if (!$found) {
-                        $controller_class = null;
-                    }
-                }
-            }
-        }*/
-
-
+      
         $controller = new $controller_class();
-
+        
         $controller->included = $included;
         if (!$included) {
             self::$controller = $controller;
@@ -233,7 +195,7 @@ class Gateway
         if ($request != self::$request) {
             $request->get = array_merge(self::$request->get, $request->get);
         }
-
+        
         if (!$controller instanceof \sb\Controller\Base) {
             throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller\Base");
         }
@@ -309,25 +271,12 @@ class Gateway
             self::$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : self::$http_host;
         }
 
-        self::$request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::$request_method;
-
+        self::setRequest();
+        
         if (\method_exists('App', 'filter_all_input')) {
             \App::filter_all_input($_POST);
         }
 
-        //$_GET is handled by sb_Request constructor so to allow included views to use ? GET syntax
-        self::$post = $_POST;
-        self::$cookie = $_COOKIE;
-        self::$files = $_FILES;
-
-        if (self::$request_method == 'PUT' || self::$request_method == 'DELETE') {
-            \parse_str(file_get_contents("php://input"), self::$data);
-        } else {
-            self::$data = self::$post;
-        }
-
-        //empty the input data so as to prevent its use
-        $_GET = $_POST = $_FILES = $_REQUEST = Array();
     }
 }
 
@@ -383,12 +332,6 @@ if (!defined('ROOT')) {
 //include composer autoload
 require_once ROOT . '/vendor/autoload.php';
 
-if (defined('REQUEST_URI')) {
-    $request = REQUEST_URI;
-} elseif (isset($_SERVER['REQUEST_URI'])) {
-    $request = $_SERVER['REQUEST_URI'];
-}
-
 //require the App class for static global vars
 Gateway::fileRequire('/private/config/App.php');
 
@@ -398,20 +341,12 @@ Gateway::init();
 Gateway::$start_time = $sb_start;
 
 $output = '';
-if ($request) {
-
-    //set the main request and filter the input if required
-    Gateway::$request = new Request($request);
-}
 
 //include site based definitions/global functions
 Gateway::fileRequire('/private/config/definitions.php');
 
-if ($request) {
-    //render the main request
-    $output = Gateway::renderRequest(Gateway::$request, false);
-    unset($request);
-}
+//render the main request
+$output = Gateway::renderRequest(Gateway::$request, false);
 
 if (isset(Gateway::$cmd_options)) {
     if (isset(Gateway::$cmd_options['install'])) {
