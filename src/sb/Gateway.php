@@ -15,9 +15,6 @@ namespace sb;
 
 \ob_start();
 
-//script start time
-$sb_start = \microtime(true);
-
 /**
  * The main gateway
  * @author paul.visco@roswellpark.org
@@ -165,7 +162,6 @@ class Gateway
      */
     public static function renderRequest($request, $included = true)
     {
-       
         if ($request instanceof Request && \method_exists('\App', 'filterAllInput')) {
             \App::filterAllInput($request->get);
             \App::filterAllInput($request->post);
@@ -199,8 +195,9 @@ class Gateway
         if (!$controller instanceof \sb\Controller\Base) {
             throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller\Base");
         }
-
+        
         $controller->setRequest($request);
+        
         return $controller->render();
     }
 
@@ -329,6 +326,8 @@ if (!defined('ROOT')) {
     unset($root);
 }
 
+Gateway::$start_time = \microtime(true);
+
 //include composer autoload
 require_once ROOT . '/vendor/autoload.php';
 
@@ -337,8 +336,6 @@ Gateway::fileRequire('/private/config/App.php');
 
 //initialize the gateway
 Gateway::init();
-
-Gateway::$start_time = $sb_start;
 
 $output = '';
 
