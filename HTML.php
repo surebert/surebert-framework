@@ -11,7 +11,7 @@ class sb_HTML{
 	public static function escape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') {
 		
 		if (is_string($mixed)) {
-			$mixed = htmlspecialchars($mixed, $quote_style, $charset);
+			$mixed = htmlspecialchars($mixed, $quote_style | ENT_SUBSTITUTE, $charset);
 		} else if (is_object($mixed) || is_array($mixed)) {
 			foreach ($mixed as $k => &$v) {
 				if ($v) {
@@ -30,11 +30,9 @@ class sb_HTML{
 	/**
 	 * Recursively unhtmlspecialchars string properties of objects and arrays 
 	 * @param mixed $mixed The object or array to convert
-	 * @param int $quote_style ent quote style from htmlspecialchars
-	 * @param string $charset The charset from  htmlspecialchars
 	 * @return type 
 	 */
-	public static function unescape($mixed, $quote_style = ENT_QUOTES, $charset = 'UTF-8') {
+	public static function unescape($mixed) {
 		
 		if (is_string($mixed)) {
 			$mixed = str_replace('&amp;', '&', $mixed);
