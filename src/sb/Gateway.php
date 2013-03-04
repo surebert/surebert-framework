@@ -283,6 +283,7 @@ if (!defined('ROOT')) {
 
     $cwd = \getcwd();
     $root = \dirname($cwd);
+    
     if (\defined('STDIN')) {
         if (isset($_SERVER['argv'])
                 && isset($_SERVER['argv'][0]) && \basename($_SERVER['argv'][0]) == 'phpunit'
@@ -295,25 +296,25 @@ if (!defined('ROOT')) {
             }
         } elseif (isset($argv)) {
             $root = $argv[0];
-            if ($root == 'gateway.php') {
+            if ($root == 'index.php') {
                 $root = \dirname(getcwd());
             }
 
-            self::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
-            if (self::$cmd_options) {
-                if (isset(self::$cmd_options['request'])) {
-                    $request = self::$cmd_options['request'];
+            $cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
+            if ($cmd_options) {
+                if (isset($cmd_options['request'])) {
+                    $request = $cmd_options['request'];
                 }
 
-                if (isset(self::$cmd_options['config'])) {
-                    require(self::$cmd_options['config']);
+                if (isset($cmd_options['config'])) {
+                    require($cmd_options['config']);
                     if (isset($_GET)) {
                         $request.='?' . \http_build_query($_GET);
                     }
                 }
             }
         }
-        self::$command_line = true;
+        $command_line = true;
     } elseif (isset($_SERVER['DOCUMENT_ROOT'])) {
         $root = $_SERVER['DOCUMENT_ROOT'];
     }
@@ -345,11 +346,11 @@ Gateway::fileRequire('/private/config/definitions.php');
 //render the main request
 $output = Gateway::renderRequest(Gateway::$request, false);
 
-if (isset(Gateway::$cmd_options)) {
-    if (isset(Gateway::$cmd_options['install'])) {
-        require_once(ROOT . '/mod/' . Gateway::$cmd_options['install'] . '/install.php');
-    } elseif (isset(Gateway::$cmd_options['uninstall'])) {
-        require_once(ROOT . '/mod/' . Gateway::$cmd_options['uninstall'] . '/uninstall.php');
+if (isset($cmd_options)) {
+    if (isset($cmd_options['install'])) {
+        require_once(ROOT . '/mod/' . $cmd_options['install'] . '/install.php');
+    } elseif (isset($cmd_options['uninstall'])) {
+        require_once(ROOT . '/mod/' . $cmd_options['uninstall'] . '/uninstall.php');
     }
 }
 
