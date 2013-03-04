@@ -112,7 +112,7 @@ class Base
         ob_start();
         
         //if no method is set, use index
-        if (\get_class($this) == '\Controllers\Index') {
+        if (\get_class($this) == 'Controllers\Index') {
             $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
         } else {
             $method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
