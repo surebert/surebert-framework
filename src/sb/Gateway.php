@@ -314,7 +314,7 @@ if (!defined('ROOT')) {
             }
         }
         
-        $command_line = true;
+        Gateway::$command_line = true;
     } elseif (isset($_SERVER['DOCUMENT_ROOT'])) {
         $root = $_SERVER['DOCUMENT_ROOT'];
     }
