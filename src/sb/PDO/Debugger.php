@@ -8,7 +8,7 @@
  */
 namespace sb\PDO;
 
-class Debugger extends \PDO
+class Debugger extends \sb\PDO
 {
 
     /**
