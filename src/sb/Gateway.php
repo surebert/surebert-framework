@@ -122,16 +122,10 @@ class Gateway
 
     /**
      * Sets the request
+     * @param $request string
      */
-    public static function setRequest(){
-         if (defined('REQUEST_URI')) {
-            $request = REQUEST_URI;
-        } elseif (isset($_SERVER['REQUEST_URI'])) {
-            $request = $_SERVER['REQUEST_URI'];
-        } else {
-            $request = '/';
-        }
-        
+    public static function setRequest($request){
+         
         self::$request = new Request($request);
         
         $put=[];
@@ -251,11 +245,10 @@ class Gateway
 
     /**
      * Initializes the gateway by determining the
-     * @param $argv array Command line arguments
+     * @param $request string the request if set
      */
-    public static function init($argv = null)
+    public static function init($request = null)
     {
-
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
         self::$agent = (isset($_SERVER['HTTP_USER_AGENT'])
@@ -268,7 +261,7 @@ class Gateway
             self::$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : self::$http_host;
         }
 
-        self::setRequest();
+        self::setRequest($request);
         
         if (\method_exists('App', 'filter_all_input')) {
             \App::filter_all_input($_POST);
@@ -277,7 +270,13 @@ class Gateway
     }
 }
 
-$request = null;
+if (defined('REQUEST_URI')) {
+    $request = REQUEST_URI;
+} elseif (isset($_SERVER['REQUEST_URI'])) {
+    $request = $_SERVER['REQUEST_URI'];
+} else {
+    $request = '/';
+}
 
 if (!defined('ROOT')) {
 
@@ -314,6 +313,7 @@ if (!defined('ROOT')) {
                 }
             }
         }
+        
         $command_line = true;
     } elseif (isset($_SERVER['DOCUMENT_ROOT'])) {
         $root = $_SERVER['DOCUMENT_ROOT'];
@@ -336,7 +336,7 @@ require_once ROOT . '/vendor/autoload.php';
 Gateway::fileRequire('/private/config/App.php');
 
 //initialize the gateway
-Gateway::init();
+Gateway::init($request);
 
 $output = '';
 
