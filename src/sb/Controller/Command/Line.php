@@ -8,7 +8,7 @@
  */
 namespace sb\Controller\Command;
 
-use \sb\Controller\Command\Base as Base;
+use \sb\Controller\Base as Base;
 
 class Line extends Base
 {
