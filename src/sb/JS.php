@@ -60,7 +60,7 @@ class JS
      * Executes the full response text, can be called more than once
      * @param type $js
      */
-    public static function exec_response($js)
+    public static function execResponse($js)
     {
         header('Content-type: text/javascript');
         echo $js;
@@ -70,7 +70,7 @@ class JS
      * Executes a response header
      * @param type $js
      */
-    public static function exec_header($js)
+    public static function execHeader($js)
     {
         header("sb_on_response".(self::$sb_on_response_headers++).": ".$js);
 
