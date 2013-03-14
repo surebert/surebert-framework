@@ -245,9 +245,8 @@ class Gateway
 
     /**
      * Initializes the gateway by determining the
-     * @param $request string the request if set
      */
-    public static function init($request = null)
+    public static function init()
     {
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
@@ -255,6 +254,23 @@ class Gateway
                 && $_SERVER['HTTP_USER_AGENT'] != 'command line')
                 ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
 
+        if (defined('REQUEST_URI')) {
+            $request = REQUEST_URI;
+        } elseif (isset($_SERVER['REQUEST_URI'])) {
+            $request = $_SERVER['REQUEST_URI'];
+        } else if (isset(self::$cmd_options['request'])) {
+            $request = self::$cmd_options['request'];
+        } else {
+            $request = '/';
+        }
+
+        if (isset(self::$cmd_options['config'])) {
+            require(self::$cmd_options['config']);
+            if (isset($_GET)) {
+                $request.='?' . \http_build_query($_GET);
+            }
+        }
+            
         if (isset(self::$cmd_options['http_host'])) {
             self::$http_host = self::$cmd_options['http_host'];
         } else {
@@ -270,13 +286,7 @@ class Gateway
     }
 }
 
-if (defined('REQUEST_URI')) {
-    $request = REQUEST_URI;
-} elseif (isset($_SERVER['REQUEST_URI'])) {
-    $request = $_SERVER['REQUEST_URI'];
-} else {
-    $request = '/';
-}
+Gateway::$start_time = \microtime(true);
 
 if (!defined('ROOT')) {
 
@@ -299,19 +309,8 @@ if (!defined('ROOT')) {
                 $root = \dirname(getcwd());
             }
 
-            $cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
-            if ($cmd_options) {
-                if (isset($cmd_options['request'])) {
-                    $request = $cmd_options['request'];
-                }
-
-                if (isset($cmd_options['config'])) {
-                    require($cmd_options['config']);
-                    if (isset($_GET)) {
-                        $request.='?' . \http_build_query($_GET);
-                    }
-                }
-            }
+            Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
+            
         }
         
         Gateway::$command_line = true;
@@ -327,8 +326,6 @@ if (!defined('ROOT')) {
     unset($root);
 }
 
-Gateway::$start_time = \microtime(true);
-
 //include composer autoload
 require_once ROOT . '/vendor/autoload.php';
 
@@ -336,7 +333,7 @@ require_once ROOT . '/vendor/autoload.php';
 Gateway::fileRequire('/private/config/App.php');
 
 //initialize the gateway
-Gateway::init($request);
+Gateway::init();
 
 $output = '';
 
