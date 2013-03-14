@@ -361,7 +361,7 @@ class Server extends Base
                     $status = 400;
                 } elseif ($code == -32601) {
 
-                    $override = $this->not_found();
+                    $override = $this->notFound();
                     if (!\is_null($override)) {
                         return $override;
                     }
@@ -396,7 +396,7 @@ class Server extends Base
 
     /**
      * If this returns null when method not found, then deault JSON error object
-     * is returned.  Otherwise, the string or object returned from not_found is returned.
+     * is returned.  Otherwise, the string or object returned from notFound is returned.
      * Will also server get_methods/methods as HTML list of available calls
      * @return type
      */
