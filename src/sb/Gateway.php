@@ -95,6 +95,12 @@ class Gateway
      * @var boolean
      */
     public static $allow_direct_view_rendering = true;
+    
+    /**
+     * Determines if main request is rendered
+     * @var boolean 
+     */
+    public static $render_main_request = true;
 
     /**
      * Converts underscore string to camel case
@@ -276,7 +282,7 @@ class Gateway
         } else {
             self::$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : self::$http_host;
         }
-
+        
         self::setRequest($request);
         
         if (\method_exists('App', 'filter_all_input')) {
@@ -294,9 +300,13 @@ if (!defined('ROOT')) {
     $root = \dirname($cwd);
     
     if (\defined('STDIN')) {
+        
         if (isset($_SERVER['argv'])
                 && isset($_SERVER['argv'][0]) && \basename($_SERVER['argv'][0]) == 'phpunit'
         ) {
+            
+            Gateway::$render_main_request = false;
+            
             foreach ($_SERVER['argv'] as $k => $v) {
                 if ($v == '--bootstrap') {
                     $root = $_SERVER['argv'][$k + 1];
@@ -309,7 +319,7 @@ if (!defined('ROOT')) {
                 $root = \dirname(getcwd());
             }
 
-            Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:', 'install:', 'uninstall:'));
+            Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:'));
             
         }
         
@@ -341,21 +351,15 @@ $output = '';
 Gateway::fileRequire('/private/config/definitions.php');
 
 //render the main request
-$output = Gateway::renderRequest(Gateway::$request, false);
+if(Gateway::$render_main_request){
+    $output = Gateway::renderRequest(Gateway::$request, false);
 
-if (isset($cmd_options)) {
-    if (isset($cmd_options['install'])) {
-        require_once(ROOT . '/mod/' . $cmd_options['install'] . '/install.php');
-    } elseif (isset($cmd_options['uninstall'])) {
-        require_once(ROOT . '/mod/' . $cmd_options['uninstall'] . '/uninstall.php');
+    //filter the output if required and display it
+    if (\method_exists('\App', "filter_all_output")) {
+        echo \App::filter_all_output($output);
+    } else {
+        echo $output;
     }
-}
-
-//filter the output if required and display it
-if (\method_exists('\App', "filter_all_output")) {
-    echo \App::filter_all_output($output);
-} else {
-    echo $output;
 }
 
 if (ob_get_level()) {
