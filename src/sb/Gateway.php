@@ -300,9 +300,8 @@ if (!defined('ROOT')) {
     $root = \dirname($cwd);
     
     if (\defined('STDIN')) {
-        
         if (isset($_SERVER['argv'])
-                && isset($_SERVER['argv'][0]) && \basename($_SERVER['argv'][0]) == 'phpunit'
+                && isset($_SERVER['argv'][0]) && preg_match("~phpunit(-skelgen)?~", $_SERVER['argv'][0])
         ) {
             
             Gateway::$render_main_request = false;
@@ -313,16 +312,15 @@ if (!defined('ROOT')) {
                     break;
                 }
             }
-        } elseif (isset($argv)) {
-            $root = $argv[0];
-            if ($root == 'index.php') {
-                $root = \dirname(getcwd());
-            }
-
-            Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:'));
             
-        }
+        } 
         
+        Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:'));
+           
+        if ($root == 'index.php') {
+            $root = \dirname(getcwd());
+        }
+
         Gateway::$command_line = true;
     } elseif (isset($_SERVER['DOCUMENT_ROOT'])) {
         $root = $_SERVER['DOCUMENT_ROOT'];
