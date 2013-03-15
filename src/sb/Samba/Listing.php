@@ -47,7 +47,7 @@ class Listing
      */
     public function fullpath()
     {
-        return \Samba\Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
+        return Connection::winslashes((preg_match('/\w+\.\w*/', $this->path))?$this->path:"$this->path\\$this->name");
     }
 
     /**
