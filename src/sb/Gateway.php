@@ -300,6 +300,9 @@ if (!defined('ROOT')) {
     $root = \dirname($cwd);
     
     if (\defined('STDIN')) {
+        
+        $root = isset($argv[0]) ? $argv[0] : $root;
+        
         if (isset($_SERVER['argv'])
                 && isset($_SERVER['argv'][0]) && preg_match("~phpunit(-skelgen)?~", $_SERVER['argv'][0])
         ) {
