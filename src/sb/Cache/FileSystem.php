@@ -145,7 +145,7 @@ class FileSystem implements Base
         $file = $this->getFilePath($key);
 
         if (\is_dir($file)) {
-            $this->clear_dir($file);
+            $this->clearDir($file);
             $deleted = \rmdir($file);
         } elseif (\file_exists($file)) {
             $deleted = \unlink($file);
@@ -180,7 +180,7 @@ class FileSystem implements Base
         foreach ($iterator as $file) {
 
             if ($file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
-                $this->clear_dir($file->getPathname());
+                $this->clearDir($file->getPathname());
                 if (!\rmdir($file->getPathname())) {
                     return false;
                 }
