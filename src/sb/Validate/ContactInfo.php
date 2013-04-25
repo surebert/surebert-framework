@@ -24,7 +24,7 @@ class ContactInfo
         $result = new \sb\Validate\Results();
         $result->value = $email;
 
-        if(preg_match("/^[\w-!\+]+(\.[\w-!\+]+)*@[\w-]+(\.[\w-]+)*(\.[\w]{2,4})$/", $email)){
+        if(preg_match("/^['\w-!\+]+(\.['\w-!\+]+)*@[\w-]+(\.[\w-]+)*(\.[\w]{2,4})$/", $email)){
             list($name,$domain)=explode('@',$email);
 
             if(!checkdnsrr($domain,'MX')) {
