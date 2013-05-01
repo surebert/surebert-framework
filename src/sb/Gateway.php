@@ -29,6 +29,12 @@ class Gateway
      * @var sb\Controller
      */
     public static $controller;
+    
+    /**
+     * The main controller class being served by the request
+     * @var string
+     */
+    public static $controller_class;
 
     /**
      * An array of command line options if provided
@@ -153,6 +159,15 @@ class Gateway
         //empty the input data so as to prevent its use
         $_GET = $_POST = $_FILES = $_REQUEST = [];
         
+        $controller = self::$request->path_array[0];
+        Gateway::$controller_class = '\Controllers\Index';
+        $request_class = '\\Controllers\\'.ucwords(self::pathToController($controller));
+        if(class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))){
+            Gateway::$controller_class = $request_class;
+        } else if($controller == 'surebert'){
+            Gateway::$controller_class = '\\sb\\Controller\\Toolkit';
+        }
+        
     }
     
     /**
@@ -173,16 +188,7 @@ class Gateway
             trigger_error('$request must be a \sb\Request instance');
         }
 
-        $controller = $request->path_array[0];
-        $controller_class = '\Controllers\Index';
-        $request_class = '\\Controllers\\'.ucwords(self::pathToController($controller));
-        if(class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))){
-            $controller_class = $request_class;
-        } else if($controller == 'surebert'){
-            $controller_class = '\\sb\\Controller\\Toolkit';
-        }
-      
-        $controller = new $controller_class();
+        $controller = new Gateway::$controller_class();
         
         $controller->included = $included;
         if (!$included) {
@@ -193,7 +199,7 @@ class Gateway
         }
         
         if (!$controller instanceof \sb\Controller\Base) {
-            throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller\Base");
+            throw new \Exception("Your custom controller " . Gateway::$controller_class . " must extend \sb\Controller\Base");
         }
         
         $controller->setRequest($request);
