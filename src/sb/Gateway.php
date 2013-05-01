@@ -159,15 +159,26 @@ class Gateway
         //empty the input data so as to prevent its use
         $_GET = $_POST = $_FILES = $_REQUEST = [];
         
-        $controller = self::$request->path_array[0];
-        Gateway::$controller_class = '\Controllers\Index';
+        Gateway::$controller_class = self::get_controller_class(self::$request);
+        
+    }
+    
+    /**
+     * Gets the controller class name from the request
+     * @param \sb\Request $request
+     * @return string
+     */
+    public static function get_controller_class(\sb\Request $request){
+        $controller = $request->path_array[0];
+        $controller_class = '\Controllers\Index';
         $request_class = '\\Controllers\\'.ucwords(self::pathToController($controller));
         if(class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))){
-            Gateway::$controller_class = $request_class;
+            $controller_class = $request_class;
         } else if($controller == 'surebert'){
-            Gateway::$controller_class = '\\sb\\Controller\\Toolkit';
+            $controller_class = '\\sb\\Controller\\Toolkit';
         }
         
+        return $controller_class;
     }
     
     /**
@@ -188,7 +199,13 @@ class Gateway
             trigger_error('$request must be a \sb\Request instance');
         }
 
-        $controller = new Gateway::$controller_class();
+        if($included){
+            $controller_class = self::get_controller_class($request);
+        } else {
+            $controller_class = Gateway::$controller_class;
+        }
+        
+        $controller = new $controller_class();
         
         $controller->included = $included;
         if (!$included) {
@@ -199,7 +216,7 @@ class Gateway
         }
         
         if (!$controller instanceof \sb\Controller\Base) {
-            throw new \Exception("Your custom controller " . Gateway::$controller_class . " must extend \sb\Controller\Base");
+            throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller\Base");
         }
         
         $controller->setRequest($request);
