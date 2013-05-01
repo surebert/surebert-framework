@@ -102,8 +102,7 @@ class PDO extends \PDO
         }
 
         //if the class_name is set return instances
-
-        if(substr(ltrim($sql), 0, 1) != 'S'){
+        if(!preg_match("~^SELECT|EXEC|CALL~i", $sql)){
             return $stmt;
         } elseif(!empty($class_name)){
             if(class_exists($class_name)){
