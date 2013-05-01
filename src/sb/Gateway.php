@@ -159,7 +159,7 @@ class Gateway
         //empty the input data so as to prevent its use
         $_GET = $_POST = $_FILES = $_REQUEST = [];
         
-        Gateway::$controller_class = self::get_controller_class(self::$request);
+        Gateway::$controller_class = self::getControllerClass(self::$request);
         
     }
     
@@ -168,7 +168,7 @@ class Gateway
      * @param \sb\Request $request
      * @return string
      */
-    public static function get_controller_class(\sb\Request $request){
+    public static function getControllerClass(\sb\Request $request){
         $controller = $request->path_array[0];
         $controller_class = '\Controllers\Index';
         $request_class = '\\Controllers\\'.ucwords(self::pathToController($controller));
@@ -200,7 +200,7 @@ class Gateway
         }
 
         if($included){
-            $controller_class = self::get_controller_class($request);
+            $controller_class = self::getControllerClass($request);
         } else {
             $controller_class = Gateway::$controller_class;
         }
