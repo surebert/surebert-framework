@@ -184,7 +184,7 @@ class Attachment
 
         $gpg = new \gnupg();
         // throw exception if error occurs
-        $gpg->seterrormode(gnupg::ERROR_EXCEPTION);
+        $gpg->seterrormode(\gnupg::ERROR_EXCEPTION);
 
         $gpg->addencryptkey($pgpEncrypt_key);
 
