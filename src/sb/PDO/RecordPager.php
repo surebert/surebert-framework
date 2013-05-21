@@ -63,13 +63,13 @@ class RecordPager
      *
      * @param PDO $db
      */
-    public function __construct(PDO $db)
+    public function __construct(\PDO $db)
     {
         $this->db = $db;
     }
 
     /**
-     * Returns an object of type PDORecordPage set to the page numberd $pagenum
+     * Returns an object of type \sb\PDO\RecordPage set to the page numberd $pagenum
      *
      * Changed this 05/06/2008 Paul Visco added use of $this->values and
      * $this->object_type to support additional \sb\PDO->s2o() arguments
@@ -93,7 +93,7 @@ class RecordPager
      * </code>
      *
      */
-    public function getPage($pagenum = 1, PDO_RecordPage $ret = null)
+    public function getPage($pagenum = 1, \sb\PDO\RecordPage $ret = null)
     {
 
         $pagenum = ($pagenum < 1) ? 1 : $pagenum;
@@ -108,7 +108,7 @@ class RecordPager
 
             //start return object
             if (!$ret) {
-                $ret = new PDO_RecordPage();
+                $ret = new \sb\PDO\RecordPage();
             }
 
             $this->sql = str_replace(";", "", $this->sql);
