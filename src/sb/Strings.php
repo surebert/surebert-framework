@@ -18,7 +18,7 @@ class Strings
      * @version 2.1
      *
      */
-    public static function strip_punct($str)
+    public static function stripPunct($str)
     {
         return preg_replace("~[^ \w]~", "", $str);
     }
@@ -31,7 +31,7 @@ class Strings
      * @param string $str
      * @return string
      */
-    public static function to_camel($str)
+    public static function toCamel($str)
     {
         return str_replace(' ', '', ucwords(preg_replace('/[^A-Z^a-z^0-9]+/', ' ', $str)));
     }
@@ -43,7 +43,7 @@ class Strings
      * @param string $str
      * @return string
      */
-    public static function clean_file_name($str)
+    public static function cleanFileName($str)
     {
         preg_match('~\.\w{1,4}$~', $str, $ext);
 

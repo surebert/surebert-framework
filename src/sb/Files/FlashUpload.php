@@ -105,7 +105,7 @@ class FlashUpload
             }
         }
 
-        $this->name = \sb\Strings::clean_file_name($this->uploaded_file['name']);
+        $this->name = \sb\Strings::cleanFileName($this->uploaded_file['name']);
 
         $this->path = $destination_directory . '/' . $this->name;
         $arr = explode('.', $this->name);
