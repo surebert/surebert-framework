@@ -23,7 +23,7 @@ class Weather
     public static function fetch($feed)
     {
 
-        $weather = new \sb\Web_WeatherFeed();
+        $weather = new \sb\Web\WeatherFeed();
         $parts = parse_url($feed);
         $fp = @fsockopen($parts['host'], 80, $errno, $errstr, 2);
         if($fp) {
