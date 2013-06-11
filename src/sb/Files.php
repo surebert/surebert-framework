@@ -222,7 +222,7 @@ class Files
     public static function getDirectorySize($path)
     {
 
-        $stats = new stdClass();
+        $stats = new \stdClass();
         $stats->size = 0;
         $stats->file_count = 0;
         $stats->dir_count = 0;
@@ -257,7 +257,7 @@ class Files
     public static function getFiles($dir, $get_directories=false)
     {
         $arr = Array();
-        $iterator = new DirectoryIterator($dir);
+        $iterator = new \DirectoryIterator($dir);
 
         foreach ($iterator as $file){
 
