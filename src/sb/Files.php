@@ -199,8 +199,8 @@ class Files
             die("You cannot delete the root directory");
         }
 
-        $iterator = new RecursiveDirectoryIterator($dir);
-        foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST) as $file){
+        $iterator = new \RecursiveDirectoryIterator($dir);
+        foreach (new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST) as $file){
           $name = $file->getFilename();
           if ($file->isDir() && $name != '.' && $name != '..') {
              rmdir($file->getPathname());
