@@ -17,7 +17,8 @@
  * 
     CREATE TABLE sb_config(
       k VARCHAR(100) PRIMARY KEY,
-      v VARCHAR(255)
+      v TEXT,
+      t VARCHAR(5) DEFAULT 'str'
     );
  */
 
@@ -46,22 +47,45 @@ class Db{
     /**
      * Instantiates the class and sets the db used
      * @param \PDO $db
+     * @param string $prefix Only loads config values that start with a specific prefix
      */
-    public function __construct(\PDO $db){
+    public function __construct(\PDO $db, $prefix=''){
         $this->db = $db;
-        $this->load();
+        $this->load($prefix);
     }
     
     /**
      * Used to load all site definitions
      */
-    public function load(){
+    public function load($prefix=''){
+        $values = Array();
         
-        $sql = "SELECT k, v FROM ".$this->table;
-        $rows = $this->db->query($sql);
-        foreach($rows as $row){
-            $this->data[$row->k] = $row->v;
+        $sql = "SELECT k, v, t FROM ".$this->table;
+        if($prefix){
+            $sql .= " WHERE k LIKE :prefix";
+            $values[':prefix'] = $prefix.'%';
         }
+        
+        $stmt = $this->db->prepare($sql);
+        $result = $stmt->execute($values);
+        $rows = $this->db->s2o($sql, $values);
+        foreach($rows as $row){
+            
+            $v = $row->v;
+            
+            if($row->t == 'json'){
+                $v = json_decode($v);
+            } else if($row->t == 'php'){
+                $v = unserialize($v);
+            } else if($row->t == 'int'){
+                $v = (int) $v;
+            } else {
+                $v = (string) $v;
+            }
+            
+            $this->data[$row->k] = $v;
+        }
+        
         
     }
     
@@ -85,18 +109,37 @@ class Db{
     
     /**
      * Save the defintions back to the db
-     * @param string $key
-     * @param string $val
+     * @param string $key The key to store the value under
+     * @param string $val The value of the key
+     * @param string $type The type of the object
      */
-    public function set($key, $val){
+    public function set($key, $val, $type='str'){
         
         $this->delete($key);
         
-        $sql = "INSERT INTO ".$this->table." (k, v) VALUES (:k, :v)";
+        $orig_val = $val;
+        
+        if($type == 'php' || (is_object($val) && $type == 'str')){
+            $val = serialize($val);
+        } else if($type == 'json'){
+            $val = json_encode($val);
+        } else if($type == 'int'){
+            $val = (int) $val;
+        } else {
+            $val = (string) $val;
+        }
+            
+        $sql = "INSERT INTO ".$this->table." (k, v, t) VALUES (:k, :v, :t)";
         $stmt = $this->db->prepare($sql);
-        $result = $stmt->execute(Array(':k' => $key, ':v' => $val));
+        $result = $stmt->execute(Array(
+            ':k' => $key,
+            ':v' => $val,
+            ':t' => $type
+        ));
+        
         if($result){
-            $this->data[$key] = $val;
+           
+            $this->data[$key] = $orig_val;
         }
         
         return $result ? 1 : 0;
