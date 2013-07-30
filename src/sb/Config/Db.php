@@ -111,7 +111,7 @@ class Db{
      * Save the defintions back to the db
      * @param string $key The key to store the value under
      * @param string $val The value of the key
-     * @param string $type The type of the object
+     * @param string $type The type of the object str, int, php, json
      */
     public function set($key, $val, $type='str'){
         
