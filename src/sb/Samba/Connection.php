@@ -128,6 +128,19 @@ class Connection
     $this->execute('rename "'.$remote_file_path.'" "'.$new_remote_file_path.'"', $output);
     return $output;
     }
+    
+    /**
+     * delete a remote file
+     * @param string $remote_file_path The original file path/name
+     *
+     * @return array $output
+     */
+    public function delete($remote_file_path) {
+        //get file string massage
+        $remote_file_path = self::winslashes($remote_file_path);
+        $this->execute('del "' . $remote_file_path . '"', $output);
+        return $output;
+    }
 
     /**
      * Executes the command line function that completes the remote windows operations
