@@ -90,13 +90,14 @@ class Db{
     }
     
     /**
-     * Get a specific definition
+     * Get a specific definition by key
      * @param string $key The key to load the value for
+     * @param mixed $default_value The default value to give if nothing is found
      * @return string
      */
-    public function get($key){
+    public function get($key, $default_value = NULL){
         //return val for key from $data
-        return isset($this->data[$key]) ? $this->data[$key] : NULL;
+        return isset($this->data[$key]) ? $this->data[$key] : $default_value;
     }
     
     /**
