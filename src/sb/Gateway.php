@@ -115,9 +115,9 @@ class Gateway
      */
     public static function toCamelCase($str)
     {
-      return preg_replace_callback('/_([a-z])/', function($v){
-          return strtoupper($v[1]);
-      }, $str);
+	return preg_replace_callback('/_([a-zA-Z0-9])/', function($v){
+	  return strtoupper($v[1]);
+	}, strtolower($str));
     }
     
     /**
