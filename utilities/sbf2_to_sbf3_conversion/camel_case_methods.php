@@ -50,7 +50,7 @@ foreach($files as $file) {
         //make sure its only in mod and private and does not include /private/resources
 	if(preg_match("~./(mod|private)/~", $file) && !preg_match("~private/resources/~", $file)){
 		$contents = file_get_contents($file);
-		$matches_count = preg_match_all("~((?:::|\->|(?:public|private|protected)\s?(?:static)?\s?function)\s?[a-zA-Z]+_\w+?\().*?\)~", $contents, $matches);
+		$matches_count = preg_match_all("~((?:::|\->|(?:public|private|protected)(?:\s+)?(?:static)?(?:\s+)?function)(?:\s+)?[a-zA-Z]+_(\w|\d)+?\().*?\)~", $contents, $matches);
 		if($matches_count){
 			$fixes = array_unique($matches[1]);
 			foreach($fixes as $fix){
