@@ -122,7 +122,7 @@ class Visitors
      *
      * @param \sb\Web_Visitor $visitor
      */
-    private static function insert(\sb\WebVisitor $visitor)
+    private static function insert(\sb\Web\Visitor $visitor)
     {
 
         $expiration = (time()-self::$time_before_expire);
@@ -204,7 +204,7 @@ class Visitors
 
         $sql ="SELECT (SELECT COUNT(ip) FROM online_visitors WHERE uname ='guest' AND tstamp > :expiration) as guests, (SELECT COUNT(ip) FROM online_visitors WHERE agent ='bot' AND tstamp > :expiration) as bots, (SELECT COUNT(ip) FROM online_visitors WHERE uname !='guest' AND uname !='' AND tstamp > :expiration) AS users";
 
-        $visitors = self::$db->s2o($sql, Array("expiration" => $expiration), '\sb\Web_VisitorCount');
+        $visitors = self::$db->s2o($sql, Array("expiration" => $expiration), '\sb\Web\VisitorCount');
 
         if(count($visitors) > 0){
             return $visitors[0];
@@ -269,7 +269,7 @@ class Visitors
  *
  * @author paul.visco@roswellpark.org
  */
-class Web_VisitorCount
+class VisitorCount
 {
     public $bots = 0;
     public $guests = 0;

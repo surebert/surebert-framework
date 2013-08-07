@@ -75,7 +75,7 @@ class Visitor
     public function log($db=null)
     {
 
-        if($db instanceof PDO){
+        if($db instanceof \PDO){
             \sb\Web\Visitors::$db=$db;
         }
 
