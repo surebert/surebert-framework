@@ -18,7 +18,7 @@ class HTML extends Reader
      * @param int $sheet
      * @return string
      */
-    public function get_css_style($row, $col, $sheet=0)
+    public function getCssStyle($row, $col, $sheet=0)
     {
         $css = "";
         $font = $this->font($row, $col, $sheet);
@@ -311,7 +311,7 @@ class HTML extends Reader
      * @param string $table_class Which class to give the table
      * @return string
      */
-    public function to_html($row_numbers=false, $col_letters=false, $sheet=0, $table_class='excel')
+    public function toHtml($row_numbers=false, $col_letters=false, $sheet=0, $table_class='excel')
     {
 
         $out = "<table class=\"$table_class\" cellspacing=0>";
@@ -357,7 +357,7 @@ class HTML extends Reader
                     }
                 }
                 if (!isset($this->sheets[$sheet]['cellsInfo'][$row][$col]['dontprint']) || !$this->sheets[$sheet]['cellsInfo'][$row][$col]['dontprint']) {
-                    $style = $this->get_css_style($row, $col, $sheet);
+                    $style = $this->getCssStyle($row, $col, $sheet);
                     if ($this->colhidden($col, $sheet)) {
                         $style .= "display:none;";
                     }

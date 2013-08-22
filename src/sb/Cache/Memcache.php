@@ -95,7 +95,7 @@ class Memcache implements Base
 
         $deleted = false;
 
-        $catalog = \array_keys($this->get_keys());
+        $catalog = \array_keys($this->getKeys());
         foreach ($catalog as $k) {
 
             if (substr($k, 0, strlen($key)) == $key) {

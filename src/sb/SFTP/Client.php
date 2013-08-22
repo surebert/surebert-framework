@@ -272,9 +272,9 @@ class Client extends \sb\SSH2\Client implements \sb\FTP\Base
         }
 
 
-        if ( ! $recursive || ! $this->is_dir($file) )
-            return $this->run_command(sprintf('chmod %o %s', $mode, escapeshellarg($file)), true);
-        return $this->run_command(sprintf('chmod -R %o %s', $mode, escapeshellarg($file)), true);
+        if ( ! $recursive || ! $this->isDir($file) )
+            return $this->runCommand(sprintf('chmod %o %s', $mode, escapeshellarg($file)), true);
+        return $this->runCommand(sprintf('chmod -R %o %s', $mode, escapeshellarg($file)), true);
     }
 
     /**

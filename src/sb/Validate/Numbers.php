@@ -13,7 +13,7 @@ class Numbers
      * @param mixed $int
      * @return boolean
      */
-    public static function is_int($int)
+    public static function isInt($int)
     {
         return (is_string($int) || is_int($int) || is_float($int)) &&
             ctype_digit((string)$int);

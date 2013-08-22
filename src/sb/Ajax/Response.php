@@ -48,7 +48,7 @@ class Response
     {
 
         if (!\is_null($content)) {
-            $this->set_content($content);
+            $this->setContent($content);
         }
 
         if (isset(\sb\Gateway::$request->get['sb_callback'])) {

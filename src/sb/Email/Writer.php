@@ -202,9 +202,9 @@ class Writer
         $message .= "(" . \implode(",", $names) . ")";
 
         if ($sent) {
-            return $this->logger->sb_Email_Writer_Sent($message);
+            return $this->logger->sbEmailWriterSent($message);
         } else {
-            return $this->logger->sb_Email_Writer_Error($message);
+            return $this->logger->sbEmailWriterError($message);
         }
     }
 

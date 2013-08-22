@@ -57,7 +57,7 @@ class Hash implements Base
         $this->hash[$key] = $data;
 
         if ($key != $this->catalog_key) {
-            $this->catalog_key_add($key, $lifetime);
+            $this->catalogKeyAdd($key, $lifetime);
         }
 
         return true;
@@ -92,7 +92,7 @@ class Hash implements Base
 
         $deleted = false;
 
-        $catalog = \array_keys($this->get_keys());
+        $catalog = \array_keys($this->getKeys());
         foreach ($catalog as $k) {
 
             if ($k == $key) {

@@ -309,7 +309,7 @@ class FileSystem extends HTML5
         $date_file = $this->getGet('date_file');
         $date_file_path = $this->getRoot() . $log_type . '/' . $date_file;
         if (($date_file && is_file($date_file_path)) || is_dir($date_file_path)) {
-            return \sb\Files\ForceDownload::file_to_zip($date_file_path);
+            return \sb\Files\ForceDownload::fileToZip($date_file_path);
         }
     }
 }

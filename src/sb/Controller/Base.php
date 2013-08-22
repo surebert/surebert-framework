@@ -223,7 +223,7 @@ class Base
 
             //pass thru input filter if it exists
             if (\method_exists($class, 'filterInput')) {
-                $args = $class->filter_input($args);
+                $args = $class->filterInput($args);
             }
         } elseif (\method_exists($class, '__call')) {
             $servable = true;

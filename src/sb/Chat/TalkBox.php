@@ -217,7 +217,7 @@ class TalkBox
 
         if ($this->allow_commands == 1) {
 
-            $line->message = $this->check_commands($line->message);
+            $line->message = $this->checkCommands($line->message);
         }
 
         $line->message = Bling::stripAll($line->message);

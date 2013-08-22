@@ -68,7 +68,7 @@ class Event
     /**
      * Gets the nmae of the event being dispatched
      */
-    public function get_name()
+    public function getName()
     {
         return $this->name;
     }

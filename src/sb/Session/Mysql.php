@@ -339,7 +339,7 @@ class Mysql extends Session
      * regenerate the session id
      * @return boolean
      */
-    public function regenerate_id()
+    public function regenerateId()
     {
 
         $old_session_id = session_id();

@@ -436,7 +436,7 @@ xmlns:stream='http://etherx.jabber.org/streams' xml:lang='en' version='1.0'>");
                     $this->log('NOTICE: Auto accepting subscription request from '.$from);
                 }
 
-                $this->on_presence($presence);
+                $this->onPresence($presence);
             }
 
             if($x % 100 == 0){

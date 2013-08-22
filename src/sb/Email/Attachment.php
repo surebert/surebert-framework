@@ -86,7 +86,7 @@ class Attachment
      * <code>
      * $attachment = new \sb\Email\Attachment($filepath, $mime_type);
      * //an instance of \sb\Email
-     * $email->add_attachment($attachment);
+     * $email->addAttachment($attachment);
      *
      *
      * //OR from string/blob data
@@ -94,7 +94,7 @@ class Attachment
      * $attachment->contents = $data_from_db;
      * $attachment->mime_type = "image/jpeg";
      * $attachment->name = "picture.jpg";
-     * $email->add_attachment($attachment);
+     * $email->addAttachment($attachment);
      *
      * //if you wish to zip
      * $attachment->zip();

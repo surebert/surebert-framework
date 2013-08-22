@@ -24,7 +24,7 @@ class Reader extends Backend
     public function __construct($file = '', $read_extended_info = true, $outputEncoding = '')
     {
 
-        $this->set_UTF_encoder('iconv');
+        $this->setUtfEncoder('iconv');
         if ($outputEncoding != '') {
             $this->setOutputEncoding($outputEncoding);
         }

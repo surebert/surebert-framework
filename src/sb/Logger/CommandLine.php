@@ -18,7 +18,7 @@ class CommandLine extends \sb\Logger\FileSystem
     {
         parent::__construct($agent);
         $log_root = !empty($log_root) ? $log_root : ROOT.'/private/logs';
-        $this->set_log_root($log_root);
+        $this->setLogRoot($log_root);
 
     }
 
@@ -26,7 +26,7 @@ class CommandLine extends \sb\Logger\FileSystem
      * Allows the setting of the log root
      * @param <type> $log_root
      */
-    public function set_log_root($log_root)
+    public function setLogRoot($log_root)
     {
         $this->_log_root = $log_root;
     }

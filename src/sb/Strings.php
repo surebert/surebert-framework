@@ -59,7 +59,7 @@ class Strings
      * @param string $str
      * @return string
      */
-    public static function html_escape_tags($str)
+    public static function htmlEscapeTags($str)
     {
          return preg_replace("/&amp;(#[0-9]+|[a-z]+);/i", "&$1;", htmlspecialchars($str));
     }

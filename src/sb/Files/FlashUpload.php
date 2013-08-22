@@ -128,7 +128,7 @@ class FlashUpload
         }
 
         if (method_exists($this, 'on_save')) {
-            return $this->on_save();
+            return $this->onSave();
         } else {
             return true;
         }

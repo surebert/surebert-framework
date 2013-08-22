@@ -45,7 +45,7 @@ class APC implements Base
 
         $store = apc_store($key, $data, $lifetime);
         if ($store && $key != $this->namespace . $this->catalog_key) {
-            $this->catalog_key_add($key, $lifetime);
+            $this->catalogKeyAdd($key, $lifetime);
         }
         return $store;
     }
@@ -68,14 +68,14 @@ class APC implements Base
 
         $deleted = false;
 
-        $catalog = array_keys($this->get_keys());
+        $catalog = array_keys($this->getKeys());
         foreach ($catalog as $k) {
 
             if (substr($k, 0, strlen($key)) == $key) {
 
                 $delete = apc_delete($this->namespace . $k);
                 if ($delete) {
-                    $this->catalog_key_delete($k);
+                    $this->catalogKeyDelete($k);
                     $deleted = true;
                 }
             }

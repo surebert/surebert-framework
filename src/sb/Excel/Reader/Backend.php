@@ -646,7 +646,7 @@ abstract class Backend
     /**
      * Force a column to use a certain format
      */
-    protected function setColumn_format($column, $sFormat)
+    protected function setcolumnFormat($column, $sFormat)
     {
         $this->_columnsFormat[$column] = $sFormat;
     }

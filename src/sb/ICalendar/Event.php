@@ -195,7 +195,7 @@ class Event
         }
 
         $mail->cc = $attendee_emails;
-        $mail->add_ICalendar_Event($this);
+        $mail->addIcalendarEvent($this);
         return $mail->send();
     }
 

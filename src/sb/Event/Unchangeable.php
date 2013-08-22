@@ -23,7 +23,7 @@ class Unchangeable extends Event
     {
 
         $this->args = $data;
-        $this->set_subject($subject);
+        $this->setSubject($subject);
     }
 
     /**

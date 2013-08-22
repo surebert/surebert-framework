@@ -39,7 +39,7 @@ abstract class Base
     /**
      * The string represting the agent/user that initiated the action
      *
-     * @var string Set with $this->set_agent($str);
+     * @var string Set with $this->setAgent($str);
      */
     protected $agent_str = 'n/a';
 

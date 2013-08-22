@@ -41,13 +41,13 @@ class Workbook extends \DOMDocument
      * @param string $encoding The default encoding to use
      * <code>
      * $workbook = new \sb\Excel_Workbook("My worksheet");
-     * $cell1 = $workbook->setCell_by_alpha_index('A3', 'xxx');
-     * $cell2 = $workbook->setCell_by_alpha_index('A3', 'yyy');
+     * $cell1 = $workbook->setcellByAlphaIndex('A3', 'xxx');
+     * $cell2 = $workbook->setcellByAlphaIndex('A3', 'yyy');
      * $style = $workbook->add_style('paul', Array(
      * 'Color' => '#FFACAC',
      * 'Bold' => 1
      * ));
-     * $row = $workbook->set_row(4, Array('a', 'b', 'c', 'd', 'e', 'f'));
+     * $row = $workbook->setRow(4, Array('a', 'b', 'c', 'd', 'e', 'f'));
      * echo $workbook->outputWithHeaders('somefile');
      * </code>
      */
@@ -65,7 +65,7 @@ class Workbook extends \DOMDocument
         $this->workbook->setAttribute('xmlns:html', 'http://www.w3.org/TR/REC-html40');
 
         $this->styles = $this->workbook->appendChild($this->createElement('ss:Styles'));
-        $this->active_worksheet = $this->add_worksheet($title);
+        $this->active_worksheet = $this->addWorksheet($title);
 
         $this->xpath = new \DOMXPath($this);
         //this does nothing because it is broken in PHP when used on class that extends DOMDocument
@@ -79,7 +79,7 @@ class Workbook extends \DOMDocument
      * @param array $properties http://msdn.microsoft.com/en-us/library/aa140066%28office.10%29.aspx#odc_xmlss_ss:font  e.g. Array('Color' => '#FF0000', 'Bold' => 1);
      * @return DOMElement The Style tag itself
      */
-    public function add_style($name, $properties)
+    public function addStyle($name, $properties)
     {
         $style = $this->createElement('ss:Style');
         $style->setAttribute('ss:ID', $name);
@@ -97,7 +97,7 @@ class Workbook extends \DOMDocument
      * @param DOMElement $item The item to assign the style for
      * @param mixed $style DOMElement style or the string based style id The style to assign to the item
      */
-    public function assign_style(DOMElement $item, $style)
+    public function assignStyle(DOMElement $item, $style)
     {
         if($style instanceOf \DOMElement){
             $style_id = $style->getAttribute('ss:ID');
@@ -112,7 +112,7 @@ class Workbook extends \DOMDocument
      * @param string $title
      * @return DOMElement The worksheet itself
      */
-    public function add_worksheet($title)
+    public function addWorksheet($title)
     {
         $worksheet = $this->workbook->appendChild($this->createElement('Worksheet'));
         $title = preg_replace("/[\\\|:|\/|\?|\*|\[|\]]/", "", $title);
@@ -128,7 +128,7 @@ class Workbook extends \DOMDocument
      * @param string $worksheet The name of the worksheet or a reference to the DOMElement itself
      * @return DOMElement The active worksheet
      */
-    public function set_active_worksheet($worksheet)
+    public function setActiveWorksheet($worksheet)
     {
         if(is_string($worksheet)){
             $worksheet = $this->worksheets[md5($worksheet)];
@@ -145,7 +145,7 @@ class Workbook extends \DOMDocument
      * @param string $type ss:Type attribute
      * @return DOMElement The row
      */
-    public function set_row($row_index, $values_arr, $type=null)
+    public function setRow($row_index, $values_arr, $type=null)
     {
         $cell = null;
         foreach($values_arr as $col_index=>$val){
@@ -171,7 +171,7 @@ class Workbook extends \DOMDocument
 
             $result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']/Data", $this->active_worksheet);
             $data = $result->item(0);
-            $type = $type ? $type : $this->get_value_type($val);
+            $type = $type ? $type : $this->getValueType($val);
 
             if($data){
                 $data->setAttribute('ss:Type', $type);
@@ -209,16 +209,16 @@ class Workbook extends \DOMDocument
 
     }
 
-    public function get_cell($col_index, $row_index)
+    public function getCell($col_index, $row_index)
     {
         $result = $this->xpath->query("//Row[@Index='".$row_index."']/Cell[@Index='".$col_index."']", $this->active_worksheet);
         return $result->item(0);
     }
 
-    public function get_cell_by_alpha_index($alpha_index)
+    public function getCellByAlphaIndex($alpha_index)
     {
-        $pos = $this->alpha_index_to_numeric($alpha_index);
-        return $this->get_cell($pos[0], $pos[1]);
+        $pos = $this->alphaIndexToNumeric($alpha_index);
+        return $this->getCell($pos[0], $pos[1]);
     }
 
     /**
@@ -228,9 +228,9 @@ class Workbook extends \DOMDocument
      * @param string $type The ss:Type attribute
      * @return DomElement The cell itself
      */
-    public function setCell_by_alpha_index($alpha_index, $val, $type=null)
+    public function setcellByAlphaIndex($alpha_index, $val, $type=null)
     {
-        $pos = $this->alpha_index_to_numeric($alpha_index);
+        $pos = $this->alphaIndexToNumeric($alpha_index);
         return $this->setCell($pos[0], $pos[1], $val, $type);
 
     }
@@ -271,7 +271,7 @@ class Workbook extends \DOMDocument
      * @param string $val
      * @return string
      */
-    protected function get_value_type($val)
+    protected function getValueType($val)
     {
         $type = 'String';
         if ($this->auto_convert_types === true && is_numeric($val)) {
@@ -286,7 +286,7 @@ class Workbook extends \DOMDocument
      * @param string $alpha_index e.g. A1 or AA4
      * @return array (col, row)
      */
-    protected function alpha_index_to_numeric($alpha_index)
+    protected function alphaIndexToNumeric($alpha_index)
     {
         preg_match("~([A-Z]+)(\d)+~", $alpha_index, $match);
         $letters = range('A', 'Z');

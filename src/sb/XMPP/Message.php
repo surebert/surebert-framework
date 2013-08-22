@@ -146,7 +146,7 @@ class Message extends Packet
     {
         $message = new \sb\XMPP\Message();
         $message->setTo($this->getFrom());
-        $message->set_from($this->getTo());
+        $message->setFrom($this->getTo());
         $message->setBody($str);
         $this->client->sendMessage($message);
     }

@@ -43,7 +43,7 @@ class Logger extends \PDOStatement
             }
         }
 
-        $this->connection->write_to_log($log);
+        $this->connection->writeToLog($log);
         return parent::execute($bound_input_params);
     }
 
@@ -69,7 +69,7 @@ class Logger extends \PDOStatement
         if (!is_null($driverdata)) {
             $log .= '| DriverData: ' . $driverdata;
         }
-        $this->connection->write_to_log($log);
+        $this->connection->writeToLog($log);
 
         if (!empty($type)) {
             return parent::bindParam($paramno, $param, $type, $maxlen, $driverdata);
@@ -101,7 +101,7 @@ class Logger extends \PDOStatement
         if (!is_null($driverdata)) {
             $log .= '| DriverData: ' . $driverdata;
         }
-        $this->connection->write_to_log($log);
+        $this->connection->writeToLog($log);
 
         if (!empty($type)) {
             return parent::bindColumn($column, $param, $type, $maxlen, $driverdata);
@@ -126,7 +126,7 @@ class Logger extends \PDOStatement
             $log .= '| Type: ' . $type;
         }
 
-        $this->connection->write_to_log($log);
+        $this->connection->writeToLog($log);
 
         return parent::bindParam($paramno, $param, $type);
     }

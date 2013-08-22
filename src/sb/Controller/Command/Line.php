@@ -58,7 +58,7 @@ class Line extends Base
         $this->setMaxExecutionTime();
 
         if (method_exists($this, 'on_start')) {
-            $this->on_start();
+            $this->onStart();
         }
     }
 

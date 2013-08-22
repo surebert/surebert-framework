@@ -171,7 +171,7 @@ class Epub
 
     public function setDescription($description)
     {
-        return $this->opf->set_descrtiption($description);
+        return $this->opf->setDescrtiption($description);
     }
 
     public function setLanguage($lang = 'en')

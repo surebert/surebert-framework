@@ -72,10 +72,10 @@ class Image
      * <code>
      * $sb_Image = new \sb\Image('orig.jpg', 'orig3.jpg');
      *
-     * //$sb_Image->to_grayscale();
+     * //$sb_Image->toGrayscale();
      * $sb_Image->resize(200, -1);
      * $sb_Image->display();
-     * $sb_Image->force_download();
+     * $sb_Image->forceDownload();
      * //$sb_Image->rotate(90);
      * //$sb_Image->toJPG();
      *</code>
@@ -222,7 +222,7 @@ class Image
      * Converts the image being edited to grayscale
      *
      */
-    public function to_grayscale()
+    public function toGrayscale()
     {
         $this->getInfo();
 
@@ -248,7 +248,7 @@ class Image
                 $b = $rgb & 0xFF;
 
                 //This is where we actually use yiq to modify our rbg values, and then convert them to our grayscale palette
-                $gs = $this->color_to_gray($r,$g,$b);
+                $gs = $this->colorToGray($r,$g,$b);
                 imagesetpixel($this->edited,$x,$y,$palette[$gs]);
             }
         }
@@ -263,7 +263,7 @@ class Image
      * @param int $b 0-255
      * @return float grayscale color
      */
-    private function color_to_gray($r,$g,$b)
+    private function colorToGray($r,$g,$b)
     {
         return (($r*0.299)+($g*0.587)+($b*0.114));
     }
@@ -409,7 +409,7 @@ class Image
      * Forces the image being manipulated to the user as a force download
      *
      */
-    public function force_download()
+    public function forceDownload()
     {
 
 

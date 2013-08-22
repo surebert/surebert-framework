@@ -98,7 +98,7 @@ class Request
         }
 
         if (method_exists('\App', 'filter_all_input')) {
-            \App::filter_all_input($this->get);
+            \App::filterAllInput($this->get);
         }
 
         $this->request = urldecode($request);
@@ -154,7 +154,7 @@ class Request
             }
 
             if (method_exists('\App', 'filter_all_input')) {
-                \App::filter_all_input($this->args);
+                \App::filterAllInput($this->args);
             }
         }
     }
