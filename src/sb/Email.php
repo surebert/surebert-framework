@@ -390,7 +390,7 @@ class Email
                 }
 
                 if(empty($attachment->mime_type)) {
-                    $attachment->mime_type = \sb\Files\fileToMime($attachment->filepath);
+                    $attachment->mime_type = \sb\Files::fileToMime($attachment->filepath);
                 }
 
             }
@@ -399,7 +399,7 @@ class Email
 
             //try and guess the mime type unless it is set
             if(empty($attachment->mime_type)) {
-                $attachment->mime_type = Files::extensionToMime($attachment->extension);
+                $attachment->mime_type = \sb\Files::extensionToMime($attachment->extension);
             }
 
             if($attachment->encoding == 'base64'){
