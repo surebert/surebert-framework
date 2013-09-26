@@ -28,7 +28,7 @@ class CommandLine extends \sb\Logger\FileSystem
      */
     public function setLogRoot($log_root)
     {
-        $this->_log_root = $log_root;
+        $this->log_root = $log_root;
     }
 
     /**
@@ -36,9 +36,9 @@ class CommandLine extends \sb\Logger\FileSystem
      * @param $log Sting the log type.  Should be in the $enabled_logs array
      * @return string The path to the log directory to be used
      */
-    private function __get_log_path($log)
+    protected function getLogPath($log)
     {
-        $dir = $this->_log_root.'/'.$log.'/';
+        $dir = $this->log_root.'/'.$log.'/';
 
         if(!is_dir($dir)){
             mkdir($dir, 0777, true);
@@ -53,8 +53,9 @@ class CommandLine extends \sb\Logger\FileSystem
      * @param string $log_type The log_type being written to
      * @return boolean If the data was written or not
      */
-    protected function __write($data, $log_type)
+    protected function write($data, $log_type)
     {
-        return file_put_contents($this->__get_log_path($log_type).date('Y_m_d').'.log', "\n".$data, FILE_APPEND);
+        
+        return file_put_contents($this->getLogPath($log_type).date('Y_m_d').'.log', "\n".$data, FILE_APPEND);
     }
 }
