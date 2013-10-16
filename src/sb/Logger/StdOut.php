@@ -5,9 +5,9 @@
  * @author paul.visco@roswellpark.org
  * @package Logger
  */
- namespace sb;
+ namespace sb\Logger;
 
-class Logger_StdOut extends Logger_Base
+class StdOut extends Base
 {
     /**
      * Writes the data to file
