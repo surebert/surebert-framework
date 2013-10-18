@@ -72,7 +72,7 @@ class Client extends \sb\SSH2\Client implements \sb\FTP\Base
     public function loginWithKey($uname, $public_key_file, $private_key_file, $pass='')
     {
 
-         if(parent::login($uname, $public_key_file, $private_key_file, $pass)) {
+         if(parent::loginWithKey($uname, $public_key_file, $private_key_file, $pass)) {
             $this->connect();
         }
 
