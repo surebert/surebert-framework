@@ -4,7 +4,7 @@
  * Used to response to JSON_RPC2 requests as per the spec proposal at
  * http://groups.google.com/group/json-rpc/web/json-rpc-1-2-proposal
  * @author paul.visco@roswellpark.org
- * @package JSON_RPC2
+ * @package sb\Controller\JSON
  *
  */
 namespace sb\Controller\JSON\RPC2;
@@ -47,6 +47,13 @@ class Server extends Base
      * @var integer
      */
     protected $gz_encode_level = false;
+    
+    /**
+     * An array of other classes who methods can be served if public
+     * Any servable method on the controller would override the one on the other served class so that you could implement additional security in the controller if desired
+     * @var Array
+     */
+    protected $served_classes = Array();
 
     /**
      * Create an instance, called by gateway
@@ -57,6 +64,9 @@ class Server extends Base
         if (isset($_SERVER) && isset($_SERVER['HTTP_PHP_SERIALIZE_RESPONSE'])) {
             $this->php_serialize_response = true;
         }
+        
+        //add this class to the beginning of class methods served
+        array_unshift( $this->served_classes, $this);
     }
 
     /**
@@ -94,33 +104,42 @@ class Server extends Base
 
         $arr = Array();
 
-        foreach (\get_class_methods($this) as $method) {
+        foreach($this->served_classes as $class){
+            foreach (\get_class_methods($class) as $method) {
 
-            $reflect = new \ReflectionMethod($this, $method);
+                $reflect = new \ReflectionMethod($class, $method);
 
-            if ($reflect) {
-                $docs = $reflect->getDocComment();
-                $servable = false;
-                if (!empty($docs)) {
-                    if (\preg_match("~@servable (true|false)~", $docs, $match)) {
-                        $servable = $match[1] == 'true' ? true : false;
+                if ($reflect) {
+                    
+                    if($class == $this){
+                        $docs = $reflect->getDocComment();
+                        $servable = false;
+                        if (!empty($docs)) {
+                            if (\preg_match("~@servable (true|false)~", $docs, $match)) {
+                                $servable = $match[1] == 'true' ? true : false;
+                            }
+                        }
+                    } else if($reflect->isPublic()){
+                        $servable = true;
                     }
-                }
-                if (!$servable) {
-                    continue;
-                }
+                    
+                    if (!$servable) {
+                        continue;
+                    }
 
-                $params = $reflect->getParameters();
-                $ps = Array();
-                foreach ($params as $param) {
-                    $ps[] = '$' . $param->getName();
+                    $params = $reflect->getParameters();
+                    $ps = Array();
+                    foreach ($params as $param) {
+                        $ps[] = '$' . $param->getName();
+                    }
+
+                    $key = $method . '(' . implode(', ', $ps) . ')';
+
+                    $arr[$key] = $reflect->getDocComment();
                 }
-
-                $key = $method . '(' . implode(', ', $ps) . ')';
-
-                $arr[$key] = $reflect->getDocComment();
             }
         }
+        
 
         if ($html == false) {
             return $arr;
@@ -137,13 +156,21 @@ class Server extends Base
     protected function getPhpdoc($method)
     {
 
-        if (\method_exists($this, $method)) {
-            $reflect = new \ReflectionMethod($this, $method);
-        } else {
+        $reflect = false;
+        
+        foreach($this->served_classes as $class){
+            if (\method_exists($class, $method)) {
+                $reflect = new \ReflectionMethod($class, $method);
+                break;
+            }
+        
+        }
+        
+         if(!$reflect){
             $response->error = new \sb\JSON\RPC2\Error();
             $response->error->code = -32602;
             $response->error->message = "Invalid method parameters";
-            return $response;
+            break;
         }
 
         $response = new \stdClass();
@@ -180,8 +207,11 @@ class Server extends Base
                 color:#1d1d4d;
             }
             </style><ol>';
+        
+        //sorting method alphabetically
+        ksort($methods);
         foreach ($methods as $method => $comments) {
-            $html .= '<li><h1>$server->' . $method . ';</h1><pre>' . "\t" . $comments . '</pre></li>';
+            $html .= '<li><h1>$server->' . $method . ';</h1><pre>' . str_repeat("&nbsp;", 4) . $comments . '</pre></li>';
         }
 
         $html .= '</ol>';
@@ -264,31 +294,42 @@ class Server extends Base
         $this->logRequest($json_request_str);
 
         $servable = false;
+        $servedClass = false;
+        foreach($this->served_classes as $class){
+            
+            if (\method_exists($class, $request->method)) {
+                $reflection = new \ReflectionMethod($class, $request->method);
 
-        if (\method_exists($this, $request->method)) {
-            $reflection = new \ReflectionMethod($this, $request->method);
-
-            //check for phpdocs
-            $docs = $reflection->getDocComment();
-            $servable = false;
-            $non_rpc = false;
-            if (!empty($docs)) {
-                if (\preg_match("~@servable (true|false)~", $docs, $match)) {
-                    $servable = $match[1] == 'true' ? true : false;
+                if($class == $this){
+                    //check for phpdocs
+                    $docs = $reflection->getDocComment();
+                    $non_rpc = false;
+                    if (!empty($docs)) {
+                        if (\preg_match("~@servable (true|false)~", $docs, $match)) {
+                            $servable = $match[1] == 'true' ? true : false;
+                        }
+                    }
+                } else {
+                    $servable = $reflection->isPublic();
+                }
+                
+                if($servable){
+                    $servedClass = $class;
+                    break;
                 }
             }
         }
 
         //check for requested remote procedure
-        if ($servable) {
+        if ($servedClass) {
 
             if (\is_object($request->params)) {
-                $answer = \call_user_func(Array($this, $request->method), $request->params);
+                $answer = \call_user_func(Array($servedClass, $request->method), $request->params);
             } else {
                 if (!\is_array($request->params)) {
                     $request->params = Array();
                 }
-                $answer = \call_user_func_array(Array($this, $request->method), $request->params);
+                $answer = \call_user_func_array(Array($servedClass, $request->method), $request->params);
             }
             //if they return an error from the method call, return that
             if ($answer instanceof \sb\JSON\RPC2\Error) {
