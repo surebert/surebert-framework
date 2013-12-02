@@ -308,7 +308,7 @@ class Gateway
         
         self::setRequest($request);
         
-        if (\method_exists('App', 'filter_all_input')) {
+        if (\method_exists('App', 'filterAllInput')) {
             \App::filterAllInput($_POST);
         }
 
@@ -379,7 +379,7 @@ if(Gateway::$render_main_request){
     $output = Gateway::renderRequest(Gateway::$request, false);
 
     //filter the output if required and display it
-    if (\method_exists('\App', "filter_all_output")) {
+    if (\method_exists('\App', "filterAllOutput")) {
         echo \App::filterAllOutput($output);
     } else {
         echo $output;
