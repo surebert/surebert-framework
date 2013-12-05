@@ -48,6 +48,16 @@ class Debugger
                 'Message: ' . $e->getMessage() . "\n" .
                 'Location: ' . $e->getFile() . "\n" .
                 'Line: ' . $e->getLine() . "\n";
+                if(isset(\sb\Gateway::$request)){
+                    $message .= 'Request: '.\sb\Gateway::$request->request."\n";
+                    if(isset(\sb\Gateway::$request->method)){
+                        $message .= 'Method: '.\sb\Gateway::$request->method."\n";
+                    }
+                    
+                    if(count(\sb\Gateway::$request->get)){
+                        $message .= 'Get: '.http_build_query(\sb\Gateway::$request->get) ."\n";
+                    }
+                }
 
         if (self::$show_trace) {
             $message .= "Trace: \n\t" . str_replace("\n", "\n\t", \print_r($e->getTrace(), 1));
