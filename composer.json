@@ -1,0 +1,15 @@
+{
+    "name": "surebert/framework",
+    "description": "An all purpose php 5 MVC framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paul Visco",
+            "email": "paulsidekick@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+	"php": ">=5.5.0",
+    }
+}
