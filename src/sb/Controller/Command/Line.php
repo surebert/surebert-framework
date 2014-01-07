@@ -10,6 +10,9 @@ namespace sb\Controller\Command;
 
 use \sb\Controller\Base as Base;
 
+/**
+ * To create you own command line logger create a controller that extends this and this you can use the $this->log method to log
+ */
 class Line extends Base
 {
 
@@ -157,7 +160,7 @@ class Line extends Base
      * Logs to std out
      * @param string $message
      */
-    protected function log($message, $type = "MESSAGE")
+    public function log($message, $type = "MESSAGE")
     {
 
         $type = strtoupper($type);
