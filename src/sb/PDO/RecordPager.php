@@ -82,7 +82,7 @@ class RecordPager
      * //get the current requested page from an internet user
      * $pnum = (isset($_REQUEST['page']))?$_REQUEST['page']:1;
      *
-     * $pager = new \sb\PDO_RecordPager($mysqlconn);
+     * $pager = new \sb\PDO\RecordPager($mysqlconn);
      * $pager->sql = "SELECT * FROM user ORDER BY lname DESC;";
      * $pager->pagesize = 20 //optional default is set to 10
      * $res = $pager->getPage($punm);
