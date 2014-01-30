@@ -311,5 +311,24 @@ class Request
     public function setMethod($method){
         $this->method = $method;
     }
+    
+    /**
+     * Grabs the part of the path referenced by index
+     * e.g. if path was /image/of/dog $this->getPath(0) would return image
+     * @param int $part optionally which part to return
+     * @return mixed string or false if not set
+     */
+    public function getPath($part=null){
+        
+        if(is_null($part)){
+            return $this->path;
+        }
+        
+        if(isset($this->path_array[$part])){
+            return $this->path_array[$part];
+        }
+        
+        return false;
+    }
 
 }
