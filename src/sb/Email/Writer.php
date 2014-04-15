@@ -128,7 +128,7 @@ class Writer
 
             $email->constructMultipartMessage();
 
-            if (mail($email->to, $email->subject, $email->body, $email->_header_text)) {
+            if (mail($email->to, $email->subject, $email->body, $email->_header_text, "-f ".$email->from)) {
 
                 $email->sent = 1;
                 $sent_emails++;
