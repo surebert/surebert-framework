@@ -316,4 +316,15 @@ class Base
             \header("HTTP/1.0 404 Not Found");
         }
     }
+    
+    /**
+     * Grabs the part of the path referenced by index
+     * e.g. if path was /image/of/dog $this->getPath(0) would return image
+     * @param int $part optionally which part to return
+     * @return mixed string or false if not set
+     */
+    public function getPath($part=null){
+        
+        return $this->request->getPath($part);
+    }
 }
