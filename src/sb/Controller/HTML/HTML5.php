@@ -99,7 +99,7 @@ class HTML5 extends HTTP
         $html .= $this->opening_html_tag . "\n";
         $html .= '<head>' . "\n";
         $html .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->charset . '" />' . "\n";
-
+        $html .= '<meta http-equiv="X-UA-Compatible" content="IE=edge" />'."\n";
         $html .= '<title>' . $this->title . '</title>' . "\n";
 
         if ($this->meta instanceof HeadMeta) {
