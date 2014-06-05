@@ -3,7 +3,7 @@
  * Connects to XMPP servers, tested with openfire/ichat
  *
  * <code>
- * class ClientDemo extends \sb\XMPP_Client{
+ * class ClientDemo extends \sb\XMPP\Client{
  *    public $status = 'thinking';
  *    public $uname = 'your uname';
  *    public $pass = 'your pass';
