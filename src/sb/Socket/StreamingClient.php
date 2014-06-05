@@ -7,7 +7,7 @@
  * @package sb_Socket
  *
  */
-namespace \sb\Socket;
+namespace sb\Socket;
 class StreamingClient extends Client
     {
 
