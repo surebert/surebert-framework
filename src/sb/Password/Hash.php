@@ -74,12 +74,6 @@ class Hash {
     public static $hash_byte_size = 30;
     
     /**
-     * Hash section size
-     * @var int 
-     */
-    public static $hash_sections = 5;
-    
-    /**
      * Hash algorithm index
      * @var int 
      */
@@ -133,12 +127,12 @@ class Hash {
      * $bool = \sb\Password\Hash::validate('password', $hash_from_create);
      * </code>
      */
-    public static function validate_hash($password, $hash) {
+    public static function validate($password, $hash) {
         $params = explode(":", $hash);
-        if (count($params) < self::$hash_sections)
+        if (count($params) < 4)
             return false;
         $pbkdf2 = base64_decode($params[self::$hash_pbkdf2_index]);
-        return self::slow_equals(
+        return self::slowEquals(
                 $pbkdf2, self::calculate(
                     $params[self::$hash_alogrithm_index], $password, $params[self::$hash_salt_index], (int) $params[self::$hash_iteration_index], strlen($pbkdf2), true
                 )
@@ -205,7 +199,7 @@ class Hash {
      * @param string $b
      * @return boolean
      */
-    protected static function slow_equals($a, $b) {
+    protected static function slowEquals($a, $b) {
         $diff = strlen($a) ^ strlen($b);
         for ($i = 0; $i < strlen($a) && $i < strlen($b); $i++) {
             $diff |= ord($a[$i]) ^ ord($b[$i]);
