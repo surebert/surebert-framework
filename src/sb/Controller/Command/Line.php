@@ -17,6 +17,44 @@ class Line extends Base
 {
 
     /**
+     * Background colors
+     * @var array 
+     */
+    protected  $bgcolors = [
+        'black' => '40',
+        'red' => '41',
+        'green' => '42',
+        'yellow' => '43',
+        'blue' => '44',
+        'magenta' => '45',
+        'cyan' => '46',
+        'light_gray' => '47'
+    ];
+
+    /**
+     * Foreground colors
+     * @var array 
+     */
+    protected $fgcolors = [
+        'black' => '0;30',
+        'dark_gray' => '1;30',
+        'blue' => '0;34',
+        'light_blue' => '1;34',
+        'green' => '0;32',
+        'light_green' => '1;32',
+        'cyan' => '0;36',
+        'light_cyan' => '1;36',
+        'red' => '0;31',
+        'light_red' => '1;31',
+        'purple' => '0;35',
+        'light_purple' => '1;35',
+        'brown' => '0;33',
+        'yellow' => '1;33',
+        'light_gray' => '0;37',
+        'white' => '1;37'
+    ];
+
+    /**
      * The begin time of the script in order to calculate the total time required
      *
      * @var integer
@@ -42,22 +80,16 @@ class Line extends Base
     protected $log_to_file = false;
     
     /**
-     * If true then log messages are written to file at the end
+     * If true then log messages are written to file if $log_to_file is enabled
      * @var mixed 
      */
-    protected $destruct_logger = null;
-    
-    /**
-     * An array of log messages to write to file if save_log_to_file is enabled
-     * @var false 
-     */
-    protected $destruct_logs = Array();
+    protected $logger = null;
     
     /**
      * The name of the destruct log to write to
      * @var string 
      */
-    protected $destruct_log_name = 'commandLine';
+    protected $log_name = 'commandLine';
     
     /**
      * The default memory limit in mb, default 200
@@ -79,7 +111,7 @@ class Line extends Base
     public function __construct($allow_from_anywhere = false)
     {
         if($this->log_to_file){
-            $this->setDestructLogger(new \sb\Logger\FileSystem());
+            $this->setLogger(new \sb\Logger\CommandLine());
         }
         
         $this->allow_from_anywhere = $allow_from_anywhere;
@@ -106,9 +138,10 @@ class Line extends Base
      * when the destructor runs
      * @param \sb\Logger\Base $logger
      */
-    public function setDestructLogger(\sb\Logger\Base $logger, $logname=''){
-        $this->destruct_logger = $logger;
-        $this->destruct_log_name = $logname ? $logname : get_called_class();
+    public function setLogger(\sb\Logger\Base $logger, $logname=''){
+        $this->logger = $logger;
+        $this->log_name = $logname ? $logname : get_called_class();
+        $this->log_name = preg_replace("~[^\w+]~", "_", $this->log_name);
     }
 
     /**
@@ -158,9 +191,15 @@ class Line extends Base
 
     /**
      * Logs to std out
-     * @param string $message
+     * @param string $message The message of the line
+     * @param string $type The prefix of the line, if ERROR, encrements error count
+     * @param array|string $text_attributes, used to describe how output should look
+     * e.g. ['fgcolor' => 'red', 'bgcolor' => 'yellow', 'bold' => true, 'underline' => true, 'keep' => false]
+     * if keep is true then it keeps the style until you call a line with another 
+     * style or you call $this->setNormalText()
+     * if string then its just the foreground color
      */
-    public function log($message, $type = "MESSAGE")
+    public function log($message, $type = "MESSAGE", $text_attributes = [])
     {
 
         $type = strtoupper($type);
@@ -177,14 +216,67 @@ class Line extends Base
                 $message = $type . ': ' . $message;
         }
         
+        $this->logToFile($message);
+        
+        if(empty($text_attributes)){
+            file_put_contents("php://stdout", "\n".$message);
+            return $message;
+        }
+        
+        if(is_array($text_attributes)){
+            if(isset($text_attributes['bold']) && $text_attributes['bold']){
+                file_put_contents("php://stdout", "\033[1m");
+            }
+
+            if(isset($text_attributes['underline']) && $text_attributes['underline']){
+                file_put_contents("php://stdout","\033[4m");
+            }
+
+            if(isset($text_attributes['fgcolor']) && isset($this->fgcolors[$text_attributes['fgcolor']])){
+                file_put_contents("php://stdout", "\033[".$this->fgcolors[$text_attributes['fgcolor']]."m");
+            }
+
+            if(isset($text_attributes['bgcolor']) && isset($this->fgcolors[$text_attributes['bgcolor']])){
+               file_put_contents("php://stdout", "\033[".$this->bgcolors[$bgcolor]."m");
+            }
+
+            if(isset($text_attributes['underline']) && $text_attributes['underline']){
+                file_put_contents("php://stdout","\033[4m");
+            }
+
+            if(isset($text_attributes['overwrite']) && $text_attributes['overwrite']){
+                file_put_contents("php://stdout", "\033[2K\033[A");
+            }
+        } else if(is_string($text_attributes) && isset($this->fgcolors[$text_attributes])){
+            file_put_contents("php://stdout", "\033[".$this->fgcolors[$text_attributes]."m");
+        }
+        
+
         file_put_contents("php://stdout", "\n".$message);
 
-        if($this->destruct_logger){
-            $this->destruct_logs[] = $message;
+        if(!is_array($text_attributes) || !isset($text_attributes['keep']) || !$text_attributes['keep']){
+            file_put_contents("php://stdout","\033[0m");
         }
+
         return $message;
     }
-
+    
+    /**
+     * Logs to file
+     * @param string $message
+     * @return string
+     */
+    protected function logToFile($message){
+        return $this->logger->{$this->log_name}($message);
+    }
+    
+    /**
+     * Sets the text back to normal non-colored, non-bold
+     */
+    public function setNormalText(){
+        file_put_contents("php://stdout","\033[0m");
+    }
+    
     /**
      * Logs error to std out
      * @param string $message
@@ -215,10 +307,5 @@ class Line extends Base
         $this->log($this->number_of_errors, 'ERRORS');
         $this->log($milliseconds . "ms", 'TIME_MS');
         $this->log(date('Y/m/d H:i:s') . "\n", 'END');
-        
-        if($this->destruct_logger){
-            $method = preg_replace("~[^\w+]~", "_", $this->destruct_log_name);
-            $this->destruct_logger->{$method}(implode("\n", $this->destruct_logs));
-        }
     }
 }
