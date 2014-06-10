@@ -267,7 +267,9 @@ class Line extends Base
      * @return string
      */
     protected function logToFile($message){
-        return $this->logger->{$this->log_name}($message);
+        if(isset($this->logger) && $this->logger instanceof \sb\Logger\Base){
+            return $this->logger->{$this->log_name}($message);
+        }
     }
     
     /**
