@@ -14,9 +14,9 @@
  * @author paul.visco@roswellpark.org
  * @package PDO
  */
-namespace sb\PDO;
+namespace sb\PDO\Mysql;
 
-class BackupMysql
+class Backup
 {
 
     /**
@@ -53,7 +53,7 @@ class BackupMysql
      * Connects to the database for SELECT and mysqldump
      *
      * <code>
-     * $backup = new \sb\PDO\BackupMysql('127.0.0.1', 'root', 'abc123');
+     * $backup = new \sb\PDO\Mysql\Backup('127.0.0.1', 'root', 'abc123');
      * //optional
      * $backup->max_version = 3;
      * $backup->backup();
