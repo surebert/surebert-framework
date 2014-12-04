@@ -153,18 +153,45 @@ class Base
             }
         }
 
+        //if routing hash is set for the controller and no matching method was found
         if (isset($this->routes)) {
-            foreach ($this->routes as $pattern => $method) {
-                if (\preg_match($pattern, \sb\Gateway::$request->request)) {
-                    if (\is_callable($method)) {
-                        return $this->filterOutput(\call_user_func($method, $pattern));
-                    } elseif (\is_string($method) && \is_callable(Array($this, $method))) {
-                        return $this->filterOutput($this->$method($pattern));
+            
+            //loop through route options
+            foreach ($this->routes as $http_methods => $routes) {
+                
+                if($http_methods != '*' && !in_array($this->request->method, explode(',', $http_methods))){
+                    continue;
+                }
+                
+                foreach($routes as $pattern=>$callable){
+                    
+                    $callable_exists = false;
+                    if (\is_string($callable)) {
+                        $callable = Array($this, $callable);
                     }
-
+                    
+                    if(!is_callable($callable)){
+                        if($this->routes_debug == true){
+                            throw(new \Exception("Callable ".json_encode($callable)." not callable for route pattern ".$pattern." on class ".  get_called_class()));
+                        }
+                        continue;
+                    }
+                    
+                    try{
+                        $pattern = preg_replace("/:\w+/", "([^".$this->input_args_delimiter."]+)", $pattern);
+                        $route_found = \preg_match('#'.$pattern.'#', \sb\Gateway::$request->request, $matches);
+                        if($route_found){
+                            return $this->filterOutput(\call_user_func_array($callable, array_slice($matches, 1, count($matches))));
+                        }
+                    } catch(\Exception $e){
+                        if($this->routes_debug == true){
+                            throw(new \Exception("FFFCallable ".json_encode($callable)." not callable for route pattern ".$pattern." on class ".  get_called_class()));
+                        }
+                    }
                 }
             }
         }
+
 
         $this->notFound();
     }
