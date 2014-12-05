@@ -117,8 +117,10 @@ class Base
         //capture view to buffer
         ob_start();
         
+        $is_index_controller = \get_called_class() == 'Controllers\Index';
+        
         //if no method is set, use index
-        if (\get_class($this) == 'Controllers\Index') {
+        if ($is_index_controller) {
             $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
         } else {
             $method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
@@ -141,7 +143,7 @@ class Base
         }
 
         //if routing is set for the controller and no matching method was found
-        if (isset($this->routes)) {
+        if ($is_index_controller && isset($this->routes)) {
             $routes_output = $this->processRoutes();
             if($routes_output !== false){
                 return $routes_output;
@@ -230,42 +232,41 @@ class Base
             //for each one of the routes definedc check to see if the pattern matches the request
             foreach($routes as $pattern=>$callable){
 
-                    //grab the current controller class name
-                    $controller = get_called_class();
+                //define the pattern to match
+                $pattern = preg_replace("/:\w+/", "([^".$this->input_args_delimiter."]+)", $pattern);
 
-                    //grab the current request
-                    $request = $this->request->request;
+                if(\preg_match('#'.$pattern.'#', $this->request->request, $matches)){
 
-                    //if the controller is not the index controller, prepend the existing controller name to the beginning of the route pattern
-                    if($controller != 'Controllers\Index'){
-                        $request = preg_replace("#/".$this->request->path_array[0]."#", "", $request);
-                    }
-                       
-                    $pattern = preg_replace("/:\w+/", "([^".$this->input_args_delimiter."]+)", $pattern);
-                    $route_found = \preg_match('#'.$pattern.'#', $request, $matches);
+                    //if the callable is a string
+                    if (\is_string($callable) && strstr($callable, '@')){
 
-                    if($route_found){
-                        //if the callable is a string
-                        if (\is_string($callable) && strstr($callable, '@')){
+                        //check to see if the current controller has a matching method name
+                        $parts = explode("@", $callable);
+                        if(count($parts) > 1){
 
-                            //check to see if the current controller has a matching method name
-                            $parts = explode("@", $callable);
-                            if(count($parts) > 1){
-                                //instantiate the class to be called if it is not already $this class
-                                $class = $parts[0] == 'this'  ? $this : new $parts[0];
-                                //set the callable to the class and method defined
-                                $callable = Array($class, $parts[1]); 
+                            //instantiate the class to be called if it is not already $this class
+                            if($parts[0] == 'this'){
+                                $class = $this;
+                            } else if(class_exists($parts[0])){
+                                $class = new $parts[0];
                             }
-                        }
+                            
+                            //set the request equal to the current request
+                            $class->request = $this->request;
 
-                        if(!is_callable($callable)){
-                            throw(new \Exception("Route for pattern '".$pattern."' on class ".  get_called_class()." is not callable"));
+                            //set the callable to the class and method defined
+                            $callable = Array($class, $parts[1]); 
                         }
-                        
-                        return $this->filterOutput(\call_user_func_array($callable, array_slice($matches, 1, count($matches))));
                     }
-                
-                
+
+                    if(is_callable($callable)){
+                        return $this->filterOutput(\call_user_func_array($callable, array_slice($matches, 1, count($matches))));
+                    } else {
+                        throw(new \Exception("Routing callable for pattern '".$pattern."' using httpd methods ".$http_methods." on ".  get_called_class()."->route() is not callable"));
+
+                    }
+
+                }
                 
             }
         }
