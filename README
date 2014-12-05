@@ -1,5 +1,26 @@
-This is a new experimental version of the surebert framework that is compatible with PSR-0/1
+Welcome to a new surebert framework.  If you have questions you can email paulsidekick@gmail.com
 
-It can be checked out from a surebert framework app using the composer.json file there
+GETTING STARTED:
+Download composer in order to download the required dependencies.
 
-https://github.com/surebert/surebert-application/blob/namespaced/composer.json
+Composer can be found at http://getcomposer.org/download/
+
+OR you can download it using
+curl -s https://getcomposer.org/installer | php
+
+One it is installed switch to your surebert applications / and type
+composer.phar install
+
+This will install the framework modules required.
+
+Once they are installed you can begin working on your project.  You will need to serve your applications /public
+directory.  This can be done via apache on nginx in production but you can simply user php 5.4 new built in server
+for testing.  To do so cd into the /public directory and type
+
+php -S 127.0.0.1:9000
+
+Immediately you will see you projects /private/view/index.view file served.
+
+For more information see http://github.com/surebert
+
+--Paul
