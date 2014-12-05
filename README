@@ -19,7 +19,7 @@ for testing.  To do so cd into the /public directory and type
 
 php -S 127.0.0.1:9000
 
-Immediately you will see you projects /private/view/index.view file served.
+Immediately you will see you projects /private/view/home/index.view file served.
 
 If serving with apache add the site to your httpd.conf or httpd-vhosts.conf file
 
