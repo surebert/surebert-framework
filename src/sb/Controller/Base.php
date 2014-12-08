@@ -88,7 +88,7 @@ class Base
      * @return boolean determines if anything should render anything or not,
      * false == no render
      */
-    public function onBeforeRender($method = '')
+    public function onBeforeRender($request = '')
     {
 
         return true;
@@ -119,6 +119,14 @@ class Base
         
         $is_index_controller = \get_called_class() == 'Controllers\Index';
         
+        //if routing is set for the controller and no matching method was found
+        if ($is_index_controller && isset($this->routes)) {
+            $routes_response = $this->processRoutes();
+            if($routes_response['exists']){
+                return $routes_response['data'] === false ? $this->notFound() : $routes_response['data'];
+            }
+        }
+        
         //if no method is set, use index
         if ($is_index_controller) {
             $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
@@ -134,19 +142,13 @@ class Base
             return $response['data'];
         }
 
-        //if no matching controller and direct view rendering is allowed
+        //if direct view rendering is allowed
+        //use controller from first part of URL or default index controller and 
+        //render the view using it as the implied controller
         if (\sb\Gateway::$allow_direct_view_rendering) {
             $direct_view_rendering_output = $this->processDirectViewRendering($template, $extract_vars);
             if($direct_view_rendering_output !== false){
                 return $direct_view_rendering_output;
-            }
-        }
-
-        //if routing is set for the controller and no matching method was found
-        if ($is_index_controller && isset($this->routes)) {
-            $routes_output = $this->processRoutes();
-            if($routes_output !== false){
-                return $routes_output;
             }
         }
 
@@ -254,13 +256,18 @@ class Base
                             //set the request equal to the current request
                             $class->request = $this->request;
 
+                            if($class->onBeforeRender($pattern) === false){
+                                return Array('exists' => true, 'data' => false);
+                            }
+                            
                             //set the callable to the class and method defined
                             $callable = Array($class, $parts[1]); 
                         }
                     }
 
                     if(is_callable($callable)){
-                        return $this->filterOutput(\call_user_func_array($callable, array_slice($matches, 1, count($matches))));
+                        $data = $this->filterOutput(\call_user_func_array($callable, array_slice($matches, 1, count($matches))));
+                        return Array('exists' => true, 'data' => $data);
                     } else {
                         throw(new \Exception("Routing callable for pattern '".$pattern."' using httpd methods ".$http_methods." on ".  get_called_class()."->route() is not callable"));
 
@@ -271,7 +278,7 @@ class Base
             }
         }
         
-        return false;
+        return Array('exists' => false, 'data' => false);
     }
 
     /**
