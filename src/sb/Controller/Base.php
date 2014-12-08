@@ -247,7 +247,7 @@ class Base
                         if(count($parts) > 1){
 
                             //instantiate the class to be called if it is not already $this class
-                            if($parts[0] == 'this'){
+                            if($parts[0] == 'Index'){
                                 $class = $this;
                             } else if(class_exists($parts[0])){
                                 $class = new $parts[0];
