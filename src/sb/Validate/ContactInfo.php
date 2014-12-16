@@ -298,7 +298,7 @@ class ContactInfo {
      */
     public static function getStates() {
 
-        return $this->states;
+        return self::$states;
     }
 
     /**
@@ -308,7 +308,7 @@ class ContactInfo {
      */
     public static function getProvinces() {
 
-        return $this->provinces;
+        return self::$provinces;
     }
 
 }
