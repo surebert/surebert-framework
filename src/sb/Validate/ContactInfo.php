@@ -16,7 +16,7 @@ class ContactInfo {
      * An array of US state codes indexed by full state name
      * @var array
      */
-    public $states = ['Alabama' => 'AL',
+    public static $states = ['Alabama' => 'AL',
         'Alaska' => 'AK',
         'Arizona' => 'AZ',
         'Arkansas' => 'AR',
@@ -72,7 +72,7 @@ class ContactInfo {
      * An array of Canadian province codes indexed by full province name
      * @var array 
      */
-    public $provinces = [
+    public static $provinces = [
         "Alberta" => "AB",
         "British Columbia" => "BC",
         "Manitoba" => "MB",
@@ -252,7 +252,7 @@ class ContactInfo {
         $result = new \sb\Validate\Results();
         $result->value = $state;
 
-        if (in_array($state, $this->states)) {
+        if (in_array($state, self::states)) {
 
             $result->is_valid = true;
             $result->message = 'Valid state code';
@@ -278,7 +278,7 @@ class ContactInfo {
         $result = new \sb\Validate\Results();
         $result->value = $province;
 
-        if (in_array($province, $this->provinces)) {
+        if (in_array($province, self::provinces)) {
 
             $result->is_valid = true;
             $result->message = 'Valid province code';
