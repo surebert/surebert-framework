@@ -175,7 +175,9 @@ class BlingMedia extends Bling
     {
             $swf = self::$content_path.'/'.$matches[1][$x];
             $path = ROOT.'/public/'.$swf;
-
+	    if(!is_file($path)){
+		continue;
+	    }
             $swf_info = @getimagesize($path);
             $width = $swf_info[0];
             $height = $swf_info[1];
