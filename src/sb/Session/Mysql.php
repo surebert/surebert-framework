@@ -232,7 +232,7 @@ class Mysql extends \sb\Session
         $stmt_cache = md5(__METHOD__);
         if(!isset($this->stmts[$stmt_cache])){
             $this->stmts[$stmt_cache] = $this->db->prepare("
-                INSERT INTO
+                REPLACE INTO
                     surebert_sessions
                 (session_id, last_access, created, data, token)
                 VALUES
