@@ -4,14 +4,14 @@
  *
  *<code>
  * #table required
- * CREATE TABLE surebert_sessions
- * (
- * session_id CHAR(32) NOT NULL,
- * access TIMESTAMP,
- * token CHAR(32),
- * data TEXT,
- * PRIMARY KEY (session_id)
- * )
+   CREATE TABLE surebert_sessions (
+    session_id CHAR(32) NOT NULL,
+    created DATETIME,
+    last_access TIMESTAMP,
+    token CHAR(32),
+    data MEDIUMTEXT,
+    PRIMARY KEY (session_id)
+    )
  * </code>
  *
  * @author paul.visco@roswellpark.org
@@ -20,7 +20,7 @@
  */
 namespace sb\Session;
 
-class Mysql extends Session
+class Mysql extends \sb\Session
 {
     /**
      * The database connection
@@ -56,7 +56,7 @@ class Mysql extends Session
      * @param $session_life_time integer
      * @return unknown_type
      */
-    public function __construct(PDO $db, $session_life_time=null)
+    public function __construct(\PDO $db, $session_life_time=null)
     {
 
         $this->db = $db;
@@ -116,7 +116,7 @@ class Mysql extends Session
                 WHERE
                     session_id = :session_id
                     AND token = :token
-                    AND UNIX_TIMESTAMP(access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
+                    AND UNIX_TIMESTAMP(last_access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
             ");
 
         }
@@ -153,7 +153,7 @@ class Mysql extends Session
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 UPDATE
                     surebert_sessions
-                    SET access = NOW()
+                    SET last_access = NOW()
                 WHERE
                     session_id = :session_id
                     AND token = :token
@@ -234,9 +234,9 @@ class Mysql extends Session
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 INSERT INTO
                     surebert_sessions
-                (session_id, data, token)
+                (session_id, last_access, created, data, token)
                 VALUES
-                (:session_id, :data, :token)
+                (:session_id, NOW(), NOW(), :data, :token)
             ");
         }
 
@@ -323,7 +323,7 @@ class Mysql extends Session
             DELETE FROM
                 surebert_sessions
             WHERE
-                UNIX_TIMESTAMP(access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
+                UNIX_TIMESTAMP(last_access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
 
         ";
 
