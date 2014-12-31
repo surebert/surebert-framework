@@ -50,11 +50,10 @@ class Gateway
     public static $request;
 
     /**
-     * The agent of the client from the HTTP_USER_AGENT or command line if from the command line
-     *
+     * The agent of the client from the HTTP_USER_AGENT or blank
      * @var string
      */
-    public static $agent = 'command line';
+    public static $agent = '';
 
     /**
      * The http_host if it exists
@@ -369,9 +368,7 @@ class Gateway
     {
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
-        self::$agent = (isset($_SERVER['HTTP_USER_AGENT'])
-                && $_SERVER['HTTP_USER_AGENT'] != 'command line')
-                ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
+        self::$agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
 
         if (defined('REQUEST_URI')) {
             $request = REQUEST_URI;
