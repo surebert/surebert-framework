@@ -274,8 +274,7 @@ class TalkBox
         $chatter = $this->db->s2o($sql, Array(":id" => $id));
 
         if (empty($chatter) && !$this->loaded_from_backup) {
-
-            $sql = "INSERT INTO sb_TalkBox_" . $this->room . "_mem SELECT * FROM sb_TalkBox_" . $this->room;
+            $sql = "REPLACE INTO sb_TalkBox_" . $this->room . "_mem SELECT * FROM sb_TalkBox_" . $this->room;
 
             $this->db->query($sql);
             $this->loaded_from_backup = 1;
