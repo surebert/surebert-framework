@@ -249,16 +249,17 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
                 UPDATE
                     surebert_sessions
                 SET
-                    session_id = :session_id,
                     data = :data
+                WHERE
+                    session_id = :session_id
             ");
         }
 
         $stmt = $this->stmts[$stmt_cache];
 
         return $stmt->execute(Array(
-                    ':session_id' => $session_id,
-                    ':data' => $data
+            ':session_id' => $session_id,
+            ':data' => $data
         ));
     }
 
@@ -306,7 +307,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute(Array(
-                    ':session_lifetime' => $maxlifetime ?: $this->session_life_time
+                    ':session_lifetime' => $maxlifetime ? : $this->session_life_time
         ));
     }
 
