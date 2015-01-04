@@ -254,7 +254,7 @@ class Gateway
      * Returns the calling function through a backtrace
      * used for error reporting
      */
-    public function getCallingMethod() {
+    public static function getCallingMethod() {
         
         $bt = debug_backtrace();
         $caller = $bt[2];
