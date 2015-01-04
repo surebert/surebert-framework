@@ -137,8 +137,14 @@ class Base
                 return $direct_view_rendering_output;
             }
         }
-
-        $this->notFound();
+        
+        //return whatever notFound has as long as it is a string
+        $result = $this->notFound();
+        
+        if(!is_null($result) && !is_string($result) && !is_numeric($result)){
+            throw(new \Exception(ucfirst(gettype($result))." returned where string expected. You must return a string from \\".get_called_class().'->notFound().'));
+        }
+        return $result;
     }
     
     /**
@@ -253,14 +259,46 @@ class Base
     }
 
     /**
+     * Checks to see if a view files exists by path
+     * @param string $view_path e.g. /user/profile
+     * @return mixed Path to view file or false
+     */
+    protected function viewExists($view){
+        $view_path = ltrim($view, '/');
+        $view_file = ROOT . '/private/views/' . $view_path . '.view';
+        $exists = is_file($view_file);
+        
+        if(!$exists){
+            foreach (\sb\Gateway::$mods as $mod) {
+                $m = ROOT . '/mod/' . $mod . '/views/' . $view_path . '.view';
+                if (\is_file($m)) {
+                    $exists = true;
+                    $view_file = $m;
+                    break;
+                }
+            }
+        }
+        
+        return $exists ? $view_file : false;
+        
+    }
+    
+    /**
      * Renders the actual .view template
      * @param string $view_path The path to the template e.g. /blah/foo
      * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
      * @return string
      */
-    protected function getView($_view_path, $extract_vars = null, $from_render_view=false)
+    protected function getView($view_path, $extract_vars = null)
     {
+        //putting vars out of the way to not conflict with extracted vars
+        $___view_file = $this->viewExists($view_path);
+        unset($view_path);
+        if(!is_file($___view_file)){
+            return false;
+        }
+        
         //extract class vars to local vars for view
         if ($this->extract) {
             \extract(\get_object_vars($this));
@@ -275,45 +313,28 @@ class Base
             }
         }
 
-        $_view_path = ltrim($_view_path, '/');
-        $_pwd = ROOT . '/private/views/' . $_view_path . '.view';
-
-        if (!\is_file($_pwd)) {
-            foreach (\sb\Gateway::$mods as $mod) {
-                $m = ROOT . '/mod/' . $mod . '/views/' . $_view_path . '.view';
-                if (\is_file($m)) {
-                    $_pwd = $m;
-                    break;
-                }
-            }
-        }
-
-        if (is_file($_pwd)) {
-            require($_pwd);
-            return true;
-        } else {
-            $this->__sb_cannot_get_view = true;
-        }
-        return false;
+        include($___view_file);
+        return true;
     }
 
     /**
      * Include an arbitrary .view template within the $this of the view
-     * @param string $view_path  e.g. .interface/cp
+     * @param string $view_path  e.g. /interface/cp
      * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
      */
-    public function renderView($path, $extract_vars = null)
+    public function renderView($view_path, $extract_vars = null)
     {
 
         //capture view to buffer
         ob_start();
         
-        $this->getView($path, $extract_vars);
-        if(isset($this->__sb_cannot_get_view)){
-            unset($this->__sb_cannot_get_view);
-            throw(new \Exception("Cannot find view to render in ".\sb\Gateway::getCallingMethod()." \$this->renderView('".$path."')"));
+        if(!$this->viewExists($view_path)){
+            throw(new \Exception("Cannot find view to render in ".\sb\Gateway::getCallingMethod()." \$this->renderView('".$view_path."')"));
         }
+        
+        $this->getView($view_path, $extract_vars);
+        
         return \ob_get_clean();
     }
 
