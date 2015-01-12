@@ -255,15 +255,19 @@ class BlingMedia extends Bling {
         $height = self::$flash_player_size['height'];
         $str = preg_replace_callback("~\[youtube\](.*?)\[\/youtube\]~s", function($match) use ($width, $height) {
 
+            if(empty($match[1])){
+                return $match[0];
+            }
+            $swf = '';
             if (strstr($match[1], 'v=')) {
                 preg_match("~v=(.*)~", $match[1], $swf);
                 $swf = $swf[1];
-            } elseif (preg_match("~[\w-]{11}~", $match[1], $swf)) {
+            } else if (preg_match("~[\w-]{11}~", $match[1], $swf)) {
                 $swf = $swf[0];
             }
-
-            $str = '<object width="' . $width . '" height="' . $height . '"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="https://www.youtube.com/v/' . $swf . '" /><param name="wmode" value="transparent" /><embed src="https://www.youtube.com/v/' . $swf . '" type="application/x-shockwave-flash" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" width="' . $width . '" height="' . $height . '"></embed></object>';
-            return $str;
+            
+            return '<object width="' . $width . '" height="' . $height . '"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="https://www.youtube.com/v/' . $swf . '" /><param name="wmode" value="transparent" /><embed src="https://www.youtube.com/v/' . $swf . '" type="application/x-shockwave-flash" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" width="' . $width . '" height="' . $height . '"></embed></object>';
+            
         }, $str);
 
 
