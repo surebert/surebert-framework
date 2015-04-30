@@ -149,7 +149,7 @@ class Signature
     /**
      * An instance of PDO used for saving and loading Flash_Signatures from a database
      *
-     * @var PDO
+     * @var \PDO
      */
     private $db;
 
@@ -170,8 +170,8 @@ class Signature
     /**
      * Create a new Flash_Signature
      *
-     * @param string $ip The IP address that the Flash_Signature was made from
      * @param string $id The unqiue transaction id of the Flash_Signature
+     * @param \PDO $db
 
      */
     public function __construct($id = null, $db = null)
@@ -184,7 +184,7 @@ class Signature
             $this->id = $id;
         }
 
-        if ($db instanceof PDO) {
+        if ($db instanceof \PDO) {
             $this->db = $db;
             $this->load($id);
         }
@@ -340,7 +340,7 @@ class Signature
 
         $new_image = \imagecreatetruecolor($new_width, $new_height);
 
-        $resampled = imagecopyresampled($new_image, $this->data, 0, 0, 0, 0, $new_width, $new_height, $this->width, $this->height);
+        $resampled = \imagecopyresampled($new_image, $this->data, 0, 0, 0, 0, $new_width, $new_height, $this->width, $this->height);
 
         $this->data = $new_image;
     }
@@ -373,11 +373,11 @@ class Signature
     public function save($db = null)
     {
 
-        if ($db instanceof PDO) {
+        if ($db instanceof \PDO) {
             $this->db = $db;
         }
 
-        if (!$this->db instanceof PDO) {
+        if (!$this->db instanceof \PDO) {
             throw new \Exception("The Flash_Signatures's database property must be an instance of PDO");
             return null;
         }
@@ -410,11 +410,11 @@ class Signature
     public function load($db = null)
     {
 
-        if ($db instanceof PDO) {
+        if ($db instanceof \PDO) {
             $this->db = $db;
         }
 
-        if (!$this->db instanceof PDO) {
+        if (!$this->db instanceof \PDO) {
             throw new \Exception("The Flash_Signatures's database property must be an instance of PDO");
             return null;
         }
@@ -429,7 +429,7 @@ class Signature
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute(Array(":id" => $this->id));
-        $rows = $stmt->fetchAll(PDO::FETCH_CLASS, '\sb\Flash_Signature');
+        $rows = $stmt->fetchAll(\PDO::FETCH_CLASS, '\sb\Flash\Signature');
         foreach ($rows[0] as $prop => $val) {
             $this->{$prop} = $val;
         }
