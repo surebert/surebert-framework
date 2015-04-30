@@ -90,7 +90,7 @@ class Bling
 
         $str = self::typoFix($str);
 
-        $str = HTML::escape($str);
+        $str = \sb\String\HTML::escape($str);
 
         $str = self::convertQuotes($str);
 
