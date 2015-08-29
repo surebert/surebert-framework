@@ -220,8 +220,6 @@ class TalkBox
             $line->message = $this->checkCommands($line->message);
         }
 
-        $line->message = Bling::stripAll($line->message);
-
         $line->message = Bling::typoFix($line->message);
 
         $sql = "INSERT INTO sb_TalkBox_" . $this->room . "
