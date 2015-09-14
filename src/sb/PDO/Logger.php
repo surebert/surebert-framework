@@ -14,7 +14,7 @@ class Logger extends Debugger
 
     /**
      * An instance of \sb\Logger\Base used to do the logging
-     * @var \sb\Logger_Base
+     * @var \sb\Logger\Base
      */
     private $logger = null;
 
@@ -49,7 +49,7 @@ class Logger extends Debugger
     /**
      * Set the logger
      *
-     * @param $logger \sb\Logger\Base An instance of \sb\Logge_rBase or one is created using FileSystem logging
+     * @param $logger \sb\Logger\Base An instance of \sb\Logger\Base or one is created using FileSystem logging
      */
     public function setLogger($logger = null)
     {
@@ -57,7 +57,7 @@ class Logger extends Debugger
         if ($logger instanceOf \sb\Logger\Base) {
             $this->logger = $logger;
         } else {
-            $this->logger = new \sb\Logger_FileSystem();
+            $this->logger = new \sb\Logger\FileSystem();
         }
     }
 
