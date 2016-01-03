@@ -38,9 +38,9 @@ class Debugger
 
     /**
      * Handles acceptions and turns them into strings
-     * @param Exception $e
+     * @param Throwable|Exception $e A PHP exception or another class that implements the Throwable interface in PHP 7
      */
-    public static function exceptionHandler(\Exception $e)
+    public static function exceptionHandler($e)
     {
 
         $message = 'Code: ' . $e->getCode() . "\n" .
