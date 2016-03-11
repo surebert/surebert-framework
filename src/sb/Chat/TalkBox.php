@@ -220,8 +220,6 @@ class TalkBox
             $line->message = $this->checkCommands($line->message);
         }
 
-        $line->message = Bling::stripAll($line->message);
-
         $line->message = Bling::typoFix($line->message);
 
         $sql = "INSERT INTO sb_TalkBox_" . $this->room . "
@@ -274,8 +272,7 @@ class TalkBox
         $chatter = $this->db->s2o($sql, Array(":id" => $id));
 
         if (empty($chatter) && !$this->loaded_from_backup) {
-
-            $sql = "INSERT INTO sb_TalkBox_" . $this->room . "_mem SELECT * FROM sb_TalkBox_" . $this->room;
+            $sql = "REPLACE INTO sb_TalkBox_" . $this->room . "_mem SELECT * FROM sb_TalkBox_" . $this->room;
 
             $this->db->query($sql);
             $this->loaded_from_backup = 1;

@@ -43,12 +43,12 @@ class Base
      * @var string
      */
     protected $default_file = 'index';
-
+    
     /**
-     * An array of REGex to callable that routes requests that are not otherwise servable
+     * Any rendering errors that are found
      * @var array
      */
-    public $routes = Array();
+    public $render_errors = [];
 
     /**
      * Filters the output after the view is rendered but before
@@ -82,7 +82,7 @@ class Base
      * @return boolean determines if anything should render anything or not,
      * false == no render
      */
-    public function onBeforeRender($method = '')
+    public function onBeforeRender($request = '')
     {
 
         return true;
@@ -111,71 +111,85 @@ class Base
         //capture view to buffer
         ob_start();
         
+        $is_index_controller = \get_called_class() == 'Controllers\Index';
+        
         //if no method is set, use index
-        if (\get_class($this) == 'Controllers\Index') {
+        if ($is_index_controller) {
             $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
         } else {
             $method = isset($this->request->path_array[1]) ? $this->request->path_array[1] : $this->default_file;
         }
 
         //return the servable method
-        $response = self::processControllerMethod($this, $method);
+        $response = $this->processControllerMethod($method);
 
+        //if there is a response, return that
         if ($response['exists']) {
             return $response['data'];
         }
 
-        //if no matching controller and direct view rendering is allowed
+        //if direct view rendering is allowed
+        //use controller from first part of URL or default index controller and 
+        //render the view using it as the implied controller
         if (\sb\Gateway::$allow_direct_view_rendering) {
-            //set default path
-            $path = $this->request->path;
-
-            //if there is a template render that
-            if (!empty($template)) {
-
-                if (isset($this->request->path_array[1])) {
-                    $path = \preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
-                } else {
-                    $path .= $template;
-                }
-            } elseif (isset($this->request->path_array[1])) {
-
-                $template = $this->request->path_array[1];
-            } else {
-                $path .= '/'.$this->default_file;
-            }
-
-            $this->template = $template;
-
-            if ($this->getView($path, $extract_vars)) {
-                $output = \ob_get_clean();
-                return $this->filterOutput($output);
+            $direct_view_rendering_output = $this->processDirectViewRendering($template, $extract_vars);
+            if($direct_view_rendering_output !== false){
+                return $direct_view_rendering_output;
             }
         }
-
-        if (isset($this->routes)) {
-            foreach ($this->routes as $pattern => $method) {
-                if (\preg_match($pattern, \sb\Gateway::$request->request)) {
-                    if (\is_callable($method)) {
-                        return $this->filterOutput(\call_user_func($method, $pattern));
-                    } elseif (\is_string($method) && \is_callable(Array($this, $method))) {
-                        return $this->filterOutput($this->$method($pattern));
-                    }
-
-                }
-            }
+        
+        //return whatever notFound has as long as it is a string
+        $result = $this->notFound();
+        
+        if(!is_null($result) && !is_string($result) && !is_numeric($result)){
+            throw(new \Exception(ucfirst(gettype($result))." returned where string expected. You must return a string from \\".get_called_class().'->notFound().'));
         }
-
-        $this->notFound();
+        return $result;
     }
+    
+    /**
+     * If \sb\Gateway::$allow_direct_view_rendering is set to true
+     * Then you can render /some/thing as /some/thing.view rendered through implied
+     * controller of \Controllers\Index
+     * @param String $template The template file to use
+     * @param Array $extract_vars any extract variables to pass along
+     * @return boolean
+     */
+    protected function processDirectViewRendering($template, $extract_vars=[]){
+        //set default path
+        $path = $this->request->path;
 
+        //if there is a template render that
+        if (!empty($template)) {
+
+            if (isset($this->request->path_array[1])) {
+                $path = \preg_replace("~/" . $this->request->path_array[1] . "$~", $template, $path);
+            } else {
+                $path .= $template;
+            }
+        } elseif (isset($this->request->path_array[1])) {
+
+            $template = $this->request->path_array[1];
+        } else {
+            $path .= '/'.$this->default_file;
+        }
+
+        $this->template = $template;
+
+        if ($this->getView($path, $extract_vars)) {
+            $output = \ob_get_clean();
+            return $this->filterOutput($output);
+        }
+        
+        return false;
+    }
+    
     /**
      * Excutes the controller method that matches the request
-     * @param string $class The controller class to be called
      * @param string $method The method that matches the request
      * @return type
      */
-    protected static function processControllerMethod($class, $method)
+    protected function processControllerMethod($method)
     {
 
         $servable = false;
@@ -183,19 +197,19 @@ class Base
         $input_as_array = false;
         $args = Array();
 
-        if (method_exists($class, 'onBeforeRender')) {
-            if ($class->onBeforeRender($method) === false) {
+        if (method_exists($this, 'onBeforeRender')) {
+            if ($this->onBeforeRender($method) === false) {
                 return Array('exists' => true, 'data' => false);
             }
         }
         
-        if (!method_exists($class, $method)) {
+        if (!method_exists($this, $method)) {
             $method = \sb\Gateway::toCamelCase($method);
         }
 
-        if (method_exists($class, $method)) {
+        if (method_exists($this, $method)) {
 
-            $reflection = new \ReflectionMethod($class, $method);
+            $reflection = new \ReflectionMethod($this, $method);
 
             //check for phpdocs
             $docs = $reflection->getDocComment();
@@ -215,17 +229,17 @@ class Base
             }
 
             //set up arguments to pass to function
-            if (!isset($class->request)) {
-                $class->request = \sb\Gateway::$request;
+            if (!isset($this->request)) {
+                $this->request = \sb\Gateway::$request;
             }
 
-            $args = $class->request->{$http_method};
+            $args = $this->request->{$http_method};
 
             //pass thru input filter if it exists
-            if (\method_exists($class, 'filterInput')) {
-                $args = $class->filterInput($args);
+            if (\method_exists($this, 'filterInput')) {
+                $args = $this->filterInput($args);
             }
-        } elseif (\method_exists($class, '__call')) {
+        } elseif (\method_exists($this, '__call')) {
             $servable = true;
         }
 
@@ -233,17 +247,42 @@ class Base
 
             if ($input_as_array) {
 
-                $data = $class->$method($args);
+                $data = $this->$method($args);
             } else {
 
-                $data = \call_user_func_array(array($class, $method), array_values($args));
+                $data = \call_user_func_array(array($this, $method), array_values($args));
             }
-            return Array('exists' => true, 'data' => $class->filterOutput($data));
+            return Array('exists' => true, 'data' => $this->filterOutput($data));
         }
 
         return Array('exists' => false, 'data' => false);
     }
 
+    /**
+     * Checks to see if a view files exists by path
+     * @param string $view_path e.g. /user/profile
+     * @return mixed Path to view file or false
+     */
+    protected function viewExists($view){
+        $view_path = ltrim($view, '/');
+        $view_file = ROOT . '/private/views/' . $view_path . '.view';
+        $exists = is_file($view_file);
+        
+        if(!$exists){
+            foreach (\sb\Gateway::$mods as $mod) {
+                $m = ROOT . '/mod/' . $mod . '/views/' . $view_path . '.view';
+                if (\is_file($m)) {
+                    $exists = true;
+                    $view_file = $m;
+                    break;
+                }
+            }
+        }
+        
+        return $exists ? $view_file : false;
+        
+    }
+    
     /**
      * Renders the actual .view template
      * @param string $view_path The path to the template e.g. /blah/foo
@@ -251,8 +290,15 @@ class Base
      * local variables in the view
      * @return string
      */
-    protected function getView($_view_path, $extract_vars = null)
+    protected function getView($view_path, $extract_vars = null)
     {
+        //putting vars out of the way to not conflict with extracted vars
+        $___view_file = $this->viewExists($view_path);
+        unset($view_path);
+        if(!is_file($___view_file)){
+            return false;
+        }
+        
         //extract class vars to local vars for view
         if ($this->extract) {
             \extract(\get_object_vars($this));
@@ -267,39 +313,28 @@ class Base
             }
         }
 
-        $_pwd = ROOT . '/private/views/' . $_view_path . '.view';
-
-        if (!\is_file($_pwd)) {
-            $_pwd = false;
-            foreach (\sb\Gateway::$mods as $mod) {
-                $m = ROOT . '/mod/' . $mod . '/views/' . $_view_path . '.view';
-                if (\is_file($m)) {
-                    $_pwd = $m;
-                    break;
-                }
-            }
-        }
-
-        if ($_pwd) {
-            require($_pwd);
-            return true;
-        }
-        return false;
+        include($___view_file);
+        return true;
     }
 
     /**
      * Include an arbitrary .view template within the $this of the view
-     * @param string $view_path  e.g. .interface/cp
+     * @param string $view_path  e.g. /interface/cp
      * @param mixed $extact_vars extracts the keys of an object or array into
      * local variables in the view
      */
-    public function renderView($path, $extract_vars = null)
+    public function renderView($view_path, $extract_vars = null)
     {
 
         //capture view to buffer
         ob_start();
-
-        $this->getView($path, $extract_vars);
+        
+        if(!$this->viewExists($view_path)){
+            throw(new \Exception("Cannot find view to render in ".\sb\Gateway::getCallingMethod()." \$this->renderView('".$view_path."')"));
+        }
+        
+        $this->getView($view_path, $extract_vars);
+        
         return \ob_get_clean();
     }
 

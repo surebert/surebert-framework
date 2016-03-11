@@ -90,7 +90,7 @@ class Bling
 
         $str = self::typoFix($str);
 
-        $str = HTML::escape($str);
+        $str = \sb\String\HTML::escape($str);
 
         $str = self::convertQuotes($str);
 
@@ -262,7 +262,7 @@ class Bling
         }
 
         ### phrase links ###
-        $str = preg_replace( "~\[(?:url|link)=(.*?)\](.*?)\[\/(?:url|link)\]~", "<a class=\"blank\" href=\"\\1\">\\2</a>", $str);
+        $str = preg_replace( "~\[(?:url|link)=(http.*?)\](.*?)\[\/(?:url|link)\]~", "<a class=\"blank\" href=\"\\1\">\\2</a>", $str);
 
         $link = $link_markup ? $link_markup : '(LINK)';
         ### url links ###\\2://\\3

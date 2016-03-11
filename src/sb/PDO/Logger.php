@@ -13,8 +13,8 @@ class Logger extends Debugger
 {
 
     /**
-     * An instance of \sb\Logger_Base used to do the logging
-     * @var \sb\Logger_Base
+     * An instance of \sb\Logger\Base used to do the logging
+     * @var \sb\Logger\Base
      */
     private $logger = null;
 
@@ -32,8 +32,8 @@ class Logger extends Debugger
      * @param string $pass Password for connection if required
      *
      * <code>
-     * $db=new  \sb\PDO_Logger("mysql:dbname=xxx;host=xxx", 'username', 'pass');
-     * $db=new \sb\PDO_Logger("sqlite:myfile.db3');
+     * $db=new  \sb\PDO\Logger("mysql:dbname=xxx;host=xxx", 'username', 'pass');
+     * $db=new \sb\PDO\Logger("sqlite:myfile.db3');
      * $db->setLogger(App::$logger);
      * </code>
      *
@@ -43,13 +43,13 @@ class Logger extends Debugger
 
         $this->log_str = str_replace(Array(":", ";", "=", "."), "_", $connection);
         parent::__construct($connection, $user, $pass);
-        $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, Array('sb_PDO_Statement_Logger', Array($this)));
+        $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, Array('\sb\PDO\Statement\Logger', Array($this)));
     }
 
     /**
      * Set the logger
      *
-     * @param $logger \sb\Logger\Base An instance of \sb\Logge_rBase or one is created using FileSystem logging
+     * @param $logger \sb\Logger\Base An instance of \sb\Logger\Base or one is created using FileSystem logging
      */
     public function setLogger($logger = null)
     {
@@ -57,7 +57,7 @@ class Logger extends Debugger
         if ($logger instanceOf \sb\Logger\Base) {
             $this->logger = $logger;
         } else {
-            $this->logger = new \sb\Logger_FileSystem();
+            $this->logger = new \sb\Logger\FileSystem();
         }
     }
 

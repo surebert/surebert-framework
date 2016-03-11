@@ -1,27 +1,30 @@
 <?php
+
 /**
  * Used to put sessions in mysql instead of using file based ones
  *
- *<code>
+ * <code>
  * #table required
- * CREATE TABLE surebert_sessions
- * (
- * session_id CHAR(32) NOT NULL,
- * access TIMESTAMP,
- * token CHAR(32),
- * data TEXT,
- * PRIMARY KEY (session_id)
- * )
+  CREATE TABLE surebert_sessions (
+  session_id CHAR(32) NOT NULL,
+  created DATETIME,
+  last_access TIMESTAMP,
+  agent VARCHAR(255),
+  ip VARCHAR(15),
+  data MEDIUMTEXT,
+  PRIMARY KEY (session_id)
+  )
  * </code>
  *
  * @author paul.visco@roswellpark.org
  * @package Session
  *
  */
+
 namespace sb\Session;
 
-class Mysql extends Session
-{
+class Mysql extends \sb\Session implements \SessionHandlerInterface {
+
     /**
      * The database connection
      * @var PDO
@@ -35,10 +38,16 @@ class Mysql extends Session
     private $session_life_time;
 
     /**
-     * A token combinig the ip and user agent munged as md5
+     * The IP of the session
      * @var string
      */
-    private $token = '';
+    private $ip = '';
+
+    /**
+     * The user agent of the session
+     * @var string 
+     */
+    private $agent = '';
 
     /**
      * Prepared statements cache
@@ -49,33 +58,23 @@ class Mysql extends Session
     /**
      * Connects to the mysql server for session storage
      * <code>
-        new \sb\Session\Mysql(\App::$db);
+      new \sb\Session\Mysql(\App::$db);
      * </code>
      *
      * @param $db PDO the database conection to store the sessions in
      * @param $session_life_time integer
      * @return unknown_type
      */
-    public function __construct(PDO $db, $session_life_time=null)
-    {
+    public function __construct(\PDO $db, $session_life_time = null) {
 
         $this->db = $db;
 
-        $this->token = md5(\sb\Gateway::$remote_addr.\sb\Gateway::$agent);
-
         // get session lifetime
         $this->session_life_time = !is_null($session_life_time) ? $session_life_time : ini_get("session.gc_maxlifetime");
+
         // register the new handler
 
-        session_set_save_handler(
-            array($this, 'open'),
-            array($this, 'close'),
-            array($this, 'read'),
-            array($this, 'write'),
-            array($this, 'destroy'),
-            array($this, 'gc')
-        );
-        register_shutdown_function('session_write_close');
+        session_set_save_handler($this, true);
 
         session_start();
     }
@@ -84,17 +83,16 @@ class Mysql extends Session
      * Opens the session, not needed for db based sessions
      * @return boolean
      */
-    public function open()
-    {
-         return true;
+    public function open($save_path, $session_name) {
+        return true;
     }
 
     /**
-     * Closes the session, not needed for db based sessions
+     * Closes the session
      * @return boolean
      */
-    public function close()
-    {
+    public function close() {
+        $this->gc($this->session_life_time);
         return true;
     }
 
@@ -102,11 +100,10 @@ class Mysql extends Session
      * Closes the session, not needed for db based sessions
      * @return boolean
      */
-    public function read($session_id)
-    {
+    public function read($session_id) {
 
         $stmt_cache = md5(__METHOD__);
-        if(!isset($this->stmts[$stmt_cache])){
+        if (!isset($this->stmts[$stmt_cache])) {
 
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 SELECT
@@ -115,25 +112,21 @@ class Mysql extends Session
                     surebert_sessions
                 WHERE
                     session_id = :session_id
-                    AND token = :token
-                    AND UNIX_TIMESTAMP(access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
+                    AND UNIX_TIMESTAMP(last_access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
             ");
-
         }
 
         $stmt = $this->stmts[$stmt_cache];
 
-        if($stmt->execute(Array(
-            ':session_id' => $session_id,
-            ':token' => $this->token,
-            ':session_lifetime' => $this->session_life_time
-        ))){
+        if ($stmt->execute(Array(
+                    ':session_id' => $session_id,
+                    ':session_lifetime' => $this->session_life_time
+                ))) {
             $rows = $stmt->fetchAll();
-            if(isset($rows[0])){
+            if (isset($rows[0])) {
                 $this->updateAccess($session_id);
                 return $rows[0]->data;
             }
-
         }
 
         return "";
@@ -144,29 +137,25 @@ class Mysql extends Session
      * @param $session_id
      * @return boolean
      */
-    public function updateAccess($session_id)
-    {
+    public function updateAccess($session_id) {
 
         $stmt_cache = md5(__METHOD__);
-        if(!isset($this->stmts[$stmt_cache])){
+        if (!isset($this->stmts[$stmt_cache])) {
 
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 UPDATE
                     surebert_sessions
-                    SET access = NOW()
+                    SET last_access = NOW()
                 WHERE
                     session_id = :session_id
-                    AND token = :token
 
             ");
-
         }
 
         $stmt = $this->stmts[$stmt_cache];
 
         return $stmt->execute(Array(
-            ':session_id' => $session_id,
-            ':token' => $this->token
+                    ':session_id' => $session_id
         ));
     }
 
@@ -176,11 +165,10 @@ class Mysql extends Session
      * @param $data The session data to write
      * @return boolean
      */
-    public function write($session_id, $data)
-    {
+    public function write($session_id, $data) {
 
         $stmt_cache = md5(__METHOD__);
-        if(!isset($this->stmts[$stmt_cache])){
+        if (!isset($this->stmts[$stmt_cache])) {
 
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 SELECT
@@ -190,34 +178,31 @@ class Mysql extends Session
                 WHERE
                     session_id = :session_id
             ");
-
         }
 
         $stmt = $this->stmts[$stmt_cache];
 
         $result = $stmt->execute(Array(
-               ':session_id' => $session_id
+            ':session_id' => $session_id
         ));
 
-        if(!$result){
+        if (!$result) {
             return false;
         }
 
         $rows = $stmt->fetchAll();
 
-        if(isset($rows[0])){
+        if (isset($rows[0])) {
             $result = $this->update($session_id, $data);
-
         } else {
             $result = $this->insert($session_id, $data);
         }
 
-        if($result && $stmt->rowCount()){
+        if ($result && $stmt->rowCount()) {
             return true;
         } else {
             return false;
         }
-
     }
 
     /**
@@ -226,30 +211,28 @@ class Mysql extends Session
      * @param $data The session data to write
      * @return boolean
      */
-    private function insert($session_id, $data)
-    {
+    private function insert($session_id, $data) {
 
         $stmt_cache = md5(__METHOD__);
-        if(!isset($this->stmts[$stmt_cache])){
+        if (!isset($this->stmts[$stmt_cache])) {
             $this->stmts[$stmt_cache] = $this->db->prepare("
-                INSERT INTO
+                REPLACE INTO
                     surebert_sessions
-                (session_id, data, token)
+                (session_id, last_access, created, agent, ip, data)
                 VALUES
-                (:session_id, :data, :token)
+                (:session_id, NOW(), NOW(), :agent, :ip, :data)
             ");
         }
 
         $stmt = $this->stmts[$stmt_cache];
 
         return $stmt->execute(Array(
-               ':session_id' => $session_id,
-               ':data' => $data,
-             ':token' => $this->token
+                    ':session_id' => $session_id,
+                    ':agent' => \sb\Gateway::$agent,
+                    ':ip' => \sb\Gateway::$remote_addr,
+                    ':data' => $data
         ));
-
     }
-
 
     /**
      * Updates an existing session's data
@@ -257,30 +240,26 @@ class Mysql extends Session
      * @param $data
      * @return boolean
      */
-    private function update($session_id, $data)
-    {
+    private function update($session_id, $data) {
 
         $stmt_cache = md5(__METHOD__);
-        if(!isset($this->stmts[$stmt_cache])){
+        if (!isset($this->stmts[$stmt_cache])) {
 
             $this->stmts[$stmt_cache] = $this->db->prepare("
                 UPDATE
                     surebert_sessions
                 SET
-                    session_id = :session_id,
                     data = :data
                 WHERE
-                    token = :token
+                    session_id = :session_id
             ");
-
         }
 
         $stmt = $this->stmts[$stmt_cache];
 
         return $stmt->execute(Array(
-               ':session_id' => $session_id,
-               ':data' => $data,
-               ':token' => $this->token
+            ':session_id' => $session_id,
+            ':data' => $data
         ));
     }
 
@@ -288,8 +267,7 @@ class Mysql extends Session
      * Destroys a sessions by deleting it from the database
      * @return unknown_type
      */
-    public function destroy($session_id)
-    {
+    public function destroy($session_id) {
 
         $sql = "
         DELETE FROM
@@ -302,13 +280,13 @@ class Mysql extends Session
         $stmt = $this->db->prepare($sql);
 
         $result = $stmt->execute(Array(
-               ':session_id' => $session_id
+            ':session_id' => $session_id
         ));
 
-        if($result && $stmt->rowCount()){
-               return true;
+        if ($result && $stmt->rowCount()) {
+            return true;
         } else {
-               return false;
+            return false;
         }
     }
 
@@ -316,31 +294,28 @@ class Mysql extends Session
      * Garbage collects any open sessions that are no longer valid
      * @return boolean
      */
-    public function gc()
-    {
+    public function gc($maxlifetime) {
 
-         $sql = "
+        $sql = "
             DELETE FROM
                 surebert_sessions
             WHERE
-                UNIX_TIMESTAMP(access) > UNIX_TIMESTAMP(NOW())-:session_lifetime
+                UNIX_TIMESTAMP(last_access) < UNIX_TIMESTAMP(NOW())-:session_lifetime
 
         ";
 
-         $stmt = $this->db->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
-         return $stmt->execute(Array(
-              ':session_lifetime' => $this->session_life_time
-         ));
-
+        return $stmt->execute(Array(
+                    ':session_lifetime' => $maxlifetime ? : $this->session_life_time
+        ));
     }
 
     /**
      * regenerate the session id
      * @return boolean
      */
-    public function regenerateId()
-    {
+    public function regenerateId() {
 
         $old_session_id = session_id();
 
@@ -350,6 +325,5 @@ class Mysql extends Session
 
         return true;
     }
-
 
 }

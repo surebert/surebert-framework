@@ -50,11 +50,10 @@ class Gateway
     public static $request;
 
     /**
-     * The agent of the client from the HTTP_USER_AGENT or command line if from the command line
-     *
+     * The agent of the client from the HTTP_USER_AGENT or blank
      * @var string
      */
-    public static $agent = 'command line';
+    public static $agent = '';
 
     /**
      * The http_host if it exists
@@ -107,7 +106,7 @@ class Gateway
      * @var boolean 
      */
     public static $render_main_request = true;
-
+    
     /**
      * Converts underscore string to camel case
      * @param string $str
@@ -181,6 +180,96 @@ class Gateway
         return $controller_class;
     }
     
+    protected static $routes = [];
+    
+    public static function addRoute($method, $pattern, $callable){
+        self::$routes[strtoupper($method)][$pattern] = $callable;
+    }
+    
+     /**
+     * Processes any routes when matching controller methods do not exist
+     * @return boolean
+     * @throws type
+     */
+    protected static function processRoutes(\sb\Request $request){
+        
+        //loop through route options
+        foreach (self::$routes as $http_methods => $routes) {
+
+            //limit the routes to any HTML methods defined or any if *
+            if($http_methods != '*' && !in_array($request->method, explode(',', $http_methods))){
+                continue;
+            }
+
+            //for each one of the routes definedc check to see if the pattern matches the request
+            foreach($routes as $pattern=>$callable){
+
+                //define the pattern to match
+                $pattern = preg_replace("/:\w+/", "([^/]+)", $pattern);
+                
+                if(\preg_match('#'.$pattern.'#', $request->request, $matches)){
+
+                    //if the callable is a string
+                    if (\is_string($callable) && strstr($callable, '@')){
+
+                        //check to see if the current controller has a matching method name
+                        $parts = explode("@", $callable);
+                        
+                        if(count($parts) > 1){
+                            //instantiate the class to be called if it is not already $this class
+                            if($parts[0] == '\\'.\get_called_class()){
+                                $class = $this;
+                            } else if(class_exists($parts[0])){
+                                $class = new $parts[0];
+                            }
+                            
+                            //set the request equal to the current request
+                            $class->request = $request;
+
+                            if($class->onBeforeRender($pattern) === false){
+                                return Array('exists' => true, 'data' => false);
+                            }
+                            
+                            //set the callable to the class and method defined
+                            $callable = Array($class, $parts[1]); 
+                        }
+                    }
+
+                    if(is_callable($callable)){
+                        return ['exists' => true, 'data' => \call_user_func_array($callable, array_slice($matches, 1, count($matches)))];
+                    } else {
+                        throw(new \Exception("Routing callable for pattern '".$pattern."' using httpd methods ".$http_methods." on ".  get_called_class()."->route() is not callable"));
+
+                    }
+
+                }
+                
+            }
+        }
+        
+        return Array('exists' => false, 'data' => false);
+    }
+    
+    /**
+     * Returns the calling function through a backtrace
+     * used for error reporting
+     */
+    public static function getCallingMethod() {
+        
+        $bt = debug_backtrace();
+        $caller = $bt[2];
+        
+        $c = '';
+        if (isset($caller['class'])) {
+            $c = $caller['class'] . '::';
+        }
+        if (isset($caller['object'])) {
+            $c = get_class($caller['object']) . '->';
+        }
+
+        return $c.$caller['function'] . '()';
+    }
+
     /**
      * Loads a view for rendering
      * @param mixed $request Either an instance of Request or a string with the path to the view e.g. /user/run
@@ -198,7 +287,7 @@ class Gateway
         if (!$request instanceof Request) {
             trigger_error('$request must be a \sb\Request instance');
         }
-
+      
         if($included){
             $controller_class = self::getControllerClass($request);
         } else {
@@ -279,9 +368,7 @@ class Gateway
     {
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
-        self::$agent = (isset($_SERVER['HTTP_USER_AGENT'])
-                && $_SERVER['HTTP_USER_AGENT'] != 'command line')
-                ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
+        self::$agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
 
         if (defined('REQUEST_URI')) {
             $request = REQUEST_URI;
@@ -311,6 +398,10 @@ class Gateway
         if (\method_exists('App', 'filterAllInput')) {
             \App::filterAllInput($_POST);
         }
+        
+        return function(\sb\Request $request){
+            return self::processRoutes($request);
+        };
 
     }
 }
@@ -367,7 +458,7 @@ require_once ROOT . '/vendor/autoload.php';
 Gateway::fileRequire('/private/config/App.php');
 
 //initialize the gateway
-Gateway::init();
+$process_routes = Gateway::init();
 
 $output = '';
 
@@ -376,8 +467,16 @@ Gateway::fileRequire('/private/config/definitions.php');
 
 //render the main request
 if(Gateway::$render_main_request){
-    $output = Gateway::renderRequest(Gateway::$request, false);
-
+    
+    $response = $process_routes(Gateway::$request);
+    if($response['exists']){
+        $output = $response['data'];
+    }
+   
+    if(!$output){
+        $output = Gateway::renderRequest(Gateway::$request, false);
+    }
+    
     //filter the output if required and display it
     if (\method_exists('\App', "filterAllOutput")) {
         echo \App::filterAllOutput($output);
