@@ -1,15 +1,19 @@
 {
     "name": "surebert/framework",
     "description": "An all purpose php 5 MVC framework",
+    "keywords": ["surebert", "mvc"],
+    "homepage": "https://gitlab.com/paulvisco/surebert-framework",
     "license": "MIT",
     "authors": [
         {
             "name": "Paul Visco",
-            "email": "paulsidekick@gmail.com"
+            "email": "paul.visco@gmail.com"
         }
     ],
     "minimum-stability": "dev",
-    "require": { },
+    "require": {
+        "php": ">=5.6"
+    },
     "autoload": {
         "classmap": ["src/"]
     }
