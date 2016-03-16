@@ -73,9 +73,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
         $this->session_life_time = !is_null($session_life_time) ? $session_life_time : ini_get("session.gc_maxlifetime");
 
         // register the new handler
-
-        session_set_save_handler($this, true);
-
+        session_set_save_handler($this, false);
         session_start();
     }
 
@@ -197,12 +195,8 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
         } else {
             $result = $this->insert($session_id, $data);
         }
-
-        if ($result && $stmt->rowCount()) {
-            return true;
-        } else {
-            return false;
-        }
+        
+        return $result;
     }
 
     /**
