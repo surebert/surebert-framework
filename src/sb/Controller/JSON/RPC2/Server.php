@@ -166,14 +166,15 @@ class Server extends Base
         
         }
         
+        $response = new \stdClass();
+        
          if(!$reflect){
             $response->error = new \sb\JSON\RPC2\Error();
             $response->error->code = -32602;
             $response->error->message = "Invalid method parameters";
-            break;
+            return $response;
         }
 
-        $response = new \stdClass();
         $response->phpdoc = $reflect->getDocComment();
 
         if (\preg_match("~@return (.*?) (.*?)\*/$~s", $response->phpdoc, $match)) {
