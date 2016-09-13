@@ -182,6 +182,7 @@ class RecordPager
     public function flipTo($field, $value)
     {
 
+        $ret = new \stdClass();
         $ret->found = 0;
         $ret->page = new \stdClass();
 
