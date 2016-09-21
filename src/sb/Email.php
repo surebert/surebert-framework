@@ -255,6 +255,22 @@ class Email
      */
     public function onBeforeSend()
     {
+         if(!isset($this->__added_sent_by_stamp)){
+            $this->body .= "\n\nSent Using Surebert Mail"
+                ." recorded: \nSending IP: " . \sb\Gateway::$remote_addr
+                . " \nSending Host: " . \sb\Gateway::$http_host;
+
+            if (!empty($this->body_HTML)) {
+                $this->body_HTML .= '<br /><br />'
+                    .'<span style="font-size:10px;color:#BCBCBC;margin-top:20px;">'
+                    .'Sent Using Surebert Mail:'
+                    .'<br />Sending IP:' . \sb\Gateway::$remote_addr
+                    .' <br />Sending Host: ' . \sb\Gateway::$http_host. '</span>';
+            }
+            
+            $this->__added_sent_by_stamp = true;
+        }
+        
         return true;
     }
     /**
@@ -270,6 +286,7 @@ class Email
         }
 
         if($this->onBeforeSend($this) !== false){
+            
             self::$outbox->addEmailToOutbox($this);
 
             //return if sent
