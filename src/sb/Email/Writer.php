@@ -97,9 +97,7 @@ class Writer
         $sent_emails = 0;
 
         foreach ($this->emails as &$email) {
-
-            $this->addSecurityInfo($email);
-
+            
             //all email goes to DEBUG_EMAIL if specified
             if (defined("DEBUG_EMAIL")) {
                 $email->debug_info = "\n\nDEBUG MODE: Should be sent to: " . $email->to . " when not in debug mode!";
@@ -205,27 +203,6 @@ class Writer
             return $this->logger->sbEmailWriterSent($message);
         } else {
             return $this->logger->sbEmailWriterError($message);
-        }
-    }
-
-    /**
-     * Adds security info of sender
-     *
-     * @param \sb\Email $email
-     */
-    private function addSecurityInfo(\sb\Email &$email)
-    {
-
-        $email->body .= "\n\nFor security purposes the following information was"
-            ." recorded: \nSending IP: " . $this->remote_addr
-            . " \nSending Host: " . $this->http_host;
-
-        if (!empty($email->body_HTML)) {
-            $email->body_HTML .= '<br /><br />'
-                .'<span style="font-size:10px;color:#BCBCBC;margin-top:20px;">'
-                .'For security purposes the following information was recorded:'
-                .'<br />Sending IP:' . $this->remote_addr
-                .' <br />Sending Host: ' . $this->http_host . '</span>';
         }
     }
 
