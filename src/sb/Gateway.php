@@ -444,7 +444,7 @@ if (!defined('ROOT')) {
     }
 
     $root = \str_replace("\\", "/", $root);
-    $root = \preg_replace('~/public.*$~', '', $root);
+    $root = \preg_replace('~/public*$~', '', $root);
 
     define("ROOT", $root);
 
