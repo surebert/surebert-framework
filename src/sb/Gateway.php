@@ -21,15 +21,14 @@ namespace sb;
  * @package Gateway
  *
  */
-class Gateway
-{
+class Gateway {
 
     /**
      * The main controller being served by the request
      * @var sb\Controller
      */
     public static $controller;
-    
+
     /**
      * The main controller class being served by the request
      * @var string
@@ -100,165 +99,159 @@ class Gateway
      * @var boolean
      */
     public static $allow_direct_view_rendering = true;
-    
+
     /**
      * Determines if main request is rendered
      * @var boolean 
      */
     public static $render_main_request = true;
-    
+
     /**
      * Converts underscore string to camel case
      * @param string $str
      * @return string
      */
-    public static function toCamelCase($str)
-    {
-	return preg_replace_callback('/_([a-zA-Z0-9])/', function($v){
-	  return strtoupper($v[1]);
-	}, strtolower($str));
+    public static function toCamelCase($str) {
+        return preg_replace_callback('/_([a-zA-Z0-9])/', function($v) {
+            return strtoupper($v[1]);
+        }, strtolower($str));
     }
-    
+
     /**
      * Converts path to controller class name
      * @param string $str
      * @return string
      */
-    public static function pathToController($str)
-    {
-      return preg_replace_callback('/_([a-z])/', function($v){
-          return "\\".strtoupper($v[1]);
-      }, $str);
+    public static function pathToController($str) {
+        return preg_replace_callback('/_([a-z])/', function($v) {
+            return "\\" . strtoupper($v[1]);
+        }, $str);
     }
 
     /**
      * Sets the request
      * @param $request string
      */
-    public static function setRequest($request){
-         
+    public static function setRequest($request) {
+
         self::$request = new Request($request);
-        
-        $put=[];
-        $delete=[];
-        $data=[];
+
+        $put = [];
+        $delete = [];
+        $data = [];
         $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-        
+
         if ($request_method == 'PUT') {
             \parse_str(file_get_contents("php://input"), $put);
-        } else if($request_method == 'DELETE'){
+        } else if ($request_method == 'DELETE') {
             \parse_str(file_get_contents("php://input"), $delete);
-        } else if($request_method != 'GET' && $request_method != 'POST'){
+        } else if ($request_method != 'GET' && $request_method != 'POST') {
             \parse_str(file_get_contents("php://input"), $data);
         }
 
         self::$request->setInput($_POST, $_COOKIE, $_FILES, $put, $delete, $data);
         self::$request->setMethod($request_method);
-        
+
         //empty the input data so as to prevent its use
         $_GET = $_POST = $_FILES = $_REQUEST = [];
-        
+
         Gateway::$controller_class = self::getControllerClass(self::$request);
-        
     }
-    
+
     /**
      * Gets the controller class name from the request
      * @param \sb\Request $request
      * @return string
      */
-    public static function getControllerClass(\sb\Request $request){
+    public static function getControllerClass(\sb\Request $request) {
         $controller = $request->path_array[0];
         $controller_class = '\Controllers\Index';
-        $request_class = '\\Controllers\\'.ucwords(self::pathToController($controller));
-        if(class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))){
+        $request_class = '\\Controllers\\' . ucwords(self::pathToController($controller));
+        if (class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))) {
             $controller_class = $request_class;
-        } else if($controller == 'surebert'){
+        } else if ($controller == 'surebert') {
             $controller_class = '\\sb\\Controller\\Toolkit';
         }
-        
+
         return $controller_class;
     }
-    
+
     protected static $routes = [];
-    
-    public static function addRoute($method, $pattern, $callable){
+
+    public static function addRoute($method, $pattern, $callable) {
         self::$routes[strtoupper($method)][$pattern] = $callable;
     }
-    
-     /**
+
+    /**
      * Processes any routes when matching controller methods do not exist
      * @return boolean
      * @throws type
      */
-    protected static function processRoutes(\sb\Request $request){
-        
+    protected static function processRoutes(\sb\Request $request) {
+
         //loop through route options
         foreach (self::$routes as $http_methods => $routes) {
 
             //limit the routes to any HTML methods defined or any if *
-            if($http_methods != '*' && !in_array($request->method, explode(',', $http_methods))){
+            if ($http_methods != '*' && !in_array($request->method, explode(',', $http_methods))) {
                 continue;
             }
 
             //for each one of the routes definedc check to see if the pattern matches the request
-            foreach($routes as $pattern=>$callable){
+            foreach ($routes as $pattern => $callable) {
 
                 //define the pattern to match
                 $pattern = preg_replace("/:\w+/", "([^/]+)", $pattern);
-                
-                if(\preg_match('#'.$pattern.'#', $request->request, $matches)){
+
+                if (\preg_match('#' . $pattern . '#', $request->request, $matches)) {
 
                     //if the callable is a string
-                    if (\is_string($callable) && strstr($callable, '@')){
+                    if (\is_string($callable) && strstr($callable, '@')) {
 
                         //check to see if the current controller has a matching method name
                         $parts = explode("@", $callable);
-                        
-                        if(count($parts) > 1){
+
+                        if (count($parts) > 1) {
                             //instantiate the class to be called if it is not already $this class
-                            if($parts[0] == '\\'.\get_called_class()){
+                            if ($parts[0] == '\\' . \get_called_class()) {
                                 $class = $this;
-                            } else if(class_exists($parts[0])){
+                            } else if (class_exists($parts[0])) {
                                 $class = new $parts[0];
                             }
-                            
+
                             //set the request equal to the current request
                             $class->request = $request;
 
-                            if($class->onBeforeRender($pattern) === false){
+                            if ($class->onBeforeRender($pattern) === false) {
                                 return Array('exists' => true, 'data' => false);
                             }
-                            
+
                             //set the callable to the class and method defined
-                            $callable = Array($class, $parts[1]); 
+                            $callable = Array($class, $parts[1]);
                         }
                     }
 
-                    if(is_callable($callable)){
+                    if (is_callable($callable)) {
                         return ['exists' => true, 'data' => \call_user_func_array($callable, array_slice($matches, 1, count($matches)))];
                     } else {
-                        throw(new \Exception("Routing callable for pattern '".$pattern."' using httpd methods ".$http_methods." on ".  get_called_class()."->route() is not callable"));
-
+                        throw(new \Exception("Routing callable for pattern '" . $pattern . "' using httpd methods " . $http_methods . " on " . get_called_class() . "->route() is not callable"));
                     }
-
                 }
-                
             }
         }
-        
+
         return Array('exists' => false, 'data' => false);
     }
-    
+
     /**
      * Returns the calling function through a backtrace
      * used for error reporting
      */
     public static function getCallingMethod() {
-        
+
         $bt = debug_backtrace();
         $caller = $bt[2];
-        
+
         $c = '';
         if (isset($caller['class'])) {
             $c = $caller['class'] . '::';
@@ -267,7 +260,7 @@ class Gateway
             $c = get_class($caller['object']) . '->';
         }
 
-        return $c.$caller['function'] . '()';
+        return $c . $caller['function'] . '()';
     }
 
     /**
@@ -275,8 +268,7 @@ class Gateway
      * @param mixed $request Either an instance of Request or a string with the path to the view e.g. /user/run
      * @return string The rendered view data
      */
-    public static function renderRequest($request, $included = true)
-    {
+    public static function renderRequest($request, $included = true) {
         if ($request instanceof Request && \method_exists('\App', 'filterAllInput')) {
             \App::filterAllInput($request->get);
             \App::filterAllInput($request->post);
@@ -287,15 +279,15 @@ class Gateway
         if (!$request instanceof Request) {
             trigger_error('$request must be a \sb\Request instance');
         }
-      
-        if($included){
+
+        if ($included) {
             $controller_class = self::getControllerClass($request);
         } else {
             $controller_class = Gateway::$controller_class;
         }
-        
+
         $controller = new $controller_class();
-        
+
         $controller->included = $included;
         if (!$included) {
             self::$controller = $controller;
@@ -303,13 +295,13 @@ class Gateway
         if ($request != self::$request) {
             $request->get = array_merge(self::$request->get, $request->get);
         }
-        
+
         if (!$controller instanceof \sb\Controller\Base) {
             throw new \Exception("Your custom controller " . $controller_class . " must extend \sb\Controller\Base");
         }
-        
+
         $controller->setRequest($request);
-        
+
         return $controller->render();
     }
 
@@ -317,8 +309,7 @@ class Gateway
      * Require a new mod.  Will load the init.php if it exists
      * @param type $mod_name
      */
-    public static function requireMod($mod_name)
-    {
+    public static function requireMod($mod_name) {
         if (!\in_array($mod_name, self::$mods)) {
             self::$mods[] = $mod_name;
         }
@@ -332,8 +323,7 @@ class Gateway
      *
      * @param $path The path to the file from ROOT of the framework e.g. /public/surebert/sb.js
      */
-    public static function fileRequire($path)
-    {
+    public static function fileRequire($path) {
         require(ROOT . $path);
     }
 
@@ -342,8 +332,7 @@ class Gateway
      * @param $path The path to the file from ROOT
      * @return string or false if file not found
      */
-    public static function fileRead($path)
-    {
+    public static function fileRead($path) {
         $contents = '';
         if (\is_file(ROOT . $path)) {
             $fh = \fopen(ROOT . $path, "r");
@@ -364,8 +353,7 @@ class Gateway
     /**
      * Initializes the gateway by determining the
      */
-    public static function init()
-    {
+    public static function init() {
         self::$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : self::$remote_addr;
 
         self::$agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : self::$agent;
@@ -383,27 +371,27 @@ class Gateway
         if (isset(self::$cmd_options['config'])) {
             require(self::$cmd_options['config']);
             if (isset($_GET)) {
-                $request.='?' . \http_build_query($_GET);
+                $request .= '?' . \http_build_query($_GET);
             }
         }
-            
+
         if (isset(self::$cmd_options['http_host'])) {
             self::$http_host = self::$cmd_options['http_host'];
         } else {
             self::$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : self::$http_host;
         }
-        
+
         self::setRequest($request);
-        
+
         if (\method_exists('App', 'filterAllInput')) {
             \App::filterAllInput($_POST);
         }
-        
-        return function(\sb\Request $request){
+
+        return function(\sb\Request $request) {
             return self::processRoutes($request);
         };
-
     }
+
 }
 
 Gateway::$start_time = \microtime(true);
@@ -412,39 +400,36 @@ if (!defined('ROOT')) {
 
     $cwd = \getcwd();
     $root = \dirname($cwd);
-    
+
     if (\defined('STDIN')) {
-        
+       
         $root = isset($argv[0]) ? $argv[0] : $root;
         
-        if (isset($_SERVER['argv'])
-                && isset($_SERVER['argv'][0]) && preg_match("~phpunit(-skelgen)?~", $_SERVER['argv'][0])
+        if (isset($_SERVER['argv']) && isset($_SERVER['argv'][0]) && preg_match("~phpunit(-skelgen)?~", $_SERVER['argv'][0])
         ) {
-            
+
             Gateway::$render_main_request = false;
-            
+
             foreach ($_SERVER['argv'] as $k => $v) {
                 if ($v == '--bootstrap') {
                     $root = $_SERVER['argv'][$k + 1];
                     break;
                 }
             }
-            
-        } 
-        
-        Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:'));
-           
-        if ($root == 'index.php') {
-            $root = \dirname(getcwd());
         }
 
+        Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:'));
+
+        if(is_file($root)){
+            $root = dirname(dirname(realpath($root)));
+        }
+        
         Gateway::$command_line = true;
     } elseif (isset($_SERVER['DOCUMENT_ROOT'])) {
-        $root = $_SERVER['DOCUMENT_ROOT'];
+        $root = preg_replace("~/public$~", "", $_SERVER['DOCUMENT_ROOT']);
     }
 
     $root = \str_replace("\\", "/", $root);
-    $root = \preg_replace('~/public$~', '', $root);
 
     define("ROOT", $root);
 
@@ -466,17 +451,17 @@ $output = '';
 Gateway::fileRequire('/private/config/definitions.php');
 
 //render the main request
-if(Gateway::$render_main_request){
-    
+if (Gateway::$render_main_request) {
+
     $response = $process_routes(Gateway::$request);
-    if($response['exists']){
+    if ($response['exists']) {
         $output = $response['data'];
     }
-   
-    if(!$output){
+
+    if (!$output) {
         $output = Gateway::renderRequest(Gateway::$request, false);
     }
-    
+
     //filter the output if required and display it
     if (\method_exists('\App', "filterAllOutput")) {
         echo \App::filterAllOutput($output);
