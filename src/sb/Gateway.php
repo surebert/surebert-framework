@@ -402,9 +402,9 @@ if (!defined('ROOT')) {
     $root = \dirname($cwd);
 
     if (\defined('STDIN')) {
-       
+
         $root = isset($argv[0]) ? $argv[0] : $root;
-        
+
         if (isset($_SERVER['argv']) && isset($_SERVER['argv'][0]) && preg_match("~phpunit(-skelgen)?~", $_SERVER['argv'][0])
         ) {
 
@@ -420,10 +420,10 @@ if (!defined('ROOT')) {
 
         Gateway::$cmd_options = getopt('', Array('request:', 'http_host:', 'config:'));
 
-        if(is_file($root)){
+        if (is_file($root)) {
             $root = dirname(dirname(realpath($root)));
         }
-        
+
         Gateway::$command_line = true;
     } elseif (isset($_SERVER['DOCUMENT_ROOT'])) {
         $root = preg_replace("~/public$~", "", $_SERVER['DOCUMENT_ROOT']);
