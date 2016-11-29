@@ -395,7 +395,7 @@ class Email
 
         //add all attachments for this email
         foreach($this->attachments as &$attachment) {
-
+            
         //if only filepath is set, grab name and contents from there
             if(isset($attachment->filepath)) {
                 if(empty($attachment->name)) {
@@ -419,9 +419,9 @@ class Email
                 $attachment->mime_type = \sb\Files::extensionToMime($attachment->extension);
             }
 
-            if($attachment->encoding == 'base64'){
+            if($attachment->encoding == 'base64' && !isset($attachment->_base64_encoded)){
+                $attachment->_base64_encoded = true;
                 $attachment->contents = chunk_split(base64_encode($attachment->contents));
-
             }
 
             // Add file attachment to the message
