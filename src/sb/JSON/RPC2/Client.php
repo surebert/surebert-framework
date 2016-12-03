@@ -177,7 +177,7 @@ class Client
         $out[] = "User Agent: " . $this->agent;
 
         if ($this->php_serialize_response) {
-            $out[] = "php-serialize-response: " . $this->php_serialize_response ? 1 : 0;
+            $out[] = "php-serialize-response: " . ($this->php_serialize_response ? 1 : 0);
         }
 
         //if there are cookies add them
