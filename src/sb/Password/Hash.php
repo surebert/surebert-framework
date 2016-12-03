@@ -111,7 +111,17 @@ class Hash {
      */
     public static function create($password) {
         // format: algorithm:iterations:salt:hash
-        $salt = base64_encode(mcrypt_create_iv(self::$salt_byte_size, MCRYPT_DEV_URANDOM));
+        if(function_exists('random_bytes')){
+            $salt = random_bytes(self::$salt_byte_size);
+        } else if(function_exists('openssl_random_pseudo_bytes')){
+            $salt = openssl_random_pseudo_bytes(self::$salt_byte_size);
+        } else if(function_exists('mcrypt_create_iv')){
+            $salt = mcrypt_create_iv(self::$salt_byte_size, MCRYPT_DEV_URANDOM);
+        } else {
+            throw(new Exception("You must have random_bytes, openssl_random_pseudo_bytes or mcrypt_create_iv function available to create salt"));
+        }
+        
+        $salt = base64_encode($salt);
         return self::$hash_algorithm . ":" . self::$iterations . ":" . $salt . ":" .
             base64_encode(self::calculate(
                     self::$hash_algorithm, $password, $salt, self::$iterations, self::$hash_byte_size, true
