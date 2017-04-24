@@ -174,7 +174,7 @@ class Client
         if (isset($content_length)) {
             $out[] = $content_length;
         }
-        $out[] = "User Agent: " . $this->agent;
+        $out[] = "User-Agent: " . $this->agent;
 
         if ($this->php_serialize_response) {
             $out[] = "php-serialize-response: " . ($this->php_serialize_response ? 1 : 0);
