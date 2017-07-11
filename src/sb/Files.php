@@ -163,7 +163,7 @@ class Files
         if($mime){
             return $mime;
         } elseif(class_exists('finfo') && is_file($file)){
-            $finfo = @new \finfo(FILEINFO_MIME, "/usr/share/misc/magic");
+            $finfo = @new \finfo(FILEINFO_MIME);
 
             if($finfo){
                 /* get mime-type for a specific file */
