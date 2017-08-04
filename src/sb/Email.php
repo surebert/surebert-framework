@@ -455,8 +455,11 @@ class Email
         $message .="--".$mixed_boundary."--".PHP_EOL;
 
         $this->body = $message;
-
-        $raw = "To: ".$this->to.PHP_EOL;
+        $raw = "";
+        if($this->to){
+            $raw .= "To: ".$this->to.PHP_EOL;
+        }
+        
         $raw .= "Subject: ".$this->subject.PHP_EOL;
         $raw .= $this->_header_text .$this->body;
         return $raw;
