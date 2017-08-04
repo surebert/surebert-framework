@@ -123,7 +123,7 @@ class Writer
                     $email->body_HTML .= nl2br($email->debug_info);
                 }
             }
-
+            $email->to = $email->to ? $email->to : null;
             $email->constructMultipartMessage();
 
             if (mail($email->to, $email->subject, $email->body, $email->_header_text, "-f ".$email->from)) {
