@@ -19,7 +19,8 @@
  *      agent_str VARCHAR(500),
  *      PRIMARY KEY (id)
  *  ) ENGINE = MEMORY;
- *
+ *  ALTER TABLE online_visitors CREATE INDEX ip(ip);
+ *  ALTER TABLE online_visitors CREATE INDEX uname(uname);
  *  GRANT ALL ON @myDatabase.* TO '@myUser'@'@myHost' IDENTIFIED BY '@myPass';
  *
  * $visitors = \sb\Web\Visitors::getVisitorData();
@@ -126,7 +127,7 @@ class Visitors
     {
 
         $expiration = (time()-self::$time_before_expire);
-        $delete = self::$db->prepare("DELETE FROM online_visitors WHERE (ip = INET_ATON(:ip) AND uname='guest' OR uname=:uname) OR tstamp < :expiration");
+        $delete = self::$db->prepare("DELETE FROM online_visitors WHERE (ip = INET_ATON(:ip) AND (uname='guest' OR uname=:uname)) OR tstamp < :expiration");
 
         $delete->execute(Array(
             ':ip' => $visitor->ip,

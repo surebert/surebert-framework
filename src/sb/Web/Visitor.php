@@ -64,8 +64,8 @@ class Visitor
         $this->dname = $dname;
         $this->mobl = $mobl;
         $this->tstamp = time();
-        $this->ip = class_exists('Gateway') ? \sb\Gateway::$remote_addr : '';
-        $this->agent = class_exists('Gateway') && isset(\sb\Gateway::$agent) ? \sb\Gateway::$agent : '';
+        $this->ip = class_exists('\sb\Gateway') ? \sb\Gateway::$remote_addr : '';
+        $this->agent = class_exists('\sb\Gateway') && isset(\sb\Gateway::$agent) ? \sb\Gateway::$agent : '';
     }
 
     /**
