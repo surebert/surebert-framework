@@ -66,11 +66,12 @@ class Client
      * </code>
      *
      * @param $url String The url of the server
-     * @param $timeout The time to wait for a response in seconds
+     * @param $timeout The time to wait for a response in seconds for curl to open a connection. Default is 3 seconds
      * @param $port Integer The port to make the request on
+     * @param $request_timeout integer The timeout of the curl request execution. Default is 30 seconds
      * @return \sb\JSON\RPC2\Response
      */
-    public function __construct($url, $timeout = 1, $port = null)
+    public function __construct($url, $timeout = 3, $port = null, $request_timeout = 30)
     {
 
         $data = parse_url($url);
@@ -85,6 +86,7 @@ class Client
         $this->uri = $data['path'];
 
         $this->timeout = $timeout;
+        $this->request_timeout = $request_timeout;
     }
 
     /**
@@ -149,6 +151,7 @@ class Client
         $host = $this->host;
         $port = $this->port;
         $timeout = $this->timeout;
+        $request_timeout = $this->request_timeout;
         $uri = $this->uri;
 
         $json = json_encode($request);
@@ -187,7 +190,7 @@ class Client
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout); 
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout); 
+        curl_setopt($ch, CURLOPT_TIMEOUT, $request_timeout); 
         
         $url = 'http'.($this->port == 443 ? 's' : '').'://'.$this->host.$uri;
         if($this->method == 'post'){
