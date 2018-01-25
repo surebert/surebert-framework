@@ -98,12 +98,11 @@ class RecordPager
 
         $pagenum = ($pagenum < 1) ? 1 : $pagenum;
 
-        if ((trim($this->sql) == '')) {
-
-            throw(new \Exception("The SQL statement '$this->sql' is not valid."));
-        } elseif (!(stristr(($this->sql), 'SELECT')) || (stristr(($this->sql), 'LIMIT'))) {
-
-            throw(new \Exception("SQL must be a 'SELECT' statment with no 'LIMIT' clause"));
+        $this->sql = trim($this->sql);
+        if ($this->sql == '') {
+            throw(new \Exception("The SQL statement is blank and therefore not valid."));
+        } else if (strtoupper(substr($this->sql, 0, 6)) != 'SELECT' || stristr($this->sql, " LIMIT ")) {
+            throw(new \Exception("Expecting SQL statment starting with 'SELECT' and with no 'LIMIT' clause, found: ".$this->sql));
         } else {
 
             //start return object
