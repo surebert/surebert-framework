@@ -48,6 +48,10 @@ class Client
      */
     protected $request;
     
+    /**
+     * Determines if CURL verifys host/ssl
+     * @var boolean 
+     */
     protected $verify_ssl = true;
 
     /**
