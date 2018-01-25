@@ -40,13 +40,15 @@ class Client
      * The user agent to send with the request
      * @var string
      */
-    public $agent = '\sb\JSON\RPC2\Client';
+    public $agent = '';
 
     /**
      * The \sb\_JSON\RPC2\Request to dispatch
      * @var \sb\JSON\RPC2\Request
      */
     protected $request;
+    
+    protected $verify_ssl = true;
 
     /**
      * Creates an instance of \sb\JSON\RPC2\Client
@@ -153,31 +155,10 @@ class Client
             echo "--> " . $json;
         }
 
-        if ($this->method == 'post') {
-            if (isset($this->encryption_key)) {
-                $json = $this->encryptor->encrypt($json);
-            }
-            $content_length = 'Content-Length: ' . strlen($json);
-        } else {
-            $params = base64_encode(json_encode($request->params));
-            $params = urlencode($params);
-
-            $uri .= (strstr($this->uri, '?') ? '&' : '?')
-                . 'method=' . $request->method . '&params='
-                . $params . '&id=' . $request->id;
-        }
-
-        $out = Array();
-        $out[] = strtoupper($this->method) . " " . $uri . " HTTP/1.1";
-        $out[] = 'Host: ' . $this->host;
-
-        if (isset($content_length)) {
-            $out[] = $content_length;
-        }
-        $out[] = "User-Agent: " . $this->agent;
-
+        $headers = [];
+        
         if ($this->php_serialize_response) {
-            $out[] = "php-serialize-response: " . ($this->php_serialize_response ? 1 : 0);
+            $headers[] = "php-serialize-response:".($this->php_serialize_response ? 1 : 0);
         }
 
         //if there are cookies add them
@@ -187,35 +168,53 @@ class Client
                 $cookies .= $key . '=' . urlencode($val) . ';';
             }
 
-            $out[] = "Cookie: " . $cookies;
+            $headers[] = "Cookie: " . $cookies;
         }
-
-        $out[] = 'Connection: close';
 
         $response_str = '';
 
-        if ($this->port == 443) {
-            $host = 'ssl://' . $this->host;
+        $ch = curl_init();
+        if($headers){
+            curl_setopt($ch,CURLOPT_HTTPHEADER, $headers); 
         }
-        $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
-        if (!$fp || !(get_resource_type($fp) == 'stream')) {
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->verify_ssl ? 2 : false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl ? 2 : false);
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->agent ? $this->agent : \sb\Gateway::$http_host.' '.'\sb\JSON\RPC2\Client ');
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout); 
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout); 
+        
+        $url = 'http'.($this->port == 443 ? 's' : '').'://'.$this->host.$uri;
+        if($this->method == 'post'){
+            if (isset($this->encryption_key)) {
+                $json = $this->encryptor->encrypt($json);
+            }
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        } else {
+            
+            $params = base64_encode(json_encode($request->params));
+            $params = urlencode($params);
+
+            $url .= (strstr($this->uri, '?') ? '&' : '?')
+                . 'method=' . $request->method . '&params='
+                . $params . '&id=' . $request->id;
+    
+        }
+        
+        curl_setopt ($ch, CURLOPT_URL, $url);  
+       
+        $response_str = curl_exec($ch);
+        $error = curl_errno($ch);
+        if($error){
             $response = new \sb\JSON\RPC2\Response();
             $response->error = new \sb\JSON\RPC2\Error('-32099');
             $response->error->message = 'Server error';
-            $response->error->data = 'Could not reach: ' . $this->host . ": #$errno - $errstr";
+            $response->error->data = 'Could not reach: ' . $this->host . ": #$error - ". curl_error($ch);
             return $response;
         }
-
-        $data = implode("\r\n", $out) . "\r\n\r\n" . $json;
-
-        \fputs($fp, $data);
-
-        while (!\feof($fp)) {
-            $response_str .= \fread($fp, 8192);
-        }
         
-        \fclose($fp);
-
         return $this->processResponse($response_str);
     }
 
@@ -227,34 +226,17 @@ class Client
     protected function processResponse($str)
     {
 
-        $marker = \strpos($str, "\r\n\r\n") + 4;
-        $headers = \substr($str, 0, $marker);
-        $body = \substr($str, $marker);
-
-        if ($this->debug == true) {
-            echo "\n<--" . $body;
-        }
-
-        if (\stristr($headers, "Transfer-Encoding: chunked")) {
-            $body = $this->unchunkData($body);
-        }
-
-        //ungzip the content
-        if (\substr($body, 0, 3) == "\x1f\x8b\x08") {
-            $body = $this->gzdecode($body);
-        }
-
         if (!empty($this->encryption_key)) {
-            $body = $this->encryptor->decrypt($body);
+            $str = $this->encryptor->decrypt($str);
         }
 
-        $this->logResponse($body);
+        $this->logResponse($str);
 
         //check if response body is serialized json_response object and just unserialize and return if it is
-        if ($this->php_serialize_response && !empty($body)) {
+        if ($this->php_serialize_response && !empty($str)) {
 
             try {
-                $serialized = \unserialize($body);
+                $serialized = \unserialize($str);
                 if ($serialized !== false) {
                     $response = $serialized;
                 }
@@ -267,10 +249,10 @@ class Client
         }
 
         //Not sure about this?
-        $body = \utf8_encode($body);
+        $str = \utf8_encode($str);
 
         if (!isset($response)) {
-            $response = new \sb\JSON\RPC2\Response($body);
+            $response = new \sb\JSON\RPC2\Response($str);
         }
 
         return $response;
@@ -313,79 +295,4 @@ class Client
         }
     }
 
-    /**
-     * gzdecodes the data
-     * @param $data gzencoded string
-     * @return string
-     */
-    protected function gzdecode($data)
-    {
-
-        $flags = \ord(substr($data, 3, 1));
-        $headerlen = 10;
-        $extralen = 0;
-        $filenamelen = 0;
-
-        if ($flags & 4) {
-            $extralen = \unpack('v', substr($data, 10, 2));
-            $extralen = $extralen[1];
-            $headerlen += 2 + $extralen;
-        }
-        // Filename
-        if ($flags & 8) {
-            $headerlen = \strpos($data, chr(0), $headerlen) + 1;
-        }
-
-        // Comment
-        if ($flags & 16) {
-            $headerlen = \strpos($data, chr(0), $headerlen) + 1;
-        }
-
-        // CRC at end of file
-        if ($flags & 2) {
-            $headerlen += 2;
-        }
-
-        $unpacked = \gzinflate(substr($data, $headerlen));
-        if ($unpacked === false) {
-            $unpacked = $data;
-        }
-        return $unpacked;
-    }
-
-    /**
-     * This handles content encoding chunked for HTTP 1.1, taken from php.net fsockopen manual
-     * @param $str
-     * @return string
-     */
-    private function unchunkData($str)
-    {
-
-        if (!is_string($str) or strlen($str) < 1) {
-            return false;
-        }
-
-        $eol = "\r\n";
-        $add = \strlen($eol);
-        $tmp = $str;
-        $str = '';
-
-        do {
-            $tmp = \ltrim($tmp);
-            $pos = \strpos($tmp, $eol);
-            if ($pos === false) {
-                return false;
-            }
-            $len = \hexdec(substr($tmp, 0, $pos));
-            if (!\is_numeric($len) or $len < 0) {
-                return false;
-            }
-            $str .= \substr($tmp, ($pos + $add), $len);
-            $tmp = \substr($tmp, ($len + $pos + $add));
-            $check = \trim($tmp);
-        } while (!empty($check));
-
-        unset($tmp);
-        return $str;
-    }
 }
