@@ -66,8 +66,9 @@ class Client
      * </code>
      *
      * @param $url String The url of the server
-     * @param $timeout The time to wait for a response in seconds
+     * @param $timeout The time to wait for a response in seconds for curl to open a connection. Default is 3 seconds
      * @param $port Integer The port to make the request on
+     * @param $request_timeout integer The timeout of the curl request execution. Default is 30 seconds
      * @return \sb\JSON\RPC2\Response
      */
     public function __construct($url, $timeout = 3, $port = null, $request_timeout = 30)
