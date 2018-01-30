@@ -191,6 +191,7 @@ class Client
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout); 
         curl_setopt($ch, CURLOPT_TIMEOUT, $request_timeout); 
+        curl_setopt($ch, CURLOPT_PORT, $port);
         
         $url = 'http'.($this->port == 443 ? 's' : '').'://'.$this->host.$uri;
         if($this->method == 'post'){
