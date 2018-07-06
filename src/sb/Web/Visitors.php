@@ -11,8 +11,8 @@
  *   CREATE TABLE online_visitors(
  *      id INT UNSIGNED NOT NULL AUTO_INCREMENT,
  *      mobl CHAR(1) DEFAULT 0,
- *      ip INT,
- *      tstamp INT(10) UNSIGNED,
+ *      ip INT UNSIGNED,
+ *      tstamp UNSIGNED,
  *      uname VARCHAR(15),
  *      dname VARCHAR(50),
  *      agent VARCHAR(50),
