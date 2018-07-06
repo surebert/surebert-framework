@@ -125,8 +125,18 @@ class Writer
             }
             $email->to = $email->to ? $email->to : null;
             $email->constructMultipartMessage();
-
-            if (mail($email->to, $email->subject, $email->body, $email->_header_text, "-f ".$email->from)) {
+            
+            //sanitize sender params
+            if(preg_match("~<(.*?)>~", $email->from, $match)){
+                $sender = $match[1];
+            } else {
+                $sender = $email->from;
+            }
+      
+            $sender = filter_var($sender, FILTER_SANITIZE_EMAIL);
+            $params = sprintf('-f%s', escapeshellcmd($sender));
+    
+            if (mail($email->to, $email->subject, $email->body, $email->_header_text, $params)) {
 
                 $email->sent = 1;
                 $sent_emails++;
