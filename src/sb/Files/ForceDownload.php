@@ -15,11 +15,12 @@ class ForceDownload
      * Send headers and begins force-download
      *
      * @param string $file The path to the file to force download
-     * @param strin $display_file_name The filename to give to the
+     * @param string $display_file_name The filename to give to the
+     * @param int $seekat Where to start in file stream
      * force download if different than the basename of the file arg
      *
      */
-    public static function send($file, $display_file_name = '')
+    public static function send($file, $display_file_name = '', $seekat=0)
     {
         $display_file_name = $display_file_name ? $display_file_name : basename($file);
         $display_file_name = str_replace(" ", "_", $display_file_name);
@@ -35,7 +36,7 @@ class ForceDownload
         while (ob_get_level() > 0) {
             ob_end_flush();
         }
-        \sb\Files::readChunked($file);
+        \sb\Files::readChunked($file, $seekat);
     }
 
     /**
