@@ -362,4 +362,27 @@ class Base
         
         return $this->request->getPath($part);
     }
+    
+    /**
+     * Gets a args variable value or returns the default value (null unless overridden)
+     * @param integer $arg_num The numeric arg value
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getArg($arg_num, $default_val = null)
+    {
+        return $this->request->getArg($arg_num, $default_val);
+    }
+    
+    /**
+     * Gets a get variable value or returns the default value (null unless overridden)
+     * @param string $key The $_GET var key to look for
+     * @param mixed $default_val null by default
+     * @return mixed string value or null
+     */
+    public function getGet($key, $default_val = null)
+    {
+        return $this->request->getGet($key, $default_val);
+    }
+
 }
