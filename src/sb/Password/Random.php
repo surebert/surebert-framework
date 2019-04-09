@@ -78,7 +78,7 @@ class Random
 
             $char = '';
 
-            $integer = rand(2, 9);
+            $integer = rand(2, 9).'';
             $new_char = $chars[rand(0, $chars_length - 1)];
             if (strstr($this->password, $new_char)) {
                 $char = $new_char;
