@@ -146,7 +146,8 @@ class Connection
      * Executes the command line function that completes the remote windows operations
      * @param $command string the command to issue to the smbclient
      * @param $output array what the command line returns
-     * @param $log boolean weather to log this transaction
+     * @param $log boolean whether to log this transaction
+     * @return int Exit code for smbclient: 0 for success, 1 for error
      */
     public function execute($command, &$output = null)
     {
@@ -154,8 +155,15 @@ class Connection
         $cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
         exec($cmd, $output, $return);
 
-        if(stristr(implode(" ", $output), 'NT_STATUS_ACCOUNT_LOCKED_OUT')){
-            throw(new \Exception('NT_STATUS_ACCOUNT_LOCKED_OUT: '.$this->username));
+        if($return === 1){
+            $errmsg = sprintf("Host: %s / Share: %s / Username: %s / Domain: %s / Error Message: %s",
+                $this->host,
+                $this->share,
+                $this->username,
+                $this->domain,
+                implode(" ", $output)
+            );
+            throw new \Exception($errmsg);
         }
 
         if($this->debug == true){
