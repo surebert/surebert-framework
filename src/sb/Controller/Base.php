@@ -226,6 +226,10 @@ class Base
                 if (preg_match("~@servable (true|false)~", $docs, $match)) {
                     $servable = $match[1] == 'true' ? true : false;
                 }
+
+                if (preg_match("~@triggers (.*)~", $docs, $match)) {
+                    $method_to_trigger = $match[1];
+                }
             }
 
             //set up arguments to pass to function
@@ -252,6 +256,21 @@ class Base
 
                 $data = \call_user_func_array(array($this, $method), array_values($args));
             }
+            // Run any subsequent processes found in the method's docblock
+            if (isset($method_to_trigger))
+            {
+                $commandline_invocation = $this->getCommandlineInvocation($method_to_trigger);
+                $triggered_process = new \sb\Linux\Process($commandline_invocation);
+                if ($triggered_process->status()) {
+                    if (\sb\Gateway::$command_line) {
+                        \sb\Gateway::$controller->log("Triggering Process for: '$commandline_invocation'");
+                        \sb\Gateway::$controller->log("Triggered process has PID: {$triggered_process->getPid()}");
+                    }
+                } else {
+                    throw new Exception("Failed to start configured process for command '{$method_to_trigger}'");
+                }
+            }
+
             return Array('exists' => true, 'data' => $this->filterOutput($data));
         }
 
