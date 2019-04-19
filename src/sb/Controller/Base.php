@@ -260,14 +260,16 @@ class Base
             if (isset($method_to_trigger))
             {
                 $commandline_invocation = $this->getCommandlineInvocation($method_to_trigger);
-                $triggered_process = new \sb\Linux\Process($commandline_invocation);
-                if ($triggered_process->status()) {
-                    if (\sb\Gateway::$command_line) {
-                        \sb\Gateway::$controller->log("Triggering Process for: '$commandline_invocation'");
-                        \sb\Gateway::$controller->log("Triggered process has PID: {$triggered_process->getPid()}");
+                if ($commandline_invocation) {
+                    $triggered_process = new \sb\Linux\Process($commandline_invocation);
+                    if ($triggered_process->status()) {
+                        if (\sb\Gateway::$command_line) {
+                            \sb\Gateway::$controller->log("Triggering Process for: '$commandline_invocation'");
+                            \sb\Gateway::$controller->log("Triggered process has PID: {$triggered_process->getPid()}");
+                        }
+                    } else {
+                        throw new Exception("Failed to start configured process for command '{$method_to_trigger}'");
                     }
-                } else {
-                    throw new Exception("Failed to start configured process for command '{$method_to_trigger}'");
                 }
             }
 
