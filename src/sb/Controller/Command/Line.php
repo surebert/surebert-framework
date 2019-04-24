@@ -356,6 +356,10 @@ class Line extends Base
         // Run any subsequent processes found in the method's docblock
         if (isset($this->docblock->triggers))
         {
+            // Forbid recursion
+            if (strtolower($this->docblock->method_name) === strtolower($this->docblock->triggers)) {
+                throw new \Exception("@triggers docblock method cannot invoke itself");
+            }
             $commandline_invocation = $this->getCommandlineInvocation($this->docblock->triggers);
             if ($commandline_invocation) {
                 $triggered_process = new \sb\Linux\Process($commandline_invocation);

@@ -217,7 +217,8 @@ class Base
 
             // Parse docblock
             $reflection = new \ReflectionMethod($this, $method);
-            $this->docblock = $this->parseDocblock($reflection->getDocComment());
+            $fully_qualified_method_name = implode('::', [$reflection->class, $reflection->name]);
+            $this->docblock = $this->parseDocblock($reflection->getDocComment(), $fully_qualified_method_name);
 
             // Override defaults with docblock values if present
             $servable       = $this->docblock->servable       ?? $servable;
@@ -388,10 +389,13 @@ class Base
      *     $this->docblock->tagname == <tagval>
      *
      * @var string $docblock_text
+     * @var string $method_name  Name of method whose docblock is being parsed
      */
-    public function parseDocblock(string $docblock_text)
+    public function parseDocblock(string $docblock_text, string $method_name)
     {
         $docblock_obj = new \stdClass();
+
+        $docblock_obj->method_name = $method_name;
 
         // Return empty object if given empty input
         if (empty($docblock_text)) {

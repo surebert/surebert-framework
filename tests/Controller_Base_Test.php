@@ -12,11 +12,11 @@ final class Controller_Base_Test extends TestCase
     /**
      * @dataProvider docblockProvider
      */
-    public function test_parseDocblock($docblock_text, $expectation)
+    public function test_parseDocblock($docblock_text, $method_name, $expectation)
     {
         $controller = new \sb\Controller\Base();
         
-        $output = $controller->parseDocblock($docblock_text);
+        $output = $controller->parseDocblock($docblock_text, $method_name);
 
         $this->assertEquals($expectation, $output);
     }
@@ -24,37 +24,46 @@ final class Controller_Base_Test extends TestCase
 
     public function docblockProvider()
     {
+        $method_name = '\\A\\B::c';
         return [
             [
                 '',
-                (object) []
+                $method_name,
+                (object) ['method_name' => $method_name]
             ],
             [
                 '/**
                   * No tags
                   */',
-                (object) []
+                $method_name,
+                (object) ['method_name' => $method_name]
             ],
             [
                 '/**
                   * Preamble
                   * @TagWithNoHandler TagVal
                   */',
-                (object) []
+                $method_name,
+                (object) ['method_name' => $method_name]
             ],
             [
                 '/**
                   * Recognized Tag / Unrecognized Val
                   * @http_method Foo
                   */',
-                (object) []
+                $method_name,
+                (object) ['method_name' => $method_name]
             ],
             [
                 '/**
                   * Recognized Tag / Recognized Val
                   * @http_method get
                   */',
-                (object) ['http_method' => 'get']
+                $method_name,
+                (object) [
+                    'method_name' => $method_name,
+                    'http_method' => 'get'
+                ]
             ],
             [
                 '/**
@@ -64,7 +73,9 @@ final class Controller_Base_Test extends TestCase
                   * @servable true
                   * @triggers \sb\Controller\Classname
                   */',
+                $method_name,
                 (object) [
+                    'method_name'    => $method_name,
                     'http_method'    => 'get',
                     'input_as_array' => true,
                     'servable'       => true,
