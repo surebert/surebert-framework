@@ -352,5 +352,20 @@ class Line extends Base
         $this->log($this->number_of_errors, 'ERRORS');
         $this->log($milliseconds . "ms", 'TIME_MS');
         $this->log(date('Y/m/d H:i:s') . "\n", 'END');
+
+        // Run any subsequent processes found in the method's docblock
+        if (isset($this->docblock->triggers))
+        {
+            $commandline_invocation = $this->getCommandlineInvocation($this->docblock->triggers);
+            if ($commandline_invocation) {
+                $triggered_process = new \sb\Linux\Process($commandline_invocation);
+                if ($triggered_process->status()) {
+                    $this->log("Triggering Process for: '$commandline_invocation'");
+                    $this->log("Triggered process has PID: {$triggered_process->getPid()}");
+                } else {
+                    throw new Exception("Failed to start configured process for command '{$method_to_trigger}'");
+                }
+            }
+        }
     }
 }
