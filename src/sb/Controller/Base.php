@@ -45,6 +45,12 @@ class Base
     protected $default_file = 'index';
     
     /**
+     * The parsed docblock tags
+     * @var stdClass
+     */
+    protected $docblock = null;
+
+    /**
      * Any rendering errors that are found
      * @var array
      */
@@ -209,24 +215,15 @@ class Base
 
         if (method_exists($this, $method)) {
 
+            // Parse docblock
             $reflection = new \ReflectionMethod($this, $method);
+            $fully_qualified_method_name = implode('::', [$reflection->class, $reflection->name]);
+            $this->docblock = $this->parseDocblock($reflection->getDocComment(), $fully_qualified_method_name);
 
-            //check for phpdocs
-            $docs = $reflection->getDocComment();
-            if (!empty($docs)) {
-
-                if (preg_match("~@http_method (get|post)~", $docs, $match)) {
-                    $http_method = $match[1];
-                }
-
-                if (preg_match("~@input_as_array (true|false)~", $docs, $match)) {
-                    $input_as_array = $match[1] == 'true' ? true : false;
-                }
-
-                if (preg_match("~@servable (true|false)~", $docs, $match)) {
-                    $servable = $match[1] == 'true' ? true : false;
-                }
-            }
+            // Override defaults with docblock values if present
+            $servable       = $this->docblock->servable       ?? $servable;
+            $input_as_array = $this->docblock->input_as_array ?? $input_as_array;
+            $http_method    = $this->docblock->http_method    ?? $http_method;
 
             //set up arguments to pass to function
             if (!isset($this->request)) {
@@ -252,6 +249,7 @@ class Base
 
                 $data = \call_user_func_array(array($this, $method), array_values($args));
             }
+
             return Array('exists' => true, 'data' => $this->filterOutput($data));
         }
 
@@ -383,6 +381,57 @@ class Base
     public function getGet($key, $default_val = null)
     {
         return $this->request->getGet($key, $default_val);
+    }
+
+    /**
+     * Parses docblock tags.  Each known docblock tag '@tagname <tagval>'
+     * becomes a property of $this->docblock such that the following holds:
+     *     $this->docblock->tagname == <tagval>
+     *
+     * @var string $docblock_text
+     * @var string $method_name  Name of method whose docblock is being parsed
+     */
+    public function parseDocblock(string $docblock_text, string $method_name)
+    {
+        $docblock_obj = new \stdClass();
+
+        $docblock_obj->method_name = $method_name;
+
+        // Return empty object if given empty input
+        if (empty($docblock_text)) {
+            return $docblock_obj;
+        }
+
+        // Note that the tag name must be the first capture
+        $tag_handlers = [
+            "~@(http_method) (get|post)~" => function ($match) {
+                return [ 'tagname' => $match[1], 'tagval' => $match[2] ];
+            },
+            "~@(input_as_array) (true|false)~" => function ($match) {
+                return [ 'tagname' => $match[1], 'tagval' => $match[2] == 'true' ? true : false ];
+            },
+            "~@(servable) (true|false)~" => function ($match) {
+                return [ 'tagname' => $match[1], 'tagval' => $match[2] == 'true' ? true : false ];
+            },
+            "~@(triggers) (.*)~" => function ($match) {
+                return [ 'tagname' => $match[1], 'tagval' => trim($match[2]) ];
+            },
+        ];
+
+        // For each tag regex, invoke its corresponding handler
+        foreach ($tag_handlers as $pattern => $handler)
+        {
+            if (preg_match($pattern, $docblock_text, $match))
+            {
+                // Invoke handler
+                $parsed_tag = $handler($match);
+
+                // Set dynamic field to handler return val
+                $docblock_obj->{$parsed_tag['tagname']} = $parsed_tag['tagval'];
+            }
+        }
+
+        return $docblock_obj;
     }
 
 }

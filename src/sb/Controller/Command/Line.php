@@ -298,6 +298,49 @@ class Line extends Base
         return true;
     }
 
+
+    /**
+     * Returns the name of a controller method in a format that can
+     * be used in a commandline invocation.
+     *
+     *
+     * @param string  $method_name Fully qualified name to method whose invocation is being generated
+     * @param string  $http_host   --http_host arg, optional, defaults to Gateway::$http_host
+     * @param array   $http_args   Query string args, optional, defaults to empty array
+     * @return string The commandline invocation for the given args
+     *
+     * e.g. php /var/www/html/enterpriseteam/public/index.php '--request=/jobs_invision/load?doctype=obmt85'  --http_host=enterpriseteam.roswellpark.org
+     *
+     * Note: It is up to client code to add any bash redirects
+     */
+    public function getCommandlineInvocation($method_name, $http_host=null, $http_args=[])
+    {
+        $command_prefix = "php " . ROOT . "/public/index.php";
+
+        // Match fully-qualified method name: e.g. \Foo\Controllers\Jobs\Bar::baz()
+        preg_match('/Controllers.([^:]+)::([A-Za-z_]+)/', $method_name, $matches);
+        if (count($matches) !== 3) {
+            return '';
+        }
+        $class_name = strtolower($matches[1]);
+        $class_name = preg_replace('/\\\/', '_', $class_name);
+        $method_name = strtolower($matches[2]);
+
+        // Build argument for --request opt
+        $request_arg = "/$class_name/$method_name";
+        if (!empty($http_args)) {
+            $request_arg .= "?" . http_build_query($http_args);
+        }
+
+        // Build argument for --http_host opt
+        if (is_null($http_host)) {
+            $http_host = \sb\Gateway::$http_host;
+        }
+
+        return "$command_prefix --request=$request_arg --http_host=$http_host";
+    }
+
+
     /**
      * Calculates time and logs to the destructor log if it exists
      */
@@ -309,5 +352,24 @@ class Line extends Base
         $this->log($this->number_of_errors, 'ERRORS');
         $this->log($milliseconds . "ms", 'TIME_MS');
         $this->log(date('Y/m/d H:i:s') . "\n", 'END');
+
+        // Run any subsequent processes found in the method's docblock
+        if (isset($this->docblock->triggers))
+        {
+            // Forbid recursion
+            if (strtolower($this->docblock->method_name) === strtolower($this->docblock->triggers)) {
+                throw new \Exception("@triggers docblock method cannot invoke itself");
+            }
+            $commandline_invocation = $this->getCommandlineInvocation($this->docblock->triggers);
+            if ($commandline_invocation) {
+                $triggered_process = new \sb\Linux\Process($commandline_invocation);
+                if ($triggered_process->status()) {
+                    $this->log("Triggering Process for: '$commandline_invocation'");
+                    $this->log("Triggered process has PID: {$triggered_process->getPid()}");
+                } else {
+                    throw new Exception("Failed to start configured process for command '{$method_to_trigger}'");
+                }
+            }
+        }
     }
 }

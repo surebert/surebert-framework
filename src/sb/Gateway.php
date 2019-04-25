@@ -107,6 +107,15 @@ class Gateway {
     public static $render_main_request = true;
 
     /**
+     * Indicates that Gateway was instantiated via phpunit unit test for the framework itself
+     * rather than for code which uses the framework.  When testing the framework itself, files
+     * such as App.php and the definitions files will not be present.
+     *
+     * @var boolean
+     */
+    public static $running_framework_unittests = false;
+
+    /**
      * Converts underscore string to camel case
      * @param string $str
      * @return string
@@ -324,6 +333,9 @@ class Gateway {
      * @param $path The path to the file from ROOT of the framework e.g. /public/surebert/sb.js
      */
     public static function fileRequire($path) {
+        if (Gateway::$running_framework_unittests) {
+            return;
+        }
         require(ROOT . $path);
     }
 
@@ -407,12 +419,17 @@ if (!defined('ROOT')) {
 
         if (isset($_SERVER['argv']) && isset($_SERVER['argv'][0]) && preg_match("~phpunit(-skelgen)?~", $_SERVER['argv'][0])
         ) {
+            print_r($_SERVER['argv']);
 
             Gateway::$render_main_request = false;
 
             foreach ($_SERVER['argv'] as $k => $v) {
                 if ($v == '--bootstrap') {
                     $root = $_SERVER['argv'][$k + 1];
+
+                    if (basename($_SERVER['argv'][$k+1]) === 'surebert_bootstrap.php') {
+                        Gateway::$running_framework_unittests = true;
+                    }
                     break;
                 }
             }
