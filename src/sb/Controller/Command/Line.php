@@ -102,6 +102,15 @@ class Line extends Base
      * @var int
      */
     protected $max_execution_time = 3600;
+
+    /**
+     * Determines whether the process specified in a @triggers docblock tag
+     * can be fired.  Defaults to false.  If the method in question has fulfilled
+     * its responsibilities, it should set this to true.
+     *
+     * @var boolean
+     */
+    protected $trigger_next_process = false;
     
 
     /**
@@ -356,18 +365,22 @@ class Line extends Base
         // Run any subsequent processes found in the method's docblock
         if (isset($this->docblock->triggers))
         {
-            // Forbid recursion
-            if (strtolower($this->docblock->method_name) === strtolower($this->docblock->triggers)) {
-                throw new \Exception("@triggers docblock method cannot invoke itself");
-            }
-            $commandline_invocation = $this->getCommandlineInvocation($this->docblock->triggers);
-            if ($commandline_invocation) {
-                $triggered_process = new \sb\Linux\Process($commandline_invocation);
-                if ($triggered_process->status()) {
-                    $this->log("Triggering Process for: '$commandline_invocation'");
-                    $this->log("Triggered process has PID: {$triggered_process->getPid()}");
-                } else {
-                    throw new Exception("Failed to start configured process for command '{$method_to_trigger}'");
+            if (!$this->trigger_next_process) {
+                $this->log("Cannot trigger '{$this->docblock->triggers}' because trigger_next_process flag was not set to true");
+            } else {
+                // Forbid recursion
+                if (strtolower($this->docblock->method_name) === strtolower($this->docblock->triggers)) {
+                    throw new \Exception("@triggers docblock method cannot invoke itself");
+                }
+                $commandline_invocation = $this->getCommandlineInvocation($this->docblock->triggers);
+                if ($commandline_invocation) {
+                    $triggered_process = new \sb\Linux\Process($commandline_invocation);
+                    if ($triggered_process->status()) {
+                        $this->log("Triggering Process for: '$commandline_invocation'");
+                        $this->log("Triggered process has PID: {$triggered_process->getPid()}");
+                    } else {
+                        throw new Exception("Failed to start configured process for command '{$method_to_trigger}'");
+                    }
                 }
             }
         }
