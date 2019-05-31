@@ -506,7 +506,7 @@ if (Gateway::$render_main_request) {
     
     if($output instanceof \GuzzleHttp\Psr7\Response){
         Gateway::renderResponse($output);
-    } else if (is_string($output)){
+    } else {
         //filter the output if required and display it
         if (\method_exists('\App', "filterAllOutput")) {
             echo \App::filterAllOutput($output);
