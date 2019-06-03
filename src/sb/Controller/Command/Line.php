@@ -346,7 +346,7 @@ class Line extends Base
             $http_host = \sb\Gateway::$http_host;
         }
 
-        return "$command_prefix --request=$request_arg --http_host=$http_host";
+        return "$command_prefix --request='$request_arg' --http_host=$http_host";
     }
 
 
