@@ -322,7 +322,7 @@ class Line extends Base
      *
      * Note: It is up to client code to add any bash redirects
      */
-    public function getCommandlineInvocation($method_name, $http_host=null, $http_args=[])
+    public static function getCommandlineInvocation($method_name, $http_host=null, $http_args=[])
     {
         $command_prefix = "php " . ROOT . "/public/index.php";
 
