@@ -330,5 +330,25 @@ class Request
         
         return false;
     }
+    
+    /**
+     * Convert request to psr7
+     * @return \GuzzleHttp\Psr7\Request
+     * @throws Exception
+     */
+    public function toPsr7(){
+        
+        if(!class_exists('\GuzzleHttp\Psr7\ServerRequest')){
+            throw(new \Exception("You must include \GuzzleHttp\Psr7 library for the the \sb\Request's toPsr7 method to work"));
+        }
+        
+        $_POST = $this->post;
+        $_GET = $this->get;
+        $_COOKIE = $this->cookie;
+        $_FILES = $this->files;
+        $request = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+        $_GET = $_POST = $_FILES = $_REQUEST = [];
+        return $request;
+    }
 
 }

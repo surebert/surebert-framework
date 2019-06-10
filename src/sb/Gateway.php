@@ -403,6 +403,31 @@ class Gateway {
             return self::processRoutes($request);
         };
     }
+    
+    /**
+     * Renders a PSR7 response
+     * @param \GuzzleHttp\Psr7\Response $response
+     */
+    public static function renderResponse(\GuzzleHttp\Psr7\Response $response){
+        $http_line = sprintf('HTTP/%s %s %s',
+            $response->getProtocolVersion(),
+            $response->getStatusCode(),
+            $response->getReasonPhrase()
+        );
+        header($http_line, true, $response->getStatusCode());
+        foreach ($response->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header("$name: $value", false);
+            }
+        }
+        $stream = $response->getBody();
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+        while (!$stream->eof()) {
+            echo $stream->read(1024 * 8);
+        }
+    }
 
 }
 
@@ -478,13 +503,18 @@ if (Gateway::$render_main_request) {
     if (!$output) {
         $output = Gateway::renderRequest(Gateway::$request, false);
     }
-
-    //filter the output if required and display it
-    if (\method_exists('\App', "filterAllOutput")) {
-        echo \App::filterAllOutput($output);
+    
+    if($output instanceof \GuzzleHttp\Psr7\Response){
+        Gateway::renderResponse($output);
     } else {
-        echo $output;
+        //filter the output if required and display it
+        if (\method_exists('\App', "filterAllOutput")) {
+            echo \App::filterAllOutput($output);
+        } else {
+            echo $output;
+        }
     }
+    
 }
 
 if (ob_get_level()) {
