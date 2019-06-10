@@ -37,11 +37,11 @@ final class Controller_Command_Line_Test extends TestCase
 
             // Well-formed class path with method
             ['\Controllers\Jobs\Foo::bar()', 'hostname', [],
-                'php /home/ROSWELL/da42389/surebert-framework/public/index.php --request=/jobs_foo/bar --http_host=hostname'],
+                "php /home/ROSWELL/da42389/surebert-framework/public/index.php --request='/jobs_foo/bar' --http_host=hostname"],
 
             // Well-formed class path with method and http vars
             ['\Controllers\Jobs\Foo::bar()', 'hostname', ['a' => 1, 'b' => 2],
-                'php /home/ROSWELL/da42389/surebert-framework/public/index.php --request=/jobs_foo/bar?a=1&b=2 --http_host=hostname'],
+                "php /home/ROSWELL/da42389/surebert-framework/public/index.php --request='/jobs_foo/bar?a=1&b=2' --http_host=hostname"],
 
         ];
     }
