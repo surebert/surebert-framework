@@ -444,8 +444,6 @@ if (!defined('ROOT')) {
 
         if (isset($_SERVER['argv']) && isset($_SERVER['argv'][0]) && preg_match("~phpunit(-skelgen)?~", $_SERVER['argv'][0])
         ) {
-            print_r($_SERVER['argv']);
-
             Gateway::$render_main_request = false;
 
             foreach ($_SERVER['argv'] as $k => $v) {
