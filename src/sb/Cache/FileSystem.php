@@ -176,7 +176,13 @@ class FileSystem implements Base
      */
     protected function clearDir($dir)
     {
-        $iterator = new \DirectoryIterator($dir);
+        try {
+            // Handle cases where the directory has not been initialized (e.g., no keys were stored
+            // yet)
+            $iterator = new \DirectoryIterator($dir);
+        } catch (\UnexpectedValueException $e) {
+            return true;
+        }
         foreach ($iterator as $file) {
 
             if ($file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
