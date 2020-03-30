@@ -334,7 +334,7 @@ class Email
         }
 
         $this->_header_text = "From: ".$this->from.PHP_EOL;
-        $this->_header_text .= "Reply-To: ".$this->from.PHP_EOL;
+        $this->_header_text .= "Reply-To: ".($this->reply_to ?:  $this->from).PHP_EOL;
         $this->_header_text .= "Return-Path: ".$this->from.PHP_EOL;
 
         foreach($this->cc as $cc) {
