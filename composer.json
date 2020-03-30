@@ -1,6 +1,6 @@
 {
     "name": "surebert/framework",
-    "description": "An all purpose PHP 5 MVC framework",
+    "description": "An all purpose PHP 7 MVC framework",
     "keywords": ["surebert", "mvc"],
     "homepage": "https://gitlab.com/paulvisco/surebert-framework",
     "license": "MIT",
