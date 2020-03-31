@@ -106,6 +106,12 @@ class Writer
                 $email->to = \DEBUG_EMAIL;
                 $email->from = \DEBUG_EMAIL;
 
+                if (!empty($email->reply_to)) {
+                    $email->debug_info .= "\nDEBUG MODE: Should reply-to: "
+                        . $email->reply_to . " when not in debug mode!";
+                    $email->reply_to = \DEBUG_EMAIL;
+                }
+
                 if (!empty($email->cc)) {
                     $email->debug_info .= "\nDEBUG MODE: Should be be CCed to: "
                         . implode(", ", $email->cc) . " when not in debug mode!";
