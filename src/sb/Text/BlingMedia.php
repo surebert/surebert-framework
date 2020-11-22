@@ -142,7 +142,7 @@ class BlingMedia extends Bling {
     public static function externalVideoToPlayer($str) {
 
         ### Youtube videos ###
-        $str = preg_replace_callback("~\[youtube\](.*?)\[\/youtube\]~s", function($match) use ($width, $height) {
+        $str = preg_replace_callback("~\[youtube\](.*?)\[\/youtube\]~s", function($match) {
           
             if(empty($match[1])){
                 return $match[0];
@@ -163,7 +163,7 @@ class BlingMedia extends Bling {
 
 
         ### Vimeo videos ###
-        $str = preg_replace_callback("~\[vimeo](.*?)\[\/vimeo]~s", function($match) use ($width, $height) {
+        $str = preg_replace_callback("~\[vimeo](.*?)\[\/vimeo]~s", function($match) {
             $movie = $match[1];
             $movie = preg_replace("~^http://vimeo.com/~", "", $movie);
             $str = '<iframe src="https://player.vimeo.com/video/' . $movie . '?title=0&amp;byline=0&amp;portrait=0" width="100%" height="500px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
