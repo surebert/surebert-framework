@@ -152,7 +152,7 @@ class Connection
     public function execute($command, &$output = null)
     {
 
-        $cmd = "smbclient '\\\\{$this->host}\\{$this->share}' $this->password -U $this->username -W $this->domain -c '$command' 2>&1";
+        $cmd = "smbclient ".escapeshellarg("\\\\{$this->host}\\{$this->share}")." ".escapeshellarg($this->password)." -U ".escapeshellarg($this->username)." -W ".escapeshellarg($this->domain)." -c ".escapeshellarg($command)." 2>&1";
         exec($cmd, $output, $return);
 
         if($return === 1){
