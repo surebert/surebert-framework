@@ -160,7 +160,7 @@ class Visitors
     {
 
         //covert to agent_str to lowercase for comparison
-        $agent_str = strtolower($visitor->agent_str);
+        $agent_str = strtolower($visitor->agent_str ?? '');
 
         //empty agents and those with bot are considered bots
         if(substr_count($agent_str, "bot") || empty($agent_str)){
