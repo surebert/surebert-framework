@@ -12,52 +12,52 @@ class VCard
 
     protected $output;
     protected $output_format;
-    protected $first_name;
-    protected $middle_name;
-    protected $last_name;
-    protected $edu_title;
-    protected $addon;
-    protected $nickname;
-    protected $company;
-    protected $organisation;
-    protected $department;
-    protected $job_title;
-    protected $note;
-    protected $tel_work1_voice;
-    protected $tel_work2_voice;
-    protected $tel_home1_voice;
-    protected $tel_home2_voice;
-    protected $tel_cell_voice;
-    protected $tel_car_voice;
-    protected $tel_pager_voice;
-    protected $tel_additional;
-    protected $tel_work_fax;
-    protected $tel_home_fax;
-    protected $tel_isdn;
-    protected $tel_preferred;
-    protected $tel_telex;
-    protected $work_street;
-    protected $work_zip;
-    protected $work_city;
-    protected $work_region;
-    protected $work_country;
-    protected $home_street;
-    protected $home_zip;
-    protected $home_city;
-    protected $home_region;
-    protected $home_country;
-    protected $postal_street;
-    protected $postal_zip;
-    protected $postal_city;
-    protected $postal_region;
-    protected $postal_country;
-    protected $url_work;
-    protected $role;
-    protected $birthday;
-    protected $email;
-    protected $rev;
-    protected $lang;
-    protected $photo;
+    protected $first_name = '';
+    protected $middle_name = '';
+    protected $last_name = '';
+    protected $edu_title = '';
+    protected $addon = '';
+    protected $nickname = '';
+    protected $company = '';
+    protected $organisation = '';
+    protected $department = '';
+    protected $job_title = '';
+    protected $note = '';
+    protected $tel_work1_voice = '';
+    protected $tel_work2_voice = '';
+    protected $tel_home1_voice = '';
+    protected $tel_home2_voice = '';
+    protected $tel_cell_voice = '';
+    protected $tel_car_voice = '';
+    protected $tel_pager_voice = '';
+    protected $tel_additional = '';
+    protected $tel_work_fax = '';
+    protected $tel_home_fax = '';
+    protected $tel_isdn = '';
+    protected $tel_preferred = '';
+    protected $tel_telex = '';
+    protected $work_street = '';
+    protected $work_zip = '';
+    protected $work_city = '';
+    protected $work_region = '';
+    protected $work_country = '';
+    protected $home_street = '';
+    protected $home_zip = '';
+    protected $home_city = '';
+    protected $home_region = '';
+    protected $home_country = '';
+    protected $postal_street = '';
+    protected $postal_zip = '';
+    protected $postal_city = '';
+    protected $postal_region = '';
+    protected $postal_country = '';
+    protected $url_work = '';
+    protected $role = '';
+    protected $birthday = '';
+    protected $email = '';
+    protected $rev = '';
+    protected $lang = '';
+    protected $photo = '';
     protected $phones_home = Array();
     protected $phones_word = Array();
 
@@ -292,13 +292,15 @@ class VCard
 
     protected function quotedPrintableEncode($quotprint)
     {
+        if($quotprint){
+            $quotprint = (string) str_replace('\r\n', chr(13) . chr(10), $quotprint);
+            $quotprint = (string) str_replace('\n', chr(13) . chr(10), $quotprint);
+            $quotprint = preg_replace_callback("~([\x01-\x1F\x3D\x7F-\xFF])~", function($match){
+                return sprintf('=%02X', ord($match[1]));
+            }, $quotprint);
+            $quotprint = (string) str_replace('\=0D=0A', '=0D=0A', $quotprint);
+        }
 
-        $quotprint = (string) str_replace('\r\n', chr(13) . chr(10), $quotprint);
-        $quotprint = (string) str_replace('\n', chr(13) . chr(10), $quotprint);
-        $quotprint = preg_replace_callback("~([\x01-\x1F\x3D\x7F-\xFF])~", function($match){
-            return sprintf('=%02X', ord($match[1]));
-        }, $quotprint);
-        $quotprint = (string) str_replace('\=0D=0A', '=0D=0A', $quotprint);
         return (string) $quotprint;
     }
 
@@ -320,7 +322,7 @@ class VCard
                 . $this->quotedPrintableEncode($this->first_name . " "
                     . $this->middle_name . " " . $this->last_name
                     . " " . $this->addon) . "\r\n";
-            if (strlen(trim($this->nickname)) > 0) {
+            if ($this->nickname && strlen(trim($this->nickname)) > 0) {
                 $this->output .= (string) "NICKNAME;ENCODING=QUOTED-PRINTABLE:"
                     . $this->quotedPrintableEncode($this->nickname) . "\r\n";
             }
@@ -329,13 +331,13 @@ class VCard
                 . $this->quotedPrintableEncode($this->organisation)
                 . ";" . $this->quotedPrintableEncode($this->department)
                 . "\r\n";
-            if (strlen(trim($this->job_title)) > 0) {
+            if ($this->job_title && strlen(trim($this->job_title)) > 0) {
                 $this->output .= (string) "TITLE" . $this->lang
                     . ";ENCODING=QUOTED-PRINTABLE:"
                     . $this->quotedPrintableEncode($this->job_title)
                     . "\r\n";
             }
-            if (isset($this->note)) {
+            if ($this->note) {
                 $this->output .= (string) "NOTE" . $this->lang
                     . ";ENCODING=QUOTED-PRINTABLE:"
                     . $this->quotedPrintableEncode($this->note)
@@ -350,92 +352,101 @@ class VCard
                 $this->output .= (string) "TEL;HOME;VOICE:" . $phone . "\r\n";
             }
 
-            if (isset($this->tel_cell_voice)) {
+            if ($this->tel_cell_voice) {
                 $this->output .= (string) "TEL;CELL;VOICE:"
                     . $this->tel_cell_voice . "\r\n";
             }
-            if (isset($this->tel_car_voice)) {
+            if ($this->tel_car_voice) {
                 $this->output .= (string) "TEL;CAR;VOICE:"
                     . $this->tel_car_voice . "\r\n";
             }
-            if (isset($this->tel_additional)) {
+            if ($this->tel_additional) {
                 $this->output .= (string) "TEL;VOICE:"
                     . $this->tel_additional . "\r\n";
             }
-            if (isset($this->tel_pager_voice)) {
+            if ($this->tel_pager_voice) {
                 $this->output .= (string) "TEL;PAGER;VOICE:"
                     . $this->tel_pager_voice . "\r\n";
             }
-            if (isset($this->tel_work_fax)) {
+            if ($this->tel_work_fax) {
                 $this->output .= (string) "TEL;WORK;FAX:"
                     . $this->tel_work_fax . "\r\n";
             }
-            if (isset($this->tel_home_fax)) {
+            if ($this->tel_home_fax) {
                 $this->output .= (string) "TEL;HOME;FAX:"
                     . $this->tel_home_fax . "\r\n";
             }
 
-            if (isset($this->tel_isdn)) {
+            if ($this->tel_isdn){
                 $this->output .= (string) "TEL;ISDN:"
                     . $this->tel_isdn . "\r\n";
             }
 
-            if (isset($this->tel_preferred)) {
+            if ($this->tel_preferred) {
                 $this->output .= (string) "TEL;PREF:"
                     . $this->tel_preferred . "\r\n";
             }
-            $this->output .= (string) "ADR;WORK:;" . $this->company . ";"
-                . $this->work_street . ";" . $this->work_city . ";"
-                . $this->work_region . ";" . $this->work_zip . ";"
-                . $this->work_country . "\r\n";
-            $this->output .= (string) "LABEL;WORK;ENCODING=QUOTED-PRINTABLE:"
-                . $this->quotedPrintableEncode($this->company) . "=0D=0A"
-                . $this->quotedPrintableEncode($this->work_street) . "=0D=0A"
-                . $this->quotedPrintableEncode($this->work_city) . ", "
-                . $this->quotedPrintableEncode($this->work_region) . " "
-                . $this->quotedPrintableEncode($this->work_zip) . "=0D=0A"
-                . $this->quotedPrintableEncode($this->work_country) . "\r\n";
-            $this->output .= (string) "ADR;HOME:;" . $this->home_street . ";"
-                . $this->home_city . ";" . $this->home_region . ";"
-                . $this->home_zip . ";" . $this->home_country . "\r\n";
-            $this->output .= (string) "LABEL;HOME;ENCODING=QUOTED-PRINTABLE:"
-                . $this->quotedPrintableEncode($this->home_street)
-                . "=0D=0A" . $this->quotedPrintableEncode($this->home_city)
-                . ", " . $this->quotedPrintableEncode($this->home_region)
-                . " " . $this->quotedPrintableEncode($this->home_zip)
-                . "=0D=0A" . $this->quotedPrintableEncode($this->home_country)
-                . "\r\n";
-            $this->output .= (string) "ADR;POSTAL:;"
-                . $this->postal_street . ";"
-                . $this->postal_city . ";"
-                . $this->postal_region . ";"
-                . $this->postal_zip . ";"
-                . $this->postal_country . "\r\n";
-            $this->output .= (string) "LABEL;POSTAL;ENCODING=QUOTED-PRINTABLE:"
-                . $this->quotedPrintableEncode($this->postal_street)
-                . "=0D=0A" . $this->quotedPrintableEncode($this->postal_city)
-                . ", " . $this->quotedPrintableEncode($this->postal_region)
-                . " " . $this->quotedPrintableEncode($this->postal_zip)
-                . "=0D=0A" . $this->quotedPrintableEncode($this->postal_country)
-                . "\r\n";
-            if (isset($this->url_work)) {
+            if($this->company){
+                $this->output .= (string) "ADR;WORK:;" . $this->company . ";"
+                    . $this->work_street . ";" . $this->work_city . ";"
+                    . $this->work_region . ";" . $this->work_zip . ";"
+                    . $this->work_country . "\r\n";
+                $this->output .= (string) "LABEL;WORK;ENCODING=QUOTED-PRINTABLE:"
+                    . $this->quotedPrintableEncode($this->company) . "=0D=0A"
+                    . $this->quotedPrintableEncode($this->work_street) . "=0D=0A"
+                    . $this->quotedPrintableEncode($this->work_city) . ", "
+                    . $this->quotedPrintableEncode($this->work_region) . " "
+                    . $this->quotedPrintableEncode($this->work_zip) . "=0D=0A"
+                    . $this->quotedPrintableEncode($this->work_country) . "\r\n";
+            }
+
+            if($this->home_street){
+                $this->output .= (string) "ADR;HOME:;" . $this->home_street . ";"
+                    . $this->home_city . ";" . $this->home_region . ";"
+                    . $this->home_zip . ";" . $this->home_country . "\r\n";
+                $this->output .= (string) "LABEL;HOME;ENCODING=QUOTED-PRINTABLE:"
+                    . $this->quotedPrintableEncode($this->home_street)
+                    . "=0D=0A" . $this->quotedPrintableEncode($this->home_city)
+                    . ", " . $this->quotedPrintableEncode($this->home_region)
+                    . " " . $this->quotedPrintableEncode($this->home_zip)
+                    . "=0D=0A" . $this->quotedPrintableEncode($this->home_country)
+                    . "\r\n";
+            }
+
+            if($this->postal_street){
+                $this->output .= (string) "ADR;POSTAL:;"
+                    . $this->postal_street . ";"
+                    . $this->postal_city . ";"
+                    . $this->postal_region . ";"
+                    . $this->postal_zip . ";"
+                    . $this->postal_country . "\r\n";
+                $this->output .= (string) "LABEL;POSTAL;ENCODING=QUOTED-PRINTABLE:"
+                    . $this->quotedPrintableEncode($this->postal_street)
+                    . "=0D=0A" . $this->quotedPrintableEncode($this->postal_city)
+                    . ", " . $this->quotedPrintableEncode($this->postal_region)
+                    . " " . $this->quotedPrintableEncode($this->postal_zip)
+                    . "=0D=0A" . $this->quotedPrintableEncode($this->postal_country)
+                    . "\r\n";
+            }
+
+            if ($this->url_work) {
                 $this->output .= (string) "URL;WORK:" . $this->url_work . "\r\n";
             }
-            if (isset($this->role)) {
+            if ($this->role) {
                 $this->output .= (string) "ROLE"
                     . $this->lang . ":"
                     . $this->role . "\r\n";
             }
-            if (isset($this->birthday)) {
+            if ($this->birthday) {
                 $this->output .= (string) "BDAY:" . $this->birthday . "\r\n";
             }
-            if (isset($this->email)) {
+            if ($this->email) {
                 $this->output .= (string) "EMAIL;PREF;INTERNET:" . $this->email . "\r\n";
             }
-            if (isset($this->tel_telex)) {
+            if ($this->tel_telex) {
                 $this->output .= (string) "EMAIL;TLX:" . $this->tel_telex . "\r\n";
             }
-            if (isset($this->photo)) {
+            if ($this->photo) {
                 $this->output .= (string) $this->photo . "\r\n";
             }
             $this->output .= (string) "REV:" . $this->rev . "\r\n";
