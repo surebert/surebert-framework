@@ -162,7 +162,7 @@ class PDO extends \PDO
      * @param string $sql
      * @return PDOStatement A PDO_statment instance
      */
-    public function prepare($sql, $driver_options=array())
+    public function prepare( $sql, $driver_options = Array()) : \PDOStatement
     {
 
         $md5 = md5($sql);
