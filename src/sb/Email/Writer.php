@@ -133,7 +133,7 @@ class Writer
             $email->constructMultipartMessage();
             
             //sanitize sender params
-            if(preg_match("~<(.*?)>~", $email->from, $match)){
+            if($email->from && preg_match("~<(.*?)>~", $email->from, $match)){
                 $sender = $match[1];
             } else {
                 $sender = $email->from;
@@ -231,7 +231,7 @@ class Writer
     private function checkHeadersForInjection(\sb\Email $email)
     {
 
-        if (\preg_match("~\r|:~i", $email->to) || preg_match("~\r|:~i", $email->from)) {
+        if (($email->to && \preg_match("~\r|:~i", $email->to)) || ($email->from && preg_match("~\r|:~i", $email->from))) {
             return true;
         }
 
