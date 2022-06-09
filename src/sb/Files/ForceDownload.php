@@ -23,7 +23,8 @@ class ForceDownload
     public static function send($file, $display_file_name = '', $seekat=0)
     {
         $display_file_name = $display_file_name ? $display_file_name : basename($file);
-        $display_file_name = str_replace(" ", "_", $display_file_name);
+        $display_file_name = preg_replace("/[^\w\.]+/", "_", $display_file_name);
+
         header("HTTP/1.1 200 OK");
         header("Status: 200 OK");
         header("Pragma: private");
@@ -68,7 +69,7 @@ class ForceDownload
                 }
 
                 if ($zip->close()) {
-                    self::send($zip_file, str_replace("/", "_", basename($path)) . '.zip');
+                    self::send($zip_file, basename($path) . '.zip');
                     unlink($zip_file);
                 }
             } else {
