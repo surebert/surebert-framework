@@ -134,12 +134,38 @@ class FileSystem extends HTML5
         $dir = $this->getRoot() . $log_type;
         $this->validatePath($dir);
 
-        $files = \sb\Files::getFiles($dir, false);
+
+        $files = Array();
+        $iterator = new \DirectoryIterator($dir);
+
+        foreach ($iterator as $file){
+
+            if ( $file->isDir() && !$file->isDot() && !preg_match("~\.~", $file)) {
+                $details = \sb\Files::getDirectorySize($file->getRealPath());
+                $files[$file->getBasename()] = [
+                    'type' => 'dir',
+                    'path' => $file->getPath(),
+                    'size' => \sb\Files::sizeToString($details->size),
+                    'details' => $details,
+                    'mtime' => $file->getMTime(),
+                    'name' => $file->getBaseName()
+                ];
+
+            } else if ($file->isFile()){
+                $files[] = [
+                    'type' => 'file',
+                    'path' => $file->getPath(),
+                    'size' => \sb\Files::sizeToString(filesize($file->getRealPath())),
+                    'mtime' => $file->getMTime(),
+                    'name' => $file->getBaseName()
+                ];
+            }
+        }
 
         rsort($files);
         $html = $this->getNav() . '<h1>Log: ' . $log_type . '</h1>';
         $html .= '<table><thead><tr>';
-        foreach (Array('name', 'size') as $prop) {
+        foreach (Array('name', 'size', 'type') as $prop) {
             $html .= '<th><a href="' . $this->getBaseUrl()
                 . '?command=get_dates&log_type=' . urlencode($log_type)
                 . '&sort_by=' . urlencode($prop);
@@ -152,13 +178,6 @@ class FileSystem extends HTML5
         }
         $html .= '<th>Actions</th></tr></thead><tbody>';
 
-        $f = Array();
-        foreach ($files as $file) {
-            $f[] = Array('name' => $file, 'size' => filesize($this->getRoot() . $log_type . '/' . $file));
-        }
-
-        $files = $f;
-        $f = null;
 
         if (count($files)) {
             usort($files,
@@ -179,20 +198,33 @@ class FileSystem extends HTML5
             $html .= '<tr>';
             $html .= '<td>' . str_replace(".log", "", $file['name']) . '</td>';
 
-            $html .= '<td>' . \sb\Files::sizeToString($file['size']) . '</td>';
+            $html .= '<td>' . $file['size'] . '</td>';
+
+            $html .= '<td>'.$file['type'].'</td>';
             $html .= '<td>';
-            $html .= '<a href="' . ($this->getBaseUrl())
-                . '?command=view&log_type=' .urlencode( $log_type)
-                . '&date_file=' .urlencode( $file['name'])
-                . '">view</a> | <a href="'
-                . ($this->getBaseUrl())
-                . '?command=tail&n=100&log_type=' .urlencode( $log_type)
-                . '&date_file=' . $file['name']
-                . '">tail</a> |<a href="'
-                . (\str_replace("#", "", $this->getBaseUrl()))
-                . '/export?log_type=' . urlencode($log_type)
-                . '&date_file=' . urlencode($file['name'])
-                . '">export</a>';
+
+            if($file['type'] == 'file'){
+                $html .= '<a href="' . ($this->getBaseUrl())
+                    . '?command=view&log_type=' .urlencode( $log_type)
+                    . '&date_file=' .urlencode( $file['name'])
+                    . '">view</a> | <a href="'
+                    . ($this->getBaseUrl())
+                    . '?command=tail&n=100&log_type=' .urlencode( $log_type)
+                    . '&date_file=' . $file['name']
+                    . '">tail</a> |<a href="'
+                    . (\str_replace("#", "", $this->getBaseUrl()))
+                    . '/export?log_type=' . urlencode($log_type)
+                    . '&date_file=' . urlencode($file['name'])
+                    . '">export</a>';
+            } else if($file['type'] == 'dir'){
+                $html .= '<a href="' . ($this->getBaseUrl())
+                    . '?command=get_dates&log_type=' .urlencode( $log_type.'/'.$file['name'])
+                    . '">view</a> | <a href="'
+                    . (\str_replace("#", "", $this->getBaseUrl()))
+                    . '/export?log_type=' . urlencode($log_type.'/'.$file['name'])
+                    . '">export</a>';
+            }
+
             $html .= '</td>';
             $html .= '</tr>';
         }
