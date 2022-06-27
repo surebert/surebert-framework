@@ -48,7 +48,7 @@ class Toolkit extends Base
     public function filterOutput($output)
     {
         if (!isset($this->request->get['sb_comments'])) {
-            return preg_replace("~/\*\*.*?\*/~s", "", $output);
+            return preg_replace("~/\*\*.*?\*/~s", "", $output ?? "");
         } else {
             return $output;
         }
