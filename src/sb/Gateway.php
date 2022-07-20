@@ -178,8 +178,6 @@ class Gateway {
         $request_class = '\\Controllers\\' . ucwords(self::pathToController($controller));
         if (class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))) {
             $controller_class = $request_class;
-        } else if ($controller == 'surebert') {
-            $controller_class = '\\sb\\Controller\\Toolkit';
         }
 
         return $controller_class;
