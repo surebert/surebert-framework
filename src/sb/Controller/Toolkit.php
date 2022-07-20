@@ -158,8 +158,7 @@ class Toolkit extends Base
             }
         } else {
 
-            echo"\nthrow('ERROR: " . $file . " Surebert module \""
-            . \basename($file) . "\" could not be located by /surebert/load ');";
+            echo"\nthrow('ERROR: Surebert module could not be located - base64_encoded details ".base64_encode($file)." ');";
         }
 
         return $data;
