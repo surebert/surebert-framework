@@ -139,7 +139,7 @@ class Email
      *
      * @var string
      */
-    public $body_HTML;
+    public $body_HTML = '';
 
     /**
      * The charset of the email text e.g. iso-8859-1 or UTF-8
@@ -267,10 +267,10 @@ class Email
                     .'<br />Sending IP:' . \sb\Gateway::$remote_addr
                     .' <br />Sending Host: ' . \sb\Gateway::$http_host. '</span>';
             }
-            
+
             $this->__added_sent_by_stamp = true;
         }
-        
+
         return true;
     }
     /**
@@ -286,7 +286,7 @@ class Email
         }
 
         if($this->onBeforeSend($this) !== false){
-            
+
             self::$outbox->addEmailToOutbox($this);
 
             //return if sent
@@ -395,7 +395,7 @@ class Email
 
         //add all attachments for this email
         foreach($this->attachments as &$attachment) {
-            
+
         //if only filepath is set, grab name and contents from there
             if(isset($attachment->filepath)) {
                 if(empty($attachment->name)) {
@@ -459,7 +459,7 @@ class Email
         if($this->to){
             $raw .= "To: ".$this->to.PHP_EOL;
         }
-        
+
         $raw .= "Subject: ".$this->subject.PHP_EOL;
         $raw .= $this->_header_text .$this->body;
         return $raw;
