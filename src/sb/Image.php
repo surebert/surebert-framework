@@ -444,8 +444,11 @@ class Image
      */
     public function __destruct()
     {
-        if(isset($this->original) || isset($this->edited)){
+        if(isset($this->original)){
             imagedestroy($this->original);
+        }
+
+        if(isset($this->edited)){
             imagedestroy($this->edited);
         }
     }
