@@ -81,7 +81,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
      * Opens the session, not needed for db based sessions
      * @return boolean
      */
-    public function open($save_path, $session_name) {
+    public function open($save_path, $session_name) :bool {
         return true;
     }
 
@@ -89,7 +89,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
      * Closes the session
      * @return boolean
      */
-    public function close() {
+    public function close() :bool {
         $this->gc($this->session_life_time);
         return true;
     }
@@ -98,7 +98,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
      * Closes the session, not needed for db based sessions
      * @return boolean
      */
-    public function read($session_id) {
+    public function read($session_id) : string|false {
 
         $stmt_cache = md5(__METHOD__);
         if (!isset($this->stmts[$stmt_cache])) {
@@ -163,7 +163,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
      * @param $data The session data to write
      * @return boolean
      */
-    public function write($session_id, $data) {
+    public function write($session_id, $data) : bool {
 
         $stmt_cache = md5(__METHOD__);
         if (!isset($this->stmts[$stmt_cache])) {
@@ -261,7 +261,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
      * Destroys a sessions by deleting it from the database
      * @return unknown_type
      */
-    public function destroy($session_id) {
+    public function destroy($session_id) :bool {
 
         $sql = "
         DELETE FROM
@@ -288,7 +288,7 @@ class Mysql extends \sb\Session implements \SessionHandlerInterface {
      * Garbage collects any open sessions that are no longer valid
      * @return boolean
      */
-    public function gc($maxlifetime) {
+    public function gc($maxlifetime) : int|false{
 
         $sql = "
             DELETE FROM
