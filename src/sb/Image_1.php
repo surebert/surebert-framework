@@ -183,9 +183,6 @@ class Image
             $this->width['dest'] = $width;
             $this->height['dest'] = $height;
         }
-     
-        $this->width['dest'] = ceil($this->width['dest']);
-        $this->height['dest'] = ceil($this->height['dest']);
 
         //set resize code depending on the type of image it is
         switch ($this->type)
