@@ -125,7 +125,7 @@ class Bar3D
                 $x2, $y1);
 
             // Now draw it.
-            imagefilledpolygon($this->graph, $pt, 4, $this->colors->top);
+            imagefilledpolygon($this->graph, $pt, $this->colors->top);
 
             // Create the side of the column
             $pt = array($x2, $y1,
@@ -134,7 +134,7 @@ class Bar3D
                 $x2, $y2);
 
             // And draw that part too
-            imagefilledpolygon($this->graph, $pt, 4, $this->colors->right);
+            imagefilledpolygon($this->graph, $pt, $this->colors->right);
 
             // Draw the value on
             imagestring($this->graph, 2, $x1 + 2, $y1 + 2, $this->values[$i],
