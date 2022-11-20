@@ -136,10 +136,17 @@ class Image
 
             case "3":
                 $this->type = "png";
+            case "18":
+                $this->type = "webp";
             break;
         }
         //////////////////////////
-        $this->original = imagecreatefromstring(file_get_contents($this->path));
+        if($this->type === 'webp'){
+           $this->original = imagecreatefromwebp($this->path); 
+        } else {
+           $this->original = imagecreatefromstring(file_get_contents($this->path));
+        }
+        
 
     }
 
@@ -183,6 +190,9 @@ class Image
             $this->width['dest'] = $width;
             $this->height['dest'] = $height;
         }
+     
+        $this->width['dest'] = ceil($this->width['dest']);
+        $this->height['dest'] = ceil($this->height['dest']);
 
         //set resize code depending on the type of image it is
         switch ($this->type)
@@ -212,6 +222,14 @@ class Image
                 imagesavealpha($this->edited, true);
 
                 imagecopyresampled($this->edited, $this->original, 0, 0, 0, 0, $this->width['dest'], $this->height['dest'], $this->width['orig'], $this->height['orig']);
+
+            break;
+        
+           case "webp":
+                $this->edited = imagecreatetruecolor($this->width['dest'], $this->height['dest']);
+
+                imagecopyresampled($this->edited, $this->original, 0, 0, 0, 0, $this->width['dest'], $this->height['dest'], $this->width['orig'], $this->height['orig']);
+
 
             break;
         }
@@ -350,6 +368,17 @@ class Image
 
         imagepng($this->edited, $this->path, 1);
     }
+    
+    /**
+     * Saves the image file being edited as a webp
+     *
+     */
+    public function toWebp()
+    {
+
+
+        imagewebp($this->edited, $this->path, 100);
+    }
 
     /**
      * Saves the edited image as a file based on the original images file type
@@ -359,9 +388,7 @@ class Image
     {
 
 
-        if ($this->type == "jpg")
-
-    {
+        if ($this->type == "jpg"){
             $this->toJpg();
 
         } elseif ($this->type == "png") {
@@ -371,6 +398,9 @@ class Image
         } elseif ($this->type == "gif") {
 
             $this->toGif();
+        } elseif ($this->type == "webp") {
+
+            $this->toWebp();
         }
 
     }
@@ -402,6 +432,10 @@ class Image
 
             header("Content-type: image/gif");
             imagegif($image);
+        } elseif ($this->type == "gif") {
+
+            header("Content-type: image/webp");
+            imagewebp($image);
         }
     }
 
