@@ -432,7 +432,7 @@ class Image
 
             header("Content-type: image/gif");
             imagegif($image);
-        } elseif ($this->type == "gif") {
+        } elseif ($this->type == "webp") {
 
             header("Content-type: image/webp");
             imagewebp($image);
