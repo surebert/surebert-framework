@@ -128,17 +128,19 @@ class Image
     {
             case "1":
                 $this->type = "gif";
-            break;
+                break;
 
             case "2":
                 $this->type = "jpg";
-            break;
+                break;
 
             case "3":
                 $this->type = "png";
+                break;
+
             case "18":
                 $this->type = "webp";
-            break;
+                break;
         }
         //////////////////////////
         if($this->type === 'webp'){
