@@ -129,7 +129,7 @@ class Writer
                     $email->body_HTML .= nl2br($email->debug_info);
                 }
             }
-            $email->to = $email->to ? $email->to : null;
+            $email->to = $email->to ? $email->to : "";
             $email->constructMultipartMessage();
             
             //sanitize sender params
