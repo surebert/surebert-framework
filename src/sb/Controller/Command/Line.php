@@ -90,6 +90,11 @@ class Line extends Base
      * @var string 
      */
     protected $log_name = 'commandLine';
+
+    /**
+     * If a subclass defines this attribute, it will be appended to the log_name
+     */
+    protected $log_suffix = null;
     
     /**
      * The default memory limit in mb, default 200
@@ -150,6 +155,9 @@ class Line extends Base
     public function setLogger(\sb\Logger\Base $logger, $logname=''){
         $this->logger = $logger;
         $this->log_name = $logname ? $logname : get_called_class();
+        if (isset($this->log_suffix)) {
+            $this->log_name = $this->log_name . '_' . $this->log_suffix;
+        }
         $this->log_name = preg_replace("~[^\w+]~", "_", $this->log_name);
     }
 
