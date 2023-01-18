@@ -174,7 +174,13 @@ class Gateway {
      */
     public static function getControllerClass(\sb\Request $request) {
         $controller = $request->path_array[0];
-        $controller_class = '\Controllers\Index';
+        if (Gateway::$command_line) {
+            // If run from commandline, default the controller to the framework Command\Line base class
+            $controller_class = 'sb\Controller\Command\Line';
+        } else {
+            // If not run from commandline, default the controller to the project's Index controller
+            $controller_class = '\Controllers\Index';
+        }
         $request_class = '\\Controllers\\' . ucwords(self::pathToController($controller));
         if (class_exists($request_class) && in_array('sb\Controller\Base', class_parents($request_class))) {
             $controller_class = $request_class;
