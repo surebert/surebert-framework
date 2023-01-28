@@ -359,6 +359,15 @@ class Line extends Base
 
 
     /**
+     * Throw a 404 exception when a non-existent commandline route is requested.
+     */
+    public function notFound()
+    {
+        throw new \Exception('404 Not Found');
+    }
+
+
+    /**
      * Calculates time and logs to the destructor log if it exists
      */
     public function __destruct()
