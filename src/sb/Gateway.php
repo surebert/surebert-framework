@@ -101,8 +101,16 @@ class Gateway {
     public static $allow_direct_view_rendering = true;
 
     /**
+     * If this attribute is true,  getArg/getGet/getPost will use the empty string as their default return value.
+     * If this attribute is false, getArg/getGet/getPost will use null as their default return values.
+     * Historically, they have returned null.  Returning the empty string is safer under PHP8.
+     * @var boolean
+     */
+    public static $return_empty_string_by_default = false;
+
+    /**
      * Determines if main request is rendered
-     * @var boolean 
+     * @var boolean
      */
     public static $render_main_request = true;
 
@@ -407,7 +415,7 @@ class Gateway {
             return self::processRoutes($request);
         };
     }
-    
+
     /**
      * Renders a PSR7 response
      * @param \GuzzleHttp\Psr7\Response $response
@@ -505,7 +513,7 @@ if (Gateway::$render_main_request) {
     if (!$output) {
         $output = Gateway::renderRequest(Gateway::$request, false);
     }
-    
+
     if($output instanceof \GuzzleHttp\Psr7\Response){
         Gateway::renderResponse($output);
     } else {
@@ -516,7 +524,7 @@ if (Gateway::$render_main_request) {
             echo $output;
         }
     }
-    
+
 }
 
 if (ob_get_level()) {

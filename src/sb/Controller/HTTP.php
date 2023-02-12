@@ -187,9 +187,12 @@ class HTTP extends Base
      */
     public function getPost($key, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getPost($key, $default_val);
     }
-    
+
     /**
      * Gets a data variable value or returns the default value (null unless overridden)
      * @param string $key The data var key to look for
@@ -200,7 +203,7 @@ class HTTP extends Base
     {
         return $this->request->getData($key, $default_val);
     }
-    
+
     /**
      * Gets a data variable value or returns the default value (null unless overridden)
      * @param string $key The data var key to look for
@@ -211,7 +214,7 @@ class HTTP extends Base
     {
         return $this->request->getDelete($key, $default_val);
     }
-    
+
     /**
      * Gets a data variable value or returns the default value (null unless overridden)
      * @param string $key The data var key to look for
@@ -252,7 +255,7 @@ class HTTP extends Base
     public function getFile($key){
         return $this->request->getFile($key);
     }
-    
+
     /**
      * Retrieves all uploaded files from the request
      * @param string $key
@@ -260,7 +263,7 @@ class HTTP extends Base
     public function getFiles(){
         return $this->request->files;
     }
-    
+
     /**
      * Gets the method used to call the request
      * @return string e.g. GET, POST, PUT, DELETE
@@ -268,7 +271,7 @@ class HTTP extends Base
     public function getMethod(){
         return $this->request->method;
     }
-    
+
     /**
      * Escapes an html string
      * @param string $str

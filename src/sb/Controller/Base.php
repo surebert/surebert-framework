@@ -43,7 +43,7 @@ class Base
      * @var string
      */
     protected $default_file = 'index';
-    
+
     /**
      * The parsed docblock tags
      * @var stdClass
@@ -116,9 +116,9 @@ class Base
 
         //capture view to buffer
         ob_start();
-        
+
         $is_index_controller = \get_called_class() == 'Controllers\Index';
-        
+
         //if no method is set, use index
         if ($is_index_controller) {
             $method = !empty($this->request->path_array[0]) ? $this->request->path_array[0] : $this->default_file;
@@ -135,7 +135,7 @@ class Base
         }
 
         //if direct view rendering is allowed
-        //use controller from first part of URL or default index controller and 
+        //use controller from first part of URL or default index controller and
         //render the view using it as the implied controller
         if (\sb\Gateway::$allow_direct_view_rendering) {
             $direct_view_rendering_output = $this->processDirectViewRendering($template, $extract_vars);
@@ -143,16 +143,16 @@ class Base
                 return $direct_view_rendering_output;
             }
         }
-        
+
         //return whatever notFound has as long as it is a string
         $result = $this->notFound();
-        
+
         if(!is_null($result) && !is_string($result) && !is_numeric($result)){
             throw(new \Exception(ucfirst(gettype($result))." returned where string expected. You must return a string from \\".get_called_class().'->notFound().'));
         }
         return $result;
     }
-    
+
     /**
      * If \sb\Gateway::$allow_direct_view_rendering is set to true
      * Then you can render /some/thing as /some/thing.view rendered through implied
@@ -186,10 +186,10 @@ class Base
             $output = \ob_get_clean();
             return $this->filterOutput($output);
         }
-        
+
         return false;
     }
-    
+
     /**
      * Excutes the controller method that matches the request
      * @param string $method The method that matches the request
@@ -208,7 +208,7 @@ class Base
                 return Array('exists' => true, 'data' => false);
             }
         }
-        
+
         if (!method_exists($this, $method)) {
             $method = \sb\Gateway::toCamelCase($method);
         }
@@ -265,7 +265,7 @@ class Base
         $view_path = ltrim($view, '/');
         $view_file = ROOT . '/private/views/' . $view_path . '.view';
         $exists = is_file($view_file);
-        
+
         if(!$exists){
             foreach (\sb\Gateway::$mods as $mod) {
                 $m = ROOT . '/mod/' . $mod . '/views/' . $view_path . '.view';
@@ -276,11 +276,11 @@ class Base
                 }
             }
         }
-        
+
         return $exists ? $view_file : false;
-        
+
     }
-    
+
     /**
      * Renders the actual .view template
      * @param string $view_path The path to the template e.g. /blah/foo
@@ -296,7 +296,7 @@ class Base
         if(!is_file($___view_file)){
             return false;
         }
-        
+
         //extract class vars to local vars for view
         if ($this->extract) {
             \extract(\get_object_vars($this));
@@ -326,13 +326,13 @@ class Base
 
         //capture view to buffer
         ob_start();
-        
+
         if(!$this->viewExists($view_path)){
             throw(new \Exception("Cannot find view to render in ".\sb\Gateway::getCallingMethod()." \$this->renderView('".$view_path."')"));
         }
-        
+
         $this->getView($view_path, $extract_vars);
-        
+
         return \ob_get_clean();
     }
 
@@ -349,7 +349,7 @@ class Base
             \header("HTTP/1.0 404 Not Found");
         }
     }
-    
+
     /**
      * Grabs the part of the path referenced by index
      * e.g. if path was /image/of/dog $this->getPath(0) would return image
@@ -357,10 +357,10 @@ class Base
      * @return mixed string or false if not set
      */
     public function getPath($part=null){
-        
+
         return $this->request->getPath($part);
     }
-    
+
     /**
      * Gets a args variable value or returns the default value (null unless overridden)
      * @param integer $arg_num The numeric arg value
@@ -369,9 +369,12 @@ class Base
      */
     public function getArg($arg_num, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getArg($arg_num, $default_val);
     }
-    
+
     /**
      * Gets a get variable value or returns the default value (null unless overridden)
      * @param string $key The $_GET var key to look for
@@ -380,6 +383,9 @@ class Base
      */
     public function getGet($key, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getGet($key, $default_val);
     }
 
