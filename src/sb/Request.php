@@ -52,13 +52,13 @@ class Request
      * @var array
      */
     public $put = Array();
-    
+
     /**
      * The DELETE based input from the request
      * @var array
      */
     public $delete = Array();
-    
+
     /**
      * Any input from methods other than GET, POST, PUT, DELETE
      * @var array
@@ -171,7 +171,9 @@ class Request
         if (isset($this->get[$key])) {
             return $this->get[$key];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
 
@@ -186,10 +188,12 @@ class Request
         if (isset($this->post[$key])) {
             return $this->post[$key];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
-    
+
     /**
      * Gets a non PUT, POST, DELETE, GET variable value or returns the default value (null unless overridden)
      * @param string $key The $_POST var key to look for
@@ -201,10 +205,12 @@ class Request
         if (isset($this->data[$key])) {
             return $this->data[$key];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
-    
+
     /**
      * Gets a PUT variable value or returns the default value (null unless overridden)
      * @param string $key The $_POST var key to look for
@@ -216,10 +222,12 @@ class Request
         if (isset($this->put[$key])) {
             return $this->put[$key];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
-    
+
     /**
      * Gets a post variable value or returns the default value (null unless overridden)
      * @param string $key The $_POST var key to look for
@@ -231,7 +239,9 @@ class Request
         if (isset($this->delete[$key])) {
             return $this->delete[$key];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
 
@@ -246,7 +256,9 @@ class Request
         if (isset($this->cookie[$key])) {
             return $this->cookie[$key];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
 
@@ -262,7 +274,9 @@ class Request
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
 
@@ -277,10 +291,12 @@ class Request
         if (isset($this->args[$arg_num])) {
             return $this->args[$arg_num];
         }
-
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $default_val;
     }
-    
+
     /**
      * Gets a uploaded file reference, otherwise returns null
      *
@@ -295,7 +311,7 @@ class Request
 
         return null;
     }
-    
+
     /**
      * Gets the method used to call the request
      * @return string e.g. GET, POST, PUT, DELETE
@@ -303,7 +319,7 @@ class Request
     public function getMethod(){
         return $this->method;
     }
-    
+
     /**
      * Sets the method used to call the request
      * @return string e.g. GET, POST, PUT, DELETE
@@ -311,7 +327,7 @@ class Request
     public function setMethod($method){
         $this->method = $method;
     }
-    
+
     /**
      * Grabs the part of the path referenced by index
      * e.g. if path was /image/of/dog $this->getPath(0) would return image
@@ -319,29 +335,29 @@ class Request
      * @return mixed string or false if not set
      */
     public function getPath($part=null){
-        
+
         if(is_null($part)){
             return $this->path;
         }
-        
+
         if(isset($this->path_array[$part])){
             return $this->path_array[$part];
         }
-        
+
         return false;
     }
-    
+
     /**
      * Convert request to psr7
      * @return \GuzzleHttp\Psr7\Request
      * @throws Exception
      */
     public function toPsr7(){
-        
+
         if(!class_exists('\GuzzleHttp\Psr7\ServerRequest')){
             throw(new \Exception("You must include \GuzzleHttp\Psr7 library for the the \sb\Request's toPsr7 method to work"));
         }
-        
+
         $_POST = $this->post;
         $_GET = $this->get;
         $_COOKIE = $this->cookie;

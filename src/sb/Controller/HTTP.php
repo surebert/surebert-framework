@@ -201,6 +201,9 @@ class HTTP extends Base
      */
     public function getData($key, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getData($key, $default_val);
     }
 
@@ -212,6 +215,9 @@ class HTTP extends Base
      */
     public function getDelete($key, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getDelete($key, $default_val);
     }
 
@@ -223,6 +229,9 @@ class HTTP extends Base
      */
     public function getPut($key, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getPut($key, $default_val);
     }
 
@@ -234,6 +243,9 @@ class HTTP extends Base
      */
     public function getCookie($key, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getCookie($key, $default_val);
     }
 
@@ -245,6 +257,9 @@ class HTTP extends Base
      */
     public function getSession($key, $default_val = null)
     {
+        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
+            $default_val = '';
+        }
         return $this->request->getSession($key, $default_val);
     }
 
