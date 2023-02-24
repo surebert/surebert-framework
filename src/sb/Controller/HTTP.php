@@ -257,9 +257,6 @@ class HTTP extends Base
      */
     public function getSession($key, $default_val = null)
     {
-        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
-            $default_val = '';
-        }
         return $this->request->getSession($key, $default_val);
     }
 

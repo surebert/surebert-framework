@@ -274,9 +274,6 @@ class Request
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
-        if (\sb\Gateway::$return_empty_string_by_default && is_null($default_val)) {
-            $default_val = '';
-        }
         return $default_val;
     }
 
