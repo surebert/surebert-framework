@@ -18,7 +18,7 @@ class Line extends Base
 
     /**
      * Background colors
-     * @var array 
+     * @var array
      */
     protected  $bgcolors = [
         'black' => '40',
@@ -33,7 +33,7 @@ class Line extends Base
 
     /**
      * Foreground colors
-     * @var array 
+     * @var array
      */
     protected $fgcolors = [
         'black' => '0;30',
@@ -72,22 +72,22 @@ class Line extends Base
      * @var boolean false default
      */
     protected $allow_from_anywhere = false;
-    
+
     /**
      * Determines if logs get written to file on __destruct
-     * @var boolean 
+     * @var boolean
      */
     protected $log_to_file = false;
-    
+
     /**
      * If true then log messages are written to file if $log_to_file is enabled
-     * @var mixed 
+     * @var mixed
      */
     protected $logger = null;
-    
+
     /**
      * The name of the destruct log to write to
-     * @var string 
+     * @var string
      */
     protected $log_name = 'commandLine';
 
@@ -95,13 +95,13 @@ class Line extends Base
      * If a subclass defines this attribute, it will be appended to the log_name
      */
     protected $log_suffix = null;
-    
+
     /**
      * The default memory limit in mb, default 200
      * @var int
      */
     protected $memory_limit = 200;
-    
+
     /**
      * The default max execution time in seconds, default 3600 - 1 hr
      * @var int
@@ -116,7 +116,7 @@ class Line extends Base
      * @var boolean
      */
     protected $trigger_next_process = false;
-    
+
 
     /**
      * Blocks non command line calls unless overridden
@@ -127,7 +127,7 @@ class Line extends Base
         if($this->log_to_file){
             $this->setLogger(new \sb\Logger\CommandLine());
         }
-        
+
         $this->allow_from_anywhere = $allow_from_anywhere;
         if (!\sb\Gateway::$command_line && !$allow_from_anywhere) {
             die('You can only use this command from the terminal');
@@ -139,12 +139,12 @@ class Line extends Base
         $this->log(get_called_class(), "CLASS");
         $this->log(\sb\Gateway::$request->request, 'REQUEST');
         if(count(\sb\Gateway::$request->get)){
-           $this->log(http_build_query(\sb\Gateway::$request->get), 'PARAMS'); 
+           $this->log(http_build_query(\sb\Gateway::$request->get), 'PARAMS');
         }
-        
+
         $this->setMemoryLimit($this->memory_limit);
         $this->setMaxExecutionTime($this->max_execution_time);
-        
+
     }
 
     /**
@@ -194,7 +194,7 @@ class Line extends Base
         } else {
             $mem_usage = memory_get_usage(true);
         }
-        
+
         $str = '';
         if ($mem_usage < 1024) {
             $str = $mem_usage . " b";
@@ -212,7 +212,7 @@ class Line extends Base
      * @param string $type The prefix of the line, if ERROR, encrements error count
      * @param array|string $text_attributes, used to describe how output should look
      * e.g. ['fgcolor' => 'red', 'bgcolor' => 'yellow', 'bold' => true, 'underline' => true, 'keep' => false]
-     * if keep is true then it keeps the style until you call a line with another 
+     * if keep is true then it keeps the style until you call a line with another
      * style or you call $this->setNormalText()
      * if string then its just the foreground color
      */
@@ -232,14 +232,14 @@ class Line extends Base
             default:
                 $message = $type . ': ' . $message;
         }
-        
+
         $this->logToFile($message);
-        
+
         if(empty($text_attributes)){
             file_put_contents("php://stdout", "\n".$message);
             return $message;
         }
-        
+
         if(is_array($text_attributes)){
             if(isset($text_attributes['bold']) && $text_attributes['bold']){
                 file_put_contents("php://stdout", "\033[1m");
@@ -267,7 +267,7 @@ class Line extends Base
         } else if(is_string($text_attributes) && isset($this->fgcolors[$text_attributes])){
             file_put_contents("php://stdout", "\033[".$this->fgcolors[$text_attributes]."m");
         }
-        
+
 
         file_put_contents("php://stdout", "\n".$message);
 
@@ -277,7 +277,7 @@ class Line extends Base
 
         return $message;
     }
-    
+
     /**
      * Logs to file
      * @param string $message
@@ -288,14 +288,14 @@ class Line extends Base
             return $this->logger->{$this->log_name}($message);
         }
     }
-    
+
     /**
      * Sets the text back to normal non-colored, non-bold
      */
     public function setNormalText(){
         file_put_contents("php://stdout","\033[0m");
     }
-    
+
     /**
      * Logs error to std out
      * @param string $message
@@ -332,7 +332,15 @@ class Line extends Base
      */
     public static function getCommandlineInvocation($method_name, $http_host=null, $http_args=[])
     {
-        $command_prefix = "php " . ROOT . "/public/index.php";
+        // Allow project-specific overrides of which php is used. This is for situations in which a project
+        // is expected to run under a different version of php than the one found in the process owner's PATH.
+        if (defined('PHP_EXE')) {
+            $php_exe = PHP_EXE;
+        } else {
+            $php_exe = 'php';
+        }
+
+        $command_prefix = "$php_exe " . ROOT . "/public/index.php";
 
         // Match fully-qualified method name: e.g. \Foo\Controllers\Jobs\Bar::baz()
         preg_match('/Controllers.([^:]+)::([A-Za-z_]+)/', $method_name, $matches);
