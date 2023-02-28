@@ -332,7 +332,15 @@ class Line extends Base
      */
     public static function getCommandlineInvocation($method_name, $http_host=null, $http_args=[])
     {
-        $command_prefix = PHP_BINARY . ' ' . ROOT . "/public/index.php";
+        // Allow project-specific overrides of which php is used. This is for situations in which a project
+        // is expected to run under a different version of php than the one found in the process owner's PATH.
+        if (defined('PHP_EXE')) {
+            $php_exe = PHP_EXE;
+        } else {
+            $php_exe = 'php';
+        }
+
+        $command_prefix = "$php_exe " . ROOT . "/public/index.php";
 
         // Match fully-qualified method name: e.g. \Foo\Controllers\Jobs\Bar::baz()
         preg_match('/Controllers.([^:]+)::([A-Za-z_]+)/', $method_name, $matches);
